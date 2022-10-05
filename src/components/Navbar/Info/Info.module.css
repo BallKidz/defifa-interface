@@ -25,15 +25,14 @@
   font-weight: 700;
 }
 
-.container span {
+.container span,
+.container li {
   font-weight: 500;
   font-size: 15px;
   line-height: 23px;
 }
 
 .container li {
-  font-size: 15px;
-  line-height: 23px;
   text-decoration-line: underline;
   color: white;
   list-style-type: none;
