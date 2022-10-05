@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+}
+
+.container h1,
+.container p,
+.container span,
+.container li {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.container h1 {
+  font-size: 35px;
+  line-height: 45px;
+  font-weight: 700;
+}
+
+.container p {
+  font-size: 20px;
+  line-height: 31.2px;
+  font-weight: 700;
+}
+
+.container span {
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 23px;
+}
+
+.container li {
+  font-size: 15px;
+  line-height: 23px;
+  text-decoration-line: underline;
+  color: white;
+  list-style-type: none;
+}
