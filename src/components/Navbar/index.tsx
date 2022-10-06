@@ -1,18 +1,13 @@
-import Button from "../UI/Button";
-import Header from "../UI/Header";
-import Logo from "../UI/Logo";
 import Info from "./Info";
-import Wallet from "./Wallet";
+import Logo from "./Logo";
+import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   return (
-    <Header>
-      <>
-        <Logo src="/assets/defifa.svg" width="389px" height="322px" />
-        <Info />
-        <Wallet />
-      </>
-    </Header>
+    <div className={styles.container}>
+      <Logo />
+      <Info />
+    </div>
   );
 };
 

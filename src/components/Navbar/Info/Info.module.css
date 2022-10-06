@@ -1,8 +1,11 @@
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  gap: 40px;
+  padding-top: 50px;
+  width: 750px;
+  min-width: 750px;
+  gap: 50px;
 }
 
 .container h1,

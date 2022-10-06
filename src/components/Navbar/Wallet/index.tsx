@@ -1,5 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Button from "../../UI/Button";
+import styles from "./Wallet.module.css";
 
 const Wallet = () => {
   return (
@@ -17,6 +18,7 @@ const Wallet = () => {
 
         return (
           <div
+            className={styles.container}
             {...(!ready && {
               "aria-hidden": true,
               style: {
