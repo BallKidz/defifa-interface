@@ -1,0 +1,6 @@
+.container span {
+  font-weight: 700;
+}
+.container span:first-child {
+  text-transform: lowercase;
+}
