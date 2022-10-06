@@ -1,5 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Rules from "../components/Rules";
+import Content from "../components/UI/Content";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -10,6 +12,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Juice Defifa" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Content title="RULES">
+        <Rules />
+      </Content>
 
       {/* <footer className={styles.footer}>
         <a

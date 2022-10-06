@@ -1,0 +1,21 @@
+.phases {
+  display: grid;
+  grid-template-columns: 35% 55%;
+  justify-content: space-between;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.phaseBox {
+  display: block;
+}
+
+.phaseBox h1 {
+  color: var(--titleColor);
+  font-size: 30px;
+}
+
+.phaseBox p {
+  font-size: 15px;
+}
+

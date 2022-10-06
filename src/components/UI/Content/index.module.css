@@ -1,0 +1,36 @@
+.contentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chevronDown {
+  height: 24px;
+  padding: 0 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.accordianLabel {
+  display: block;
+}
+
+.accordianInput {
+  display: none;
+}
+
+.content {
+  transform: scaleY(0);
+  /* overflow: hidden; */
+  transform-origin: top;
+  transition: transform 0.2s;
+}
+
+.accordianInput:checked ~ .content {
+  /* display: block; */
+  transform: scaleY(1);
+}
+
+.accordianInput:checked ~ .accordianLabel .contentHeader .chevronDown {
+  transform: rotate(180deg);
+  border: 2px black;
+}
