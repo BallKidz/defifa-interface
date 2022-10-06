@@ -1,5 +1,5 @@
-import type { AppProps } from "next/app";
 import "@rainbow-me/rainbowkit/styles.css";
+import type { AppProps } from "next/app";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
