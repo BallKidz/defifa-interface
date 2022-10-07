@@ -4,7 +4,7 @@
   flex-direction: column;
   padding-top: 50px;
   width: 750px;
-  min-width: 750px;
+  /* min-width: 750px; */
   gap: 50px;
 }
 

@@ -11,13 +11,14 @@
 
 .line{
   background-color: var(--contentTitle);
-  height: 1px;
+  height: 3px;
   border: none;
   margin: 25px  0;
 }
 .accordian{
   background: url(../../../../public/assets/banny.png) no-repeat;
   background-size: contain;
+  
   background-position: center;
 }
 .accordianLabel {
