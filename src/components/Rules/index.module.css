@@ -4,10 +4,12 @@
   justify-content: space-between;
   height: 100%;
   border-radius: 10px;
+
 }
 
 .phaseBox {
   display: block;
+  text-transform: uppercase;
 }
 
 .phaseBox h1 {
@@ -17,5 +19,9 @@
 
 .phaseBox p {
   font-size: 15px;
+  font-weight: 700;
 }
 
+.disclaimer{
+  font-weight: 700;
+}

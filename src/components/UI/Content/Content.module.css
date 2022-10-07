@@ -18,6 +18,7 @@
 
 .accordianLabel {
   display: block;
+  cursor: pointer;
 }
 
 .accordianInput {
