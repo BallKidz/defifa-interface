@@ -6,13 +6,19 @@
   --titleColor: #17e4f1;
 }
 
-html,
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
 body {
   background: linear-gradient(
     308.94deg,
     rgba(73, 61, 109, 0.78) 21.72%,
     #493d6d 85.03%
-  );
+  )no-repeat;
   color: var(--textColor);
   height: 100%;
   padding: 0;
@@ -23,8 +29,4 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
 }

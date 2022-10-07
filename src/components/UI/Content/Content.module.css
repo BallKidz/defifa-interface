@@ -1,13 +1,19 @@
 .contentHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .chevronDown {
   height: 24px;
   padding: 0 8px;
   transition: transform 0.3s ease-in-out;
+}
+
+.line{
+  background-color: var(--contentTitle);
+  height: 1px;
+  border: none;
+  margin: 25px  0;
 }
 
 .accordianLabel {

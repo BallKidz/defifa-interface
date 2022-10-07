@@ -1,0 +1,42 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+  width: 750px;
+  min-width: 750px;
+  gap: 50px;
+}
+
+.container h1,
+.container p,
+.container span,
+.container li {
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.container h1 {
+  font-size: 40px;
+  line-height: 52px;
+  font-weight: 700;
+}
+
+.container p {
+  font-size: 24px;
+  line-height: 31.2px;
+  font-weight: 700;
+}
+
+.container span,
+.container li {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 23px;
+}
+
+.container li {
+  text-decoration-line: underline;
+  color: white;
+  list-style-type: none;
+}
