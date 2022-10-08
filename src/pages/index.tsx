@@ -9,8 +9,8 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Juice Defifa</title>
-        <meta name="description" content="Juice Defifa" />
+        <title>Defifa</title>
+        <meta name="description" content="Defifa" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
