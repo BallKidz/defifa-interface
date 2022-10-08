@@ -1,0 +1,48 @@
+.contentHeader {
+  display: flex;
+  align-items: center;
+}
+
+.chevronDown {
+  height: 24px;
+  padding: 0 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.line{
+  background-color: var(--contentTitle);
+  height: 3px;
+  border: none;
+  margin: 25px  0;
+}
+.accordian{
+  background: url(../../../../public/assets/banny.png) no-repeat;
+  background-size: contain;
+  
+  background-position: center;
+}
+.accordianLabel {
+  display: block;
+  cursor: pointer;
+}
+
+.accordianInput {
+  display: none;
+}
+
+.content {
+  transform: scaleY(0);
+  /* overflow: hidden; */
+  transform-origin: top;
+  transition: transform 0.2s;
+}
+
+.accordianInput:checked ~ .content {
+  /* display: block; */
+  transform: scaleY(1);
+}
+
+.accordianInput:checked ~ .accordianLabel .contentHeader .chevronDown {
+  transform: rotate(180deg);
+  border: 2px black;
+}
