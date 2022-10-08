@@ -9,16 +9,16 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.line{
+.line {
   background-color: var(--contentTitle);
   height: 3px;
   border: none;
-  margin: 25px  0;
+  margin: 45px 0 25px 0;
 }
-.accordian{
+.accordian {
   background: url(../../../../public/assets/banny.png) no-repeat;
   background-size: contain;
-  
+
   background-position: center;
 }
 .accordianLabel {

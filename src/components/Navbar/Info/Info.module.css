@@ -1,11 +1,7 @@
 .container {
-  position: relative;
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
-  width: 750px;
-  /* min-width: 750px; */
-  gap: 50px;
+  gap: 60px;
 }
 
 .container h1,
@@ -39,4 +35,24 @@
   text-decoration-line: underline;
   color: white;
   list-style-type: none;
+}
+
+@media only screen and (max-width: 1024px) {
+  .container {
+    width: fit-content;
+    gap: 40px;
+  }
+
+  .container h1 {
+    font-size: 25px;
+  }
+
+  .container p {
+    font-size: 13px;
+  }
+
+  .container span,
+  .container li {
+    font-size: 13px;
+  }
 }

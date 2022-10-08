@@ -1,3 +1,8 @@
-.container {
-  padding-bottom: 65px;
+@media only screen and (max-width: 1024px) {
+  .container {
+    max-width: 220px;
+  }
+  .container img {
+    width: 100%;
+  }
 }
