@@ -4,6 +4,8 @@ import Rules from "../components/Rules";
 import Content from "../components/UI/Content";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
+import Group from "../components/Group";
+import Mint from "../components/Mint";
 
 const Home: NextPage = () => {
   return (
@@ -16,6 +18,9 @@ const Home: NextPage = () => {
       <Navbar />
       <Content title="RULES">
         <Rules />
+      </Content>
+      <Content title="MINT">
+        <Mint />
       </Content>
 
       {/* <footer className={styles.footer}>

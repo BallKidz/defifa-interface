@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 14px;
+  line-height: 18.2px;
+  color: white;
+}
+
+.container h3,
+.container p {
+  font-weight: 700;
+  margin: 0;
+}
