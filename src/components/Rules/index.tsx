@@ -1,11 +1,13 @@
 //nextjs Functional component
 
 import React from "react";
+import Content from "../UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
   return (
     <>
+      <Content title="RULES">
       <div className={styles.phases}>
         <div className={styles.phaseBox}>
           <h1>PHASE 1: MINT</h1>
@@ -68,6 +70,7 @@ const Rules = () => {
         {" "}
         *THE OUTCOME IS SUBJECT TO THE RATIFIED SCORECARD DURING PHASE 4.
       </span>
+      </Content>
     </>
   );
 };

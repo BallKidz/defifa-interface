@@ -4,6 +4,7 @@ import Rules from "../components/Rules";
 import Content from "../components/UI/Content";
 import Navbar from "../components/Navbar";
 import styles from "../styles/Home.module.css";
+import Mint from "../components/Mint";
 
 const Home: NextPage = () => {
   return (
@@ -14,17 +15,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <Content title="RULES">
-        <Rules />
-      </Content>
-
-      {/* <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        ></a>
-      </footer> */}
+      <Rules />
+      <Mint />
     </div>
   );
 };
