@@ -15,12 +15,7 @@
   border: none;
   margin: 45px 0 25px 0;
 }
-.accordian {
-  background: url(../../../../public/assets/banny.png) no-repeat;
-  background-size: contain;
 
-  background-position: center;
-}
 .accordianLabel {
   display: block;
   cursor: pointer;
