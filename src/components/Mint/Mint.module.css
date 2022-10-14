@@ -6,21 +6,48 @@
 .mint {
   text-transform: uppercase;
 }
-.mint label{
-    font-size: 22px;
+.mint label {
+  font-size: 22px;
 }
+
 .mint select {
+  background: none;
+  font: inherit;
   appearance: none;
   outline: 0;
-  background: #c0b3f0;
   background-image: none;
   height: 2.5rem;
   min-width: 200px;
-  margin: 0 10px;
-  color: black;
+  font-size: 15px;
+  color: var(--bgColor);
+  border: none;
   cursor: pointer;
   border-radius: 10px;
-  padding: 10px;
+  padding: 0 20px 0 10px;
+}
+
+.sortSelect {
+  display: flex;
+  align-items: center;
+}
+.arrow {
+  display: flex;
+  background-color: c0b3f0;
+  width: 20px;
+  height: 2.5rem;
+  pointer-events: none;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  text-align: center;
+}
+
+.selectWrapper {
+  position: relative;
+  background: #c0b3f0;
+  padding: 0;
+  margin: 0 10px;
+  border-radius: 10px;
 }
 
 .l1,
@@ -28,6 +55,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .selectAll {

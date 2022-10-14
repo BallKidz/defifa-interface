@@ -2,6 +2,7 @@ import Link from "next/link";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
+import SortSelect from "./SortSelect";
 const Mint = () => {
   return (
     <>
@@ -15,17 +16,10 @@ const Mint = () => {
           </div>
 
           <div className={styles.l2}>
-            <div>
-              <label htmlFor="sort">SORT BY:</label>
-
-              <select name="sort" id="sort">
-                <option value="group">GROUP</option>
-                <option value="minted">MOST MINTED</option>
-              </select>
-            </div>
-
+            <SortSelect />
             <button className={styles.selectAll}> SELECT ALL </button>
           </div>
+          
         </div>
       </Content>
     </>
