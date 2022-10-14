@@ -10,7 +10,69 @@
   font-size: 22px;
 }
 
-.mint select {
+.arrow {
+  display: flex;
+  background-color: #c0b3f0;
+  width: 20px;
+  pointer-events: none;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  height: 100%;
+  text-align: center;
+}
+
+.selectWrapper {
+  position: relative;
+  background: #c0b3f0;
+  padding: 0;
+  margin: 0 0 0 10px;
+  border-radius: 10px;
+}
+
+.buttonWrapper {
+  float: right;
+}
+
+.l1,
+.l2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.l2 {
+  margin: 20px 0px;
+}
+
+.selectAll {
+  background: none;
+  color: inherit;
+  float: right;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  color: white;
+  text-decoration: underline;
+}
+
+.buttonWrapper {
+  float: right;
+}
+
+.sortSelect {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.sortSelect label {
+  font-size: 18px;
+}
+
+.sortSelect select {
   background: none;
   font: inherit;
   appearance: none;
@@ -26,46 +88,47 @@
   padding: 0 20px 0 10px;
 }
 
-.sortSelect {
-  display: flex;
-  align-items: center;
-}
-.arrow {
-  display: flex;
-  background-color: c0b3f0;
-  width: 20px;
-  height: 2.5rem;
-  pointer-events: none;
-  position: absolute;
-  top: 0px;
-  right: 10px;
-  text-align: center;
+/* Media query for mobile */
+@media only screen and (max-width: 768px) {
+  .l1,
+  .l2 {
+    grid-template-columns: none;
+    grid-template-rows: 1fr 1fr;
+    text-align: center;
+  }
+
+  .buttonFloater {
+    text-align: center;
+  }
+
+  .buttonWrapper {
+    float: none;
+    display: inline-block;
+  }
+
+  .sortSelect {
+    display: flex;
+    line-height: 2rem;
+    justify-content: space-between;
+  }
+
+  .sortSelect label {
+    font-size: 15px;
+    display: block;
+  }
+
+  .sortSelect select {
+    min-width: 100px;
+    height: 20px;
+    font-size: 12px;
+    padding: 0 0px 0 10px;
+  }
+  .arrow {
+    width: 15px;
+  }
+
+  .selectAll {
+    font-size: 12px;
+  }
 }
 
-.selectWrapper {
-  position: relative;
-  background: #c0b3f0;
-  padding: 0;
-  margin: 0 10px;
-  border-radius: 10px;
-}
-
-.l1,
-.l2 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.selectAll {
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-  color: white;
-  text-decoration: underline;
-}

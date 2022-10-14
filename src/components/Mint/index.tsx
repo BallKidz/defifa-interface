@@ -12,14 +12,22 @@ const Mint = () => {
             <h1 className={styles.subtitle}>
               OPEN MINT FOR 0.022 ETH EACH <br /># MINTED: 100
             </h1>
-            <Button onClick={() => {}}>MINT 13</Button>
+
+            <div className={styles.buttonFloater}>
+              <div className={styles.buttonWrapper}>
+                <Button onClick={() => {}}>MINT 13</Button>
+              </div>
+            </div>
           </div>
 
           <div className={styles.l2}>
-            <SortSelect />
-            <button className={styles.selectAll}> SELECT ALL </button>
+            <div className={styles.sortSelectWrapper}>
+              <SortSelect />
+            </div>
+            <div>
+              <button className={styles.selectAll}> SELECT ALL </button>
+            </div>
           </div>
-          
         </div>
       </Content>
     </>
