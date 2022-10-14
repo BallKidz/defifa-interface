@@ -2,7 +2,7 @@ import Link from "next/link";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
-import SortSelect from "./SortSelect";
+import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
   return (
     <>

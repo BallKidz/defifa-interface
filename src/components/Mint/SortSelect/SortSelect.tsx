@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./Mint.module.css";
+import styles from "./SortSelect.module.css";
 
 const SortSelect = () => {
   return (
