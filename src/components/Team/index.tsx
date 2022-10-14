@@ -7,8 +7,8 @@ interface TeamProps {
 const Team = () => {
   return (
     <div className={styles.container}>
-      <img src="/assets/test.png" alt="Team" width="256" height="75" />
-      <h3>Ecuador</h3>
+      <img src="/assets/test.png" alt="Team" width="250" height="150" />
+      <h3>Argentina</h3>
       <p>
         # of mints: 200 <span>(2% of total)</span>
       </p>

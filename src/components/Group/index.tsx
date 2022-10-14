@@ -4,7 +4,9 @@ import styles from "./Group.module.css";
 const Group = () => {
   return (
     <div className={styles.container}>
-      <label>Group A</label>
+      <div>
+        <label>Group A</label>
+      </div>
       <div className={styles.teamContainer}>
         <Team />
         <Team />
