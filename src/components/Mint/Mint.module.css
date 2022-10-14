@@ -1,6 +1,7 @@
 .subtitle {
   color: var(--turquoise);
   font-size: 18px;
+  font-weight: 500;
 }
 
 .mint {

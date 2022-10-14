@@ -39,6 +39,7 @@
   background: #c0b3f0;
   margin: 0 0 0 10px;
   border-radius: 10px;
+  border: 1px solid black;
 }
 
 /* Media query for mobile */
