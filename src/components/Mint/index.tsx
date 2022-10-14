@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Group from "../Group";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
@@ -27,6 +27,10 @@ const Mint = () => {
             <div>
               <button className={styles.selectAll}> SELECT ALL </button>
             </div>
+          </div>
+          <div className={styles.groupsContainer}>
+            <Group />
+            <Group />
           </div>
         </div>
       </Content>

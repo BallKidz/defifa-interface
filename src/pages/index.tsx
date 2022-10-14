@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Rules from "../components/Rules";
-import Content from "../components/UI/Content";
-import Navbar from "../components/Navbar";
-import styles from "../styles/Home.module.css";
 import Mint from "../components/Mint";
+import Navbar from "../components/Navbar";
+import Rules from "../components/Rules";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (

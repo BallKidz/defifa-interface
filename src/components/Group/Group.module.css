@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.container label {
+  font-size: 24px;
+  font-weight: 700;
+  color: #c0b3f0;
+  border-bottom: 3px solid #7b59f3;
+}
+
+.teamContainer {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 15px;
+}
