@@ -4,6 +4,9 @@
   justify-content: space-between;
   height: 100%;
   border-radius: 10px;
+  background: url(../../../public/assets/banny.png) no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .phaseBox {

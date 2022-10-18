@@ -3,7 +3,9 @@
 :root {
   --contentTitle: #c0b3f0;
   --textColor: var(--contentTitle);
+  --bgColor: #5c517c;
   --titleColor: #17e4f1;
+  --turquoise: #17e4f1;
 }
 
 * {
@@ -15,14 +17,16 @@ html {
 }
 body {
   background: linear-gradient(
-    308.94deg,
-    rgba(73, 61, 109, 0.78) 21.72%,
-    #493d6d 85.03%
-  )no-repeat;
+      308.94deg,
+      rgba(73, 61, 109, 0.78) 21.72%,
+      #493d6d 85.03%
+    )
+    no-repeat;
   color: var(--textColor);
   height: 100%;
   padding: 0;
-  margin: 0;
+  max-width: 1920px;
+  margin: auto;
   font-family: "Kodchasan", sans-serif;
 }
 
