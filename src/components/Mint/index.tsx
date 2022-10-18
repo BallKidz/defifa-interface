@@ -29,8 +29,8 @@ const Mint = () => {
             </div>
           </div>
           <div className={styles.groupsContainer}>
-            <Group />
-            <Group />
+            <Group groupName="A" />
+            <Group groupName="B" />
           </div>
         </div>
       </Content>

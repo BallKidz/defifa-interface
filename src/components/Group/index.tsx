@@ -1,11 +1,15 @@
 import Team from "../Team";
 import styles from "./Group.module.css";
 
-const Group = () => {
+interface GroupProps {
+  groupName: string;
+}
+
+const Group = ({ groupName }: GroupProps) => {
   return (
     <div className={styles.container}>
       <div>
-        <label>Group A</label>
+        <label>Group {groupName}</label>
       </div>
       <div className={styles.teamContainer}>
         <Team />
