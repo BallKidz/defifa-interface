@@ -1,6 +1,6 @@
 .groupsContainer {
   display: flex;
-  justify-content: space-between;
+  gap: 50px;
   padding-top: 30px;
 }
 
