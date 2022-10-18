@@ -6,7 +6,7 @@ import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
   return (
     <>
-      <Content title="MINT">
+      <Content title="MINT [WORK IN PROGRESS]">
         <div className={styles.mint}>
           <div className={styles.l1}>
             <h1 className={styles.subtitle}>

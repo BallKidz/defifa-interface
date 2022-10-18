@@ -13,6 +13,12 @@
 
 .teamContainer {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
+}
+
+@media only screen and (max-width: 768px) {
+  .teamContainer {
+    grid-template-columns: 1fr;
+  }
 }

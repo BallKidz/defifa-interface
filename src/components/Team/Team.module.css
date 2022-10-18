@@ -12,3 +12,12 @@
   font-weight: 700;
   margin: 0;
 }
+
+.container span {
+  font-weight: 500;
+}
+
+.teamImg {
+  width: 330px;
+  height: 250px;
+}
