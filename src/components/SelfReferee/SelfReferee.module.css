@@ -1,0 +1,12 @@
+.attestationConfirm {
+  color: var(--turquoise);
+  font-size: 13px;
+}
+
+.selfReferee {
+  text-transform: uppercase;
+}
+
+.selfReferee p{
+  max-width: 700px;
+}
