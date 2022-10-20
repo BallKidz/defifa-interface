@@ -17,7 +17,6 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
           className={styles.contentHeader}
           onClick={() => {
             setIsActive(!isActive);
-            console.log(isActive);
           }}
         >
           {" "}
@@ -35,13 +34,17 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
         <div
           ref={contentEl}
           className={styles.content}
-          style={{
-            height: `${
-              isActive
-                ? contentEl.current?.scrollHeight.toString() + "px"
-                : "0px"
-            }`,
-          }}
+          style={
+            contentEl.current
+              ? {
+                  height: `${
+                    isActive
+                      ? contentEl.current?.scrollHeight.toString() + "px"
+                      : "0px"
+                  }`,
+                }
+              : {}
+          }
         >
           {props.children}
         </div>
