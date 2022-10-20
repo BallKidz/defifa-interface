@@ -6,7 +6,7 @@
   border-radius: 10px;
   background: url(../../../public/assets/banny.png) no-repeat;
   background-size: contain;
-  background-attachment: fixed;
+  background-attachment: initial;
   background-position: center;
 }
 
