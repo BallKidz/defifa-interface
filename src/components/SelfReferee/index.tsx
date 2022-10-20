@@ -42,11 +42,11 @@ const SelfRefree = () => {
         <Button onClick={() => {}} size="medium">
           QUEUE PHASE 4
         </Button>
-        <br />
+        {/* <br />
         <br />
         <Button onClick={() => {}} size="big" color="#736B6F">
           PHASE 4 ALREADY QUEUED
-        </Button>
+        </Button> */}
       </div>
     </Content>
   );
