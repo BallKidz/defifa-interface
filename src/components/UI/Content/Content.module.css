@@ -29,18 +29,11 @@
 .content {
   /* transform: scaleY(0); */
   overflow: hidden;
-  max-height: 0px;
   transform-origin: top;
-  transition: max-height 0.4s ease-out;
+  transition: height 0.4s ease-in-out;
 }
 
-.accordianInput:checked ~ .content {
-  /* display: block; */
-  /* transform: scaleY(1); */
-  max-height: 100%;
-}
-
-.accordianInput:checked ~ .accordianLabel .contentHeader .chevronDown {
+.rotated {
   transform: rotate(180deg);
   border: 2px black;
 }
