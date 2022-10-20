@@ -28,7 +28,14 @@ const SelfRefree = () => {
         </p>
         <p className={styles.attestationConfirm}>
           You’ve attested to scorecard with root <b>0xasdf...1234</b> which
-          matches <span style={{fontWeight:"bold",textDecoration:"underline"}}>these results</span>.
+          matches{" "}
+          <a
+            href=""
+            style={{ fontWeight: "bold", textDecoration: "underline" }}
+          >
+            these results
+          </a>
+          .
         </p>
         <Button onClick={() => {}} size="big">
           CHANGE ATTESTATION

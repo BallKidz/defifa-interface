@@ -5,9 +5,10 @@
 
 .selfReferee {
   text-transform: uppercase;
+  padding-bottom: 1%;
 }
 
-.selfReferee p{
+.selfReferee p {
   max-width: 700px;
   font-weight: 500;
 }
