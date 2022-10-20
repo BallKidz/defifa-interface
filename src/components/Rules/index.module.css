@@ -5,8 +5,7 @@
   height: 100%;
   border-radius: 10px;
   background: url(../../../public/assets/banny.png) no-repeat;
-  background-size: contain;
-  background-attachment: initial;
+  background-size: auto 100%;
   background-position: center;
 }
 
@@ -33,6 +32,7 @@
 @media only screen and (max-width: 768px) {
   .phases {
     grid-template-columns: 100%;
+    background-size:  100% auto;
   }
   .phaseBox {
     display: block;
