@@ -27,7 +27,7 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>PHASE 2: START</h1>
             <p>
-              THE TREASURY IS LOCKED AND MINTING PERMENENTLY ENDS BEFORE THE
+              THE TREASURY IS LOCKED AND MINTING PERMANENTLY ENDS BEFORE THE
               FIRST KICKOFF ON NOVEMBER 20, 2022.
               <br />
               <br />
