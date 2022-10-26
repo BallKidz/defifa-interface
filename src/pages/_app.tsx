@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     //  - This must be an exact match of your domain.
     //  - If you're using www. for your domain, make sure you include that here.
     Fathom.load("WIPQWWMN", {
-      includedDomains: ["www.defifa.net"],
+      includedDomains: ["www.defifa.net", "defifa.net"],
     });
 
     function onRouteChangeComplete() {
