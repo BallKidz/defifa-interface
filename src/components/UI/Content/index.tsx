@@ -1,6 +1,12 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { PropsWithChildren, useRef, useState } from "react";
+import React, {
+  PropsWithChildren,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import constants from "../../../constants/UI";
 
 import utilStyles from "../../../styles/utils.module.css";
@@ -8,7 +14,14 @@ import styles from "./Content.module.css";
 
 const Content: React.FC<PropsWithChildren<any>> = (props) => {
   const [isActive, setIsActive] = useState(true);
+  const [height, setHeight] = useState(0);
   const contentEl = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (contentEl.current) {
+      setHeight(contentEl.current.scrollHeight);
+    }
+  }, []);
+
   return (
     <>
       <hr className={styles.line} />
@@ -37,11 +50,7 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
           style={
             contentEl.current
               ? {
-                  height: `${
-                    isActive
-                      ? contentEl.current?.scrollHeight.toString() + "px"
-                      : "0px"
-                  }`,
+                  height: `${isActive ? height.toString() + "px" : "0px"}`,
                 }
               : {}
           }

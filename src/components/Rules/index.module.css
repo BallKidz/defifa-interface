@@ -24,6 +24,11 @@
   font-weight: 700;
 }
 
+.disclaimerWrapper {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
 .disclaimer {
   font-weight: 700;
 }
@@ -32,7 +37,7 @@
 @media only screen and (max-width: 768px) {
   .phases {
     grid-template-columns: 100%;
-    background-size:  100% auto;
+    background-size: 100% auto;
   }
   .phaseBox {
     display: block;

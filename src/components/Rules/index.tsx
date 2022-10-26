@@ -63,18 +63,23 @@ const Rules = () => {
             A SCORECARD HAS BEEN RATIFIED
           </p>
         </div>
+
+        <div className={styles.disclaimerWrapper}>
+          <br />
+          {" "}
+          <span className={styles.disclaimer}>
+            {" "}
+            *THE OUTCOME IS SUBJECT TO THE RATIFIED SCORECARD DURING PHASE 4.
+          </span>
+          <br />
+          <span className={styles.disclaimer}>
+            {" "}
+            *NOTHING IS PROMISED, THIS IS JUST A DOPE EXPERIMENT. PLAY AT YOUR
+            OWN RISK.
+          </span>
+        </div>
+        <br />
       </div>
-      <br />
-      <span className={styles.disclaimer}>
-        {" "}
-        *THE OUTCOME IS SUBJECT TO THE RATIFIED SCORECARD DURING PHASE 4.
-      </span>
-      <br />
-      <span className={styles.disclaimer}>
-        {" "}
-        *NOTHING IS PROMISED, THIS IS JUST A DOPE EXPERIMENT. PLAY AT YOUR OWN
-        RISK.
-      </span>
     </Content>
   );
 };
