@@ -13,6 +13,11 @@ const Home: NextPage = () => {
         <title>Defifa</title>
         <meta name="description" content="Defifa" />
         <link rel="icon" href="/favicon.ico" />
+        <script
+          src="https://cdn.usefathom.com/script.js"
+          data-site="WIPQWWMN"
+          defer
+        ></script>
       </Head>
       <Navbar />
       <Rules />
