@@ -15,7 +15,6 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@rainbow-me/rainbowkit": "^0.7.0",
     "ethers": "^5.7.1",
-    "fathom-client": "^3.5.0",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
