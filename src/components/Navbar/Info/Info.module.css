@@ -1,7 +1,9 @@
 .container {
   display: flex;
-  flex-direction: column;
-  gap: 60px;
+  gap: 50px;
+  width: 100%;
+  height: 100%;
+  align-items: center;
 }
 
 .container h1,
@@ -13,7 +15,7 @@
 }
 
 .container h1 {
-  font-size: 40px;
+  font-size: 26px;
   line-height: 52px;
   font-weight: 700;
 }
@@ -21,7 +23,6 @@
 .container p {
   font-size: 24px;
   line-height: 31.2px;
-  font-weight: 700;
 }
 
 .container span,
@@ -40,11 +41,12 @@
 @media only screen and (max-width: 1024px) {
   .container {
     width: fit-content;
+    flex-direction: column;
     gap: 40px;
   }
 
   .container h1 {
-    font-size: 25px;
+    font-size: 15px;
   }
 
   .container p {
@@ -54,5 +56,11 @@
   .container span,
   .container li {
     font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 600) {
+  .container:last-child {
+    order: 1;
   }
 }

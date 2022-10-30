@@ -4,7 +4,7 @@ import styles from "./Button.module.css";
 
 const Button = ({
   children,
-  color = colors.pink,
+  color = colors.turquoise,
   size,
   onClick,
 }: {

@@ -1,19 +1,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin: auto;
-}
-
-.logoWalletContainer {
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
 }
 
 .logoInfoContainer {
   display: flex;
-  gap: 100px;
+  gap: 50px;
+  align-items: center;
 }
 
 @media only screen and (max-width: 1300px) {
@@ -29,19 +23,5 @@
 
   .logoInfoContainer {
     gap: 0px;
-  }
-
-  .logoWalletContainer {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .logoWalletContainer {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
   }
 }

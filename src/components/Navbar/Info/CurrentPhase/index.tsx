@@ -1,12 +1,10 @@
-import { colors } from "../../../../constants/colors";
+import styles from "./CurrentPhase.module.css";
 
 const CurrentPhase = () => {
   return (
-    <div>
-      <h1 style={{ color: colors.turquoise }}>minting starts nov 5, 2022</h1>
-      <p style={{ color: colors.purple }}>current game phase</p>
-
-      <span style={{ color: colors.purple }}>game ends dec,20,2022 </span>
+    <div className={styles.container}>
+      <h1>minting starts in 4 days</h1>
+      <p>current game phase</p>
     </div>
   );
 };

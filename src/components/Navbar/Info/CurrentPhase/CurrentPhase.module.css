@@ -1,0 +1,7 @@
+.container h1 {
+  color: var(--gold);
+}
+
+.container p {
+  color: var(--purple);
+}

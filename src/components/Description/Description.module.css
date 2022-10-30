@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.container p {
+  font-size: 18px;
+}
+
+.container span {
+  font-weight: 700;
+}
+
+.infoContainer {
+  display: flex;
+  gap: 50px;
+  text-transform: uppercase;
+}
