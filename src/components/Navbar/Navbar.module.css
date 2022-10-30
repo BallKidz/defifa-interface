@@ -3,25 +3,3 @@
   flex-direction: column;
   margin: auto;
 }
-
-.logoInfoContainer {
-  display: flex;
-  gap: 50px;
-  align-items: center;
-}
-
-@media only screen and (max-width: 1300px) {
-  .logoInfoContainer {
-    gap: 50px;
-  }
-}
-
-@media only screen and (max-width: 1024px) {
-  .container {
-    align-items: flex-start;
-  }
-
-  .logoInfoContainer {
-    gap: 0px;
-  }
-}
