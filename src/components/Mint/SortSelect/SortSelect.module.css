@@ -47,7 +47,7 @@
   .sortSelect {
     display: flex;
     line-height: 2rem;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .sortSelect label {
