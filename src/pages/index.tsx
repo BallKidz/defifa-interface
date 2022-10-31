@@ -3,6 +3,7 @@ import Head from "next/head";
 import Description from "../components/Description";
 import Mint from "../components/Mint";
 import Navbar from "../components/Navbar";
+import Info from "../components/Navbar/Info";
 import Rules from "../components/Rules";
 import SelfRefree from "../components/SelfReferee";
 import Divider from "../components/UI/Divider";
@@ -21,7 +22,9 @@ const Home: NextPage = () => {
           defer
         ></script>
       </Head>
-      <Navbar />
+      <Navbar>
+        <Info />
+      </Navbar>
       <Description />
       <Rules />
       <Divider />

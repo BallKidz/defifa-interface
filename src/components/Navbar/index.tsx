@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import Info from "./Info";
 import styles from "./Navbar.module.css";
 
-const Navbar = () => {
+const Navbar = (props: PropsWithChildren) => {
   const { width } = useWindowDimensions();
   const [isTabletOrMobile, setIsTabletorMobile] = useState<boolean>(false);
 
@@ -20,7 +19,7 @@ const Navbar = () => {
       className={styles.container}
       style={{ marginTop: isTabletOrMobile ? "40px" : "0" }}
     >
-      <Info />
+      {props.children}
     </div>
   );
 };

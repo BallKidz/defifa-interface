@@ -1,9 +1,10 @@
-import { colors } from "../../../../constants/colors";
+import styles from "./DeployerInfo.module.css";
 
 const DeployerInfo = () => {
   return (
-    <div>
-      <h1 style={{ color: colors.turquoise }}>defifa kickstarter</h1>
+    <div className={styles.container}>
+      <h1>create your own tournament</h1>
+      <p>kickstart your own tournament in a matter of time</p>
     </div>
   );
 };

@@ -4,11 +4,13 @@ import styles from "./Button.module.css";
 
 const Button = ({
   children,
+  type = "button",
   color = colors.turquoise,
   size,
   onClick,
 }: {
   children: any;
+  type?: "button" | "submit";
   color?: string;
   size?: "small" | "medium" | "big";
   onClick?: VoidFunction;
@@ -28,6 +30,7 @@ const Button = ({
 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
       style={{ backgroundColor: color }}
