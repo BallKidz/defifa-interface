@@ -7,12 +7,14 @@ const Button = ({
   type = "button",
   color = colors.turquoise,
   size,
+  textColor,
   onClick,
 }: {
   children: any;
   type?: "button" | "submit";
   color?: string;
   size?: "small" | "medium" | "big";
+  textColor?: string;
   onClick?: VoidFunction;
 }) => {
   const buttonSize = useMemo<string>(() => {
@@ -33,7 +35,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, color: textColor }}
     >
       {children}
     </button>
