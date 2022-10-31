@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { PropsWithChildren } from "react";
 import constants from "../../../constants/UI";
 
-import utilStyles from "../../../styles/utils.module.css";
 import styles from "./Content.module.css";
 
 const Content: React.FC<PropsWithChildren<any>> = (props) => {
@@ -20,7 +19,7 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
         <label htmlFor={props.title} className={styles.accordianLabel}>
           <div className={styles.contentHeader}>
             {" "}
-            <h1 className={utilStyles.contentTitle}>{props.title} </h1>
+            <h1 className={styles.contentTitle}>{props.title} </h1>
             <FontAwesomeIcon
               icon={faChevronDown}
               size="sm"

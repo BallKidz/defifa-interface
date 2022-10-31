@@ -16,17 +16,17 @@
 
 .phaseBox h1 {
   color: var(--gold);
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .phaseBox p {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
 }
 
 .disclaimer {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 /* Media query for mobile */
@@ -38,14 +38,14 @@
     display: block;
     text-transform: uppercase;
   }
-  .phaseBox h1 {
+  /* .phaseBox h1 {
     color: var(--titleColor);
     font-size: 25px;
   }
   .phaseBox p {
     font-size: 13px;
     font-weight: 700;
-  }
+  } */
   .disclaimer {
     font-size: 13px;
     font-weight: 700;
@@ -61,14 +61,14 @@
     display: block;
     text-transform: uppercase;
   }
-  .phaseBox h1 {
+  /* .phaseBox h1 {
     color: var(--titleColor);
     font-size: 25px;
   }
   .phaseBox p {
     font-size: 15px;
     font-weight: 700;
-  }
+  } */
 
   .disclaimer {
     font-size: 15px;
