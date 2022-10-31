@@ -17,7 +17,7 @@ const SelfRefree = () => {
           Scorecards can be submitted that suggest the correct results of
           off-chain events.
         </p>
-        <Button onClick={() => {}} size="big">
+        <Button onClick={() => {}} size="big" color="#ED017C" textColor="white">
           Submit a scorecard
         </Button>
         <br />
@@ -37,7 +37,7 @@ const SelfRefree = () => {
           </a>
           .
         </p>
-        <Button onClick={() => {}} size="big">
+        <Button onClick={() => {}} size="big" color="#ED017C" textColor="white">
           CHANGE ATTESTATION
         </Button>
         <br />
@@ -46,7 +46,7 @@ const SelfRefree = () => {
           Each game phase must also be queued by someone in the public in a
           timely manner.
         </p>
-        <Button onClick={() => {}} size="medium">
+        <Button onClick={() => {}} size="big" color="#ED017C" textColor="white">
           QUEUE PHASE 4
         </Button>
         {/* <br />
