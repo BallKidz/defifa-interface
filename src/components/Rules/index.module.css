@@ -15,8 +15,8 @@
 }
 
 .phaseBox h1 {
-  color: var(--titleColor);
-  font-size: 30px;
+  color: var(--gold);
+  font-size: 14px;
 }
 
 .phaseBox p {
@@ -26,6 +26,7 @@
 
 .disclaimer {
   font-weight: 700;
+  font-size: 15px;
 }
 
 /* Media query for mobile */

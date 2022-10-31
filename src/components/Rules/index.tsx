@@ -69,12 +69,12 @@ const Rules = () => {
         {" "}
         *THE OUTCOME IS SUBJECT TO THE RATIFIED SCORECARD DURING PHASE 4.
       </span>
-      <br />
+      {/* <br />
       <span className={styles.disclaimer}>
         {" "}
         *NOTHING IS PROMISED, THIS IS JUST A DOPE EXPERIMENT. PLAY AT YOUR OWN
         RISK.
-      </span>
+      </span> */}
     </Content>
   );
 };
