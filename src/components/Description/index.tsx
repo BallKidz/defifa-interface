@@ -1,3 +1,4 @@
+import Socials from "../Navbar/Info/Socials";
 import styles from "./Description.module.css";
 
 const Description = () => {
@@ -13,7 +14,7 @@ const Description = () => {
       </div>
       <div className={styles.infoContainer}>
         <p>
-          Minting ends: <span>Nov 20, 2022</span>
+          minting ends & game starts: <span>Nov 20, 2022</span>
         </p>
         <p>
           Trade deadline: <span>Dec 5, 2022</span>
@@ -21,6 +22,9 @@ const Description = () => {
         <p>
           Game ends: <span>Dec 20, 2022</span>{" "}
         </p>
+      </div>
+      <div className={styles.socialsContainer}>
+        <p>SOCIALS:</p> <Socials />
       </div>
     </div>
   );

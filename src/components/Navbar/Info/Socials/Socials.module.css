@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  gap: 10px;
+}
+.container p {
+  color: white;
+  text-decoration: underline;
+  font-weight: 500;
+}

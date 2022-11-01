@@ -5,10 +5,10 @@
 }
 
 .container label {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: #c0b3f0;
-  border-bottom: 3px solid #7b59f3;
+  border-bottom: 2px solid rgba(192, 179, 240, 0.17);
 }
 
 .teamContainer {

@@ -1,6 +1,6 @@
 //nextjs Functional component
 
-import React from "react";
+import { colors } from "../../constants/colors";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./SelfReferee.module.css";
@@ -17,7 +17,12 @@ const SelfRefree = () => {
           Scorecards can be submitted that suggest the correct results of
           off-chain events.
         </p>
-        <Button onClick={() => {}} size="big" color="#ED017C" textColor="white">
+        <Button
+          onClick={() => {}}
+          size="big"
+          color={colors.pink}
+          textColor={colors.white}
+        >
           Submit a scorecard
         </Button>
         <br />
@@ -37,7 +42,12 @@ const SelfRefree = () => {
           </a>
           .
         </p>
-        <Button onClick={() => {}} size="big" color="#ED017C" textColor="white">
+        <Button
+          onClick={() => {}}
+          size="big"
+          color={colors.pink}
+          textColor={colors.white}
+        >
           CHANGE ATTESTATION
         </Button>
         <br />
@@ -46,7 +56,12 @@ const SelfRefree = () => {
           Each game phase must also be queued by someone in the public in a
           timely manner.
         </p>
-        <Button onClick={() => {}} size="big" color="#ED017C" textColor="white">
+        <Button
+          onClick={() => {}}
+          size="big"
+          color={colors.pink}
+          textColor={colors.white}
+        >
           QUEUE PHASE 4
         </Button>
         {/* <br />

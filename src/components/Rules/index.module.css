@@ -38,14 +38,12 @@
     display: block;
     text-transform: uppercase;
   }
-  /* .phaseBox h1 {
-    color: var(--titleColor);
-    font-size: 25px;
+  .phaseBox h1 {
+    font-size: 18px;
   }
   .phaseBox p {
-    font-size: 13px;
-    font-weight: 700;
-  } */
+    font-size: 15px;
+  }
   .disclaimer {
     font-size: 13px;
     font-weight: 700;
@@ -61,14 +59,13 @@
     display: block;
     text-transform: uppercase;
   }
-  /* .phaseBox h1 {
-    color: var(--titleColor);
-    font-size: 25px;
+  .phaseBox h1 {
+    font-size: 20px;
   }
   .phaseBox p {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
-  } */
+  }
 
   .disclaimer {
     font-size: 15px;

@@ -8,7 +8,6 @@
 
 .container h1,
 .container p,
-.container span,
 .container li {
   margin: 0;
   text-transform: uppercase;
@@ -23,19 +22,6 @@
 .container p {
   font-size: 24px;
   line-height: 31.2px;
-}
-
-.container span,
-.container li {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 23px;
-}
-
-.container li {
-  text-decoration-line: underline;
-  color: white;
-  list-style-type: none;
 }
 
 @media only screen and (max-width: 1440px) {

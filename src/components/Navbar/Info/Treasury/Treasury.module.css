@@ -7,6 +7,6 @@
   color: var(--purple);
 }
 
-.container span:first-child {
+.container span {
   text-transform: lowercase;
 }

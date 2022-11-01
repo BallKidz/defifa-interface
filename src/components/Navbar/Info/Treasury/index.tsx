@@ -5,8 +5,7 @@ const Treasury = () => {
     <div className={styles.container}>
       <h1>
         0 eth
-        <span> from</span>
-        <span> 0 players</span>
+        <span> from </span>0 players
       </h1>
 
       <p>current pot</p>

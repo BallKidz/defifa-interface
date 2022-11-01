@@ -19,8 +19,19 @@
   text-transform: uppercase;
 }
 
-@media only screen and (max-width: 600px) {
+.socialsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+@media only screen and (max-width: 768px) {
   .container p {
     font-size: 15px;
+  }
+
+  .infoContainer {
+    flex-direction: column;
+    gap: 0;
   }
 }

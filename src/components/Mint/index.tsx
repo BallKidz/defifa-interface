@@ -6,7 +6,7 @@ import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
   return (
     <>
-      <Content title="MINT [WORK IN PROGRESS]">
+      <Content title="MINT TEAMS [WORK IN PROGRESS]">
         <div className={styles.mint}>
           <div className={styles.mintHeader}>
             <div className={styles.subtitle}>
@@ -20,7 +20,7 @@ const Mint = () => {
             <div className={styles.sortSelectWrapper}>
               <SortSelect />
             </div>
-            
+
             <div className={styles.buttonWrapper}>
               <Button onClick={() => {}}>MINT 13</Button>
             </div>

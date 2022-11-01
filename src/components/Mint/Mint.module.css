@@ -9,14 +9,13 @@
 }
 
 .mintHeader {
-  display: grid;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 .buttonWrapper {
   display: flex;
-  justify-content: center;
 }
 .subtitle {
   text-align: left;
@@ -48,17 +47,14 @@
     font-size: 12px;
   }
 
-  .mintHeader {
-    grid-template:
-      "a a"
-      "b b"
-      "c d";
-    text-align: center;
-  }
-
   .subtitle {
     font-size: 15px;
     /* grid-column: 2; */
+  }
+
+  .mintHeader {
+    flex-direction: column;
+    gap: 10px;
   }
 
   .groupsContainer {
