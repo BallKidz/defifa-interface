@@ -15,17 +15,18 @@
 }
 
 .phaseBox h1 {
-  color: var(--titleColor);
-  font-size: 30px;
+  color: var(--gold);
+  font-size: 18px;
 }
 
 .phaseBox p {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
 }
 
 .disclaimer {
   font-weight: 700;
+  font-size: 20px;
 }
 
 /* Media query for mobile */
@@ -38,12 +39,10 @@
     text-transform: uppercase;
   }
   .phaseBox h1 {
-    color: var(--titleColor);
-    font-size: 25px;
+    font-size: 18px;
   }
   .phaseBox p {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 15px;
   }
   .disclaimer {
     font-size: 13px;
@@ -61,11 +60,10 @@
     text-transform: uppercase;
   }
   .phaseBox h1 {
-    color: var(--titleColor);
-    font-size: 25px;
+    font-size: 20px;
   }
   .phaseBox p {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
   }
 

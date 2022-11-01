@@ -1,6 +1,12 @@
-.container span {
+.container h1 {
+  color: var(--gold);
   font-weight: 700;
 }
-.container span:first-child {
+
+.container p {
+  color: var(--purple);
+}
+
+.container span {
   text-transform: lowercase;
 }

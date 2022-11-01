@@ -10,13 +10,6 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.line {
-  background-color: var(--contentTitle);
-  height: 3px;
-  border: none;
-  margin: 45px 0 10px 0;
-}
-
 .accordianLabel {
   display: block;
   cursor: pointer;
@@ -43,4 +36,9 @@
 .accordianInput:checked ~ .accordianLabel .contentHeader .chevronDown {
   transform: rotate(180deg);
   border: 2px black;
+}
+
+.contentTitle {
+  color: var(--gold);
+  font-size: 18px;
 }

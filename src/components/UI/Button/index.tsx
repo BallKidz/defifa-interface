@@ -4,13 +4,17 @@ import styles from "./Button.module.css";
 
 const Button = ({
   children,
-  color = colors.pink,
+  type = "button",
+  color = colors.turquoise,
   size,
+  textColor,
   onClick,
 }: {
   children: any;
+  type?: "button" | "submit";
   color?: string;
   size?: "small" | "medium" | "big";
+  textColor?: string;
   onClick?: VoidFunction;
 }) => {
   const buttonSize = useMemo<string>(() => {
@@ -28,9 +32,10 @@ const Button = ({
 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, color: textColor }}
     >
       {children}
     </button>

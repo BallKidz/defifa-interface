@@ -1,19 +1,20 @@
 .container {
   display: flex;
-  flex-direction: column;
-  gap: 60px;
+  gap: 50px;
+  width: 100%;
+  height: 100%;
+  align-items: center;
 }
 
 .container h1,
 .container p,
-.container span,
 .container li {
   margin: 0;
   text-transform: uppercase;
 }
 
 .container h1 {
-  font-size: 40px;
+  font-size: 26px;
   line-height: 52px;
   font-weight: 700;
 }
@@ -21,38 +22,47 @@
 .container p {
   font-size: 24px;
   line-height: 31.2px;
-  font-weight: 700;
 }
 
-.container span,
-.container li {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 23px;
-}
-
-.container li {
-  text-decoration-line: underline;
-  color: white;
-  list-style-type: none;
-}
-
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1440px) {
   .container {
-    width: fit-content;
     gap: 40px;
   }
 
   .container h1 {
-    font-size: 25px;
+    font-size: 18px;
   }
 
   .container p {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .container span,
   .container li {
-    font-size: 13px;
+    font-size: 15px;
+  }
+}
+
+/* mobile and tablet */
+@media only screen and (min-width: 320px) and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .container p {
+    text-align: center;
+  }
+
+  .container div:nth-child(1) {
+    order: 1;
+  }
+  .container div:nth-child(2) {
+    order: 3;
+  }
+  .container div:nth-child(3) {
+    order: 4;
+  }
+  .container div:nth-child(4) {
+    order: 2;
   }
 }

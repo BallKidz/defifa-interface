@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+}
+
+.tierContainer {
+  display: grid;
+  grid-template-columns: 35% 55%;
+  gap: 30px;
+}
+
+.tierCreate {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tierPreview {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+
+.label {
+  font-size: 18px;
+}
+
+.input {
+  padding: 5px;
+  width: 200px;
+  margin-left: 20px;
+  background: var(--contentTitle);
+  border: 0;
+  color: var(--bgColor);
+}
+
+.contentTitle {
+  font-size: 20px;
+  color: var(--gold);
+}

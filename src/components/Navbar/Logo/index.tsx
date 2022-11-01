@@ -1,14 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import styles from "./Logo.module.css";
-const Logo = ({ isVisible = true }: { isVisible?: boolean }) => {
+
+export function Logo({ src }: { src: string }) {
   return (
-    <div
-      className={styles.container}
-      style={{ display: isVisible ? "block" : "none" }}
-    >
-      <img src="/assets/defifa.svg" alt="Defifa" />
+    <div className={styles.container}>
+      <img src={src} alt="Defifa" width={200} />
     </div>
   );
-};
-
-export default Logo;
+}
