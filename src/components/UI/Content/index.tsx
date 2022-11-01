@@ -14,7 +14,7 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
           name="accordian"
           id={props.title}
           className={styles.accordianInput}
-          defaultChecked
+          checked={props.open}
         />
         <label htmlFor={props.title} className={styles.accordianLabel}>
           <div className={styles.contentHeader}>

@@ -7,7 +7,7 @@ import styles from "./SelfReferee.module.css";
 
 const SelfRefree = () => {
   return (
-    <Content title="Self-Refereeing [Work in progress]">
+    <Content title="Self-Refereeing [Work in progress]" open={true}>
       <div className={styles.selfReferee}>
         <p>
           Defifa relies on the integrity of a few transactions made by the

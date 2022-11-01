@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 
 const Rules = () => {
   return (
-    <Content title="RULES">
+    <Content title="RULES" open={false}>
       <div className={styles.phases}>
         <div className={styles.phaseBox}>
           <h1>PHASE 1: MINT</h1>
