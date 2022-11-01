@@ -1,11 +1,13 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
+import { colors } from "../../../constants/colors";
 import constants from "../../../constants/UI";
 
 import styles from "./Content.module.css";
 
 const Content: React.FC<PropsWithChildren<any>> = (props) => {
+  const [displayContent, setDisplayContent] = useState<boolean>(props.open);
   return (
     <>
       <div className={styles.accordian}>
@@ -14,12 +16,18 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
           name="accordian"
           id={props.title}
           className={styles.accordianInput}
-          checked={props.open}
+          checked={displayContent}
+          onChange={(e) => setDisplayContent(e.target.checked)}
         />
         <label htmlFor={props.title} className={styles.accordianLabel}>
           <div className={styles.contentHeader}>
             {" "}
-            <h1 className={styles.contentTitle}>{props.title} </h1>
+            <h1
+              className={styles.contentTitle}
+              style={{ color: displayContent ? colors.gold : colors.purple }}
+            >
+              {props.title}{" "}
+            </h1>
             <FontAwesomeIcon
               icon={faChevronDown}
               size="sm"
