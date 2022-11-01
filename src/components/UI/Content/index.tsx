@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { PropsWithChildren, useState } from "react";
 import { colors } from "../../../constants/colors";
 import constants from "../../../constants/UI";
+import Socials from "../../Navbar/Info/Socials";
 
 import styles from "./Content.module.css";
 
@@ -34,6 +35,11 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
               color={constants.contentTitleColor}
               className={styles.chevronDown}
             />
+            {props.socials ? (
+              <div className={styles.socials}>
+                <Socials />
+              </div>
+            ) : null}
           </div>
         </label>
         <div className={styles.content}>{props.children}</div>

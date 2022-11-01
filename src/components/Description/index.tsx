@@ -23,9 +23,6 @@ const Description = () => {
           Game ends: <span>Dec 20, 2022</span>{" "}
         </p>
       </div>
-      <div className={styles.socialsContainer}>
-        <p>SOCIALS:</p> <Socials />
-      </div>
     </div>
   );
 };

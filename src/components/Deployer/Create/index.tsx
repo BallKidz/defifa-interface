@@ -1,6 +1,5 @@
 import FileUpload from "../../FileUpload";
 import Button from "../../UI/Button";
-import Divider from "../../UI/Divider";
 import styles from "./DeployerCreate.module.css";
 
 const DeployerCreate = () => {
