@@ -1,3 +1,4 @@
+import { colors } from "../../constants/colors";
 import Group from "../Group";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
@@ -24,6 +25,9 @@ const Mint = () => {
             <div className={styles.buttonWrapper}>
               <Button onClick={() => {}}>MINT 13</Button>
             </div>
+          </div>
+          <div className={styles.selectAllWrapper}>
+            <button className={styles.selectAll}> SELECT ALL </button>
           </div>
           <div className={styles.groupsContainer}>
             <Group groupName="A" />
