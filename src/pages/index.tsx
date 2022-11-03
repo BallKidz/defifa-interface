@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Description from "../components/Description";
+import Footer from "../components/Footer";
 import Mint from "../components/Mint";
 import Navbar from "../components/Navbar";
 import Info from "../components/Navbar/Info";
@@ -31,6 +32,8 @@ const Home: NextPage = () => {
       <Mint />
       <Divider />
       <SelfRefree />
+      <Divider />
+      <Footer />
     </div>
   );
 };
