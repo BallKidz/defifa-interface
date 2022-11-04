@@ -1,6 +1,6 @@
 import axios from "axios";
 // import { readNetwork } from "constants/networks";
-import { Contract } from "ethers";
+import { Contract, PopulatedTransaction } from "ethers";
 
 const API_KEY = process.env.NEXT_PUBLIC_TENDERLY_API_KEY;
 const ACCOUNT = process.env.NEXT_PUBLIC_TENDERLY_ACCOUNT;
@@ -8,28 +8,23 @@ const PROJECT = process.env.NEXT_PUBLIC_TENDERLY_PROJECT_NAME;
 
 export const simulateTransaction = async ({
   chainId,
-  contract,
-  functionName,
-  args,
+  populatedTx,
   userAddress,
 }: {
   chainId: any;
-  contract: Contract;
-  functionName: string;
-  args: unknown[];
+  populatedTx: PopulatedTransaction;
   userAddress: string | undefined;
 }) => {
   if (!(API_KEY && PROJECT && ACCOUNT)) return;
-
-  const unsignedTx = await contract.populateTransaction[functionName](...args);
-
+  console.log(populatedTx.data);
   const body = {
     network_id: chainId,
     from: userAddress,
-    to: contract.address,
-    input: unsignedTx.data,
+    to: populatedTx.to,
+    input: populatedTx.data,
     value: 0,
     save_if_fails: true,
+    save: true,
   };
 
   const headers = {
@@ -44,8 +39,8 @@ export const simulateTransaction = async ({
     headers
   );
 
-  const simulationUrl = `https://dashboard.tenderly.co/codalabs/project/simulator/${resp.data.simulation.id}`;
-
+  const simulationUrl = `https://dashboard.tenderly.co/${ACCOUNT}/${PROJECT}/simulator/${resp.data.simulation.id}`;
+  console.log(`View simulation on Tenderly: ${simulationUrl}`, resp.data);
   if (resp.data.simulation.status === false) {
     console.error(`View simulation on Tenderly: ${simulationUrl}`, resp.data);
 

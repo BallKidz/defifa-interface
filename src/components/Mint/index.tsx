@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
-import { colors } from "../../constants/colors";
-import { DEFIFA_PROJECT_ID_GOERLI } from "../../constants/constants";
+import { MINT_PRICE } from "../../constants/constants";
 import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Button from "../UI/Button";
@@ -12,7 +11,7 @@ const Mint = () => {
   const [tierIds, setTierIds] = useState<number[]>([]);
 
   const { data, write, isLoading, isSuccess } = usePay({
-    amount: "0",
+    amount: MINT_PRICE,
     token: ETH_TOKEN_ADDRESS,
     minReturnedTokens: "0",
     preferClaimedTokens: true,
