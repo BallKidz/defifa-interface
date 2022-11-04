@@ -8,11 +8,12 @@ import {
 } from "wagmi";
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import {
   DEFIFA_PROJECT_ID_GOERLI,
   DEFIFA_PROJECT_ID_MAINNET,
 } from "../../constants/constants";
+import { simulateTransaction } from "../../lib/tenderly";
 
 export interface PayParams {
   amount: string;
@@ -21,6 +22,7 @@ export interface PayParams {
   preferClaimedTokens: boolean;
   memo: string;
   metadata: PayMetadata;
+  simulate?: boolean;
 }
 
 export interface PayMetadata {
@@ -37,6 +39,7 @@ export function usePay({
   preferClaimedTokens,
   memo,
   metadata,
+  simulate,
 }: PayParams) {
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
@@ -66,11 +69,22 @@ export function usePay({
       encodePayMetadata(metadata),
     ],
   });
+  const simulatePay = () =>
+    simulateTransaction({
+      chainId: chain?.id,
+      contract: new Contract(
+        ethPaymentTerminal.address,
+        ethPaymentTerminal.abi
+      ),
+      functionName: "pay",
+      args: [config.args],
+      userAddress: address,
+    });
 
   const { data, write } = useContractWrite(config);
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
-  return { data, write, isLoading, isSuccess };
+  return { data, write: simulate ? simulatePay : write, isLoading, isSuccess };
 }
 
 function encodePayMetadata(metadata: PayMetadata) {
