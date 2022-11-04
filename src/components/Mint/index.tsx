@@ -1,5 +1,5 @@
 import { BigNumber, ethers } from "ethers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
 import { usePay } from "../../hooks/write/usePay";
@@ -14,6 +14,7 @@ import Content from "../UI/Content";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
 import { chunk } from "lodash";
+import { ThreeDots } from "react-loader-spinner";
 
 const Mint = () => {
   const { isConnected } = useAccount();
@@ -41,6 +42,12 @@ const Mint = () => {
     },
   });
 
+  useEffect(() => {
+    if (isSuccess) {
+      setTierIds([]);
+    }
+  }, [isSuccess]);
+
   const onTeamSelected = (id: number) => {
     setTierIds([...tierIds, id]);
   };
@@ -66,12 +73,24 @@ const Mint = () => {
               <Button
                 disabled={!isConnected ? true : false}
                 onClick={() => {
-                  console.log('clicked')
+                  console.log("clicked");
                   console.log(write);
                   write?.();
                 }}
               >
-                MINT {tierIds.length}
+                {isLoading ? (
+                  <ThreeDots
+                    height="10"
+                    width="800"
+                    radius="5"
+                    color="#ff"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    visible={true}
+                  />
+                ) : (
+                  <span>MINT {tierIds.length}</span>
+                )}
               </Button>
             </div>
           </div>

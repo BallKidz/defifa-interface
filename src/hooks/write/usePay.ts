@@ -70,6 +70,8 @@ export function usePay({
       encodePayMetadata(metadata),
     ],
   });
+  console.log(metadata);
+  console.log(...config.args);
 
   const simulatePay = () =>
     simulateTransaction({
@@ -82,9 +84,10 @@ export function usePay({
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
+
   return {
     data,
-    write:  simulate ? simulatePay : write,
+    write: simulate ? simulatePay : write,
     isLoading,
     isSuccess,
     error,
@@ -94,7 +97,7 @@ export function usePay({
 
 function encodePayMetadata(metadata: PayMetadata) {
   const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
-  const IJB721Delegate_INTERFACE_ID = '0xb3bcbb79'
+  const IJB721Delegate_INTERFACE_ID = "0xb3bcbb79";
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
     [
@@ -104,7 +107,7 @@ function encodePayMetadata(metadata: PayMetadata) {
       metadata.dontMint,
       metadata.expectMintFromExtraFunds,
       metadata.dontOvespend,
-      [10],
+      metadata.tierIdsToMint,
     ]
   );
 }
