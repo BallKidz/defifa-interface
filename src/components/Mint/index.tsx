@@ -1,25 +1,27 @@
-import useNftRewards from "../../hooks/NftRewards";
-import { useProjectCurrentFundingCycle } from "../../hooks/read/useJBMProjectCurrentConfCycle";
-import { useNftRewardTiersOf } from "../../hooks/read/useTiers";
-import { decodeEncodedIPFSUri } from "../../utils/ipfs";
-import { CIDsOfNftRewardTiersResponse } from "../../utils/nftRewards";
+import { useState } from "react";
+import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
+import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
-  const { data } = useProjectCurrentFundingCycle({ projectId: 116 });
-  const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
-  let CIDs: string[] = [];
+  const [tierIds, setTierIds] = useState<number[]>([]);
 
-  if (tiers) {
-    CIDs = CIDsOfNftRewardTiersResponse(tiers);
-  }
-
-  const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
-    tiers ?? []
-  );
+  const { data, write, isLoading, isSuccess } = usePay({
+    amount: "0",
+    token: ETH_TOKEN_ADDRESS,
+    minReturnedTokens: "0",
+    preferClaimedTokens: true,
+    memo: "",
+    metadata: {
+      dontMint: false,
+      expectMintFromExtraFunds: false,
+      dontOvespend: false,
+      tierIdsToMint: tierIds,
+    },
+  });
 
   return (
     <>
@@ -39,7 +41,14 @@ const Mint = () => {
             </div>
 
             <div className={styles.buttonWrapper}>
-              <Button onClick={() => {}}>MINT 13</Button>
+              <Button
+                onClick={() => {
+                  console.log("clicked");
+                  write?.();
+                }}
+              >
+                MINT 13
+              </Button>
             </div>
           </div>
           <div className={styles.selectAllWrapper}>

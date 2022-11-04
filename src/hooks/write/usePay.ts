@@ -1,5 +1,6 @@
 import {
   chain as chainlist,
+  useAccount,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
@@ -8,12 +9,14 @@ import {
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import { ethers } from "ethers";
+import {
+  DEFIFA_PROJECT_ID_GOERLI,
+  DEFIFA_PROJECT_ID_MAINNET,
+} from "../../constants/constants";
 
 export interface PayParams {
-  projectId: number;
   amount: string;
   token: string;
-  beneficiary: string;
   minReturnedTokens: string;
   preferClaimedTokens: boolean;
   memo: string;
@@ -28,20 +31,25 @@ export interface PayMetadata {
 }
 
 export function usePay({
-  projectId,
   amount,
   token,
-  beneficiary,
   minReturnedTokens,
   preferClaimedTokens,
   memo,
   metadata,
 }: PayParams) {
   const { chain, chains } = useNetwork();
-  const ethPaymentTerminal =
+  const { address, connector, isConnected } = useAccount();
+  const { ethPaymentTerminal, projectId } =
     chain === chainlist.mainnet
-      ? MainnetJBETHPaymentTerminal
-      : GoerliJBETHPaymentTerminal;
+      ? {
+          ethPaymentTerminal: MainnetJBETHPaymentTerminal,
+          projectId: DEFIFA_PROJECT_ID_MAINNET,
+        }
+      : {
+          ethPaymentTerminal: GoerliJBETHPaymentTerminal,
+          projectId: DEFIFA_PROJECT_ID_GOERLI,
+        };
 
   const { config } = usePrepareContractWrite({
     addressOrName: ethPaymentTerminal.address,
@@ -51,7 +59,7 @@ export function usePay({
       projectId,
       amount,
       token,
-      beneficiary,
+      address,
       minReturnedTokens,
       preferClaimedTokens,
       memo,
@@ -66,12 +74,14 @@ export function usePay({
 }
 
 function encodePayMetadata(metadata: PayMetadata) {
+  const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
+  const zeroBytes4 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 4);
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
     [
-      0,
-      0,
-      0,
+      zeroBytes32,
+      zeroBytes32,
+      zeroBytes4,
       metadata.dontMint,
       metadata.expectMintFromExtraFunds,
       metadata.dontOvespend,

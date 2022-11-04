@@ -1,1 +1,2 @@
-export const DEFIFA_PROJECT_ID_GOERLI = 114;
+export const DEFIFA_PROJECT_ID_GOERLI = 116;
+export const DEFIFA_PROJECT_ID_MAINNET = 116;
