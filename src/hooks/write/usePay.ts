@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
-import { DEFIFA_PROJECT_ID_GOERLI } from "../../constants/constants";
+import { ethers } from "ethers";
 
 export interface PayParams {
   projectId: number;
@@ -17,7 +17,14 @@ export interface PayParams {
   minReturnedTokens: string;
   preferClaimedTokens: boolean;
   memo: string;
-  metadata: string;
+  metadata: PayMetadata;
+}
+
+export interface PayMetadata {
+  dontMint: boolean;
+  expectMintFromExtraFunds: boolean;
+  dontOvespend: boolean;
+  tierIdsToMint: number[];
 }
 
 export function usePay({
@@ -48,7 +55,7 @@ export function usePay({
       minReturnedTokens,
       preferClaimedTokens,
       memo,
-      metadata,
+      encodePayMetadata(metadata),
     ],
   });
 
@@ -56,4 +63,19 @@ export function usePay({
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
   return { data, write, isLoading, isSuccess };
+}
+
+function encodePayMetadata(metadata: PayMetadata) {
+  return ethers.utils.defaultAbiCoder.encode(
+    ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
+    [
+      0,
+      0,
+      0,
+      metadata.dontMint,
+      metadata.expectMintFromExtraFunds,
+      metadata.dontOvespend,
+      metadata.tierIdsToMint,
+    ]
+  );
 }
