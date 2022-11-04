@@ -8,11 +8,12 @@ import {
 } from "wagmi";
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import {
   DEFIFA_PROJECT_ID_GOERLI,
   DEFIFA_PROJECT_ID_MAINNET,
 } from "../../constants/constants";
+import { simulateTransaction } from "../../lib/tenderly";
 
 export interface PayParams {
   amount: string;
@@ -21,6 +22,7 @@ export interface PayParams {
   preferClaimedTokens: boolean;
   memo: string;
   metadata: PayMetadata;
+  simulate?: boolean;
 }
 
 export interface PayMetadata {
@@ -37,6 +39,7 @@ export function usePay({
   preferClaimedTokens,
   memo,
   metadata,
+  simulate = false,
 }: PayParams) {
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
@@ -55,6 +58,7 @@ export function usePay({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.abi,
     functionName: "pay",
+    overrides: { value: amount },
     args: [
       projectId,
       amount,
@@ -66,26 +70,41 @@ export function usePay({
       encodePayMetadata(metadata),
     ],
   });
+  console.log(...config.args);
+  const simulatePay = () =>
+    simulateTransaction({
+      chainId: chain?.id,
+      populatedTx: config.request,
+      userAddress: address,
+    });
 
-  const { data, write } = useContractWrite(config);
+  const { data, write, error, isError } = useContractWrite(config);
+
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
-  return { data, write, isLoading, isSuccess };
+  return {
+    data,
+    write: simulate ? simulatePay : write,
+    isLoading,
+    isSuccess,
+    error,
+    isError,
+  };
 }
 
 function encodePayMetadata(metadata: PayMetadata) {
   const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
-  const zeroBytes4 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 4);
+  const IJB721Delegate_INTERFACE_ID = '0xb3bcbb79'
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
     [
       zeroBytes32,
       zeroBytes32,
-      zeroBytes4,
+      IJB721Delegate_INTERFACE_ID,
       metadata.dontMint,
       metadata.expectMintFromExtraFunds,
       metadata.dontOvespend,
-      metadata.tierIdsToMint,
+      [10],
     ]
   );
 }
