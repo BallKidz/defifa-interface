@@ -33,7 +33,7 @@ async function getRewardTierFromIPFS({
     description: ipfsRewardTier.description,
     teamName: ipfsRewardTier.attributes[0].value,
     teamImage:
-      "https://jbx.mypinata.cloud/ipfs/" +
+      "https://jbm.infura-ipfs.io/ipfs/" +
       cidFromPinataUrl(ipfsRewardTier.image),
     maxSupply: maxSupply,
     remainingQuantity: tier.remainingQuantity?.toNumber() ?? maxSupply,
