@@ -4,24 +4,26 @@ import { JB721TierParams } from "../types/interfaces";
 import { ForgeDeploy } from "./contractLoaders/loadV2V3Contract";
 import { decodeEncodedIPFSUri } from "./ipfs";
 
-async function loadNftRewardsDeployment() {
+async function loadNftRewardsDeployment(chainId: number) {
   const latestNftContractDeployments = (await import(
-    `@jbx-protocol/juice-721-delegate/broadcast/Deploy.s.sol/${5}/run-latest.json`
+    `@jbx-protocol/juice-721-delegate/broadcast/Deploy.s.sol/${chainId}/run-latest.json`
   )) as ForgeDeploy;
 
   return latestNftContractDeployments;
 }
 
-export async function findJBTiered721DelegateProjectDeployerAddress() {
-  const latestNftContractDeployments = await loadNftRewardsDeployment();
+export async function findJBTiered721DelegateProjectDeployerAddress(
+  chainId: number
+) {
+  const latestNftContractDeployments = await loadNftRewardsDeployment(chainId);
   return latestNftContractDeployments.transactions.find(
     (tx) =>
       tx.contractName === V3ContractName.JBTiered721DelegateProjectDeployer
   )?.contractAddress;
 }
 
-export async function findJBTiered721DelegateStoreAddress() {
-  const latestNftContractDeployments = await loadNftRewardsDeployment();
+export async function findJBTiered721DelegateStoreAddress(chainId: number) {
+  const latestNftContractDeployments = await loadNftRewardsDeployment(chainId);
   return latestNftContractDeployments.transactions.find(
     (tx) => tx.contractName === V3ContractName.JBTiered721DelegateStore
   )?.contractAddress;

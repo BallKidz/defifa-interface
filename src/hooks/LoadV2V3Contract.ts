@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useSigner } from "wagmi";
+import { useNetwork, useSigner } from "wagmi";
 import { V3ContractName } from "../models/contracts";
+import { Chain } from "../types/interfaces";
 import {
   ContractJson,
   loadV2V3Contract,
@@ -14,21 +15,27 @@ import { useLoadContractFromAddress } from "./LoadContractFromAddress";
  */
 export const useLoadV2V3Contract = ({
   contractName,
-  chain,
   address,
 }: {
   contractName: V3ContractName;
-  chain: string;
   address?: string; // optional address, to override the default address
 }) => {
   const { data: signer, isError, isLoading } = useSigner();
   const [contractJson, setContractJson] = useState<ContractJson>();
+  const { chain } = useNetwork();
 
   useEffect(() => {
     async function loadAbi() {
       if (!signer) return;
 
-      const contractJson = await loadV2V3Contract(contractName, chain, signer);
+      const contractJson = await loadV2V3Contract(
+        contractName,
+        {
+          id: chain?.id ?? 0,
+          name: chain?.name ?? "",
+        },
+        signer
+      );
 
       setContractJson({
         address: address ?? contractJson?.address,
@@ -37,7 +44,7 @@ export const useLoadV2V3Contract = ({
     }
 
     loadAbi();
-  }, [contractName, address, signer, chain]);
+  }, [contractName, address, signer, chain?.id, chain?.name]);
 
   return useLoadContractFromAddress({
     address: contractJson?.address,

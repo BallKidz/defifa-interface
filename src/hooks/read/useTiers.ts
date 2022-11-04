@@ -5,10 +5,8 @@ import { JB721TierParams } from "../../types/interfaces";
 import { useLoadV2V3Contract } from "../LoadV2V3Contract";
 
 export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
-  const { chain } = useNetwork();
   const JBTiered721DelegateStore = useLoadV2V3Contract({
     contractName: V3ContractName.JBTiered721DelegateStore,
-    chain: chain?.name ?? "",
   });
 
   const hasDataSource =

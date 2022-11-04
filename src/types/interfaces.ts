@@ -15,3 +15,8 @@ export type JB721TierParams = {
   shouldUseBeneficiaryAsDefault: boolean;
   transfersPausable: boolean;
 };
+
+export type Chain = {
+  id: number;
+  name: string;
+};

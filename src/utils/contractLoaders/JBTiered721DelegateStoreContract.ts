@@ -1,8 +1,8 @@
 import { findJBTiered721DelegateStoreAddress } from "../nftRewards";
 
-export const loadJBTiered721DelegateStoreContract = async () => {
+export const loadJBTiered721DelegateStoreContract = async (chainId: number) => {
   const JBTiered721DelegateStoreContractAddress =
-    await findJBTiered721DelegateStoreAddress();
+    await findJBTiered721DelegateStoreAddress(chainId);
   if (!JBTiered721DelegateStoreContractAddress) return;
 
   const nftDeployerContractJson = {
