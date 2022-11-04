@@ -118,10 +118,11 @@ const Mint = () => {
             <button
               className={styles.selectAll}
               onClick={onUnselectAllTeams}
-              style={{ display: tierIds.length ? "block" : "none" }}
+              style={{
+                display: tierIds.length === tiers?.length ? "block" : "none",
+              }}
             >
-              UNSELECT{" "}
-              {tierIds.length === tiers?.length ? "ALL" : tierIds.length}{" "}
+              UNSELECT ALL
             </button>
           </div>
           <div className={styles.groupsContainer}>
