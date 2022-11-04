@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
+<<<<<<< HEAD
 import { MINT_PRICE } from "../../constants/constants";
+=======
+>>>>>>> 539a327d0d9fe4c11a261147541ea204ce98ffd0
 import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Button from "../UI/Button";
