@@ -7,6 +7,7 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 import "../styles/globals.css";
+import { QueryClientProvider, QueryClient } from "react-query";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(
@@ -29,10 +30,14 @@ function MyApp({ Component, pageProps }: AppProps) {
     provider,
   });
 
+  const queryClient = new QueryClient();
+
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <Component {...pageProps} />
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
