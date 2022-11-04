@@ -84,7 +84,7 @@ export function usePay({
 
   return {
     data,
-    write: simulate ? simulatePay : write,
+    write:  simulate ? simulatePay : write,
     isLoading,
     isSuccess,
     error,

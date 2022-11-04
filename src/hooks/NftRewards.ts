@@ -5,6 +5,7 @@ import { decodeEncodedIPFSUri, restrictedIpfsUrl } from "../utils/ipfs";
 
 import axios from "axios";
 import { Result } from "ethers/lib/utils";
+import { cidFromPinataUrl } from "../utils/cidFromPinata";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
@@ -19,12 +20,23 @@ async function getRewardTierFromIPFS({
   const url = restrictedIpfsUrl(decodeEncodedIPFSUri(tier.encodedIPFSUri));
 
   const response = await axios.get(url);
+
   const ipfsRewardTier: any = response.data;
   const maxSupply = tier.initialQuantity.eq(
     BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)
   )
     ? DEFAULT_NFT_MAX_SUPPLY
     : tier.initialQuantity.toNumber();
+
+  return {
+    id: ipfsRewardTier.identifier,
+    description: ipfsRewardTier.description,
+    teamName: ipfsRewardTier.attributes[0].value,
+    teamImage:
+      "https://jbx.mypinata.cloud/ipfs/" +
+      cidFromPinataUrl(ipfsRewardTier.image),
+    maxSupply: maxSupply,
+  };
 }
 
 // Returns an array of NftRewardTiers
