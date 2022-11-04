@@ -25,6 +25,7 @@ const Mint = () => {
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
+  const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const chunkedRewardTiers = chunk(rewardTiers, 4);
 
@@ -57,6 +58,16 @@ const Mint = () => {
     }
   };
 
+  const onSelectAllTeams = () => {
+    setTierIds(Array.from({ length: 32 }, (_, i) => i + 1));
+    setSelectAll(true);
+  };
+
+  const onUnselectAllTeams = () => {
+    setTierIds([]);
+    setSelectAll(false);
+  };
+
   return (
     <>
       <Content title="MINT TEAMS" open={true}>
@@ -76,7 +87,9 @@ const Mint = () => {
 
             <div className={styles.buttonWrapper}>
               <Button
-                disabled={!isConnected ? true : false}
+                disabled={
+                  !isConnected || isLoading || !tierIds.length ? true : false
+                }
                 onClick={() => {
                   write?.();
                 }}
@@ -92,13 +105,24 @@ const Mint = () => {
                     visible={true}
                   />
                 ) : (
-                  <span>MINT {tierIds.length}</span>
+                  <span>MINT {tierIds.length ? tierIds.length : ""}</span>
                 )}
               </Button>
             </div>
           </div>
           <div className={styles.selectAllWrapper}>
-            <button className={styles.selectAll}> SELECT ALL </button>
+            <button className={styles.selectAll} onClick={onSelectAllTeams}>
+              {" "}
+              SELECT ALL{" "}
+            </button>
+            <button
+              className={styles.selectAll}
+              onClick={onUnselectAllTeams}
+              style={{ display: tierIds.length ? "block" : "none" }}
+            >
+              UNSELECT{" "}
+              {tierIds.length === tiers?.length ? "ALL" : tierIds.length}{" "}
+            </button>
           </div>
           <div className={styles.groupsContainer}>
             {chunkedRewardTiers.map((tiers: any, index: any) => (
@@ -114,6 +138,8 @@ const Mint = () => {
                     name={t.teamName}
                     minted={t.minted}
                     supply={t.maxSupply}
+                    txSuccess={isSuccess}
+                    selectAll={selectAll}
                     onClick={onTeamSelected}
                   />
                 ))}

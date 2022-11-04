@@ -5,7 +5,7 @@ import styles from "./Button.module.css";
 const Button = ({
   children,
   type = "button",
-  // disabled,
+  disabled = false,
   color = colors.turquoise,
   size,
   textColor,
@@ -34,11 +34,16 @@ const Button = ({
 
   return (
     <button
-      // disabled={disabled}
+      disabled={disabled}
       type={type}
       onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
-      style={{ backgroundColor: color, color: textColor }}
+      style={{
+        backgroundColor: color,
+        color: textColor,
+        opacity: disabled ? 0.5 : 1,
+        pointerEvents: disabled ? "none" : "auto",
+      }}
     >
       {children}
     </button>

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import styles from "./Team.module.css";
 
 interface TeamProps {
@@ -8,15 +8,34 @@ interface TeamProps {
   name: string;
   minted: number;
   supply: number;
+  selectAll: boolean;
+  txSuccess?: boolean;
   onClick?: (id: number) => void;
 }
 
-const Team: FC<TeamProps> = ({ id, img, name, minted, supply, onClick }) => {
-  const [selected, setSelected] = useState<boolean>(false);
+const Team: FC<TeamProps> = ({
+  id,
+  img,
+  name,
+  minted,
+  supply,
+  txSuccess,
+  selectAll,
+  onClick,
+}) => {
+  const [selected, setSelected] = useState<boolean>(selectAll);
   const onTeamClicked = (id: number) => {
     setSelected(!selected);
     onClick?.(id);
   };
+
+  useEffect(() => {
+    if (txSuccess) {
+      setSelected(false);
+      return;
+    }
+    setSelected(selectAll);
+  }, [selectAll, txSuccess]);
 
   return (
     <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>

@@ -70,8 +70,6 @@ export function usePay({
       encodePayMetadata(metadata),
     ],
   });
-  console.log(metadata);
-  console.log(...config.args);
 
   const simulatePay = () =>
     simulateTransaction({
@@ -83,7 +81,6 @@ export function usePay({
   const { data, write, error, isError } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
-
 
   return {
     data,
