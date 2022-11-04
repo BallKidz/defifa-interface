@@ -74,12 +74,14 @@ export function usePay({
 }
 
 function encodePayMetadata(metadata: PayMetadata) {
+  const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
+  const zeroBytes4 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 4);
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
     [
-      0,
-      0,
-      0,
+      zeroBytes32,
+      zeroBytes32,
+      zeroBytes4,
       metadata.dontMint,
       metadata.expectMintFromExtraFunds,
       metadata.dontOvespend,

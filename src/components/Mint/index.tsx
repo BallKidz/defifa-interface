@@ -43,7 +43,14 @@ const Mint = () => {
             </div>
 
             <div className={styles.buttonWrapper}>
-              <Button onClick={() => {}}>MINT 13</Button>
+              <Button
+                onClick={() => {
+                  console.log("clicked");
+                  write?.();
+                }}
+              >
+                MINT 13
+              </Button>
             </div>
           </div>
           <div className={styles.selectAllWrapper}>
