@@ -1,10 +1,30 @@
+import { useState } from "react";
+import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { colors } from "../../constants/colors";
+import { DEFIFA_PROJECT_ID_GOERLI } from "../../constants/constants";
+import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
+  const [tierIds, setTierIds] = useState<number[]>([]);
+
+  const { data, write, isLoading, isSuccess } = usePay({
+    amount: "0",
+    token: ETH_TOKEN_ADDRESS,
+    minReturnedTokens: "0",
+    preferClaimedTokens: true,
+    memo: "",
+    metadata: {
+      dontMint: false,
+      expectMintFromExtraFunds: false,
+      dontOvespend: false,
+      tierIdsToMint: tierIds,
+    },
+  });
+
   return (
     <>
       <Content title="MINT TEAMS [WORK IN PROGRESS]" open={true}>
