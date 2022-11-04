@@ -1,6 +1,7 @@
 import { BigNumber } from "ethers";
 import { chunk } from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
@@ -41,6 +42,12 @@ const Mint = () => {
     },
   });
 
+  useEffect(() => {
+    if (isSuccess) {
+      setTierIds([]);
+    }
+  }, [isSuccess]);
+
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
       const filtered = tierIds.filter((i) => i !== id);
@@ -74,7 +81,19 @@ const Mint = () => {
                   write?.();
                 }}
               >
-                MINT {tierIds.length}
+                {isLoading ? (
+                  <ThreeDots
+                    height="10"
+                    width="800"
+                    radius="5"
+                    color="#ff"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    visible={true}
+                  />
+                ) : (
+                  <span>MINT {tierIds.length}</span>
+                )}
               </Button>
             </div>
           </div>

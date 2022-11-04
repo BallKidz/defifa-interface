@@ -23,11 +23,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
+    "react-loader-spinner": "^5.3.4",
     "react-query": "^3.39.2",
     "wagmi": "^0.6.7"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.187",
+    "@types/lodash": "^4.14.188",
     "@types/node": "18.7.19",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
