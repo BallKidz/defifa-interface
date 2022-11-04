@@ -1,16 +1,33 @@
+/* eslint-disable @next/next/no-img-element */
+import { FC, useState } from "react";
 import styles from "./Team.module.css";
 
 interface TeamProps {
-  metadata: any;
+  id: number;
+  img: string;
+  name: string;
+  supply: any;
+  onClick?: (id: number) => void;
 }
 
-const Team = () => {
+const Team: FC<TeamProps> = ({ id, img, name, supply, onClick }) => {
+  const [selected, setSelected] = useState<boolean>(false);
+
+  const onTeamClicked = (id: number) => {
+    onClick?.(id);
+    setSelected(!selected);
+  };
+
   return (
-    <div className={styles.container}>
-      <img src="/assets/test.png" alt="Team" className={styles.teamImg} />
-      <h3>Argentina</h3>
+    <div
+      id={id.toString()}
+      className={styles.container}
+      onClick={() => onTeamClicked(id)}
+    >
+      <img src={img} alt="Team" className={styles.teamImg} />
+      <h3>{name}</h3>
       <p>
-        # of mints: 200 <span>(2% of total)</span>
+        # of mints: {supply} <span>(2% of total)</span>
       </p>
     </div>
   );

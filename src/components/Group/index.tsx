@@ -3,20 +3,16 @@ import styles from "./Group.module.css";
 
 interface GroupProps {
   groupName: string;
+  children: any;
 }
 
-const Group = ({ groupName }: GroupProps) => {
+const Group = ({ groupName, children }: GroupProps) => {
   return (
     <div className={styles.container}>
       <div>
-        <label>Group {groupName}</label>
+        <label>{groupName}</label>
       </div>
-      <div className={styles.teamContainer}>
-        <Team />
-        <Team />
-        <Team />
-        <Team />
-      </div>
+      <div className={styles.teamContainer}>{children}</div>
     </div>
   );
 };
