@@ -1,3 +1,6 @@
+import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
+import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
+import { ethers } from "ethers";
 import {
   chain as chainlist,
   useAccount,
@@ -6,9 +9,6 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
-import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
-import { Contract, ethers } from "ethers";
 import {
   DEFIFA_PROJECT_ID_GOERLI,
   DEFIFA_PROJECT_ID_MAINNET,
