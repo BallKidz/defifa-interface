@@ -1,9 +1,7 @@
+import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
-<<<<<<< HEAD
 import { MINT_PRICE } from "../../constants/constants";
-=======
->>>>>>> 539a327d0d9fe4c11a261147541ea204ce98ffd0
 import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Button from "../UI/Button";
@@ -14,7 +12,7 @@ const Mint = () => {
   const [tierIds, setTierIds] = useState<number[]>([]);
 
   const { data, write, isLoading, isSuccess } = usePay({
-    amount: MINT_PRICE,
+    amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
     token: ETH_TOKEN_ADDRESS,
     minReturnedTokens: "0",
     preferClaimedTokens: true,

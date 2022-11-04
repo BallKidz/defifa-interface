@@ -70,7 +70,7 @@ export function usePay({
       encodePayMetadata(metadata),
     ],
   });
-  console.log(...config.args);
+
   const simulatePay = () =>
     simulateTransaction({
       chainId: chain?.id,
