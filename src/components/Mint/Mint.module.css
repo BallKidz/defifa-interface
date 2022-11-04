@@ -1,6 +1,7 @@
 .groupsContainer {
-  display: flex;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
 }
 
 .mint {
@@ -25,7 +26,7 @@
 
 .selectAllWrapper {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-top: 20px;
 }
 

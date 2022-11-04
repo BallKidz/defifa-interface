@@ -1,6 +1,12 @@
+import { usePaymentTerminalBalance } from "../../../../hooks/read/PaymentTerminalBalance";
+import { parseWad } from "../../../../utils/format/formatNumber";
 import styles from "./Treasury.module.css";
 
 const Treasury = () => {
+  const { data } = usePaymentTerminalBalance();
+
+  console.log({ data });
+
   return (
     <div className={styles.container}>
       <h1>
