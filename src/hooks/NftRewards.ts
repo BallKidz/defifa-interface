@@ -36,6 +36,8 @@ async function getRewardTierFromIPFS({
       "https://jbx.mypinata.cloud/ipfs/" +
       cidFromPinataUrl(ipfsRewardTier.image),
     maxSupply: maxSupply,
+    remainingQuantity: tier.remainingQuantity?.toNumber() ?? maxSupply,
+    minted: maxSupply - tier.remainingQuantity?.toNumber(),
   };
 }
 

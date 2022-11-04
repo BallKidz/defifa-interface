@@ -1,4 +1,5 @@
 import { Result } from "ethers/lib/utils";
+import { useNetwork } from "wagmi";
 import { V3ContractName } from "../models/contracts";
 import { JB721TierParams } from "../types/interfaces";
 import { ForgeDeploy } from "./contractLoaders/loadV2V3Contract";

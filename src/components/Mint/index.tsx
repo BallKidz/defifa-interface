@@ -1,19 +1,19 @@
-import { BigNumber, ethers } from "ethers";
+import { BigNumber } from "ethers";
+import { chunk } from "lodash";
 import { useState } from "react";
+import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
-import { usePay } from "../../hooks/write/usePay";
-import { useAccount } from "wagmi";
 import useNftRewards from "../../hooks/NftRewards";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/useJBMProjectCurrentConfCycle";
 import { useNftRewardTiersOf } from "../../hooks/read/useTiers";
+import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Team from "../Team";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
-import { chunk } from "lodash";
 
 const Mint = () => {
   const { isConnected } = useAccount();
@@ -42,7 +42,12 @@ const Mint = () => {
   });
 
   const onTeamSelected = (id: number) => {
-    setTierIds([...tierIds, id]);
+    if (tierIds.includes(id)) {
+      const filtered = tierIds.filter((i) => i !== id);
+      setTierIds(filtered);
+    } else {
+      setTierIds([...tierIds, id]);
+    }
   };
 
   return (
@@ -66,8 +71,6 @@ const Mint = () => {
               <Button
                 disabled={!isConnected ? true : false}
                 onClick={() => {
-                  console.log('clicked')
-                  console.log(write);
                   write?.();
                 }}
               >
@@ -82,14 +85,15 @@ const Mint = () => {
             {chunkedRewardTiers.map((tiers: any, index: any) => (
               <Group
                 groupName={`GROUP ${String.fromCharCode(97 + index)}`}
-                key={Math.random()}
+                key={String.fromCharCode(97 + index)}
               >
                 {tiers.map((t: any) => (
                   <Team
+                    key={t.id}
                     id={t.id}
                     img={t.teamImage}
                     name={t.teamName}
-                    key={t.id}
+                    minted={t.minted}
                     supply={t.maxSupply}
                     onClick={onTeamSelected}
                   />

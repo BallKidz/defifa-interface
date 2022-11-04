@@ -6,28 +6,29 @@ interface TeamProps {
   id: number;
   img: string;
   name: string;
-  supply: any;
+  minted: number;
+  supply: number;
   onClick?: (id: number) => void;
 }
 
-const Team: FC<TeamProps> = ({ id, img, name, supply, onClick }) => {
+const Team: FC<TeamProps> = ({ id, img, name, minted, supply, onClick }) => {
   const [selected, setSelected] = useState<boolean>(false);
-
   const onTeamClicked = (id: number) => {
-    onClick?.(id);
     setSelected(!selected);
+    onClick?.(id);
   };
 
   return (
-    <div
-      id={id.toString()}
-      className={styles.container}
-      onClick={() => onTeamClicked(id)}
-    >
-      <img src={img} alt="Team" className={styles.teamImg} />
+    <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>
+      <img
+        src={img}
+        alt="Team"
+        className={styles.teamImg}
+        onClick={() => onTeamClicked(id)}
+      />
       <h3>{name}</h3>
       <p>
-        # of mints: {supply} <span>(2% of total)</span>
+        # of mints: {minted} <span>(2% of total)</span>
       </p>
     </div>
   );
