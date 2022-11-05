@@ -9,7 +9,7 @@ const Treasury = () => {
     <div className={styles.container}>
       <h1>
         {fromWad(data)} ETH
-        <span> from </span>0 players
+        {/* <span> from </span>0 players */}
       </h1>
 
       <p>current pot</p>

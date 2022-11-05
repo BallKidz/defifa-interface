@@ -9,7 +9,7 @@ interface TeamProps {
   minted: number;
   supply: number;
   selectAll: boolean;
-  txSuccess?: boolean;
+  txState?: boolean;
   onClick?: (id: number) => void;
 }
 
@@ -19,7 +19,7 @@ const Team: FC<TeamProps> = ({
   name,
   minted,
   supply,
-  txSuccess,
+  txState,
   selectAll,
   onClick,
 }) => {
@@ -30,15 +30,18 @@ const Team: FC<TeamProps> = ({
   };
 
   useEffect(() => {
-    if (txSuccess) {
+    if (txState) {
       setSelected(false);
-      return;
+    } else if (!txState) {
+      setSelected(false);
     }
     setSelected(selectAll);
-  }, [selectAll, txSuccess]);
+  }, [selectAll, txState]);
+
+  const reaminingSupplyPerc = minted > 0 ? (minted / 200) * 100 : 0;
 
   return (
-    <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>
+    <div className={styles.container} style={{ opacity: selected ? 1 : 0.5 }}>
       <img
         src={img}
         crossOrigin="anonymous"
@@ -48,7 +51,7 @@ const Team: FC<TeamProps> = ({
       />
       <h3>{name}</h3>
       <p>
-        # of mints: {minted} <span>(2% of total)</span>
+        # of mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
       </p>
     </div>
   );

@@ -18,17 +18,8 @@ export function useProjectCurrentFundingCycle() {
     contractInterface: JBController.abi,
     functionName: "currentFundingCycleOf",
     args: projectId,
-    chainId:chainData.chainId,
-    onSuccess:(data) =>{
-      console.log("SSSSS")
-      console.log(JBController.address)
-      console.log(data);
-    },
-    onError: (error) => {
-      console.log("FFFF")
-      console.log(chainData.chainId)
-      console.log(error)
-    }
-
+    chainId: chainData.chainId,
+    onSuccess: (data) => {},
+    onError: (error) => {},
   });
 }

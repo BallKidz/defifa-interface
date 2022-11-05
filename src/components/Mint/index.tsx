@@ -49,10 +49,19 @@ const Mint = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isError) {
       setTierIds([]);
     }
-  }, [isSuccess]);
+  }, [isError, isSuccess]);
+
+  const totalMints = () => {
+    let mints = 0;
+    if (!rewardTiers) return;
+    for (let i = 0; i < rewardTiers?.length; i++) {
+      mints += rewardTiers[i].minted;
+    }
+    return mints;
+  };
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
@@ -89,7 +98,7 @@ const Mint = () => {
             </div>
 
             <div className={styles.subtitle}>
-              # PLAYERS: <b>69 so far</b>{" "}
+              # MINTS: <b>{totalMints()} so far</b>{" "}
             </div>
 
             <div className={styles.sortSelectWrapper}>
@@ -157,7 +166,7 @@ const Mint = () => {
                         name={t.teamName}
                         minted={t.minted}
                         supply={t.maxSupply}
-                        txSuccess={isSuccess}
+                        txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
                       />
@@ -172,7 +181,7 @@ const Mint = () => {
                     name={t.teamName}
                     minted={t.minted}
                     supply={t.maxSupply}
-                    txSuccess={isSuccess}
+                    txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
                   />

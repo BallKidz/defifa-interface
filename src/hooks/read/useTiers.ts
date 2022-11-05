@@ -7,7 +7,6 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
 
   const chainData = getChainData(network?.chain?.id);
 
-
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
 
   const hasDataSource =

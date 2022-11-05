@@ -4,11 +4,13 @@ import { getChainData } from "../../constants/addresses";
 export function usePaymentTerminalBalance() {
   const network = useNetwork();
   const chainData = getChainData(network?.chain?.id);
-  const { ethPaymentTerminal, projectId } = chainData;
+  const { ethPaymentTerminal, projectId, JBSingleTokenPaymentTerminalStore } =
+    chainData;
   return useContractRead({
-    addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.abi,
+    addressOrName: JBSingleTokenPaymentTerminalStore.address,
+    contractInterface: JBSingleTokenPaymentTerminalStore.abi,
     functionName: "balanceOf",
     args: projectId ? [ethPaymentTerminal.address, projectId] : null,
+    watch: true,
   });
 }
