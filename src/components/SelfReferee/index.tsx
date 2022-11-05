@@ -1,11 +1,13 @@
 //nextjs Functional component
 
 import { colors } from "../../constants/colors";
+import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./SelfReferee.module.css";
 
 const SelfRefree = () => {
+  const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   return (
     <Content title="Self-Refereeing [Work in progress]" open={true}>
       <div className={styles.selfReferee}>
@@ -57,12 +59,12 @@ const SelfRefree = () => {
           timely manner.
         </p>
         <Button
-          onClick={() => {}}
+          onClick={write}
           size="big"
           color={colors.pink}
           textColor={colors.white}
         >
-          QUEUE PHASE 4
+          QUEUE PHASE 2
         </Button>
         {/* <br />
         <br />
