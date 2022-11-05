@@ -19,7 +19,7 @@ import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
   const { isConnected } = useAccount();
   const [tierIds, setTierIds] = useState<number[]>([]);
-  const { data } = useProjectCurrentFundingCycle({ projectId: 117 });
+  const { data } = useProjectCurrentFundingCycle();
 
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
 
