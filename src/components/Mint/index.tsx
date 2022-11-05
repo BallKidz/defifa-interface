@@ -7,7 +7,7 @@ import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
 import useNftRewards from "../../hooks/NftRewards";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import { useNftRewardTiersOf } from "../../hooks/read/useTiers";
+import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Team from "../Team";

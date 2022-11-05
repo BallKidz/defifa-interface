@@ -21,6 +21,7 @@ export const goerliData = {
   JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_GOERLI,
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
+  defifaNFT: "0x8876553dD5fcD4849029320D18eA890d0Ab728A8",
 };
 
 export const mainnetData = {
@@ -33,6 +34,7 @@ export const mainnetData = {
   JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
+  defifaNFT: "0x8876553dD5fcD4849029320D18eA890d0Ab728A8",
 };
 
 export const mainnet = true;

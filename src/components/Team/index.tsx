@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useState } from "react";
+import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import styles from "./Team.module.css";
 
 interface TeamProps {
@@ -24,6 +25,7 @@ const Team: FC<TeamProps> = ({
   onClick,
 }) => {
   const [selected, setSelected] = useState<boolean>(selectAll);
+  const { data } = useNftRewardsTotalSupply();
   const onTeamClicked = (id: number) => {
     setSelected(!selected);
     onClick?.(id);
@@ -38,7 +40,8 @@ const Team: FC<TeamProps> = ({
     setSelected(selectAll);
   }, [selectAll, txState]);
 
-  const reaminingSupplyPerc = minted > 0 ? (minted / 200) * 100 : 0;
+  const reaminingSupplyPerc =
+    minted > 0 ? ((minted / data?.toNumber()) * 100).toFixed(0) : 0;
 
   return (
     <div className={styles.container} style={{ opacity: selected ? 1 : 0.5 }}>
