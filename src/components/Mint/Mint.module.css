@@ -4,6 +4,12 @@
   gap: 70px;
 }
 
+.mostMintContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 70px;
+}
+
 .mint {
   text-transform: uppercase;
 }
@@ -53,7 +59,8 @@
     justify-content: start;
   }
 
-  .groupsContainer {
+  .groupsContainer,
+  .mostMintContainer {
     padding-top: 30px;
   }
 }
@@ -70,7 +77,8 @@
     gap: 10px;
   }
 
-  .groupsContainer {
+  .groupsContainer,
+  .mostMintContainer {
     display: grid;
     grid-template-columns: 1fr;
     gap: 50px;

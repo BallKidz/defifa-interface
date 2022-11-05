@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { chunk } from "lodash";
+import { chunk, divide } from "lodash";
 import { useEffect, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useAccount } from "wagmi";
@@ -18,18 +18,19 @@ import SortSelect from "./SortSelect/SortSelect";
 
 const Mint = () => {
   const { isConnected } = useAccount();
-  const [tierIds, setTierIds] = useState<number[]>([]);
   const { data } = useProjectCurrentFundingCycle();
-
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
-
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-
+  const [tierIds, setTierIds] = useState<number[]>([]);
+  const [sortOption, setSortOption] = useState<string>("group");
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const chunkedRewardTiers = chunk(rewardTiers, 4);
+  const mostMintedRewardTiers = rewardTiers?.sort(
+    (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
+  );
 
   const { write, isLoading, isSuccess } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
@@ -70,6 +71,12 @@ const Mint = () => {
     setSelectAll(false);
   };
 
+  const onSortChange = (option: string) => {
+    setSortOption(option);
+    setTierIds([]);
+    setSelectAll(false);
+  };
+
   return (
     <>
       <Content title="MINT TEAMS" open={true}>
@@ -84,7 +91,7 @@ const Mint = () => {
             </div>
 
             <div className={styles.sortSelectWrapper}>
-              <SortSelect />
+              <SortSelect onChange={onSortChange} />
             </div>
 
             <div className={styles.buttonWrapper}>
@@ -127,15 +134,37 @@ const Mint = () => {
               UNSELECT ALL
             </button>
           </div>
-          <div className={styles.groupsContainer}>
-            {chunkedRewardTiers.map((tiers: any, index: any) => (
-              <Group
-                groupName={`GROUP ${String.fromCharCode(97 + index)}`}
-                key={String.fromCharCode(97 + index)}
-              >
-                {tiers.map((t: any) => (
+          <div
+            className={
+              sortOption === "group"
+                ? styles.groupsContainer
+                : styles.mostMintContainer
+            }
+          >
+            {sortOption === "group"
+              ? chunkedRewardTiers.map((tiers: any, index: any) => (
+                  <Group
+                    groupName={`GROUP ${String.fromCharCode(97 + index)}`}
+                    key={index}
+                  >
+                    {tiers.map((t: any) => (
+                      <Team
+                        key={t.id}
+                        id={t.id}
+                        img={t.teamImage}
+                        name={t.teamName}
+                        minted={t.minted}
+                        supply={t.maxSupply}
+                        txSuccess={isSuccess}
+                        selectAll={selectAll}
+                        onClick={onTeamSelected}
+                      />
+                    ))}
+                  </Group>
+                ))
+              : mostMintedRewardTiers.map((t: any) => (
                   <Team
-                    key={t.id}
+                    key={t.identifier}
                     id={t.id}
                     img={t.teamImage}
                     name={t.teamName}
@@ -146,8 +175,6 @@ const Mint = () => {
                     onClick={onTeamSelected}
                   />
                 ))}
-              </Group>
-            ))}
           </div>
         </div>
       </Content>
