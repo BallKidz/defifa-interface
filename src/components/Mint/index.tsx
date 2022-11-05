@@ -172,7 +172,7 @@ const Mint = () => {
                     name={t.teamName}
                     minted={t.minted}
                     supply={t.maxSupply}
-                    txSuccess={isSuccess}
+                    txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
                   />
