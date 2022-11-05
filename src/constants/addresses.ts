@@ -35,7 +35,7 @@ export const mainnetData = {
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
 };
 
-export const mainnet = false;
+export const mainnet = true;
 
 export function getChainData(chainId?: number) {
   if (chainId === chain.mainnet.id) {
