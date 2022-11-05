@@ -1,12 +1,13 @@
 import { constants } from "ethers";
-import { useContractRead } from "wagmi";
-import { V3ContractName } from "../../models/contracts";
-import { useLoadV2V3Contract } from "../LoadV2V3Contract";
+import { useContractRead, useNetwork } from "wagmi";
+import { getChainData } from "../../constants/addresses";
 
 export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
-  const JBTiered721DelegateStore = useLoadV2V3Contract({
-    contractName: V3ContractName.JBTiered721DelegateStore,
-  });
+  const network = useNetwork();
+
+  const chainData = getChainData(network?.chain?.id);
+
+  const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
 
   const hasDataSource =
     dataSourceAddress && dataSourceAddress !== constants.AddressZero;
@@ -17,5 +18,6 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
     functionName: "tiers",
     args: hasDataSource ? [dataSourceAddress, 0, 32] : null,
     watch: true,
+    chainId: chainData.chainId,
   });
 }

@@ -5,24 +5,30 @@ import {
   DEFIFA_PROJECT_ID_GOERLI,
   DEFIFA_PROJECT_ID_MAINNET,
 } from "../../constants/constants";
+import { getChainData } from "../../constants/addresses";
 
 export function useProjectCurrentFundingCycle() {
-  const { chain } = useNetwork();
-  const { JBController, projectId } =
-    chain?.name === "mainnet"
-      ? {
-          JBController: JBControllerMainnet,
-          projectId: DEFIFA_PROJECT_ID_MAINNET,
-        }
-      : {
-          JBController: JBControllerGoerli,
-          projectId: DEFIFA_PROJECT_ID_GOERLI,
-        };
+  const network = useNetwork();
+  const chainData = getChainData(network?.chain?.id);
+
+  const { JBController, projectId } = chainData;
 
   return useContractRead({
     addressOrName: JBController.address,
     contractInterface: JBController.abi,
     functionName: "currentFundingCycleOf",
     args: projectId,
+    chainId:chainData.chainId,
+    onSuccess:(data) =>{
+      console.log("SSSSS")
+      console.log(JBController.address)
+      console.log(data);
+    },
+    onError: (error) => {
+      console.log("FFFF")
+      console.log(chainData.chainId)
+      console.log(error)
+    }
+
   });
 }
