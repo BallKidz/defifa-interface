@@ -32,12 +32,14 @@ const Team: FC<TeamProps> = ({
   useEffect(() => {
     if (txState) {
       setSelected(false);
-      return;
     } else if (!txState) {
-      return;
+      setSelected(false);
     }
     setSelected(selectAll);
   }, [selectAll, txState]);
+
+  const reaminingSupplyPerc =
+    minted > 0 ? ((100 * minted) / supply).toFixed(7) : 0;
 
   return (
     <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>
@@ -50,7 +52,7 @@ const Team: FC<TeamProps> = ({
       />
       <h3>{name}</h3>
       <p>
-        # of mints: {minted} <span>(2% of total)</span>
+        # of mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
       </p>
     </div>
   );
