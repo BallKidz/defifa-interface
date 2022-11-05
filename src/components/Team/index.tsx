@@ -41,6 +41,7 @@ const Team: FC<TeamProps> = ({
     <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>
       <img
         src={img}
+        crossOrigin="anonymous"
         alt="Team"
         className={styles.teamImg}
         onClick={() => onTeamClicked(id)}
