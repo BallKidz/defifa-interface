@@ -1,5 +1,6 @@
 //nextjs Functional component
 
+import { ThreeDots } from "react-loader-spinner";
 import { colors } from "../../constants/colors";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
@@ -64,7 +65,19 @@ const SelfRefree = () => {
           color={colors.pink}
           textColor={colors.white}
         >
-          QUEUE PHASE 2
+          {isLoading ? (
+            <ThreeDots
+              height="10"
+              width="800"
+              radius="5"
+              color="#ff"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          ) : (
+            <span>QUEUE PHASE 2</span>
+          )}
         </Button>
         {/* <br />
         <br />
