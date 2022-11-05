@@ -14,9 +14,14 @@ export function usePaymentTerminalBalance() {
           ethPaymentTerminal: MainnetJBETHPaymentTerminal,
           projectId: DEFIFA_PROJECT_ID_MAINNET,
         }
-      : {
+      : chain?.name === "goerli"
+      ? {
           ethPaymentTerminal: GoerliJBETHPaymentTerminal,
           projectId: DEFIFA_PROJECT_ID_GOERLI,
+        }
+      : {
+          ethPaymentTerminal: MainnetJBETHPaymentTerminal,
+          projectId: DEFIFA_PROJECT_ID_MAINNET,
         };
   return useContractRead({
     addressOrName: ethPaymentTerminal.address,

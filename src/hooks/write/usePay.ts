@@ -49,9 +49,14 @@ export function usePay({
           ethPaymentTerminal: MainnetJBETHPaymentTerminal,
           projectId: DEFIFA_PROJECT_ID_MAINNET,
         }
-      : {
+      : chainlist.goerli
+      ? {
           ethPaymentTerminal: GoerliJBETHPaymentTerminal,
           projectId: DEFIFA_PROJECT_ID_GOERLI,
+        }
+      : {
+          ethPaymentTerminal: MainnetJBETHPaymentTerminal,
+          projectId: DEFIFA_PROJECT_ID_MAINNET,
         };
 
   const { config } = usePrepareContractWrite({
