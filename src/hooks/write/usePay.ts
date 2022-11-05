@@ -44,12 +44,12 @@ export function usePay({
   const { chain, chains } = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { ethPaymentTerminal, projectId } =
-    chain === chainlist.mainnet
+    chain?.id === chainlist.mainnet.id
       ? {
           ethPaymentTerminal: MainnetJBETHPaymentTerminal,
           projectId: DEFIFA_PROJECT_ID_MAINNET,
         }
-      : chainlist.goerli
+      : chain?.id === chainlist.goerli.id
       ? {
           ethPaymentTerminal: GoerliJBETHPaymentTerminal,
           projectId: DEFIFA_PROJECT_ID_GOERLI,
