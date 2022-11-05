@@ -39,10 +39,10 @@ const Team: FC<TeamProps> = ({
   }, [selectAll, txState]);
 
   const reaminingSupplyPerc =
-    minted > 0 ? ((100 * minted) / supply).toFixed(7) : 0;
+    minted > 0 ? ((minted / supply) * 100).toFixed(7) : 0;
 
   return (
-    <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>
+    <div className={styles.container} style={{ opacity: selected ? 1 : 0.5 }}>
       <img
         src={img}
         crossOrigin="anonymous"
