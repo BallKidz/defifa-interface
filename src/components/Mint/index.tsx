@@ -19,12 +19,14 @@ import SortSelect from "./SortSelect/SortSelect";
 const Mint = () => {
   const { isConnected } = useAccount();
   const [tierIds, setTierIds] = useState<number[]>([]);
-  const { data } = useProjectCurrentFundingCycle({ projectId: 116 });
+  const { data } = useProjectCurrentFundingCycle({ projectId: 117 });
+
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
 
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
+
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const chunkedRewardTiers = chunk(rewardTiers, 4);

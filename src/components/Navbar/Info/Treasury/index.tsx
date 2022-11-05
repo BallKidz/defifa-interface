@@ -1,16 +1,14 @@
 import { usePaymentTerminalBalance } from "../../../../hooks/read/PaymentTerminalBalance";
-import { parseWad } from "../../../../utils/format/formatNumber";
+import { fromWad, parseWad } from "../../../../utils/format/formatNumber";
 import styles from "./Treasury.module.css";
 
 const Treasury = () => {
   const { data } = usePaymentTerminalBalance();
 
-  console.log({ data });
-
   return (
     <div className={styles.container}>
       <h1>
-        0 eth
+        {fromWad(data)} ETH
         <span> from </span>0 players
       </h1>
 

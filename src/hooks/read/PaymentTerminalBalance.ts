@@ -3,8 +3,8 @@ import {
   DEFIFA_PROJECT_ID_GOERLI,
   DEFIFA_PROJECT_ID_MAINNET,
 } from "../../constants/constants";
-import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
-import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
+import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json";
+import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
 
 export function usePaymentTerminalBalance() {
   const { chain } = useNetwork();
