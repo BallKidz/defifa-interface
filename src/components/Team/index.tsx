@@ -38,8 +38,7 @@ const Team: FC<TeamProps> = ({
     setSelected(selectAll);
   }, [selectAll, txState]);
 
-  const reaminingSupplyPerc =
-    minted > 0 ? ((minted / supply) * 100).toFixed(7) : 0;
+  const reaminingSupplyPerc = minted > 0 ? (minted / 200) * 100 : 0;
 
   return (
     <div className={styles.container} style={{ opacity: selected ? 1 : 0.5 }}>

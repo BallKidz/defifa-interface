@@ -54,6 +54,15 @@ const Mint = () => {
     }
   }, [isError, isSuccess]);
 
+  const totalMints = () => {
+    let mints = 0;
+    if (!rewardTiers) return;
+    for (let i = 0; i < rewardTiers?.length; i++) {
+      mints += rewardTiers[i].minted;
+    }
+    return mints;
+  };
+
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
       const filtered = tierIds.filter((i) => i !== id);
@@ -89,7 +98,7 @@ const Mint = () => {
             </div>
 
             <div className={styles.subtitle}>
-              # PLAYERS: <b>69 so far</b>{" "}
+              # MINTS: <b>{totalMints()} so far</b>{" "}
             </div>
 
             <div className={styles.sortSelectWrapper}>
