@@ -131,13 +131,7 @@ const Mint = () => {
               UNSELECT ALL
             </button>
           </div>
-          <div
-            className={
-              sortOption === "group"
-                ? styles.groupsContainer
-                : styles.mostMintContainer
-            }
-          >
+          <div className={styles.groupsContainer}>
             {chunkedRewardTiers.map((tiers: any, index: any) => (
               <Group
                 groupName={`GROUP ${String.fromCharCode(97 + index)}`}
