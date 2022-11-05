@@ -34,12 +34,12 @@ const Mint = () => {
       (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
     );
 
-  const { write, isLoading, isSuccess } = usePay({
+  const { write, isLoading, isSuccess, isError } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
     token: ETH_TOKEN_ADDRESS,
     minReturnedTokens: "0",
     preferClaimedTokens: true,
-    memo: "",
+    memo: `Minted on defifa.net`,
     metadata: {
       dontMint: false,
       expectMintFromExtraFunds: false,
@@ -64,7 +64,7 @@ const Mint = () => {
   };
 
   const onSelectAllTeams = () => {
-    setTierIds(Array.from({ length: 32 }, (_, i) => i + 1));
+    setTierIds(Array.from({ length: tiers?.length ?? 0 }, (_, i) => i + 1));
     setSelectAll(true);
   };
 
