@@ -28,6 +28,11 @@ const Mint = () => {
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const chunkedRewardTiers = chunk(rewardTiers, 4);
+  const mostMintedRewardTiers = rewardTiers
+    ?.slice()
+    .sort(
+      (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
+    );
 
   const { write, isLoading, isSuccess } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
@@ -131,15 +136,37 @@ const Mint = () => {
               UNSELECT ALL
             </button>
           </div>
-          <div className={styles.groupsContainer}>
-            {chunkedRewardTiers.map((tiers: any, index: any) => (
-              <Group
-                groupName={`GROUP ${String.fromCharCode(97 + index)}`}
-                key={index}
-              >
-                {tiers.map((t: any) => (
+          <div
+            className={
+              sortOption === "group"
+                ? styles.groupsContainer
+                : styles.mostMintContainer
+            }
+          >
+            {sortOption === "group"
+              ? chunkedRewardTiers.map((tiers: any, index: any) => (
+                  <Group
+                    groupName={`GROUP ${String.fromCharCode(97 + index)}`}
+                    key={index}
+                  >
+                    {tiers.map((t: any) => (
+                      <Team
+                        key={t.id}
+                        id={t.id}
+                        img={t.teamImage}
+                        name={t.teamName}
+                        minted={t.minted}
+                        supply={t.maxSupply}
+                        txSuccess={isSuccess}
+                        selectAll={selectAll}
+                        onClick={onTeamSelected}
+                      />
+                    ))}
+                  </Group>
+                ))
+              : mostMintedRewardTiers?.map((t: any) => (
                   <Team
-                    key={t.id}
+                    key={t.identifier}
                     id={t.id}
                     img={t.teamImage}
                     name={t.teamName}
@@ -150,8 +177,6 @@ const Mint = () => {
                     onClick={onTeamSelected}
                   />
                 ))}
-              </Group>
-            ))}
           </div>
         </div>
       </Content>
