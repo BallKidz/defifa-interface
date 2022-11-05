@@ -1,11 +1,14 @@
 //nextjs Functional component
 
+import { ThreeDots } from "react-loader-spinner";
 import { colors } from "../../constants/colors";
+import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./SelfReferee.module.css";
 
 const SelfRefree = () => {
+  const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   return (
     <Content title="Self-Refereeing [Work in progress]" open={true}>
       <div className={styles.selfReferee}>
@@ -57,12 +60,24 @@ const SelfRefree = () => {
           timely manner.
         </p>
         <Button
-          onClick={() => {}}
+          onClick={write}
           size="big"
           color={colors.pink}
           textColor={colors.white}
         >
-          QUEUE PHASE 4
+          {isLoading ? (
+            <ThreeDots
+              height="10"
+              width="800"
+              radius="5"
+              color="#ff"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          ) : (
+            <span>QUEUE PHASE 2</span>
+          )}
         </Button>
         {/* <br />
         <br />
