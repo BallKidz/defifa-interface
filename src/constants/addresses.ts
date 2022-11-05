@@ -6,8 +6,10 @@ import {
 } from "./constants";
 import JBControllerMainnet from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBController.json";
 import JBControllerGoerli from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBController.json";
-import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json";
-import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
+import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
+import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
+import MainnetJBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json";
+import GoerliJJBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
 export const ETH_TOKEN_ADDRESS = "0x000000000000000000000000000000000000eeee";
 export const goerliData = {
   JBTiered721DelegateStore: {
@@ -16,6 +18,7 @@ export const goerliData = {
   },
   chainId: chain.goerli.id,
   JBController: JBControllerGoerli,
+  JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_GOERLI,
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
 };
@@ -27,6 +30,7 @@ export const mainnetData = {
   },
   chainId: chain.mainnet.id,
   JBController: JBControllerMainnet,
+  JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
 };

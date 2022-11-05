@@ -11,7 +11,7 @@ const ipfsGatewayUrl = (cid: string | undefined = "", hostname: string) => {
  * Return a URL to the restricted IPFS gateway for the given cid.
  */
 export const restrictedIpfsUrl = (cid: string | undefined): string => {
-  return ipfsGatewayUrl(cid, "jbx.mypinata.cloud");
+  return ipfsGatewayUrl(cid, "jbm.infura-ipfs.io");
 };
 
 export function decodeEncodedIPFSUri(hex: string) {
