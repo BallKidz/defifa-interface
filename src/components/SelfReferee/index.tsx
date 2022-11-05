@@ -2,6 +2,7 @@
 
 import { ThreeDots } from "react-loader-spinner";
 import { colors } from "../../constants/colors";
+import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
@@ -9,6 +10,7 @@ import styles from "./SelfReferee.module.css";
 
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
+  const { data } = useProjectCurrentFundingCycle();
   return (
     <Content title="Self-Refereeing [Work in progress]" open={true}>
       <div className={styles.selfReferee}>
@@ -76,7 +78,7 @@ const SelfRefree = () => {
               visible={true}
             />
           ) : (
-            <span>QUEUE PHASE 2</span>
+            <span>QUEUE PHASE {data?.fundingCycle.number.toNumber() + 1}</span>
           )}
         </Button>
         {/* <br />
