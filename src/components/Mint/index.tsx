@@ -28,9 +28,6 @@ const Mint = () => {
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const chunkedRewardTiers = chunk(rewardTiers, 4);
-  const mostMintedRewardTiers = rewardTiers?.sort(
-    (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
-  );
 
   const { write, isLoading, isSuccess } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
@@ -141,30 +138,14 @@ const Mint = () => {
                 : styles.mostMintContainer
             }
           >
-            {sortOption === "group"
-              ? chunkedRewardTiers.map((tiers: any, index: any) => (
-                  <Group
-                    groupName={`GROUP ${String.fromCharCode(97 + index)}`}
-                    key={index}
-                  >
-                    {tiers.map((t: any) => (
-                      <Team
-                        key={t.id}
-                        id={t.id}
-                        img={t.teamImage}
-                        name={t.teamName}
-                        minted={t.minted}
-                        supply={t.maxSupply}
-                        txSuccess={isSuccess}
-                        selectAll={selectAll}
-                        onClick={onTeamSelected}
-                      />
-                    ))}
-                  </Group>
-                ))
-              : mostMintedRewardTiers.map((t: any) => (
+            {chunkedRewardTiers.map((tiers: any, index: any) => (
+              <Group
+                groupName={`GROUP ${String.fromCharCode(97 + index)}`}
+                key={index}
+              >
+                {tiers.map((t: any) => (
                   <Team
-                    key={t.identifier}
+                    key={t.id}
                     id={t.id}
                     img={t.teamImage}
                     name={t.teamName}
@@ -175,6 +156,8 @@ const Mint = () => {
                     onClick={onTeamSelected}
                   />
                 ))}
+              </Group>
+            ))}
           </div>
         </div>
       </Content>
