@@ -32,5 +32,6 @@ export function usePaymentTerminalBalance() {
     contractInterface: JBSingleTokenPaymentTerminalStore.abi,
     functionName: "balanceOf",
     args: projectId ? [ethPaymentTerminal.address, projectId] : null,
+    watch: true,
   });
 }
