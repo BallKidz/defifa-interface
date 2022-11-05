@@ -9,7 +9,7 @@ interface TeamProps {
   minted: number;
   supply: number;
   selectAll: boolean;
-  txSuccess?: boolean;
+  txState?: boolean;
   onClick?: (id: number) => void;
 }
 
@@ -19,7 +19,7 @@ const Team: FC<TeamProps> = ({
   name,
   minted,
   supply,
-  txSuccess,
+  txState,
   selectAll,
   onClick,
 }) => {
@@ -30,12 +30,14 @@ const Team: FC<TeamProps> = ({
   };
 
   useEffect(() => {
-    if (txSuccess) {
+    if (txState) {
       setSelected(false);
+      return;
+    } else if (!txState) {
       return;
     }
     setSelected(selectAll);
-  }, [selectAll, txSuccess]);
+  }, [selectAll, txState]);
 
   return (
     <div className={styles.container} style={{ opacity: selected ? 0.5 : 1 }}>

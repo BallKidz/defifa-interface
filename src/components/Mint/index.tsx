@@ -49,10 +49,10 @@ const Mint = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isError) {
       setTierIds([]);
     }
-  }, [isSuccess]);
+  }, [isError, isSuccess]);
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
@@ -157,7 +157,7 @@ const Mint = () => {
                         name={t.teamName}
                         minted={t.minted}
                         supply={t.maxSupply}
-                        txSuccess={isSuccess}
+                        txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
                       />
@@ -172,7 +172,7 @@ const Mint = () => {
                     name={t.teamName}
                     minted={t.minted}
                     supply={t.maxSupply}
-                    txSuccess={isSuccess}
+                    txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
                   />
