@@ -1,11 +1,16 @@
 // Retreives each NftRewardTier from IPFS given an array of CIDs (IpfsHashes)
-import { BigNumber } from "@ethersproject/bignumber";
+
 import { useQuery, UseQueryResult } from "react-query";
-import { decodeEncodedIPFSUri, restrictedIpfsUrl } from "../utils/ipfs";
+import {
+  decodeEncodedIPFSUri,
+  getIpfsUrl,
+  restrictedIpfsUrl,
+} from "../utils/ipfs";
 
 import axios from "axios";
 import { Result } from "ethers/lib/utils";
 import { cidFromIpfsUri } from "../utils/cid";
+import { BigNumber } from "ethers";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
@@ -17,7 +22,9 @@ async function getRewardTierFromIPFS({
   tier: Result;
   index: number;
 }): Promise<any> {
-  const url = restrictedIpfsUrl(decodeEncodedIPFSUri(tier.encodedIPFSUri));
+  const decodedIPFSURI = decodeEncodedIPFSUri(tier.encodedIPFSUri);
+
+  const url = getIpfsUrl(decodedIPFSURI);
 
   const response = await axios.get(url);
 
@@ -32,8 +39,7 @@ async function getRewardTierFromIPFS({
     id: ipfsRewardTier.identifier,
     description: ipfsRewardTier.description,
     teamName: ipfsRewardTier.attributes[0].value,
-    teamImage:
-      "https://jbm.infura-ipfs.io/ipfs/" + cidFromIpfsUri(ipfsRewardTier.image),
+    teamImage: getIpfsUrl(cidFromIpfsUri(ipfsRewardTier.image)),
     maxSupply: maxSupply,
     remainingQuantity: tier.remainingQuantity?.toNumber() ?? maxSupply,
     minted: maxSupply - tier.remainingQuantity?.toNumber(),

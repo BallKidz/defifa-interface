@@ -13,8 +13,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(
     [chain.mainnet, chain.goerli],
     [
-      alchemyProvider({ apiKey: "MdEnS2hppeVnx8sqq4FvS6G3sH2HuUu4" }),
       infuraProvider({ apiKey: "738d1c1d7076486184d5d99e244873c6" }),
+      alchemyProvider({ apiKey: "MdEnS2hppeVnx8sqq4FvS6G3sH2HuUu4" }),
       publicProvider(),
     ]
   );

@@ -63,7 +63,10 @@ export function usePay({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.abi,
     functionName: "pay",
-    overrides: { value: amount },
+    overrides: { value: amount},
+    onError: (error) => {
+      console.log(error);
+    },
     args: [
       projectId,
       amount,
