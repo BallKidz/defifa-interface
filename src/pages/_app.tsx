@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     [chain.mainnet, chain.goerli],
     [
       alchemyProvider({ apiKey: "MdEnS2hppeVnx8sqq4FvS6G3sH2HuUu4" }),
-      infuraProvider({ apiKey: "53e38b068eac401fabf933922b1673d6" }),
+      infuraProvider({ apiKey: "738d1c1d7076486184d5d99e244873c6" }),
       publicProvider(),
     ]
   );
