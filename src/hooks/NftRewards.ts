@@ -1,10 +1,7 @@
 // Retreives each NftRewardTier from IPFS given an array of CIDs (IpfsHashes)
 
 import { useQuery, UseQueryResult } from "react-query";
-import {
-  decodeEncodedIPFSUri,
-  getIpfsUrl,
-} from "../utils/ipfs";
+import { decodeEncodedIPFSUri, getIpfsUrl } from "../utils/ipfs";
 
 import axios from "axios";
 import { Result } from "ethers/lib/utils";
@@ -24,7 +21,7 @@ async function getRewardTierFromIPFS({
   const decodedIPFSURI = decodeEncodedIPFSUri(tier.encodedIPFSUri);
 
   const url = getIpfsUrl(decodedIPFSURI);
-
+  console.log("url", url);
   const response = await axios.get(url);
 
   const ipfsRewardTier: any = response.data;
