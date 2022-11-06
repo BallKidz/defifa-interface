@@ -4,7 +4,6 @@ import { useQuery, UseQueryResult } from "react-query";
 import {
   decodeEncodedIPFSUri,
   getIpfsUrl,
-  restrictedIpfsUrl,
 } from "../utils/ipfs";
 
 import axios from "axios";

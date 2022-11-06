@@ -7,12 +7,7 @@ const ipfsGatewayUrl = (cid: string | undefined = "", hostname: string) => {
   return `https://${hostname}/ipfs/${cid}`;
 };
 
-/**
- * Return a URL to the restricted IPFS gateway for the given cid.
- */
-export const restrictedIpfsUrl = (cid: string | undefined): string => {
-  return ipfsGatewayUrl(cid, "jbx.mypinata.cloud");
-};
+
 
 // get ipfs url when host is localhost or production
 export const getIpfsUrl = (cid: string | undefined): string => {
