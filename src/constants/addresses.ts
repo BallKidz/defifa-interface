@@ -36,7 +36,7 @@ export const mainnetData = {
   JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
-  defifaNFT: "0x8876553dD5fcD4849029320D18eA890d0Ab728A8",
+  defifaNFT: "0xAA9Ac873e6965Cd994FA666286951117429f35D2",
   defifaDeployer: "0xfbe1075826b7ffd898cf8d944885ba6a8d714a7f",
 };
 

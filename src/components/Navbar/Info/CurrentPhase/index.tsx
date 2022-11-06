@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { useProjectCurrentFundingCycle } from "../../../../hooks/read/ProjectCurrentFundingCycle";
 import styles from "./CurrentPhase.module.css";
 
@@ -12,8 +11,10 @@ const CurrentPhase = () => {
       return "start";
     } else if (fc === 3) {
       return "trade deadline";
-    } else {
+    } else if (fc === 4) {
       return "end";
+    } else {
+      return "MINT BEGINS SOON";
     }
   };
 
