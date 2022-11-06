@@ -21,7 +21,6 @@ async function getRewardTierFromIPFS({
   const decodedIPFSURI = decodeEncodedIPFSUri(tier.encodedIPFSUri);
 
   const url = getIpfsUrl(decodedIPFSURI);
-  console.log("url", url);
   const response = await axios.get(url);
 
   const ipfsRewardTier: any = response.data;
