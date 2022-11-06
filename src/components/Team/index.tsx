@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useState } from "react";
-import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
+import { FC, useEffect, useMemo, useState } from "react";
 import styles from "./Team.module.css";
 
 interface TeamProps {
@@ -24,7 +23,7 @@ const Team: FC<TeamProps> = ({
   selectAll,
   onClick,
 }) => {
-  const [selected, setSelected] = useState<boolean>(selectAll);
+  const [selected, setSelected] = useState<boolean>(false);
   const onTeamClicked = (id: number) => {
     setSelected(!selected);
     onClick?.(id);
@@ -33,17 +32,25 @@ const Team: FC<TeamProps> = ({
   useEffect(() => {
     if (txState) {
       setSelected(false);
-    } else if (!txState) {
-      setSelected(false);
     }
+  }, [txState]);
+
+  useEffect(() => {
     setSelected(selectAll);
-  }, [selectAll, txState]);
+  }, [selectAll]);
 
   const reaminingSupplyPerc =
     minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
 
+  const opacity = useMemo<number>(() => {
+    if (selected) {
+      return 1;
+    }
+    return 0.5;
+  }, [selected]);
+
   return (
-    <div className={styles.container} style={{ opacity: selected ? 1 : 0.5 }}>
+    <div className={styles.container} style={{ opacity }}>
       <img
         src={img}
         crossOrigin="anonymous"

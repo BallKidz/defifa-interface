@@ -1,13 +1,14 @@
 import { BigNumber } from "ethers";
-import { chunk, divide } from "lodash";
+import { chunk } from "lodash";
 import { useEffect, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
 import useNftRewards from "../../hooks/NftRewards";
-import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
+import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
+import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
 import Team from "../Team";
@@ -15,7 +16,6 @@ import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
-import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 
 const Mint = () => {
   const { isConnected } = useAccount();
@@ -169,12 +169,12 @@ const Mint = () => {
                 ))
               : mostMintedRewardTiers?.map((t: any) => (
                   <Team
-                    key={t.identifier}
+                    key={t.id}
                     id={t.id}
                     img={t.teamImage}
                     name={t.teamName}
                     minted={t.minted}
-                    supply={t.maxSupply}
+                    supply={totalSupply?.toNumber()}
                     txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
