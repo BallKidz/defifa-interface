@@ -7,7 +7,6 @@ import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
 import useNftRewards from "../../hooks/NftRewards";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
-import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { usePay } from "../../hooks/write/usePay";
 import Group from "../Group";
@@ -24,7 +23,6 @@ const Mint = () => {
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const { data: totalSupply } = useNftRewardsTotalSupply();
   const [tierIds, setTierIds] = useState<number[]>([]);
 
   const [sortOption, setSortOption] = useState<string>("group");
@@ -66,6 +64,15 @@ const Mint = () => {
     }
   };
 
+  const totalMints = () => {
+    let mints = 0;
+    if (!rewardTiers) return;
+    for (let i = 0; i < rewardTiers?.length; i++) {
+      mints += rewardTiers[i].minted;
+    }
+    return mints;
+  };
+
   const onSelectAllTeams = () => {
     setTierIds(Array.from({ length: tiers?.length ?? 0 }, (_, i) => i + 1));
     setSelectAll(true);
@@ -92,7 +99,7 @@ const Mint = () => {
             </div>
 
             <div className={styles.subtitle}>
-              # MINTS: <b>{totalSupply?.toNumber()} so far</b>{" "}
+              # MINTS: <b>{totalMints()} so far</b>{" "}
             </div>
 
             <div className={styles.sortSelectWrapper}>
@@ -159,7 +166,7 @@ const Mint = () => {
                         img={t.teamImage}
                         name={t.teamName}
                         minted={t.minted}
-                        supply={totalSupply?.toNumber()}
+                        supply={totalMints() ?? 0}
                         txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
@@ -174,7 +181,7 @@ const Mint = () => {
                     img={t.teamImage}
                     name={t.teamName}
                     minted={t.minted}
-                    supply={totalSupply?.toNumber()}
+                    supply={totalMints() ?? 0}
                     txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
