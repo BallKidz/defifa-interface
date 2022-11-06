@@ -1,6 +1,7 @@
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
 import { ethers } from "ethers";
+import { toast } from "react-toastify";
 import {
   chain as chainlist,
   useAccount,
@@ -63,9 +64,20 @@ export function usePay({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.abi,
     functionName: "pay",
-    overrides: { value: amount},
+    overrides: { value: amount },
     onError: (error) => {
-      console.log(error);
+      if (error.message.includes("insufficient funds")) {
+        toast.error("Insufficient funds for this transaction", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
     },
     args: [
       projectId,

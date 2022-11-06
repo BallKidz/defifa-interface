@@ -14,20 +14,20 @@ export function useQueueNextPhase(simulate = false) {
   const { address, connector, isConnected } = useAccount();
 
   const chainData = getChainData(network?.chain?.id);
-
-  const { config,error: err } = usePrepareContractWrite({
+  console.log("PROJECT ID", chainData.projectId);
+  const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaDeployer,
     contractInterface: DefifaDeployer.abi,
-    functionName: 'queueNextPhaseOf',
+    functionName: "queueNextPhaseOf",
     args: [chainData.projectId],
     chainId: chainData.chainId,
-    overrides:{gasLimit:210000},
+    overrides: { gasLimit: 210000 },
     onError: (err) => console.log(err),
   });
 
   const simulateQueueNextPhase = () => {
     console.log(config);
-    console.log(err)
+    console.log(err);
     simulateTransaction({
       chainId: chainData.chainId,
       populatedTx: config.request,
