@@ -37,7 +37,7 @@ export const mainnetData = {
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
   defifaNFT: "0xAA9Ac873e6965Cd994FA666286951117429f35D2",
-  defifaDeployer: "0xfbe1075826b7ffd898cf8d944885ba6a8d714a7f",
+  defifaDeployer: "0x23f9a854ae122d9d2579788d3c3a41244b18d903",
 };
 
 export const mainnet = true;
