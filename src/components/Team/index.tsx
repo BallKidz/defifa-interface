@@ -25,7 +25,6 @@ const Team: FC<TeamProps> = ({
   onClick,
 }) => {
   const [selected, setSelected] = useState<boolean>(selectAll);
-  const { data } = useNftRewardsTotalSupply();
   const onTeamClicked = (id: number) => {
     setSelected(!selected);
     onClick?.(id);
@@ -41,7 +40,7 @@ const Team: FC<TeamProps> = ({
   }, [selectAll, txState]);
 
   const reaminingSupplyPerc =
-    minted > 0 ? ((minted / data?.toNumber()) * 100).toFixed(0) : 0;
+    minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
 
   return (
     <div className={styles.container} style={{ opacity: selected ? 1 : 0.5 }}>

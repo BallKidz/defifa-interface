@@ -15,6 +15,7 @@ import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
+import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 
 const Mint = () => {
   const { isConnected } = useAccount();
@@ -23,7 +24,9 @@ const Mint = () => {
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
+  const { data: totalSupply } = useNftRewardsTotalSupply();
   const [tierIds, setTierIds] = useState<number[]>([]);
+
   const [sortOption, setSortOption] = useState<string>("group");
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
@@ -53,15 +56,6 @@ const Mint = () => {
       setTierIds([]);
     }
   }, [isError, isSuccess]);
-
-  const totalMints = () => {
-    let mints = 0;
-    if (!rewardTiers) return;
-    for (let i = 0; i < rewardTiers?.length; i++) {
-      mints += rewardTiers[i].minted;
-    }
-    return mints;
-  };
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
@@ -98,7 +92,7 @@ const Mint = () => {
             </div>
 
             <div className={styles.subtitle}>
-              # MINTS: <b>{totalMints()} so far</b>{" "}
+              # MINTS: <b>{totalSupply?.toNumber()} so far</b>{" "}
             </div>
 
             <div className={styles.sortSelectWrapper}>
@@ -165,7 +159,7 @@ const Mint = () => {
                         img={t.teamImage}
                         name={t.teamName}
                         minted={t.minted}
-                        supply={t.maxSupply}
+                        supply={totalSupply?.toNumber()}
                         txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
