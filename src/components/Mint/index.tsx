@@ -1,3 +1,4 @@
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
 import { chunk } from "lodash";
 import { useEffect, useState } from "react";
@@ -18,6 +19,7 @@ import SortSelect from "./SortSelect/SortSelect";
 
 const Mint = () => {
   const { isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
@@ -108,11 +110,13 @@ const Mint = () => {
 
             <div className={styles.buttonWrapper}>
               <Button
-                disabled={
-                  !isConnected || isLoading || !tierIds.length ? true : false
-                }
+                disabled={isLoading || !tierIds.length ? true : false}
                 onClick={() => {
-                  write?.();
+                  if (!isConnected) {
+                    openConnectModal!();
+                  } else {
+                    write?.();
+                  }
                 }}
               >
                 {isLoading ? (
