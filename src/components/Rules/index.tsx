@@ -75,6 +75,35 @@ const Rules = () => {
         *NOTHING IS PROMISED, THIS IS JUST A DOPE EXPERIMENT. PLAY AT YOUR OWN
         RISK.
       </span>
+      <div className={styles.pointsTableWrapper}>
+        <table className={styles.pointsTable}>
+          <thead>
+            <tr>
+              <th>Game stage</th>
+              <th>points</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Group</td>
+              <td>417</td>
+            </tr>
+            <tr>
+              <td>Each round of 16</td>
+              <td>2500</td>
+            </tr>
+            <tr>
+              <td>Quarter finals</td>
+              <td>5000</td>
+            </tr>
+            <tr>
+              <td>Semi finals</td>
+              <td>10000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </Content>
   );
 };

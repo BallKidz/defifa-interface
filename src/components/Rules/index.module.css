@@ -29,6 +29,27 @@
   font-size: 20px;
 }
 
+.pointsTableWrapper {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.pointsTable {
+  border: 1px solid var(--gold);
+  margin: 10px;
+}
+.pointsTable th {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px;
+}
+
+.pointsTable td {
+  padding: 10px;
+}
+
 /* Media query for mobile */
 @media only screen and (max-width: 768px) {
   .phases {

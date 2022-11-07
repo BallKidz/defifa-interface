@@ -64,7 +64,7 @@ export function usePay({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.abi,
     functionName: "pay",
-    overrides: { value: amount },
+    overrides: { value: amount, gasLimit: 210000 },
     onError: (error) => {
       if (error.message.includes("insufficient funds")) {
         toast.error("Insufficient funds for this transaction", {
