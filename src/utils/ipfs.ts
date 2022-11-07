@@ -12,7 +12,7 @@ export const getIpfsUrl = (cid: string | undefined): string => {
   if (window.location.hostname === "localhost") {
     return ipfsGatewayUrl(cid, "ipfs.io");
   } else {
-  return ipfsGatewayUrl(cid, "jbm.infura-ipfs.io");
+    return ipfsGatewayUrl(cid, "jbm.infura-ipfs.io");
   }
 };
 
@@ -30,3 +30,8 @@ export function decodeEncodedIPFSUri(hex: string) {
 export function isIpfsUrl(url: string) {
   return url.startsWith("ipfs://");
 }
+
+const IPFS_URL_REGEX = /ipfs:\/\/(.+)/;
+
+export const cidFromIpfsUri = (ipfsUri: string) =>
+  ipfsUri.match(IPFS_URL_REGEX)?.[1];
