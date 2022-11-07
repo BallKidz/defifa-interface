@@ -21,10 +21,14 @@
   max-width: 100%;
   max-height: 100%;
   cursor: pointer;
-  opacity: 0.8;
+  opacity: 0.9;
   transition: opacity 0.3s;
 }
 
-.container:hover .teamImg {
-  opacity: 1;
+.teamChecked {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  max-height: 100%;
 }

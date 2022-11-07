@@ -42,22 +42,34 @@ const Team: FC<TeamProps> = ({
   const reaminingSupplyPerc =
     minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
 
-  const opacity = useMemo<number>(() => {
+  const checkStampOpacity = useMemo<number>(() => {
     if (selected) {
       return 1;
     }
-    return 0.5;
+    return 0;
   }, [selected]);
 
   return (
-    <div className={styles.container} style={{ opacity }}>
-      <img
-        src={img}
-        crossOrigin="anonymous"
-        alt="Team"
-        className={styles.teamImg}
+    <div className={styles.container}>
+      <div
         onClick={() => onTeamClicked(id)}
-      />
+        style={{ position: "relative", cursor: "pointer" }}
+      >
+        <img
+          src={img}
+          style={{ opacity: selected ? 0.8 : 1 }}
+          crossOrigin="anonymous"
+          alt="Team"
+          className={styles.teamImg}
+        />
+        <img
+          style={{ opacity: checkStampOpacity }}
+          className={styles.teamChecked}
+          src="/assets/team_selected.png"
+          alt="Check"
+        />
+      </div>
+
       <h3>{name}</h3>
       <p>
         # of mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>

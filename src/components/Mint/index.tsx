@@ -2,7 +2,6 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
 import { chunk } from "lodash";
 import { useEffect, useState } from "react";
-import { ThreeDots } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 import { MINT_PRICE } from "../../constants/constants";
@@ -120,14 +119,12 @@ const Mint = () => {
                 }}
               >
                 {isLoading ? (
-                  <ThreeDots
-                    height="10"
-                    width="800"
-                    radius="5"
-                    color="#ff"
-                    ariaLabel="three-dots-loading"
-                    wrapperStyle={{}}
-                    visible={true}
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    style={{ marginTop: "5px" }}
+                    src="/assets/defifa_spinner.gif"
+                    alt="spinner"
+                    width={35}
                   />
                 ) : (
                   <span>MINT {tierIds.length ? tierIds.length : ""}</span>

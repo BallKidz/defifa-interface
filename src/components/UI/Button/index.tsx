@@ -41,7 +41,6 @@ const Button = ({
       style={{
         backgroundColor: color,
         color: textColor,
-        opacity: disabled ? 0.5 : 1,
         pointerEvents: disabled ? "none" : "auto",
       }}
     >
