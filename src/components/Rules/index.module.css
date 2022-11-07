@@ -30,23 +30,43 @@
 }
 
 .pointsTableWrapper {
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 30px;
+}
+
+.superScript {
+  font-size: 10px;
+  padding-left: 10px;
+}
+
+.pointsHeader {
+  padding-left: 10px;
+  color: var(--gold);
+  font-size: 18px;
 }
 
 .pointsTable {
-  border: 1px solid var(--gold);
   margin: 10px;
+  padding: 10px;
+  border-collapse: collapse;
+  border: 1px solid;
 }
+
 .pointsTable th {
   font-size: 20px;
   font-weight: 700;
+  text-align: start;
+  border: 1px solid;
   padding: 10px;
 }
 
 .pointsTable td {
+  border: 1px solid;
+  padding: 10px;
+}
+
+.pointsTableDisclaimer {
   padding: 10px;
 }
 
