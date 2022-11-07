@@ -47,7 +47,6 @@
 }
 
 .pointsTable {
-  margin: 10px;
   padding: 10px;
   border-collapse: collapse;
   border: 1px solid;
@@ -68,6 +67,9 @@
 
 .pointsTableDisclaimer {
   padding: 10px;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
 }
 
 /* Media query for mobile */

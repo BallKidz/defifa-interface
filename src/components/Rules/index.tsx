@@ -1,6 +1,3 @@
-//nextjs Functional component
-
-import React from "react";
 import Content from "../UI/Content";
 import Divider from "../UI/Divider";
 import styles from "./index.module.css";
@@ -108,17 +105,17 @@ const Rules = () => {
               <td>20000</td>
             </tr>
           </tbody>
-          <div className={styles.pointsTableDisclaimer}>
-            <p>
-              *20000 points available each round, divided between the number of
-              games in the round. 48 group stage games total.
-            </p>
-            <p>
-              *The spread of the points determines the expected scorecard
-              outcome for the team.
-            </p>
-          </div>
         </table>
+        <div className={styles.pointsTableDisclaimer}>
+          <p>
+            *20000 points available each round, divided between the number of
+            games in the round. 48 group stage games total.
+          </p>
+          <p>
+            *The spread of the points determines the expected scorecard outcome
+            for the team.
+          </p>
+        </div>
       </div>
       <span className={styles.disclaimer}>
         {" "}
