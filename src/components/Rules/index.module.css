@@ -29,6 +29,49 @@
   font-size: 20px;
 }
 
+.pointsTableWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-bottom: 30px;
+}
+
+.superScript {
+  font-size: 10px;
+  padding-left: 10px;
+}
+
+.pointsHeader {
+  padding-left: 10px;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.pointsTable {
+  padding: 10px;
+  border-collapse: collapse;
+  border: 1px solid;
+}
+
+.pointsTable th {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: start;
+  border: 1px solid;
+  padding: 10px;
+}
+
+.pointsTable td {
+  border: 1px solid;
+  padding: 10px;
+}
+
+.pointsTableDisclaimer {
+  padding: 10px;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+}
+
 /* Media query for mobile */
 @media only screen and (max-width: 768px) {
   .phases {

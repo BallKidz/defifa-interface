@@ -14,7 +14,6 @@ export function useQueueNextPhase(simulate = false) {
   const { address, connector, isConnected } = useAccount();
 
   const chainData = getChainData(network?.chain?.id);
-  console.log("PROJECT ID", chainData.projectId);
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaDeployer,
     contractInterface: DefifaDeployer.abi,
