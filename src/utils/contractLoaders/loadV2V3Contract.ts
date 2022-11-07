@@ -1,5 +1,4 @@
-import { Contract, ContractInterface } from "@ethersproject/contracts";
-import { Signer } from "ethers/lib/ethers";
+import { Contract, ContractInterface, Signer } from "ethers/lib/ethers";
 import { V3ContractName } from "../../models/contracts";
 import { Chain } from "../../types/interfaces";
 import { loadJBTiered721DelegateProjectDeployerContract } from "./JBTiered721DelegateProjectDeployer";
