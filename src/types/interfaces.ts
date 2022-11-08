@@ -1,4 +1,4 @@
-import { BigNumber } from "@ethersproject/bignumber";
+import { BigNumber } from "ethers";
 
 export type JB721TierParams = {
   id?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)

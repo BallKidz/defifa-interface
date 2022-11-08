@@ -1,8 +1,12 @@
 import { Result } from "ethers/lib/utils";
 import { V3ContractName } from "../models/contracts";
 import { JB721TierParams } from "../types/interfaces";
-import { ForgeDeploy } from "./contractLoaders/loadV2V3Contract";
 import { decodeEncodedIPFSUri } from "./ipfs";
+
+export interface ForgeDeploy {
+  receipts: { contractAddress: string }[];
+  transactions: { contractName: string; contractAddress: string }[];
+}
 
 async function loadNftRewardsDeployment(chainId: number) {
   const latestNftContractDeployments = (await import(

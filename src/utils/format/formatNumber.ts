@@ -1,6 +1,5 @@
-import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
-import { formatUnits, parseUnits } from "@ethersproject/units";
-import round from "lodash/round";
+import { BigNumberish } from "ethers";
+import { formatUnits, parseUnits } from "ethers/lib/utils";
 
 export const WAD_DECIMALS = 18;
 

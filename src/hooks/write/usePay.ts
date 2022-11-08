@@ -10,11 +10,13 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+import { getChainData } from "../../constants/addresses";
 import {
   DEFIFA_PROJECT_ID_GOERLI,
   DEFIFA_PROJECT_ID_MAINNET,
 } from "../../constants/constants";
 import { simulateTransaction } from "../../lib/tenderly";
+import { toastError } from "../../utils/toast";
 
 export interface PayParams {
   amount: string;
@@ -42,41 +44,18 @@ export function usePay({
   metadata,
   simulate = false,
 }: PayParams) {
-  const { chain, chains } = useNetwork();
-  const { address, connector, isConnected } = useAccount();
-  const { ethPaymentTerminal, projectId } =
-    chain?.id === chainlist.mainnet.id
-      ? {
-          ethPaymentTerminal: MainnetJBETHPaymentTerminal,
-          projectId: DEFIFA_PROJECT_ID_MAINNET,
-        }
-      : chain?.id === chainlist.goerli.id
-      ? {
-          ethPaymentTerminal: GoerliJBETHPaymentTerminal,
-          projectId: DEFIFA_PROJECT_ID_GOERLI,
-        }
-      : {
-          ethPaymentTerminal: MainnetJBETHPaymentTerminal,
-          projectId: DEFIFA_PROJECT_ID_MAINNET,
-        };
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+  const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
 
   const { config } = usePrepareContractWrite({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.abi,
     functionName: "pay",
-    overrides: { value: amount},
+    overrides: { value: amount },
     onError: (error) => {
       if (error.message.includes("insufficient funds")) {
-        toast.error("Insufficient funds for this transaction", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        toastError("Insufficient funds");
       }
     },
     args: [
