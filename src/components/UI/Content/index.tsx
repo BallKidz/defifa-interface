@@ -29,6 +29,7 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
               color: "white",
               alignSelf: "center",
               textDecoration: "underline",
+              fontSize: "16px",
             }}
           >
             {props.title}
