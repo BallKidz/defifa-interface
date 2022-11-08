@@ -94,6 +94,11 @@ const Mint = () => {
               Due to bug in now previous version of contract, we are pausing
               this version in mint phase and will create a new tournament on
               <a href="https://www.defifa.net"> defifa.net</a>.
+              <p>
+                If you have already minted, you will have access to refunds for
+                the next 2 weeks as per normal Defifa rules, gas spent can be
+                comped.
+              </p>
             </p>
           </div>
           <div className={styles.mintDisabled}>
