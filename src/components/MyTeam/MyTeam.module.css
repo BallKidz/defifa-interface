@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  flex: 1;
+  padding: 10px;
+  color: white;
+}
+
+.container h3 {
+  font-weight: 500;
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.teamImg {
+  max-width: 100%;
+  max-height: 100%;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.metadata {
+  line-height: 70%;
+  font-size: 14px;
+}
