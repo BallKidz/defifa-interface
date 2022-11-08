@@ -91,15 +91,13 @@ const Mint = () => {
           <div className={styles.warning}>
             <h1 className={styles.warningHeader}>WARNING</h1>
             <p>
-              Due to bug in now previous version of contract, we are pausing
-              this version in mint phase and will create a new tournament on
-              <a href="https://www.defifa.net"> defifa.net</a>.
+              This page will be updated shortly with refund information for the
+              small number of users who minted before the bug was caught.
             </p>
 
             <p>
-              If you have already minted, you will have access to refunds for
-              the next 2 weeks as per normal Defifa rules, gas spent can be
-              comped.
+              If you have already minted, you may redeem your NFTs for a refund
+              until Dec 5, 2022.
             </p>
           </div>
           <div className={styles.mintDisabled}>

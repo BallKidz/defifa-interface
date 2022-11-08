@@ -46,11 +46,18 @@
 
 @media only screen and (max-width: 768px) {
   .container p {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .infoContainer {
     flex-direction: column;
     gap: 0;
+    align-items: center;
+  }
+
+  .gameplayContainer {
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
   }
 }
