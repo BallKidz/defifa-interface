@@ -18,6 +18,17 @@
   grid-gap: 20px;
 }
 
+.warningHeader {
+  color: red;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.mintDisabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .buttonWrapper {
   display: flex;
 }

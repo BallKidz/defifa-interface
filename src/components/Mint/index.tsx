@@ -14,6 +14,7 @@ import Group from "../Group";
 import Team from "../Team";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
+import Divider from "../UI/Divider";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
 
@@ -87,99 +88,110 @@ const Mint = () => {
     <>
       <Content title="Mint teams" open={true}>
         <div className={styles.mint}>
-          <div className={styles.mintHeader}>
-            <div className={styles.subtitle}>
-              Play: <span>0.022 ETH / NFT</span>
-            </div>
+          <div className={styles.warning}>
+            <h1 className={styles.warningHeader}>WARNING</h1>
+            <p>
+              Due to bug in now previous version of contract, we are pausing
+              this version in mint phase and will create a new tournament on
+              defifa.net
+            </p>
+          </div>
+          <Divider />
+          <div className={styles.mintDisabled}>
+            <div className={styles.mintHeader}>
+              <div className={styles.subtitle}>
+                Play: <span>0.022 ETH / NFT</span>
+              </div>
 
-            <div className={styles.subtitle}>
-              # Mints: <span>{totalSupply?.toNumber()}</span>
-            </div>
+              <div className={styles.subtitle}>
+                # Mints: <span>{totalSupply?.toNumber()}</span>
+              </div>
 
-            <div className={styles.sortSelectWrapper}>
-              <SortSelect onChange={onSortChange} />
-            </div>
+              <div className={styles.sortSelectWrapper}>
+                <SortSelect onChange={onSortChange} />
+              </div>
 
-            <div className={styles.buttonWrapper}>
-              <Button
-                disabled={isLoading || !tierIds.length ? true : false}
-                onClick={() => {
-                  if (!isConnected) {
-                    openConnectModal!();
-                  } else {
-                    write?.();
-                  }
+              <div className={styles.buttonWrapper}>
+                <Button
+                  disabled={isLoading || !tierIds.length ? true : false}
+                  onClick={() => {
+                    if (!isConnected) {
+                      openConnectModal!();
+                    } else {
+                      write?.();
+                    }
+                  }}
+                >
+                  {isLoading ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      style={{ marginTop: "5px" }}
+                      src="/assets/defifa_spinner.gif"
+                      alt="spinner"
+                      width={35}
+                    />
+                  ) : (
+                    <span>MINT {tierIds.length ? tierIds.length : ""}</span>
+                  )}
+                </Button>
+              </div>
+            </div>
+            <div className={styles.selectAllWrapper}>
+              <button className={styles.selectAll} onClick={onSelectAllTeams}>
+                Select all
+              </button>
+              <button
+                className={styles.selectAll}
+                onClick={onUnselectAllTeams}
+                style={{
+                  display: tierIds.length === tiers?.length ? "block" : "none",
                 }}
               >
-                {isLoading ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    style={{ marginTop: "5px" }}
-                    src="/assets/defifa_spinner.gif"
-                    alt="spinner"
-                    width={35}
-                  />
-                ) : (
-                  <span>MINT {tierIds.length ? tierIds.length : ""}</span>
-                )}
-              </Button>
+                Unselect all
+              </button>
             </div>
-          </div>
-          <div className={styles.selectAllWrapper}>
-            <button className={styles.selectAll} onClick={onSelectAllTeams}>
-              Select all
-            </button>
-            <button
-              className={styles.selectAll}
-              onClick={onUnselectAllTeams}
-              style={{
-                display: tierIds.length === tiers?.length ? "block" : "none",
-              }}
+            <div
+              className={
+                sortOption === "group"
+                  ? styles.groupsContainer
+                  : styles.mostMintContainer
+              }
             >
-              Unselect all
-            </button>
-          </div>
-          <div
-            className={
-              sortOption === "group"
-                ? styles.groupsContainer
-                : styles.mostMintContainer
-            }
-          >
-            {sortOption === "group"
-              ? chunkedRewardTiers.map((tiers: any, index: any) => (
-                  <Group
-                    groupName={`${String.fromCharCode(97 + index)}`}
-                    key={index}
-                  >
-                    {tiers.map((t: any) => (
-                      <Team
-                        key={t.id}
-                        id={t.id}
-                        img={t.teamImage}
-                        name={t.teamName}
-                        minted={t.minted}
-                        supply={totalSupply?.toNumber() ?? 0}
-                        txState={isSuccess || isError}
-                        selectAll={selectAll}
-                        onClick={onTeamSelected}
-                      />
-                    ))}
-                  </Group>
-                ))
-              : mostMintedRewardTiers?.map((t: any) => (
-                  <Team
-                    key={t.id}
-                    id={t.id}
-                    img={t.teamImage}
-                    name={t.teamName}
-                    minted={t.minted}
-                    supply={totalSupply?.toNumber() ?? 0}
-                    txState={isSuccess || isError}
-                    selectAll={selectAll}
-                    onClick={onTeamSelected}
-                  />
-                ))}
+              {sortOption === "group"
+                ? chunkedRewardTiers.map((tiers: any, index: any) => (
+                    <Group
+                      groupName={`${String.fromCharCode(97 + index)}`}
+                      key={index}
+                    >
+                      {tiers.map((t: any) => (
+                        <Team
+                          key={t.id}
+                          id={t.id}
+                          img={t.teamImage}
+                          name={t.teamName}
+                          minted={t.minted}
+                          supply={totalSupply?.toNumber() ?? 0}
+                          txState={isSuccess || isError}
+                          selectAll={selectAll}
+                          onClick={onTeamSelected}
+                        />
+                      ))}
+                    </Group>
+                  ))
+                : mostMintedRewardTiers?.map((t: any) => (
+                    <Team
+                      key={t.id}
+                      id={t.id}
+                      img={t.teamImage}
+                      name={t.teamName}
+                      minted={t.minted}
+                      supply={totalSupply?.toNumber() ?? 0}
+                      txState={isSuccess || isError}
+                      selectAll={selectAll}
+                      onClick={onTeamSelected}
+                    />
+                  ))}
+            </div>
           </div>
         </div>
       </Content>
