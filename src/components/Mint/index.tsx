@@ -91,13 +91,13 @@ const Mint = () => {
           <div className={styles.warning}>
             <h1 className={styles.warningHeader}>WARNING</h1>
             <p>
-              This page will be updated shortly with refund information for the
-              small number of users who minted before the bug was caught.
+              Due to a bug, we are pausing minting while we deploy a new NFT
+              contract.
             </p>
 
             <p>
-              If you have already minted, you may redeem your NFTs for a refund
-              until Dec 5, 2022.
+              This page will be updated shortly with refund information for the
+              small number of users who minted before the bug was caught.
             </p>
           </div>
           <div className={styles.mintDisabled}>
