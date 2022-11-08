@@ -1,8 +1,6 @@
 //nextjs Functional component
 
 import { ThreeDots } from "react-loader-spinner";
-import { toast } from "react-toastify";
-import { colors } from "../../constants/colors";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
