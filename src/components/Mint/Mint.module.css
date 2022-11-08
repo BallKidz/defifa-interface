@@ -18,6 +18,10 @@
   grid-gap: 20px;
 }
 
+.warning {
+  margin-bottom: 50px;
+}
+
 .warningHeader {
   color: red;
   font-size: 20px;

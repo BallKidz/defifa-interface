@@ -93,10 +93,9 @@ const Mint = () => {
             <p>
               Due to bug in now previous version of contract, we are pausing
               this version in mint phase and will create a new tournament on
-              defifa.net
+              <a href="https://www.defifa.net"> defifa.net</a>.
             </p>
           </div>
-          <Divider />
           <div className={styles.mintDisabled}>
             <div className={styles.mintHeader}>
               <div className={styles.subtitle}>
