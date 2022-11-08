@@ -4,7 +4,6 @@
 }
 
 .selfReferee {
-  text-transform: uppercase;
   padding-bottom: 1%;
   font-size: 18px;
 }
@@ -12,5 +11,4 @@
 .selfReferee p {
   max-width: 700px;
   font-weight: 500;
-
 }

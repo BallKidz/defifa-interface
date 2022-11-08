@@ -6,25 +6,25 @@ const CurrentPhase = () => {
 
   const phase = (fc: number) => {
     if (fc === 1) {
-      return "mint";
+      return "Mint";
     } else if (fc === 2) {
-      return "start";
+      return "Start";
     } else if (fc === 3) {
-      return "trade deadline";
+      return "Trade deadline";
     } else if (fc === 4) {
-      return "end";
+      return "End";
     } else {
-      return "MINT BEGINS SOON";
+      return "Mint begins soon";
     }
   };
 
   return (
     <div className={styles.container}>
       <h1>
-        phase {data?.fundingCycle.number.toNumber()}:{" "}
+        Phase {data?.fundingCycle.number.toNumber()}:{" "}
         {phase(data?.fundingCycle.number.toNumber())}
       </h1>
-      <p>current game phase</p>
+      <p>Current game phase</p>
     </div>
   );
 };

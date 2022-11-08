@@ -1,74 +1,94 @@
-.phases {
-  display: grid;
-  grid-template-columns: 35% 55%;
-  justify-content: space-between;
-  height: 100%;
-  border-radius: 10px;
+.rulesContainer {
   background: url(../../../public/assets/banny.png) no-repeat;
   background-size: contain;
   background-position: center;
 }
 
+.phases {
+  display: grid;
+  grid-template-columns: 35% 40%;
+  gap: 100px;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.rulesHeader {
+  font-size: 18px;
+  color: white;
+  text-decoration: underlines;
+}
+
 .phaseBox {
   display: block;
-  text-transform: uppercase;
+}
+
+.phaseBox ul {
+  padding: 0;
+  list-style-position: inside;
+}
+
+.phaseBox li {
+  margin: 15px 0;
+  font-weight: 500;
+  font-size: 16px;
 }
 
 .phaseBox h1 {
   color: var(--gold);
   font-size: 18px;
+  font-weight: 500;
 }
 
 .phaseBox p {
   font-size: 20px;
-  font-weight: 700;
-}
-
-.disclaimer {
-  font-weight: 700;
-  font-size: 20px;
-}
-
-.pointsTableWrapper {
-  display: grid;
-  grid-template-columns: 1fr;
-  margin-bottom: 30px;
+  font-weight: 500;
 }
 
 .superScript {
   font-size: 10px;
-  padding-left: 10px;
+}
+
+.disclaimer {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.pointSystemWrapper {
+  display: grid;
+  grid-template-columns: 70%;
+  margin-bottom: 30px;
+}
+
+.pointHeader {
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.pointSystemDescription,
+.pointSystemCalculation {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--contentTitle);
+}
+
+.pointSystemCalculation {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pointSystemCalculation p {
+  margin: 0;
+}
+
+.pointSystemPoints {
+  color: white;
 }
 
 .pointsHeader {
   color: var(--gold);
   font-size: 18px;
-}
-
-.pointsTable {
-  padding: 10px;
-  border-collapse: collapse;
-  border: 1px solid;
-}
-
-.pointsTable th {
-  font-size: 20px;
-  font-weight: 700;
-  text-align: start;
-  border: 1px solid;
-  padding: 10px;
-}
-
-.pointsTable td {
-  border: 1px solid;
-  padding: 10px;
-}
-
-.pointsTableDisclaimer {
-  padding: 10px;
-  border-left: 1px solid;
-  border-right: 1px solid;
-  border-bottom: 1px solid;
 }
 
 /* Media query for mobile */
@@ -78,17 +98,16 @@
   }
   .phaseBox {
     display: block;
-    text-transform: uppercase;
   }
   .phaseBox h1 {
     font-size: 18px;
   }
-  .phaseBox p {
+  .phaseBox li {
     font-size: 15px;
   }
   .disclaimer {
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 500;
   }
 }
 
@@ -96,21 +115,21 @@
 @media only screen and (min-width: 758px) and (max-width: 1024px) {
   .phases {
     grid-template-columns: 100%;
+    gap: 100px;
   }
   .phaseBox {
     display: block;
-    text-transform: uppercase;
   }
   .phaseBox h1 {
     font-size: 20px;
   }
-  .phaseBox p {
-    font-size: 18px;
-    font-weight: 700;
+  .phaseBox li {
+    font-size: 15px;
+    font-weight: 500;
   }
 
   .disclaimer {
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 500;
   }
 }
