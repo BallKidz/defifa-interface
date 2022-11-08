@@ -80,7 +80,7 @@ const Rules = () => {
           </h1>
           <div>
             <p className={styles.pointSystemDescription}>
-              There are 20000 points available each round of the FIFA
+              There are 20,000 points available each round of the FIFA
               tournament, divided evenly between the winner of each game in the
               round. There are 48 group stage games total, 8 round of 16 games,
               4 quarterfinal, 2 semifina, and 1 final.
