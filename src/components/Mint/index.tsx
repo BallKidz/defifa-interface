@@ -136,7 +136,7 @@ const Mint = () => {
                       width={35}
                     />
                   ) : (
-                    <span>MINT {tierIds.length ? tierIds.length : ""}</span>
+                    <span>Mint {tierIds.length ? tierIds.length : ""}</span>
                   )}
                 </Button>
               </div>
