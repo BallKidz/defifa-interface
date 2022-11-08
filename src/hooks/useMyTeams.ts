@@ -47,7 +47,9 @@ export function useMyTeams() {
           myTeamsQuery,
           variables
         );
+        response.tokens.push(response.tokens[1]);
         const teamTiers = getTeamTiersFromToken(response.tokens);
+        console.log("teamTiers", teamTiers);
         setTeams(teamTiers);
         setIsLoading(false);
       } catch (error) {
@@ -70,6 +72,7 @@ export interface TeamTier {
   quantity: number;
   image: string;
   name: string;
+  tokenIds: string[];
 }
 
 export interface Token {
@@ -84,14 +87,19 @@ export interface Token {
 function getTeamTiersFromToken(token: Token[]) {
   let userTiers = new Map<number, TeamTier>();
   token.forEach((t) => {
-    userTiers.get(t.metadata.identifier)
-      ? userTiers.get(t.metadata.identifier)!.quantity++
-      : userTiers.set(t.metadata.identifier, {
-          id: t.metadata.identifier,
-          quantity: 1,
-          image: t.metadata.image,
-          name: t.metadata.tags[1],
-        });
+    if (userTiers.has(t.metadata.identifier)) {
+      const teamTier = userTiers.get(t.metadata.identifier);
+      teamTier!.quantity++;
+      teamTier!.tokenIds.push(t.id);
+    } else {
+      userTiers.set(t.metadata.identifier, {
+        id: t.metadata.identifier,
+        quantity: 1,
+        image: t.metadata.image,
+        name: t.metadata.tags[1],
+        tokenIds: [t.id],
+      });
+    }
   });
 
   return Array.from(userTiers.values());
