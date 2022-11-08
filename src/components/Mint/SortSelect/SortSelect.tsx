@@ -16,7 +16,7 @@ const SortSelect: FC<SortSelectProps> = ({ onChange }) => {
 
   return (
     <div className={styles.sortSelect}>
-      <label htmlFor="sort">SORT BY:</label>
+      <label htmlFor="sort">Sort by:</label>
       <div className={styles.selectWrapper}>
         <select
           name="sort"

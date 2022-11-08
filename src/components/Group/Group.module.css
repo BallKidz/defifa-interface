@@ -6,7 +6,7 @@
 
 .container label {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   color: #c0b3f0;
   border-bottom: 2px solid rgba(192, 179, 240, 0.17);
 }
@@ -14,7 +14,7 @@
 .teamContainer {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 35px;
 }
 
 @media only screen and (max-width: 600px) {

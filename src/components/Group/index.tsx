@@ -10,7 +10,9 @@ const Group = ({ groupName, children }: GroupProps) => {
   return (
     <div className={styles.container}>
       <div>
-        <label>{groupName}</label>
+        <label>
+          Group <span style={{ textTransform: "uppercase" }}>{groupName}</span>
+        </label>
       </div>
       <div className={styles.teamContainer}>{children}</div>
     </div>

@@ -85,15 +85,15 @@ const Mint = () => {
 
   return (
     <>
-      <Content title="MINT TEAMS" open={true}>
+      <Content title="Mint teams" open={true}>
         <div className={styles.mint}>
           <div className={styles.mintHeader}>
             <div className={styles.subtitle}>
-              PLAY: <b>0.022 ETH / NFT</b>{" "}
+              Play: <span>0.022 ETH / NFT</span>
             </div>
 
             <div className={styles.subtitle}>
-              # MINTS: <b>{totalSupply?.toNumber()} so far</b>{" "}
+              # Mints: <span>{totalSupply?.toNumber()}</span>
             </div>
 
             <div className={styles.sortSelectWrapper}>
@@ -127,8 +127,7 @@ const Mint = () => {
           </div>
           <div className={styles.selectAllWrapper}>
             <button className={styles.selectAll} onClick={onSelectAllTeams}>
-              {" "}
-              SELECT ALL{" "}
+              Select all
             </button>
             <button
               className={styles.selectAll}
@@ -137,7 +136,7 @@ const Mint = () => {
                 display: tierIds.length === tiers?.length ? "block" : "none",
               }}
             >
-              UNSELECT ALL
+              Unselect all
             </button>
           </div>
           <div
@@ -150,7 +149,7 @@ const Mint = () => {
             {sortOption === "group"
               ? chunkedRewardTiers.map((tiers: any, index: any) => (
                   <Group
-                    groupName={`GROUP ${String.fromCharCode(97 + index)}`}
+                    groupName={`${String.fromCharCode(97 + index)}`}
                     key={index}
                   >
                     {tiers.map((t: any) => (

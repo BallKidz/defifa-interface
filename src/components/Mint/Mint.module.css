@@ -10,10 +10,6 @@
   gap: 70px;
 }
 
-.mint {
-  text-transform: uppercase;
-}
-
 .mintHeader {
   display: grid;
   justify-content: space-between;
@@ -28,6 +24,10 @@
 .subtitle {
   font-size: 18px;
   padding: 5px;
+}
+
+.subtitle span {
+  color: var(--gold);
 }
 
 .selectAllWrapper {

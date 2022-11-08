@@ -1,6 +1,6 @@
 .container {
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 .container p {
   color: white;
