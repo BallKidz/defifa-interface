@@ -14,7 +14,6 @@ import Group from "../Group";
 import Team from "../Team";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
-import Divider from "../UI/Divider";
 import styles from "./Mint.module.css";
 import SortSelect from "./SortSelect/SortSelect";
 

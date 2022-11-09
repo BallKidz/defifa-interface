@@ -11,6 +11,7 @@ import SelfRefree from "../components/SelfReferee";
 import Divider from "../components/UI/Divider";
 import styles from "../styles/Home.module.css";
 import "react-toastify/dist/ReactToastify.css";
+import MyTeams from "../components/MyTeams";
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -43,6 +44,8 @@ const Home: NextPage = () => {
       <Rules />
       <Divider />
       <Mint />
+      <Divider />
+      <MyTeams />
       <Divider />
       <SelfRefree />
       <Divider />

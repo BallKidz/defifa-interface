@@ -16,7 +16,7 @@ const Rules = () => {
               <li>Mint team NFTs to increase the game’s treasury.</li>
               <li>The NFT’s are a claim on this treasury.</li>
               <li>You can get a full refund anytime before the game starts.</li>
-            </ul>
+            </ul>a
           </div>
           <div className={styles.phaseBox}>
             <h1>Phase 2: Start</h1>
