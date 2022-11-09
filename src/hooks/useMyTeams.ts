@@ -39,14 +39,13 @@ export function useMyTeams() {
 
     try {
       setIsLoading(true);
-   
       const response: { tokens: any[] } = await request(
         graphUrl,
         myTeamsQuery,
         variables
       );
       const teamTiers = getTeamTiersFromToken(response.tokens);
-     
+
       setTeams(teamTiers);
       setIsLoading(false);
     } catch (error) {
