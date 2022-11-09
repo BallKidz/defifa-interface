@@ -12,20 +12,6 @@ import MainnetJBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contra
 import GoerliJJBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
 export const ETH_TOKEN_ADDRESS = "0x000000000000000000000000000000000000eeee";
 
-export const goerliData = {
-  JBTiered721DelegateStore: {
-    address: "0x3ea16deff07f031e86bd13c55961eb576cd579a6",
-    interface: IJBTiered721DelegateStore.abi,
-  },
-  chainId: chain.goerli.id,
-  JBController: JBControllerGoerli,
-  JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
-  projectId: DEFIFA_PROJECT_ID_GOERLI,
-  ethPaymentTerminal: GoerliJBETHPaymentTerminal,
-  defifaNFT: "0x8876553dD5fcD4849029320D18eA890d0Ab728A8",
-  defifaDeployer: "0x144f5f5fdbe0fc8d4a758f33bf14f68bdfe6febd",
-};
-
 export const mainnetData = {
   JBTiered721DelegateStore: {
     address: "0xffb2cd8519439a7ddcf2c933caedd938053067d2",
@@ -36,8 +22,22 @@ export const mainnetData = {
   JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
-  defifaNFT: "0xAA9Ac873e6965Cd994FA666286951117429f35D2",
-  defifaDeployer: "0x23f9a854ae122d9d2579788d3c3a41244b18d903",
+  defifaDelegate: "0xBC855060A8c96076a6778D547D430E6f43E9809A",
+  defifaDeployer: "0x9fb90042a8ba5249473476c0405fc1009652956d",
+};
+
+export const goerliData = {
+  JBTiered721DelegateStore: {
+    address: "0x3ea16deff07f031e86bd13c55961eb576cd579a6",
+    interface: IJBTiered721DelegateStore.abi,
+  },
+  chainId: chain.goerli.id,
+  JBController: JBControllerGoerli,
+  JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
+  projectId: DEFIFA_PROJECT_ID_GOERLI,
+  ethPaymentTerminal: GoerliJBETHPaymentTerminal,
+  defifaDelegate: "0x6ED6d5E9A0A0a1d0eD341D0d52Ee5a2cd5d6d85f",
+  defifaDeployer: "0x6f18cf9173136c0b5a6ebf45f19d58d3ff2e17e6",
 };
 
 export const mainnet = true;

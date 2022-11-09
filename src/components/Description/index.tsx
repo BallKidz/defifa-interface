@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import { formatDateToUTC } from "../../utils/format/formatDate";
-import Socials from "../Navbar/Info/Socials";
 import styles from "./Description.module.css";
 
 type DescriptionDates = {
