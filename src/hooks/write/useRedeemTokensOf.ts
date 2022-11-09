@@ -45,6 +45,7 @@ export function useRedeemTokensOf({
       encodeRedeemMetadata(tokenIds),
     ],
   });
+  // console.log("config", config.args,tokenIds);
 
   const simulatePay = () => {
     simulateTransaction({
