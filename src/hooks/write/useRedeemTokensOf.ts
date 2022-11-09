@@ -33,7 +33,6 @@ export function useRedeemTokensOf({
         toastError("Insufficient funds");
       }
     },
-    overrides: { gasLimit: 210000 },
     args: [
       address, //user address
       projectId,
