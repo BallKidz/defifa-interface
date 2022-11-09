@@ -5,11 +5,11 @@ description: 0.1.1
 dataSources:
   - kind: ethereum
     name: DefifaNFT
-    network: goerli
+    network: mainnet
     source:
       abi: DefifaNFT
-      address: "0x8876553dD5fcD4849029320D18eA890d0Ab728A8"
-      startBlock: 7898338
+      address: "0xAA9Ac873e6965Cd994FA666286951117429f35D2"
+      startBlock: 15909464
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -40,4 +40,4 @@ templates:
       abis:
         - name: DefifaNFT
           file: ./abis/DefifaNFT.json
-    network: goerli
+    network: mainnet
