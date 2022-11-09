@@ -37,7 +37,7 @@ export function useMyTeams() {
     if (!address) return;
     //query graph using graphql-request
     const variables = {
-      owner: address,
+      owner: address.toLowerCase(),
     };
     const fetchMyTeams = async () => {
       try {
