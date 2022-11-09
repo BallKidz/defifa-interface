@@ -47,7 +47,7 @@ const MyTeam: FC<{ team: TeamTier }> = ({ team }) => {
   );
 };
 
-function getRedeemButtonText(fundingCycle?: number) {
+export function getRedeemButtonText(fundingCycle?: number) {
   if (fundingCycle === 1) {
     return "Refund";
   } else if (fundingCycle === 4) {

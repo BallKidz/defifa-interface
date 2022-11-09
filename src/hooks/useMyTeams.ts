@@ -31,32 +31,35 @@ export function useMyTeams() {
     error: string;
   }>();
 
+  const fetchMyTeams = async () => {
+    if (!address) return;
+    const variables = {
+      owner: address?.toLowerCase(),
+    };
+
+    try {
+      setIsLoading(true);
+   
+      const response: { tokens: any[] } = await request(
+        graphUrl,
+        myTeamsQuery,
+        variables
+      );
+      const teamTiers = getTeamTiersFromToken(response.tokens);
+     
+      setTeams(teamTiers);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setError({ error: "Something went wrong", isError: true });
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    console.log("useMyTeams", address, isConnecting, isDisconnected);
     if (isConnecting || isDisconnected) return;
     if (!address) return;
     //query graph using graphql-request
-    const variables = {
-      owner: address.toLowerCase(),
-    };
-    const fetchMyTeams = async () => {
-      try {
-        setIsLoading(true);
-        console.log("fetching my teams");
-        const response: { tokens: any[] } = await request(
-          graphUrl,
-          myTeamsQuery,
-          variables
-        );
-        const teamTiers = getTeamTiersFromToken(response.tokens);
-        console.log("teamTiers", teamTiers);
-        setTeams(teamTiers);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setError({ error: "Something went wrong", isError: true });
-      }
-    };
+
     fetchMyTeams();
   }, [address, isConnecting, isDisconnected, graphUrl]);
 
@@ -65,6 +68,7 @@ export function useMyTeams() {
     isLoading,
     isError: errorState?.isError,
     error: errorState?.error,
+    fetchMyTeams,
   };
 }
 

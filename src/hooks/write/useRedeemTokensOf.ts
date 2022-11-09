@@ -45,14 +45,18 @@ export function useRedeemTokensOf({
       encodeRedeemMetadata(tokenIds),
     ],
   });
+  // console.log("config", config.args,tokenIds);
 
-  const simulatePay = () =>
+  const simulatePay = () =>{
+    console.log("simulatePay", config.args,tokenIds);
     simulateTransaction({
       chainId: chain?.id,
       populatedTx: config.request,
       userAddress: address,
     });
 
+  }
+  
   const { data, write, error, isError } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
