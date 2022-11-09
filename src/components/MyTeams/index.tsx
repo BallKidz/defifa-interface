@@ -23,7 +23,7 @@ const MyTeams = () => {
       open={true}
       socials={true}
       rightSection={{
-        enabled: (teams?.length ?? 0) > 0,
+        enabled: (teams?.length ?? 0) > 1,
         onClick: () => {
           write?.();
         },
