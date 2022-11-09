@@ -13,7 +13,7 @@ import { toastError } from "../../utils/toast";
 
 export interface RedeemParams {
   tokenIds: string[];
-  simulate: boolean;
+  simulate?: boolean;
 }
 
 export function useRedeemTokensOf({
@@ -33,6 +33,7 @@ export function useRedeemTokensOf({
         toastError("Insufficient funds");
       }
     },
+    overrides: { gasLimit: 210000 },
     args: [
       address, //user address
       projectId,
@@ -74,3 +75,5 @@ function encodeRedeemMetadata(tokenIds: string[]) {
     [zeroBytes32, IJB721Delegate_INTERFACE_ID, tokenIds]
   );
 }
+
+export default useRedeemTokensOf;

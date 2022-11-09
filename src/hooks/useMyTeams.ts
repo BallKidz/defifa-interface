@@ -42,6 +42,7 @@ export function useMyTeams() {
     const fetchMyTeams = async () => {
       try {
         setIsLoading(true);
+        console.log("fetching my teams");
         const response: { tokens: any[] } = await request(
           graphUrl,
           myTeamsQuery,
@@ -53,6 +54,7 @@ export function useMyTeams() {
         setTeams(teamTiers);
         setIsLoading(false);
       } catch (error) {
+        console.log(error);
         setError({ error: "Something went wrong", isError: true });
       }
     };

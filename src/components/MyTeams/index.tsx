@@ -6,13 +6,12 @@ import styles from "./index.module.css";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error } = useMyTeams();
-
   return (
     <Content title="My Teams" open={true} socials={true}>
       {isError && <div className={styles.error}>{error}</div>}
       {isLoading && <div className={styles.loading}>Loading...</div>}
       <div className={styles.teams}>
-        {teams && teams.map((team) => <MyTeam team={team} />)}
+        {teams && teams.map((team) => <MyTeam team={team} key={team.id}/>)}
       </div>
     </Content>
   );

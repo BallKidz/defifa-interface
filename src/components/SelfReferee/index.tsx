@@ -42,7 +42,7 @@ const SelfRefree = () => {
           .
         </p>
         <Button onClick={() => {}} size="big">
-          CHANGE ATTESTATION
+          Change attestation
         </Button>
         <br />
         <br />
@@ -62,7 +62,7 @@ const SelfRefree = () => {
               visible={true}
             />
           ) : (
-            <span>QUEUE PHASE {data?.fundingCycle.number.toNumber() + 1}</span>
+            <span>Queue phase {data?.fundingCycle.number.toNumber() + 1}</span>
           )}
         </Button>
         {/* <br />
