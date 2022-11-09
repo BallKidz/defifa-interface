@@ -24,7 +24,7 @@ export const goerliData = {
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
   defifaNFT: "0x8876553dD5fcD4849029320D18eA890d0Ab728A8",
   defifaDeployer: "0x144f5f5fdbe0fc8d4a758f33bf14f68bdfe6febd",
-  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa",
+  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-goerli",
 };
 
 export const mainnetData = {

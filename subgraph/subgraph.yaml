@@ -1,7 +1,7 @@
 specVersion: 0.0.4
 schema:
   file: ./schema.graphql
-description: "0.1.1"
+description: 0.1.1
 dataSources:
   - kind: ethereum
     name: DefifaNFT
@@ -40,3 +40,4 @@ templates:
       abis:
         - name: DefifaNFT
           file: ./abis/DefifaNFT.json
+    network: goerli

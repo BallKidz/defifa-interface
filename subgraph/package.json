@@ -5,6 +5,7 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ devianyeth/defifa",
+    "deploy-goerli": "graph deploy --node https://api.thegraph.com/deploy/ devianyeth/defifa-goerli",
     "create-local": "graph create --node http://localhost:8020/ devianyeth/defifa",
     "remove-local": "graph remove --node http://localhost:8020/ devianyeth/defifa",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 devianyeth/defifa",
