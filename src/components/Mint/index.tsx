@@ -67,6 +67,11 @@ const Mint = () => {
     }
   };
 
+  const onTeamsSelected = (ids: number[]) => {
+    console.log({ ids });
+    setTierIds([...tierIds, ...ids]);
+  };
+
   const onSelectAllTeams = () => {
     setTierIds(Array.from({ length: tiers?.length ?? 0 }, (_, i) => i + 1));
     setSelectAll(true);
@@ -163,6 +168,7 @@ const Mint = () => {
                         txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
+                        onClickMultiple={onTeamsSelected}
                       />
                     ))}
                   </Group>
