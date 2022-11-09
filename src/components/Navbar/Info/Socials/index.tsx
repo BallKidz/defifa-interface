@@ -13,7 +13,7 @@ const Socials = () => {
         </Link>
       </p>
       <p>
-        <Link href="https://www.juicebox.money/v2/p/303" passHref>
+        <Link href="https://www.juicebox.money/v2/p/305" passHref>
           <a target="_blank">Juicebox</a>
         </Link>
       </p>
