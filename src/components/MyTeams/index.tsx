@@ -23,7 +23,7 @@ const MyTeams = () => {
       )}
       <div className={styles.teams}>
         {teams && teams.map((team) => <MyTeam team={team} key={team.id} />)}
-        {teams?.length === 0 && <div>You don't have any teams yet.</div>}
+        {teams?.length === 0 && <div>You dont have any teams yet.</div>}
       </div>
     </Content>
   );
