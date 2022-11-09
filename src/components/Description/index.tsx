@@ -43,7 +43,7 @@ const Description = () => {
         <h1 className={styles.gameplayHeader}>TLDR Gameplay:</h1>
         <ol>
           <li>Mint teams to load the pot.</li>
-          <li>The pot will back the value of the winning team's NFts.</li>
+          <li>The pot will back the value of the winning team's NFTs.</li>
           <li>
             The spread of winning teams is determined by 50% of all teams
             agreeing on the outcome of the competition once it's over.
