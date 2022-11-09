@@ -22,9 +22,10 @@ export const goerliData = {
   JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_GOERLI,
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
-  defifaNFT: "0xBA4bd89eAC42D1EcBAC998e2adAF31dAa5660ded",
+  defifaNFT: "0x6ED6d5E9A0A0a1d0eD341D0d52Ee5a2cd5d6d85f",
   defifaDeployer: "0x144f5f5fdbe0fc8d4a758f33bf14f68bdfe6febd",
-  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-goerli-take1",
+  subgraph:
+    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-take1-goerli",
 };
 
 export const mainnetData = {

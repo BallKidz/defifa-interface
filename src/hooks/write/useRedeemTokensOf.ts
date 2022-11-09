@@ -46,12 +46,13 @@ export function useRedeemTokensOf({
     ],
   });
 
-  const simulatePay = () =>
+  const simulatePay = () => {
     simulateTransaction({
       chainId: chain?.id,
       populatedTx: config.request,
       userAddress: address,
     });
+  };
 
   const { data, write, error, isError } = useContractWrite(config);
 
