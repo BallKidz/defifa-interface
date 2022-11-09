@@ -41,13 +41,8 @@ const Home: NextPage = () => {
         <Info />
       </Navbar>
       <Description />
-      <Rules />
-      <Divider />
-      <Mint />
       <Divider />
       <MyTeams />
-      <Divider />
-      <SelfRefree />
       <Divider />
       <Footer />
     </div>
