@@ -46,6 +46,7 @@ const Home: NextPage = () => {
       <Mint />
       <Divider />
       <MyTeams />
+      <Divider />
       <SelfRefree />
       <Divider />
       <Footer />

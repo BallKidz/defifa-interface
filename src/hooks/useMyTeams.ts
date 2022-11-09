@@ -37,7 +37,7 @@ export function useMyTeams() {
     if (!address) return;
     //query graph using graphql-request
     const variables = {
-      owner: "0x1fc6e73075c584dbdda0e53449e2c944986b9a72" ?? address,
+      owner: address,
     };
     const fetchMyTeams = async () => {
       try {
@@ -48,7 +48,6 @@ export function useMyTeams() {
           myTeamsQuery,
           variables
         );
-        response.tokens.push(response.tokens[1]);
         const teamTiers = getTeamTiersFromToken(response.tokens);
         console.log("teamTiers", teamTiers);
         setTeams(teamTiers);
