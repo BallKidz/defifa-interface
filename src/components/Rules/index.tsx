@@ -156,7 +156,7 @@ const Rules = () => {
             <div className={styles.pointSystemCalculation}>
               <p>
                 Each group stage:{" "}
-                <span className={styles.pointSystemPoints}>417</span>
+                <span className={styles.pointSystemPoints}>416</span>
               </p>
               <p>
                 Each round of 16:{" "}
@@ -172,7 +172,7 @@ const Rules = () => {
               </p>
               <p>
                 The final:{" "}
-                <span className={styles.pointSystemPoints}>20,000</span>
+                <span className={styles.pointSystemPoints}>20,032</span>
               </p>
             </div>
             <p className={styles.pointSystemDescription}>
