@@ -1,0 +1,26 @@
+{
+  "name": "defifa",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build --network mainnet",
+    "build-goerli": "graph build --network goerli",
+    "build-take1-goerli": "graph build --network goerli --netowrk-file ./take1-networks.json",
+    "build-take1": "graph build --network-file ./take1-networks.json",
+    "deploy": "yarn build && graph deploy --node https://api.thegraph.com/deploy/ devianyeth/defifa",
+    "deploy-goerli": "yarn build-goerli && graph deploy --node https://api.thegraph.com/deploy/ devianyeth/defifa-goerli",
+    "deploy-take1": "yarn build-take1 && graph deploy --node https://api.thegraph.com/deploy/ devianyeth/defifa-take1",
+    "deploy-take1-goerli": "yarn build-take1-goerli && graph deploy --node https://api.thegraph.com/deploy/ devianyeth/defifa-take1-goerli",
+    "create-local": "graph create --node http://localhost:8020/ devianyeth/defifa",
+    "remove-local": "graph remove --node http://localhost:8020/ devianyeth/defifa",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 devianyeth/defifa",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.35.0",
+    "@graphprotocol/graph-ts": "0.28.1"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
+}

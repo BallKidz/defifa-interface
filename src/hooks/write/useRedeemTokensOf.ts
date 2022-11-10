@@ -7,36 +7,21 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { ETH_TOKEN_ADDRESS, getChainData } from "../../constants/addresses";
 import { simulateTransaction } from "../../lib/tenderly";
-import { toastError } from "../../utils/toast";
+import { toastError, toastSuccess } from "../../utils/toast";
 
-export interface PayParams {
-  amount: string;
-  token: string;
-  minReturnedTokens: string;
-  preferClaimedTokens: boolean;
-  memo: string;
-  metadata: PayMetadata;
+export interface RedeemParams {
+  tokenIds: string[];
   simulate?: boolean;
+  onSuccess?: () => void;
 }
 
-export interface PayMetadata {
-  dontMint: boolean;
-  expectMintFromExtraFunds: boolean;
-  dontOvespend: boolean;
-  tierIdsToMint: number[];
-}
-
-export function usePay({
-  amount,
-  token,
-  minReturnedTokens,
-  preferClaimedTokens,
-  memo,
-  metadata,
+export function useRedeemTokensOf({
+  tokenIds,
   simulate = false,
-}: PayParams) {
+  onSuccess,
+}: RedeemParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
   const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
@@ -44,35 +29,42 @@ export function usePay({
   const { config } = usePrepareContractWrite({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.abi,
-    functionName: "pay",
-    overrides: { value: amount },
+    functionName: "redeemTokensOf",
     onError: (error) => {
       if (error.message.includes("insufficient funds")) {
         toastError("Insufficient funds");
       }
     },
     args: [
+      address, //user address
       projectId,
-      amount,
-      token,
+      "0",
+      ETH_TOKEN_ADDRESS,
+      "0",
       address,
-      minReturnedTokens,
-      preferClaimedTokens,
-      memo,
-      encodePayMetadata(metadata),
+      "",
+      encodeRedeemMetadata(tokenIds),
     ],
   });
 
-  const simulatePay = () =>
+  const simulatePay = () => {
+    console.log("simulatePay", config.args, tokenIds);
     simulateTransaction({
       chainId: chain?.id,
       populatedTx: config.request,
       userAddress: address,
     });
+  };
 
   const { data, write, error, isError } = useContractWrite(config);
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: () => {
+      onSuccess && onSuccess();
+      toastSuccess("Transaction successful");
+    },
+  });
 
   return {
     data,
@@ -84,19 +76,13 @@ export function usePay({
   };
 }
 
-function encodePayMetadata(metadata: PayMetadata) {
+function encodeRedeemMetadata(tokenIds: string[]) {
   const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
   const IJB721Delegate_INTERFACE_ID = "0xb3bcbb79";
   return ethers.utils.defaultAbiCoder.encode(
-    ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
-    [
-      zeroBytes32,
-      zeroBytes32,
-      IJB721Delegate_INTERFACE_ID,
-      metadata.dontMint,
-      metadata.expectMintFromExtraFunds,
-      metadata.dontOvespend,
-      metadata.tierIdsToMint,
-    ]
+    ["bytes32", "bytes4", "uint256[]"],
+    [zeroBytes32, IJB721Delegate_INTERFACE_ID, tokenIds]
   );
 }
+
+export default useRedeemTokensOf;
