@@ -88,7 +88,11 @@ const Content: React.FC<
             {props.rightSection?.enabled && (
               <div className={styles.rightSection}>
                 <div className={styles.rightSectionButtonWrapper}> </div>
-                <Button onClick={props.rightSection?.onClick} size="medium">
+                <Button
+                  onClick={props.rightSection?.onClick}
+                  disabled={props.rightSection?.loading}
+                  size="medium"
+                >
                   {props.rightSection?.loading ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
