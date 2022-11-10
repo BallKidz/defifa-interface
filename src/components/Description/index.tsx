@@ -1,42 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect, useState } from "react";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
-import { formatDateToUTC } from "../../utils/format/formatDate";
 import styles from "./Description.module.css";
 
-type DescriptionDates = {
-  start: string;
-  tradeDeadline: string;
-  end: string;
-};
-
 const Description = () => {
-  const { data } = useDeployerDuration();
-  const [dates, setDates] = useState<DescriptionDates>();
-
-  useEffect(() => {
-    if (!data) return;
-
-    setDates({
-      start: formatDateToUTC(data.start * 1000),
-      tradeDeadline: formatDateToUTC(data.tradeDeadline * 1000),
-      end: formatDateToUTC(data.end * 1000),
-    });
-  }, [data]);
+  const { start, end, tradeDeadline } = useDeployerDuration();
 
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <p>
           Minting ends & game starts:{" "}
-          <span className={styles.infoDates}>{dates?.start}</span>
+          <span className={styles.infoDates}>{start.date}</span>
         </p>
         <p>
           Trade deadline:{" "}
-          <span className={styles.infoDates}>{dates?.tradeDeadline}</span>
+          <span className={styles.infoDates}>{tradeDeadline.date}</span>
         </p>
         <p>
-          Game ends: <span className={styles.infoDates}>{dates?.end}</span>{" "}
+          Game ends: <span className={styles.infoDates}>{end.date}</span>{" "}
         </p>
       </div>
       <div className={styles.gameplayContainer}>

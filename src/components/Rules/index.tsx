@@ -1,14 +1,49 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
+import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import Content from "../UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
+  const { mint, start, tradeDeadline, end } = useDeployerDuration();
+  const { data: currentFc } = useProjectCurrentFundingCycle();
+  const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
+
+  const fillPill = (phase: number) => {
+    if (currentFcNumber === phase) {
+      return "Active";
+    } else if (currentFcNumber > phase) {
+      return "Completed";
+    } else if (currentFcNumber < phase) {
+      switch (phase) {
+        case 1:
+          return `${mint.date}`;
+        case 2:
+          return `${start.date}`;
+        case 3:
+          return `${tradeDeadline.date}`;
+        default:
+        case 4:
+          return `${end.date}`;
+      }
+    }
+  };
+
   return (
     <Content title="Rules" open={false} socials={true}>
       <div className={styles.rulesContainer}>
         <div className={styles.phases}>
           <div className={styles.phaseBox}>
-            <h1>Phase 1: Mint</h1>
+            <h1>
+              Phase 1: Opening ceremony (Mint start)
+              <span
+                className={
+                  currentFcNumber === 1 ? styles.active : styles.upcoming
+                }
+              >
+                {fillPill(1)}
+              </span>
+            </h1>
             <ul>
               <li>
                 There are 32 teams representing the nations competing at the
@@ -20,11 +55,23 @@ const Rules = () => {
             </ul>
           </div>
           <div className={styles.phaseBox}>
-            <h1>Phase 2: Start</h1>
+            <h1>
+              Phase 2: Kickoff (Mint ends)
+              <span
+                className={
+                  currentFcNumber === 2 ? styles.active : styles.upcoming
+                }
+              >
+                {fillPill(2)}
+              </span>
+            </h1>
             <ul>
               <li>
                 The pot is locked and minting permenently ends before the first
                 kickoff on November 21, 2022 at 2 AM PST.
+                <a href="#disclaimerContainer">
+                  <sup className={styles.superScript}>3</sup>
+                </a>
               </li>
               <li>
                 Holders of each team’s NFTs benefit from the outcome of each
@@ -34,16 +81,25 @@ const Rules = () => {
                 </a>
               </li>
               <li>
-                The eventual value of thir NFTs recalibrates depending on a
+                The eventual value of these NFTs recalibrates depending on a
                 self-refereed scorecard.
-                <a href="#pointsSystem">
+                <a href="#disclaimerContainer">
                   <sup className={styles.superScript}>2</sup>
                 </a>
               </li>
             </ul>
           </div>
           <div className={styles.phaseBox}>
-            <h1>Phase 3: Trade deadline</h1>
+            <h1>
+              Phase 3: Trade deadline{" "}
+              <span
+                className={
+                  currentFcNumber === 3 ? styles.active : styles.upcoming
+                }
+              >
+                {fillPill(3)}
+              </span>
+            </h1>
             <ul>
               <li>
                 NFTs are not transferable from the trade deadline until the
@@ -56,7 +112,16 @@ const Rules = () => {
             </ul>
           </div>
           <div className={styles.phaseBox}>
-            <h1>Phase 4: End</h1>
+            <h1>
+              Phase 4: Final whistle{" "}
+              <span
+                className={
+                  currentFcNumber === 4 ? styles.active : styles.upcoming
+                }
+              >
+                {fillPill(4)}
+              </span>
+            </h1>
             <ul>
               <li>The game is self refereed.</li>
               <li>
@@ -117,10 +182,18 @@ const Rules = () => {
             </p>
           </div>
         </div>
-        <span className={styles.disclaimer}>
-          <sup className={styles.superScript}>2</sup> THE OUTCOME IS SUBJECT TO
-          THE RATIFIED SCORECARD DURING PHASE 4.
-        </span>
+        <div className={styles.disclaimerContainer} id="disclaimerContainer">
+          <p className={styles.disclaimer}>
+            <sup className={styles.superScript}>2</sup> The outcome is subject
+            to the ratified scorecard during Phase 4.
+          </p>
+          <p className={styles.disclaimer}>
+            <sup className={styles.superScript}>3</sup> After kickoff, 1 of
+            every 10 NFTs minted for each team will be reserved for the Defifa
+            Ballkids who developed this game.
+          </p>
+        </div>
+
         <br />
       </div>
     </Content>

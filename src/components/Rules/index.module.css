@@ -1,21 +1,42 @@
-.rulesContainer {
-  background: url(../../../public/assets/banny.png) no-repeat;
-  background-size: contain;
-  background-position: center;
-}
-
 .phases {
   display: grid;
-  grid-template-columns: 35% 40%;
+  grid-template-columns: 40% 40%;
   gap: 100px;
   height: 100%;
   border-radius: 10px;
 }
 
-.rulesHeader {
-  font-size: 18px;
-  color: white;
-  text-decoration: underlines;
+.active {
+  margin-left: 10px;
+  font-size: 14px;
+  border: var(--lightGreen);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--lightGreen);
+  background: var(--green);
+  animation: active 2s infinite;
+}
+
+.upcoming {
+  margin-left: 10px;
+  font-size: 14px;
+  border: var(--gold);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--gold);
+  background: var(--brown);
+}
+
+@keyframes active {
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .phaseBox {
@@ -35,7 +56,7 @@
 
 .phaseBox h1 {
   color: var(--gold);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
 }
 
