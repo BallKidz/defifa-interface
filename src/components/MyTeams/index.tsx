@@ -23,19 +23,7 @@ const MyTeams = () => {
   });
   return (
     <TeamsContext.Provider value={teams}>
-      <Content
-        title="My Teams"
-        open={true}
-        socials={true}
-        rightSection={{
-          enabled: (teams?.length ?? 0) > 0,
-          onClick: () => {
-            write?.();
-          },
-          title: getRedeemButtonText(fundingCycle) + " All",
-          loading: isRedeemLoading,
-        }}
-      >
+      <Content title="My Teams" open={false} socials={false}>
         {isError && <div className={styles.error}>{error}</div>}
         {isLoading && (
           <div className={styles.loading}>
@@ -51,18 +39,42 @@ const MyTeams = () => {
           </div>
         )}
         {!(isError || isLoading) && (
-          <div className={styles.teams}>
-            {teams &&
-              teams.map((team) => (
-                <MyTeam
-                  team={team}
-                  key={team.id}
-                  onRedeemSuccess={() => removeTeams([team?.id])}
-                  disableRedeem={isRedeemLoading}
-                />
-              ))}
-            {teams?.length === 0 && <div>You dont have any teams yet.</div>}
-          </div>
+          <>
+            {teams && teams.length > 1 ? (
+              <div className={styles.buttonContainer}>
+                <Button
+                  size="medium"
+                  onClick={() => write?.()}
+                  disabled={isRedeemLoading}
+                >
+                  {isRedeemLoading ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      style={{ marginTop: "5px" }}
+                      src="/assets/defifa_spinner.gif"
+                      alt="spinner"
+                      width={35}
+                    />
+                  ) : (
+                    "Refund all"
+                  )}
+                </Button>
+              </div>
+            ) : null}
+
+            <div className={styles.teams}>
+              {teams &&
+                teams.map((team) => (
+                  <MyTeam
+                    team={team}
+                    key={team.id}
+                    onRedeemSuccess={() => removeTeams([team?.id])}
+                    disableRedeem={isRedeemLoading}
+                  />
+                ))}
+              {teams?.length === 0 && <div>You dont have any teams yet.</div>}
+            </div>
+          </>
         )}
       </Content>
     </TeamsContext.Provider>
