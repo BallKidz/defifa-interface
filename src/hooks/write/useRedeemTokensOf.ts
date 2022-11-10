@@ -14,11 +14,13 @@ import { toastError } from "../../utils/toast";
 export interface RedeemParams {
   tokenIds: string[];
   simulate?: boolean;
+  onSuccess?: () => void;
 }
 
 export function useRedeemTokensOf({
   tokenIds,
   simulate = false,
+  onSuccess
 }: RedeemParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -47,19 +49,21 @@ export function useRedeemTokensOf({
   });
   // console.log("config", config.args,tokenIds);
 
-  const simulatePay = () =>{
-    console.log("simulatePay", config.args,tokenIds);
+  const simulatePay = () => {
+    console.log("simulatePay", config.args, tokenIds);
     simulateTransaction({
       chainId: chain?.id,
       populatedTx: config.request,
       userAddress: address,
     });
+  };
 
-  }
-  
   const { data, write, error, isError } = useContractWrite(config);
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: onSuccess,
+  });
 
   return {
     data,
