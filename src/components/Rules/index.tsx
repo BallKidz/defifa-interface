@@ -41,7 +41,7 @@ const Rules = () => {
                   currentFcNumber === 1 ? styles.active : styles.upcoming
                 }
               >
-                {fillPill(1)}
+                {fillPill(mint.phase)}
               </span>
             </h1>
             <ul>
@@ -62,7 +62,7 @@ const Rules = () => {
                   currentFcNumber === 2 ? styles.active : styles.upcoming
                 }
               >
-                {fillPill(2)}
+                {fillPill(start.phase)}
               </span>
             </h1>
             <ul>
@@ -97,7 +97,7 @@ const Rules = () => {
                   currentFcNumber === 3 ? styles.active : styles.upcoming
                 }
               >
-                {fillPill(3)}
+                {fillPill(tradeDeadline.phase)}
               </span>
             </h1>
             <ul>
@@ -119,7 +119,7 @@ const Rules = () => {
                   currentFcNumber === 4 ? styles.active : styles.upcoming
                 }
               >
-                {fillPill(4)}
+                {fillPill(end.phase)}
               </span>
             </h1>
             <ul>
