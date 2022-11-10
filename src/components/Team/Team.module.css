@@ -5,11 +5,11 @@
   font-size: 14px;
   line-height: 18.2px;
   color: white;
+  font-weight: 500;
 }
 
 .container h3,
 .container p {
-  font-weight: 500;
   margin: 0;
 }
 

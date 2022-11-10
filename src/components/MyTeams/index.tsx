@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { TeamsContext } from "../../hooks/teamsContext";
 import { TeamTier, useMyTeams } from "../../hooks/useMyTeams";
