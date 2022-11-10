@@ -6,11 +6,11 @@ import styles from "./MyTeam.module.css";
 import Button from "../UI/Button";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import useRedeemTokensOf from "../../hooks/write/useRedeemTokensOf";
-const MyTeam: FC<{ team: TeamTier; onRedeemSuccess: () => void ,disableRedeem: boolean}> = ({
-  team,
-  onRedeemSuccess,
-  disableRedeem
-}) => {
+const MyTeam: FC<{
+  team: TeamTier;
+  onRedeemSuccess: () => void;
+  disableRedeem: boolean;
+}> = ({ team, onRedeemSuccess, disableRedeem }) => {
   const { id, image, name, quantity } = team;
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
@@ -27,11 +27,9 @@ const MyTeam: FC<{ team: TeamTier; onRedeemSuccess: () => void ,disableRedeem: b
   return (
     <div className={styles.container}>
       <IpfsImage hash={image} className={styles.teamImg} />
-      <div className={styles.metadata}>
-        <h3>{name}</h3>
-        <p>Quantity : {quantity}</p>
-        <p>Attestation power: 5% </p>
-      </div>
+      <h3>{name}</h3>
+      <p>Quantity : {quantity}</p>
+      <p>Attestation power: 5% </p>
       <Button
         onClick={() => {
           write?.();

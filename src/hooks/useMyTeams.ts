@@ -35,7 +35,7 @@ export function useMyTeams() {
   }>({ isError: false, error: "" });
 
   useInterval(() => {
-    getTeamsAndsetTeams();
+    getTeamsAndSetTeams();
   }, 5000);
 
   function removeTeams(tierIds: number[] | undefined) {
@@ -44,7 +44,7 @@ export function useMyTeams() {
     setTeams(newTeams);
   }
 
-  function getTeamsAndsetTeams() {
+  function getTeamsAndSetTeams() {
     if (address && graphUrl) {
       request(graphUrl, myTeamsQuery, { owner: address.toLowerCase() })
         .then((data) => {
@@ -55,9 +55,7 @@ export function useMyTeams() {
 
           !isTeamRecentlyRemoved && setTeams(userTeams);
         })
-        .catch((error) => {
-          console.log("error", error);
-        });
+        .catch((error) => {});
     }
   }
 
@@ -80,7 +78,6 @@ export function useMyTeams() {
       setTeams(teamTiers);
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setError({ error: "Something went wrong", isError: true });
       setIsLoading(false);
     }
@@ -98,6 +95,7 @@ export function useMyTeams() {
     }
     if (!address) return;
     fetchMyTeams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, isConnecting, isDisconnected, graphUrl]);
 
   return {

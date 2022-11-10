@@ -20,7 +20,7 @@ export interface RedeemParams {
 export function useRedeemTokensOf({
   tokenIds,
   simulate = false,
-  onSuccess
+  onSuccess,
 }: RedeemParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -46,7 +46,6 @@ export function useRedeemTokensOf({
       encodeRedeemMetadata(tokenIds),
     ],
   });
-  // console.log("config", config.args,tokenIds);
 
   const simulatePay = () => {
     console.log("simulatePay", config.args, tokenIds);
@@ -61,8 +60,8 @@ export function useRedeemTokensOf({
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess: ()=>{
-      onSuccess && onSuccess()
+    onSuccess: () => {
+      onSuccess && onSuccess();
       toastSuccess("Transaction successful");
     },
   });

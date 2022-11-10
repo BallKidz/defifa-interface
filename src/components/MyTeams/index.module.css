@@ -1,6 +1,8 @@
 .teams {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 70px;
+  margin-top: 30px;
 }
 
 .loading {
@@ -9,7 +11,6 @@
   align-items: center;
   text-align: center;
 }
-
 
 .loading img {
   padding: 20px;
