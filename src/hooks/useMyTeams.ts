@@ -37,6 +37,7 @@ export function useMyTeams() {
   }
 
   const fetchMyTeams = async () => {
+    setError({ isError: false, error: "" });
     if (!address) return;
     const variables = {
       owner: address?.toLowerCase(),
@@ -61,13 +62,14 @@ export function useMyTeams() {
     }
   };
   useEffect(() => {
-    if (isConnecting ) {
-      setIsLoading(true)
+    if (isConnecting) {
+      setIsLoading(true);
       return;
-    };
+    }
     if (isDisconnected) {
       setError({ error: "Please connect your wallet", isError: true });
       setIsLoading(false);
+      setTeams([]);
       return;
     }
     if (!address) return;
