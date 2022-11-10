@@ -1,4 +1,5 @@
 .container {
+  width: fit-content;
   padding: 65px 8% 35px 8%;
 }
 
