@@ -34,7 +34,6 @@ const Button = ({
 
   return (
     <button
-      disabled={disabled}
       type={type}
       onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
