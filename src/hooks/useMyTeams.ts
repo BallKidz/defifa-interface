@@ -33,7 +33,7 @@ export function useMyTeams() {
 
   function removeTeams(tierIds: number[] | undefined) {
     const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
-    setTeams(newTeams); 
+    setTeams(newTeams);
   }
 
   const fetchMyTeams = async () => {
@@ -44,13 +44,14 @@ export function useMyTeams() {
 
     try {
       setIsLoading(true);
+      console.log("fetching teams");
       const response: { tokens: any[] } = await request(
         graphUrl,
         myTeamsQuery,
         variables
       );
       const teamTiers = getTeamTiersFromToken(response.tokens);
-
+      console.log("teamTiers", teamTiers);
       setTeams(teamTiers);
       setIsLoading(false);
     } catch (error) {
@@ -60,7 +61,15 @@ export function useMyTeams() {
     }
   };
   useEffect(() => {
-    if (isConnecting || isDisconnected) return;
+    if (isConnecting ) {
+      setIsLoading(true)
+      return;
+    };
+    if (isDisconnected) {
+      setError({ error: "Please connect your wallet", isError: true });
+      setIsLoading(false);
+      return;
+    }
     if (!address) return;
     fetchMyTeams();
   }, [address, isConnecting, isDisconnected, graphUrl]);
