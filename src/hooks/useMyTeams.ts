@@ -31,22 +31,26 @@ export function useMyTeams() {
     error: string;
   }>();
 
+  function removeTeams(tierIds: number[] | undefined) {
+    const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
+    setTeams(newTeams); 
+  }
+
   const fetchMyTeams = async () => {
     if (!address) return;
     const variables = {
-      owner: address?.toLowerCase(),
+      owner:address?.toLowerCase(),
     };
 
     try {
       setIsLoading(true);
-   
       const response: { tokens: any[] } = await request(
         graphUrl,
         myTeamsQuery,
         variables
       );
       const teamTiers = getTeamTiersFromToken(response.tokens);
-     
+
       setTeams(teamTiers);
       setIsLoading(false);
     } catch (error) {
@@ -58,8 +62,6 @@ export function useMyTeams() {
   useEffect(() => {
     if (isConnecting || isDisconnected) return;
     if (!address) return;
-    //query graph using graphql-request
-
     fetchMyTeams();
   }, [address, isConnecting, isDisconnected, graphUrl]);
 
@@ -68,7 +70,7 @@ export function useMyTeams() {
     isLoading,
     isError: errorState?.isError,
     error: errorState?.error,
-    fetchMyTeams,
+    removeTeams,
   };
 }
 

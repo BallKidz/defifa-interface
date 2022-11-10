@@ -9,16 +9,18 @@ import {
 } from "wagmi";
 import { ETH_TOKEN_ADDRESS, getChainData } from "../../constants/addresses";
 import { simulateTransaction } from "../../lib/tenderly";
-import { toastError } from "../../utils/toast";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 export interface RedeemParams {
   tokenIds: string[];
   simulate?: boolean;
+  onSuccess?: () => void;
 }
 
 export function useRedeemTokensOf({
   tokenIds,
   simulate = false,
+  onSuccess
 }: RedeemParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -33,7 +35,6 @@ export function useRedeemTokensOf({
         toastError("Insufficient funds");
       }
     },
-    overrides: { gasLimit: 2100000 },
     args: [
       address, //user address
       projectId,
@@ -48,6 +49,7 @@ export function useRedeemTokensOf({
   // console.log("config", config.args,tokenIds);
 
   const simulatePay = () => {
+    console.log("simulatePay", config.args, tokenIds);
     simulateTransaction({
       chainId: chain?.id,
       populatedTx: config.request,
@@ -57,7 +59,13 @@ export function useRedeemTokensOf({
 
   const { data, write, error, isError } = useContractWrite(config);
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess: ()=>{
+      onSuccess && onSuccess()
+      toastSuccess("Transaction successful");
+    },
+  });
 
   return {
     data,
