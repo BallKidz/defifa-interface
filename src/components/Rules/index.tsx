@@ -52,7 +52,7 @@ const Rules = () => {
               <li>Mint team NFTs to increase the game’s treasury.</li>
               <li>The NFTs are a claim on this treasury.</li>
               <li>You can get a full refund anytime before the game starts.</li>
-            </ul>a
+            </ul>
           </div>
           <div className={styles.phaseBox}>
             <h1>
@@ -69,7 +69,7 @@ const Rules = () => {
               <li>
                 The pot is locked and minting permenently ends before the first
                 kickoff on November 21, 2022 at 2 AM PST.
-                <a href="#disclaimerContainer">
+                <a href="#pointsSystem">
                   <sup className={styles.superScript}>3</sup>
                 </a>
               </li>
@@ -83,7 +83,7 @@ const Rules = () => {
               <li>
                 The eventual value of these NFTs recalibrates depending on a
                 self-refereed scorecard.
-                <a href="#disclaimerContainer">
+                <a href="#pointsSystem">
                   <sup className={styles.superScript}>2</sup>
                 </a>
               </li>
