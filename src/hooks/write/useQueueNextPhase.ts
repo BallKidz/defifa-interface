@@ -1,3 +1,4 @@
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import DefifaDeployer from "@jbx-protocol/juice-defifa/out/DefifaDeployer.sol/DefifaDeployer.json";
 import {
   useAccount,
@@ -12,15 +13,19 @@ import { simulateTransaction } from "../../lib/tenderly";
 export function useQueueNextPhase(simulate = false) {
   const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
+  const {openConnectModal} = useConnectModal();
 
   const chainData = getChainData(network?.chain?.id);
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaDeployer,
     contractInterface: DefifaDeployer.abi,
     functionName: "queueNextPhaseOf",
+    overrides: {gasLimit: 210000},
     args: [chainData.projectId],
     chainId: chainData.chainId,
-    overrides: { gasLimit: 210000 },
+    onError: (error) => {
+      console.error(error);
+    },
   });
 
   const simulateQueueNextPhase = () => {
@@ -37,7 +42,17 @@ export function useQueueNextPhase(simulate = false) {
 
   return {
     data,
-    write: simulate ? simulateQueueNextPhase : write,
+    write: () => {
+      if (!isConnected) {
+        openConnectModal!();
+      }
+      if (simulate) {
+        simulateQueueNextPhase();
+      } else {
+        console.log(write)
+        write?.();
+      }
+    },
     isLoading,
     isSuccess,
     error,
