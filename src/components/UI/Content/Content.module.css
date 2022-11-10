@@ -1,5 +1,6 @@
 .contentHeader {
   display: flex;
+  white-space: nowrap;
   align-items: center;
 }
 
@@ -17,6 +18,13 @@
 .accordianInput {
   display: none;
 }
+
+.rightSection {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
 
 .content {
   /* transform: scaleY(0); */

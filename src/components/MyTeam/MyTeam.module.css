@@ -3,18 +3,14 @@
   flex-direction: column;
   gap: 15px;
   font-size: 14px;
-  line-height: 18.2px;
   color: white;
   font-weight: 500;
+  line-height: 18.2px;
 }
 
 .container h3,
 .container p {
   margin: 0;
-}
-
-.container span {
-  font-weight: 500;
 }
 
 .teamImg {
@@ -23,12 +19,4 @@
   cursor: pointer;
   opacity: 0.9;
   transition: opacity 0.3s;
-}
-
-.teamChecked {
-  position: absolute;
-  top: 0;
-  left: 0;
-  max-width: 100%;
-  max-height: 100%;
 }

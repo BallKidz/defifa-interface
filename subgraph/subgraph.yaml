@@ -1,0 +1,43 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+description: 0.1.1
+dataSources:
+  - kind: ethereum
+    name: DefifaNFT
+    network: goerli
+    source:
+      abi: DefifaNFT
+      address: "0x6ED6d5E9A0A0a1d0eD341D0d52Ee5a2cd5d6d85f"
+      startBlock: 7919957
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - TokenMetadata
+        - Owner
+        - Transfer
+        - Contract
+      abis:
+        - name: DefifaNFT
+          file: ./abis/DefifaNFT.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/defifa-nft.ts
+templates:
+  - name: TokenMetadata
+    kind: file/ipfs
+    mapping:
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/metadata.ts
+      handler: handleMetadata
+      entities:
+        - TokenMetadata
+      abis:
+        - name: DefifaNFT
+          file: ./abis/DefifaNFT.json
+    network: goerli

@@ -10,11 +10,26 @@ import { ChainDoesNotSupportMulticallError } from "wagmi";
 import { colors } from "../../../constants/colors";
 import constants from "../../../constants/UI";
 import Socials from "../../Navbar/Info/Socials";
+import Button from "../Button";
 
 import styles from "./Content.module.css";
 
-const Content: React.FC<PropsWithChildren<any>> = (props) => {
-  const [displayContent, setDisplayContent] = useState<boolean>(props.open);
+const Content: React.FC<
+  PropsWithChildren<{
+    open?: boolean;
+    title?: string;
+    socials?: boolean;
+    rightSection?: {
+      enabled: boolean;
+      title: string;
+      onClick: () => void;
+      loading: boolean;
+    };
+  }>
+> = (props) => {
+  const [displayContent, setDisplayContent] = useState<boolean>(
+    props?.open ?? false
+  );
 
   const contentTitle = useMemo<ReactElement>(() => {
     if (props.title === "Rules" && props.socials) {
@@ -61,7 +76,7 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
         />
         <label htmlFor={props.title} className={styles.accordianLabel}>
           <div className={styles.contentHeader}>
-            {contentTitle}
+            <div> {contentTitle}</div>
             <FontAwesomeIcon
               icon={faChevronDown}
               size="sm"
@@ -70,6 +85,28 @@ const Content: React.FC<PropsWithChildren<any>> = (props) => {
               }
               className={styles.chevronDown}
             />
+            {props.rightSection?.enabled && (
+              <div className={styles.rightSection}>
+                <div className={styles.rightSectionButtonWrapper}> </div>
+                <Button
+                  onClick={props.rightSection?.onClick}
+                  disabled={props.rightSection?.loading}
+                  size="medium"
+                >
+                  {props.rightSection?.loading ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      style={{ marginTop: "5px" }}
+                      src="/assets/defifa_spinner.gif"
+                      alt="spinner"
+                      width={35}
+                    />
+                  ) : (
+                    props.rightSection?.title
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
         </label>
         <div className={styles.content}>{props.children}</div>

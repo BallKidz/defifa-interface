@@ -24,6 +24,7 @@ export const mainnetData = {
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
   defifaDelegate: "0xBC855060A8c96076a6778D547D430E6f43E9809A",
   defifaDeployer: "0x9fb90042a8ba5249473476c0405fc1009652956d",
+  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa",
 };
 
 export const goerliData = {
@@ -38,6 +39,7 @@ export const goerliData = {
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
   defifaDelegate: "0x6ED6d5E9A0A0a1d0eD341D0d52Ee5a2cd5d6d85f",
   defifaDeployer: "0x6f18cf9173136c0b5a6ebf45f19d58d3ff2e17e6",
+  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-goerli",
 };
 
 export const mainnet = true;

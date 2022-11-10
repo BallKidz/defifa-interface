@@ -5,10 +5,7 @@ const Socials = () => {
   return (
     <div className={styles.container}>
       <p>
-        <Link
-          href="https://discord.com/channels/775859454780244028/1022899568402251837"
-          passHref
-        >
+        <Link href="https://discord.gg/hrZnvs65Nh" passHref>
           <a target="_blank">Discord</a>
         </Link>
       </p>
@@ -18,7 +15,7 @@ const Socials = () => {
         </Link>
       </p>
       <p>
-        <Link href="https://twitter.com/Defifa420" passHref>
+        <Link href="https://github.com/jbx-protocol/juice-defifa" passHref>
           <a target="_blank">Code</a>
         </Link>
       </p>
