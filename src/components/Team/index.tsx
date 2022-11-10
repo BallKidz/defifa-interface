@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useMemo, useState } from "react";
+import Button from "../UI/Button";
 import styles from "./Team.module.css";
 
 interface TeamProps {
@@ -62,7 +63,9 @@ const Team: FC<TeamProps> = ({
 
   const onRemoveTierIds = () => {
     if (tierIds.length > 1) {
-      setTierIds([...tierIds.slice(-1)]);
+      const copy = [...tierIds];
+      copy.pop();
+      setTierIds(copy);
       onClickMultiple?.(tierIds);
     } else {
       setTierIds([]);
@@ -91,14 +94,26 @@ const Team: FC<TeamProps> = ({
           alt="Check"
         />
       </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+
+      <div
+        style={{
+          display: "flex",
+          gap: "15px",
+          alignItems: "center",
+          height: "35px",
+        }}
+      >
         <h3>{name}</h3>
         {selected ? (
-          <div style={{ display: "flex", gap: "15px" }}>
-            <p>{tierIds.length}</p>
-            <button onClick={onAddTierIds}>+</button>
-            <button onClick={onRemoveTierIds}>-</button>
-          </div>
+          <>
+            <p>Quantity: {tierIds.length}</p>
+            <Button size="extraSmall" onClick={onAddTierIds}>
+              +
+            </Button>
+            <Button onClick={onRemoveTierIds} size="extraSmall">
+              -
+            </Button>
+          </>
         ) : null}
       </div>
 

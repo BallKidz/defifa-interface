@@ -13,6 +13,15 @@
   margin: 0;
 }
 
+.quantityButton {
+  font-size: 14px;
+  color: var(--contentTitle);
+  font-weight: 500;
+  border: 1px solid var(--turquoise);
+  background-color: var(--turquoise);
+  cursor: pointer;
+}
+
 .container span {
   font-weight: 500;
 }

@@ -68,8 +68,10 @@ const Mint = () => {
   };
 
   const onTeamsSelected = (ids: number[]) => {
-    console.log({ ids });
-    setTierIds([...tierIds, ...ids]);
+    console.log(tierIds);
+    ids.forEach((id) => {
+      setTierIds([...tierIds, id]);
+    });
   };
 
   const onSelectAllTeams = () => {

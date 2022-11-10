@@ -15,12 +15,14 @@ const Button = ({
   type?: "button" | "submit";
   disabled?: boolean;
   color?: string;
-  size?: "small" | "medium" | "big";
+  size?: "extraSmall" | "small" | "medium" | "big";
   textColor?: string;
   onClick?: VoidFunction;
 }) => {
   const buttonSize = useMemo<string>(() => {
     switch (size) {
+      case "extraSmall":
+        return styles.extraSmall;
       case "small":
         return styles.small;
       case "medium":
