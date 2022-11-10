@@ -9,7 +9,7 @@ import {
 } from "wagmi";
 import { ETH_TOKEN_ADDRESS, getChainData } from "../../constants/addresses";
 import { simulateTransaction } from "../../lib/tenderly";
-import { toastError } from "../../utils/toast";
+import { toastError, toastSuccess } from "../../utils/toast";
 
 export interface RedeemParams {
   tokenIds: string[];
@@ -62,7 +62,10 @@ export function useRedeemTokensOf({
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
-    onSuccess: onSuccess,
+    onSuccess: ()=>{
+      onSuccess && onSuccess()
+      toastSuccess("Transaction successful");
+    },
   });
 
   return {

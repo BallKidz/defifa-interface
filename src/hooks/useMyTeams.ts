@@ -33,9 +33,7 @@ export function useMyTeams() {
 
   function removeTeams(tierIds: number[] | undefined) {
     const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
-    console.log("newTeams", newTeams);
-    setTeams(newTeams);
-    console.log("teams", teams);
+    setTeams(newTeams); 
   }
 
   const fetchMyTeams = async () => {
