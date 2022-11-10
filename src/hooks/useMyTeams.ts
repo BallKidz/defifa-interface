@@ -2,6 +2,7 @@ import { useAccount } from "wagmi";
 import { useChainData } from "./useChainData";
 import request, { gql } from "graphql-request";
 import { useEffect, useState } from "react";
+import { useInterval } from "./useInterval";
 
 const myTeamsQuery = gql`
   query myTeamsQuery($owner: String!) {
@@ -31,9 +32,27 @@ export function useMyTeams() {
     error: string;
   }>();
 
+  // useInterval(() => {
+  //   getTeamsAndsetTeams();
+  // }, 1000);
+
   function removeTeams(tierIds: number[] | undefined) {
     const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
     setTeams(newTeams);
+  }
+
+  function getTeamsAndsetTeams() {
+    if (address && graphUrl) {
+      request(graphUrl, myTeamsQuery, { owner: address.toLowerCase() })
+        .then((data) => {
+          console.log("data", data);
+          const userTeams = getTeamTiersFromToken(data.tokens);
+          setTeams(userTeams);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
+    }
   }
 
   const fetchMyTeams = async () => {
