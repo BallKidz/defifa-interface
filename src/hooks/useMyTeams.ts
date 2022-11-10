@@ -27,16 +27,19 @@ export function useMyTeams() {
   const graphUrl = chainData.subgraph;
   const [teams, setTeams] = useState<TeamTier[]>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isTeamRecentlyRemoved, setIsTeamRecentlyRemoved] =
+    useState<boolean>(false);
   const [errorState, setError] = useState<{
     isError: boolean;
     error: string;
-  }>();
+  }>({ isError: false, error: "" });
 
-  // useInterval(() => {
-  //   getTeamsAndsetTeams();
-  // }, 1000);
+  useInterval(() => {
+    getTeamsAndsetTeams();
+  }, 5000);
 
   function removeTeams(tierIds: number[] | undefined) {
+    setIsTeamRecentlyRemoved(true);
     const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
     setTeams(newTeams);
   }
@@ -45,9 +48,12 @@ export function useMyTeams() {
     if (address && graphUrl) {
       request(graphUrl, myTeamsQuery, { owner: address.toLowerCase() })
         .then((data) => {
-          console.log("data", data);
           const userTeams = getTeamTiersFromToken(data.tokens);
-          setTeams(userTeams);
+          if (teams?.length === userTeams.length) {
+            setIsTeamRecentlyRemoved(false);
+          }
+
+          !isTeamRecentlyRemoved && setTeams(userTeams);
         })
         .catch((error) => {
           console.log("error", error);
@@ -64,14 +70,13 @@ export function useMyTeams() {
 
     try {
       setIsLoading(true);
-      console.log("fetching teams");
+
       const response: { tokens: any[] } = await request(
         graphUrl,
         myTeamsQuery,
         variables
       );
       const teamTiers = getTeamTiersFromToken(response.tokens);
-      console.log("teamTiers", teamTiers);
       setTeams(teamTiers);
       setIsLoading(false);
     } catch (error) {
