@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 //nextjs Functional component
 
 import { ThreeDots } from "react-loader-spinner";
@@ -52,14 +53,11 @@ const SelfRefree = () => {
         </p>
         <Button onClick={write} size="big">
           {isLoading ? (
-            <ThreeDots
-              height="10"
-              width="800"
-              radius="5"
-              color="#ff"
-              ariaLabel="three-dots-loading"
-              wrapperStyle={{}}
-              visible={true}
+            <img
+              style={{ marginTop: "5px" }}
+              src="/assets/defifa_spinner.gif"
+              alt="spinner"
+              width={35}
             />
           ) : (
             <span>Queue phase {data?.fundingCycle.number.toNumber() + 1}</span>

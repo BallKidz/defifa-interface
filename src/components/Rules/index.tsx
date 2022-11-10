@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Content from "../UI/Content";
 import styles from "./index.module.css";
 
@@ -14,7 +15,7 @@ const Rules = () => {
                 2022 FIFA World Cup.
               </li>
               <li>Mint team NFTs to increase the game’s treasury.</li>
-              <li>The NFT’s are a claim on this treasury.</li>
+              <li>The NFTs are a claim on this treasury.</li>
               <li>You can get a full refund anytime before the game starts.</li>
             </ul>a
           </div>
@@ -22,8 +23,8 @@ const Rules = () => {
             <h1>Phase 2: Start</h1>
             <ul>
               <li>
-                The treasury is locked and minting permenently ends before the
-                first kickoff on November 21, 2022 at 2 AM PST
+                The pot is locked and minting permenently ends before the first
+                kickoff on November 21, 2022 at 2 AM PST.
               </li>
               <li>
                 Holders of each team’s NFTs benefit from the outcome of each
@@ -33,8 +34,8 @@ const Rules = () => {
                 </a>
               </li>
               <li>
-                The eventual value of thir NFTs recalibrates depending on the
-                outcome.
+                The eventual value of thir NFTs recalibrates depending on a
+                self-refereed scorecard.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>2</sup>
                 </a>
@@ -59,16 +60,18 @@ const Rules = () => {
             <ul>
               <li>The game is self refereed.</li>
               <li>
-                A final scorecard is uploaded in-chain that says how the game’s
+                A final scorecard is uploaded on-chain that says how the game’s
                 treasury should be shared.
               </li>
               <li>
                 50% of NFT holders from all teams attest to the correct
-                scorecard to ratify it.
+                scorecard to ratify it. Each team has 1 vote, divided between
+                all holders of that team's NFTs.
               </li>
               <li>
                 Burn your team’s NFT to reclaim ETH from the game at any time
-                after a scorecard has been ratified.
+                after a scorecard has been ratified. Or, keep and trade them
+                forever – their value will remain backed by the pot.
               </li>
             </ul>
           </div>
@@ -80,7 +83,7 @@ const Rules = () => {
           </h1>
           <div>
             <p className={styles.pointSystemDescription}>
-              There are 20000 points available each round of the FIFA
+              There are 20,000 points available each round of the FIFA
               tournament, divided evenly between the winner of each game in the
               round. There are 48 group stage games total, 8 round of 16 games,
               4 quarterfinal, 2 semifina, and 1 final.

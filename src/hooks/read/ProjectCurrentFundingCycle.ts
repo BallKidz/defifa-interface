@@ -1,4 +1,4 @@
-import { useContractRead, useNetwork } from "wagmi"; 
+import { useContractRead, useNetwork } from "wagmi";
 import { getChainData } from "../../constants/addresses";
 
 export function useProjectCurrentFundingCycle() {

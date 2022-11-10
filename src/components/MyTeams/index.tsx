@@ -57,6 +57,7 @@ const MyTeams = () => {
                   team={team}
                   key={team.id}
                   onRedeemSuccess={() => removeTeams([team?.id])}
+                  disableRedeem={isRedeemLoading}
                 />
               ))}
             {teams?.length === 0 && <div>You dont have any teams yet.</div>}
