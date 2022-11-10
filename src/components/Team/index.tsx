@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import Image from "next/image";
 import { FC, useEffect, useMemo, useState } from "react";
 import styles from "./Team.module.css";
 
@@ -53,20 +54,25 @@ const Team: FC<TeamProps> = ({
     <div className={styles.container}>
       <div
         onClick={() => onTeamClicked(id)}
-        style={{ position: "relative", cursor: "pointer" }}
+        className={styles.teamImageWrapper}
       >
-        <img
+        <Image
           src={img}
           style={{ opacity: selected ? 0.8 : 1 }}
-          crossOrigin="anonymous"
-          alt="Team"
+          alt={"Team"}
           className={styles.teamImg}
+          width="100%"
+          height="100%"
+          objectFit="contain"
+          layout="responsive"
         />
-        <img
+
+        <Image
           style={{ opacity: checkStampOpacity }}
           className={styles.teamChecked}
           src="/assets/team_selected.png"
           alt="Check"
+          layout="fill"
         />
       </div>
 
