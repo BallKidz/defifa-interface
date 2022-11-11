@@ -62,7 +62,7 @@ const Mint = () => {
   useEffect(() => {
     if (!tierIds.length) return;
 
-    if (isSuccess) {
+    if (isSuccess || isError) {
       setImgMemo("");
       return;
     }
@@ -76,7 +76,7 @@ const Mint = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tierIds, isSuccess]);
+  }, [tierIds, isSuccess, isError]);
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
