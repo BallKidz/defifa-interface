@@ -55,6 +55,7 @@ const Mint = () => {
 
   useEffect(() => {
     if (isSuccess || isError) {
+      setImgMemo("");
       setTierIds([]);
     }
   }, [isError, isSuccess]);
