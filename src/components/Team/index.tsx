@@ -12,7 +12,8 @@ interface TeamProps {
   selectAll: boolean;
   txState?: boolean;
   onClick?: (id: number) => void;
-  onClickMultiple?: (id: number[]) => void;
+  onAddMultiple?: (id: number[]) => void;
+  onRemoveMultiple?: (id: number) => void;
 }
 
 const Team: FC<TeamProps> = ({
@@ -24,7 +25,8 @@ const Team: FC<TeamProps> = ({
   txState,
   selectAll,
   onClick,
-  onClickMultiple,
+  onAddMultiple,
+  onRemoveMultiple,
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
   const [tierIds, setTierIds] = useState<number[]>([id]);
@@ -58,7 +60,7 @@ const Team: FC<TeamProps> = ({
 
   const onAddTierIds = () => {
     setTierIds([...tierIds, id]);
-    onClickMultiple?.(tierIds);
+    onAddMultiple?.(tierIds);
   };
 
   const onRemoveTierIds = () => {
@@ -66,10 +68,10 @@ const Team: FC<TeamProps> = ({
       const copy = [...tierIds];
       copy.pop();
       setTierIds(copy);
-      onClickMultiple?.(tierIds);
+      onRemoveMultiple?.(id);
     } else {
       setTierIds([]);
-      onClickMultiple?.([]);
+
       setSelected(false);
     }
   };
@@ -96,6 +98,7 @@ const Team: FC<TeamProps> = ({
       </div>
 
       <div
+        className={styles.dataContainer}
         style={{
           display: "flex",
           gap: "15px",
@@ -105,15 +108,15 @@ const Team: FC<TeamProps> = ({
       >
         <h3>{name}</h3>
         {selected ? (
-          <>
-            <p>Quantity: {tierIds.length}</p>
+          <div className={styles.quantityContainer}>
+            <p>{tierIds.length}</p>
             <Button size="extraSmall" onClick={onAddTierIds}>
               +
             </Button>
             <Button onClick={onRemoveTierIds} size="extraSmall">
               -
             </Button>
-          </>
+          </div>
         ) : null}
       </div>
 

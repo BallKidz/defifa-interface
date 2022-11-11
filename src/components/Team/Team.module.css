@@ -13,13 +13,19 @@
   margin: 0;
 }
 
-.quantityButton {
-  font-size: 14px;
-  color: var(--contentTitle);
-  font-weight: 500;
-  border: 1px solid var(--turquoise);
-  background-color: var(--turquoise);
-  cursor: pointer;
+.dataContainer {
+  display: "flex";
+  gap: 15px;
+  align-items: "center";
+  height: 35px;
+}
+
+.quantityContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: end;
 }
 
 .container span {
