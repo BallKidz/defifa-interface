@@ -17,7 +17,12 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <Head>
         <title>Defifa</title>
-        <meta name="description" content="Defifa" />
+        <meta property="og:image" content="/favicon.ico" />
+        <meta
+          property="og:image"
+          name="description"
+          content="Defifa is a Luxury World Cup Experience built with Juicebox and secured by Ethereum."
+        />
         <link rel="icon" href="/favicon.ico" />
         <script
           src="https://cdn.usefathom.com/script.js"
