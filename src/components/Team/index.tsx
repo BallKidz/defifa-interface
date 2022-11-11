@@ -12,7 +12,7 @@ interface TeamProps {
   selectAll: boolean;
   txState?: boolean;
   onClick?: (id: number) => void;
-  onAddMultiple?: (id: number[]) => void;
+  onAddMultiple?: (id: number) => void;
   onRemoveMultiple?: (id: number) => void;
 }
 
@@ -60,7 +60,7 @@ const Team: FC<TeamProps> = ({
 
   const onAddTierIds = () => {
     setTierIds([...tierIds, id]);
-    onAddMultiple?.(tierIds);
+    onAddMultiple?.(id);
   };
 
   const onRemoveTierIds = () => {
@@ -70,8 +70,8 @@ const Team: FC<TeamProps> = ({
       setTierIds(copy);
       onRemoveMultiple?.(id);
     } else {
+      onRemoveMultiple?.(id);
       setTierIds([]);
-
       setSelected(false);
     }
   };

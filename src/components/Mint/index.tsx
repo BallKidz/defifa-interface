@@ -83,17 +83,17 @@ const Mint = () => {
     }
   };
 
-  const onAddMultipleTeams = (ids: number[]) => {
-    ids.forEach((id) => {
-      setTierIds([...tierIds, id]);
-    });
+  const onAddMultipleTeams = (id: number) => {
+    setTierIds([...tierIds, id]);
   };
 
   const onRemoveMultipleTeams = (id: number) => {
-    console.log(id);
     const index = tierIds.indexOf(id);
+
     if (index > -1) {
-      setTierIds(tierIds.splice(index, 1));
+      const nextState = [...tierIds];
+      nextState.splice(index, 1);
+      setTierIds(nextState);
     }
   };
 
@@ -210,6 +210,8 @@ const Mint = () => {
                     txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
+                    onAddMultiple={onAddMultipleTeams}
+                    onRemoveMultiple={onRemoveMultipleTeams}
                   />
                 ))}
           </div>
