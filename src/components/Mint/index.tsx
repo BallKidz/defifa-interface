@@ -55,13 +55,17 @@ const Mint = () => {
 
   useEffect(() => {
     if (isSuccess || isError) {
-      setImgMemo("");
       setTierIds([]);
     }
   }, [isError, isSuccess]);
 
   useEffect(() => {
     if (!tierIds.length) return;
+
+    if (isSuccess) {
+      setImgMemo("");
+      return;
+    }
 
     for (let i = 0; i < tierIds.length; i++) {
       const imgStr = rewardTiers?.find(
@@ -72,7 +76,7 @@ const Mint = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tierIds]);
+  }, [tierIds, isSuccess]);
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
