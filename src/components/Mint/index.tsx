@@ -83,6 +83,20 @@ const Mint = () => {
     }
   };
 
+  const onAddMultipleTeams = (id: number) => {
+    setTierIds([...tierIds, id]);
+  };
+
+  const onRemoveMultipleTeams = (id: number) => {
+    const index = tierIds.indexOf(id);
+
+    if (index > -1) {
+      const nextState = [...tierIds];
+      nextState.splice(index, 1);
+      setTierIds(nextState);
+    }
+  };
+
   const onSelectAllTeams = () => {
     setTierIds(Array.from({ length: tiers?.length ?? 0 }, (_, i) => i + 1));
     setSelectAll(true);
@@ -179,6 +193,8 @@ const Mint = () => {
                         txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
+                        onAddMultiple={onAddMultipleTeams}
+                        onRemoveMultiple={onRemoveMultipleTeams}
                       />
                     ))}
                   </Group>
@@ -194,6 +210,8 @@ const Mint = () => {
                     txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
+                    onAddMultiple={onAddMultipleTeams}
+                    onRemoveMultiple={onRemoveMultipleTeams}
                   />
                 ))}
           </div>

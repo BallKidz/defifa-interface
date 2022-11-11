@@ -16,6 +16,11 @@
   opacity: 1;
 }
 
+.extraSmall {
+  width: 35px;
+  height: 30px;
+}
+
 .small {
   width: 90px;
 }

@@ -13,6 +13,21 @@
   margin: 0;
 }
 
+.dataContainer {
+  display: "flex";
+  gap: 15px;
+  align-items: "center";
+  height: 35px;
+}
+
+.quantityContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  justify-content: end;
+}
+
 .container span {
   font-weight: 500;
 }

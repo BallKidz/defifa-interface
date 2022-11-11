@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useMemo, useState } from "react";
+import { useNetwork } from "wagmi";
+import Button from "../UI/Button";
 import styles from "./Team.module.css";
 
 interface TeamProps {
@@ -11,6 +13,8 @@ interface TeamProps {
   selectAll: boolean;
   txState?: boolean;
   onClick?: (id: number) => void;
+  onAddMultiple?: (id: number) => void;
+  onRemoveMultiple?: (id: number) => void;
 }
 
 const Team: FC<TeamProps> = ({
@@ -22,17 +26,24 @@ const Team: FC<TeamProps> = ({
   txState,
   selectAll,
   onClick,
+  onAddMultiple,
+  onRemoveMultiple,
 }) => {
+  const { chain } = useNetwork();
   const [selected, setSelected] = useState<boolean>(false);
+  const [tierIds, setTierIds] = useState<number[]>([id]);
   const onTeamClicked = (id: number) => {
     setSelected(!selected);
+    setTierIds([id]);
     onClick?.(id);
   };
 
   useEffect(() => {
     if (txState) {
       setSelected(false);
+      setTierIds([id]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [txState]);
 
   useEffect(() => {
@@ -48,6 +59,24 @@ const Team: FC<TeamProps> = ({
     }
     return 0;
   }, [selected]);
+
+  const onAddTierIds = () => {
+    setTierIds([...tierIds, id]);
+    onAddMultiple?.(id);
+  };
+
+  const onRemoveTierIds = () => {
+    if (tierIds.length > 1) {
+      const copy = [...tierIds];
+      copy.pop();
+      setTierIds(copy);
+      onRemoveMultiple?.(id);
+    } else {
+      onRemoveMultiple?.(id);
+      setTierIds([]);
+      setSelected(false);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -70,7 +99,29 @@ const Team: FC<TeamProps> = ({
         />
       </div>
 
-      <h3>{name}</h3>
+      <div
+        className={styles.dataContainer}
+        style={{
+          display: "flex",
+          gap: "15px",
+          alignItems: "center",
+          height: "35px",
+        }}
+      >
+        <h3>{name}</h3>
+        {selected && chain?.id === 5 ? (
+          <div className={styles.quantityContainer}>
+            <p>{tierIds.length}</p>
+            <Button size="extraSmall" onClick={onAddTierIds}>
+              +
+            </Button>
+            <Button onClick={onRemoveTierIds} size="extraSmall">
+              -
+            </Button>
+          </div>
+        ) : null}
+      </div>
+
       <p>
         # of mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
       </p>

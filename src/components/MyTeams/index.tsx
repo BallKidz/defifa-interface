@@ -64,14 +64,16 @@ const MyTeams = () => {
 
             <div className={styles.teams}>
               {teams &&
-                teams.map((team) => (
-                  <MyTeam
-                    team={team}
-                    key={team.id}
-                    onRedeemSuccess={() => removeTeams([team?.id])}
-                    disableRedeem={isRedeemLoading}
-                  />
-                ))}
+                teams
+                  .sort((a, b) => b.quantity - a.quantity)
+                  .map((team) => (
+                    <MyTeam
+                      team={team}
+                      key={team.id}
+                      onRedeemSuccess={() => removeTeams([team?.id])}
+                      disableRedeem={isRedeemLoading}
+                    />
+                  ))}
               {teams?.length === 0 && <div>You dont have any teams yet.</div>}
             </div>
           </>
