@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useMemo, useState } from "react";
-import { useNetwork } from "wagmi";
 import Button from "../UI/Button";
 import styles from "./Team.module.css";
 
@@ -29,7 +28,6 @@ const Team: FC<TeamProps> = ({
   onAddMultiple,
   onRemoveMultiple,
 }) => {
-  const { chain } = useNetwork();
   const [selected, setSelected] = useState<boolean>(false);
   const [tierIds, setTierIds] = useState<number[]>([id]);
   const onTeamClicked = (id: number) => {
@@ -109,7 +107,7 @@ const Team: FC<TeamProps> = ({
         }}
       >
         <h3>{name}</h3>
-        {selected && chain?.id === 5 ? (
+        {selected ? (
           <div className={styles.quantityContainer}>
             <p>{tierIds.length}</p>
             <Button size="extraSmall" onClick={onAddTierIds}>
