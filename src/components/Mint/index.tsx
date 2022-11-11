@@ -27,6 +27,7 @@ const Mint = () => {
   );
   const { data: totalSupply } = useNftRewardsTotalSupply();
   const [tierIds, setTierIds] = useState<number[]>([]);
+  const [imgMemo, setImgMemo] = useState<string>("");
 
   const [sortOption, setSortOption] = useState<string>("group");
   const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -43,7 +44,7 @@ const Mint = () => {
     token: ETH_TOKEN_ADDRESS,
     minReturnedTokens: "0",
     preferClaimedTokens: true,
-    memo: `Minted on defifa.net`,
+    memo: `Minted on defifa.net ${imgMemo}`,
     metadata: {
       dontMint: false,
       expectMintFromExtraFunds: false,
@@ -55,8 +56,23 @@ const Mint = () => {
   useEffect(() => {
     if (isSuccess || isError) {
       setTierIds([]);
+      setImgMemo("");
     }
   }, [isError, isSuccess]);
+
+  useEffect(() => {
+    if (!tierIds.length) return;
+
+    for (let i = 0; i < tierIds.length; i++) {
+      const imgStr = rewardTiers?.find(
+        (tier) => tier.id === tierIds[i]
+      ).teamImage;
+
+      setImgMemo(imgMemo.concat(" ", imgStr));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tierIds]);
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {

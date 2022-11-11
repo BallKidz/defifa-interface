@@ -2,6 +2,7 @@
 //nextjs Functional component
 
 import { ThreeDots } from "react-loader-spinner";
+import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
@@ -11,6 +12,9 @@ import styles from "./SelfReferee.module.css";
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
+  const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
+    useNextPhaseNeedsQueueing();
+  let needsQueueing = queueData! as unknown as boolean;
   return (
     <Content title="Self-Refereeing [Work in progress]" open={true}>
       <div className={styles.selfReferee}>
@@ -51,16 +55,27 @@ const SelfRefree = () => {
           Each game phase must also be queued by someone in the public in a
           timely manner.
         </p>
-        <Button onClick={write} size="big">
-          {isLoading ? (
+        <Button
+          onClick={() => {
+            write?.();
+          }}
+          size="big"
+          disabled={false || nextPhaseNeedsQueueingLoading || !needsQueueing}
+        >
+          {isLoading || nextPhaseNeedsQueueingLoading ? (
             <img
               style={{ marginTop: "5px" }}
               src="/assets/defifa_spinner.gif"
               alt="spinner"
               width={35}
             />
+          ) : needsQueueing ? (
+            <span> Queue phase {data?.fundingCycle.number.toNumber() + 1}</span>
           ) : (
-            <span>Queue phase {data?.fundingCycle.number.toNumber() + 1}</span>
+            <span>
+              {" "}
+              Phase {data?.fundingCycle.number.toNumber() + 1} Already Queued
+            </span>
           )}
         </Button>
         {/* <br />

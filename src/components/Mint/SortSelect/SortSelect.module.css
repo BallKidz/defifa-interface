@@ -19,7 +19,7 @@
   color: var(--bgColor);
   border: none;
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 3px;
   padding: 0 20px 0 10px;
 }
 
@@ -38,7 +38,7 @@
   position: relative;
   background: #c0b3f0;
   margin: 0 0 0 10px;
-  border-radius: 10px;
+  border-radius: 3px;
   border: 1px solid black;
 }
 

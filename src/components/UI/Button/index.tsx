@@ -36,7 +36,6 @@ const Button = ({
 
   return (
     <button
-      disabled={disabled}
       type={type}
       onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
@@ -44,6 +43,7 @@ const Button = ({
         backgroundColor: color,
         color: textColor,
         pointerEvents: disabled ? "none" : "auto",
+        opacity: disabled ? 0.5 : 1,
       }}
     >
       {children}
