@@ -13,11 +13,7 @@ export function useNextPhaseNeedsQueueing() {
     functionName: "nextPhaseNeedsQueueing",
     args: projectId,
     chainId: chainData.chainId,
-    onSuccess: (data) => {
-      console.log(data);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
+    onSuccess: (data) => {},
+    onError: (error) => {},
   });
 }

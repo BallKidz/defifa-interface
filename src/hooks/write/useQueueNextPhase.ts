@@ -13,14 +13,14 @@ import { simulateTransaction } from "../../lib/tenderly";
 export function useQueueNextPhase(simulate = false) {
   const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
-  const {openConnectModal} = useConnectModal();
+  const { openConnectModal } = useConnectModal();
 
   const chainData = getChainData(network?.chain?.id);
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaDeployer,
     contractInterface: DefifaDeployer.abi,
     functionName: "queueNextPhaseOf",
-    overrides: {gasLimit: 210000},
+    overrides: { gasLimit: 210000 },
     args: [chainData.projectId],
     chainId: chainData.chainId,
     onError: (error) => {
@@ -49,7 +49,6 @@ export function useQueueNextPhase(simulate = false) {
       if (simulate) {
         simulateQueueNextPhase();
       } else {
-        console.log(write)
         write?.();
       }
     },
