@@ -24,12 +24,12 @@ const Home: NextPage = () => {
           content="Defifa is a Luxury World Cup Experience built with Juicebox and secured by Ethereum."
         />
         <link rel="icon" href="/favicon.ico" />
-        <Script
-          src="https://cdn.usefathom.com/script.js"
-          data-site="WIPQWWMN"
-          defer
-        />
       </Head>
+      <Script
+        src="https://cdn.usefathom.com/script.js"
+        data-site="WIPQWWMN"
+        defer
+      />
       <ToastContainer
         position="top-right"
         autoClose={5000}
