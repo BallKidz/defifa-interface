@@ -29,7 +29,7 @@ const MyTeam: FC<{
       <IpfsImage hash={image} className={styles.teamImg} />
       <h3>{name}</h3>
       <p>Quantity : {quantity}</p>
-      <p>Attestation power: 5% </p>
+      {/* <p>Attestation power: 5% </p> */}
       <Button
         onClick={() => {
           write?.();

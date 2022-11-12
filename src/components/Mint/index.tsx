@@ -62,13 +62,11 @@ const Mint = () => {
 
   useEffect(() => {
     if (!tierIds.length) return;
-    console.log(imgMemo);
     let newImgMemo = "";
     for (let i = 0; i < tierIds.length; i++) {
       const imgStr = rewardTiers?.find(
         (tier) => tier.id === tierIds[i]
       ).teamImage;
-      // console.log("imgStr",imgStr);
       newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
     }
     setImgMemo(newImgMemo);

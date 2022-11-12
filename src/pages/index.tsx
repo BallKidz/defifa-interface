@@ -12,6 +12,7 @@ import Divider from "../components/UI/Divider";
 import styles from "../styles/Home.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import MyTeams from "../components/MyTeams";
+import Script from "next/script";
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -23,11 +24,11 @@ const Home: NextPage = () => {
           content="Defifa is a Luxury World Cup Experience built with Juicebox and secured by Ethereum."
         />
         <link rel="icon" href="/favicon.ico" />
-        <script
+        <Script
           src="https://cdn.usefathom.com/script.js"
           data-site="WIPQWWMN"
           defer
-        ></script>
+        />
       </Head>
       <ToastContainer
         position="top-right"
