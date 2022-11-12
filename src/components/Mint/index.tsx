@@ -62,18 +62,24 @@ const Mint = () => {
 
   useEffect(() => {
     if (!tierIds.length) return;
-
+    console.log(imgMemo);
+    let newImgMemo = "";
     for (let i = 0; i < tierIds.length; i++) {
       const imgStr = rewardTiers?.find(
         (tier) => tier.id === tierIds[i]
       ).teamImage;
-
-      setImgMemo(imgMemo.concat(" ", imgStr));
+      // console.log("imgStr",imgStr);
+      newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
     }
+    setImgMemo(newImgMemo);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tierIds]);
 
+  // useEffect(() => {
+  //   console.log("IMAGE MEMO",imgMemo);
+  // }
+  // , [imgMemo]);
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
       const filtered = tierIds.filter((i) => i !== id);
