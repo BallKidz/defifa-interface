@@ -121,7 +121,7 @@ const Team: FC<TeamProps> = ({
       </div>
 
       <p>
-        # of mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
+        Mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
       </p>
     </div>
   );

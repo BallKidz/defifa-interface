@@ -42,6 +42,11 @@
   border: 1px solid black;
 }
 
+.option {
+  background: #c0b3f0;
+  text-indent: 10px;
+}
+
 /* Media query for mobile */
 @media only screen and (max-width: 768px) {
   .sortSelect {

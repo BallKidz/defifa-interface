@@ -127,7 +127,7 @@ const Mint = () => {
             </div>
 
             <div className={styles.subtitle}>
-              # Mints: <span>{totalSupply?.toNumber()}</span>
+              Mints: <span>{totalSupply?.toNumber()}</span>
             </div>
 
             <div className={styles.sortSelectWrapper}>

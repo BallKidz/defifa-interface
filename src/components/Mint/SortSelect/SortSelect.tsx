@@ -24,8 +24,12 @@ const SortSelect: FC<SortSelectProps> = ({ onChange }) => {
           onChange={(e) => onSortOptionChange(e.target.value)}
           defaultValue={sortOption}
         >
-          <option value="group">GROUP</option>
-          <option value="minted">MOST MINTED</option>
+          <option value="group" className={styles.option}>
+            GROUP
+          </option>
+          <option value="minted" className={styles.option}>
+            MOST MINTED
+          </option>
         </select>
         <div className={styles.arrow}>
           <Image
