@@ -3,7 +3,7 @@ import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFu
 import { TeamsContext } from "../../hooks/teamsContext";
 import { TeamTier, useMyTeams } from "../../hooks/useMyTeams";
 import useRedeemTokensOf from "../../hooks/write/useRedeemTokensOf";
-import MyTeam, { getRedeemButtonText } from "../MyTeam/MyTeam";
+import MyTeam from "../MyTeam/MyTeam";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./index.module.css";

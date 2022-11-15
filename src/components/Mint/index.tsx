@@ -74,10 +74,6 @@ const Mint = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tierIds]);
 
-  // useEffect(() => {
-  //   console.log("IMAGE MEMO",imgMemo);
-  // }
-  // , [imgMemo]);
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
       const filtered = tierIds.filter((i) => i !== id);

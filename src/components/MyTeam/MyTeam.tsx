@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC } from "react";
 import { IpfsImage } from "react-ipfs-image";
-import { TeamTier } from "../../hooks/useMyTeams";
-import styles from "./MyTeam.module.css";
-import Button from "../UI/Button";
+import { useAttestationPower } from "../../hooks/read/AttestationPower";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
+import { TeamTier } from "../../hooks/useMyTeams";
 import useRedeemTokensOf from "../../hooks/write/useRedeemTokensOf";
+import Button from "../UI/Button";
+import styles from "./MyTeam.module.css";
 const MyTeam: FC<{
   team: TeamTier;
   onRedeemSuccess: () => void;
@@ -14,6 +15,7 @@ const MyTeam: FC<{
   const { id, image, name, quantity } = team;
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
+  const attestationPower = useAttestationPower(id, quantity);
   const canRedeem = fundingCycle === 1 || fundingCycle === 4;
   const {
     write,
@@ -24,12 +26,13 @@ const MyTeam: FC<{
     tokenIds: team.tokenIds,
     onSuccess: onRedeemSuccess,
   });
+
   return (
     <div className={styles.container}>
       <IpfsImage hash={image} className={styles.teamImg} />
       <h3>{name}</h3>
       <p>Quantity : {quantity}</p>
-      {/* <p>Attestation power: 5% </p> */}
+      <p>Attestation power: {attestationPower}% </p>
       <Button
         onClick={() => {
           write?.();
