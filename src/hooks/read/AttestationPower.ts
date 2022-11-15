@@ -20,10 +20,12 @@ export function useAttestationPower(id: number, mintsHeldFromTier: number) {
       : tier.initialQuantity.toNumber();
 
     const totalMints = maxSupply - tier.remainingQuantity?.toNumber();
-
-    setAttestationPower(
-      ((100 / 32 / totalMints) * mintsHeldFromTier).toFixed(2)
-    );
+    const attestationPower = (100 / 32 / totalMints) * mintsHeldFromTier;
+    const attestationPowerPercentage =
+      attestationPower < 1
+        ? attestationPower.toFixed(2)
+        : attestationPower.toFixed();
+    setAttestationPower(attestationPowerPercentage);
   }, [id, mintsHeldFromTier, tiers]);
 
   return attestationPower;
