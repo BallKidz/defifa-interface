@@ -2,21 +2,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
-  background-image: url("/assets/banny.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: "100px";
 }
 
 .mostMintContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 70px;
-  background-image: url("/assets/banny.png");
-
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 
 .mintHeader {

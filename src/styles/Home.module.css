@@ -3,6 +3,15 @@
   padding: 65px 8% 35px 8%;
 }
 
+@media only screen and (min-width: 1024px) {
+  .container {
+    background: url("/assets/banny.png");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
 @media only screen and (max-width: 1300px) {
   .container {
     padding: 65px 5% 112px 5%;
