@@ -1,6 +1,6 @@
 .phases {
   display: grid;
-  grid-template-columns: 40% 40%;
+  grid-template-columns: 40% 50%;
   gap: 100px;
   height: 100%;
   border-radius: 10px;

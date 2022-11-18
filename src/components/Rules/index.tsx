@@ -5,7 +5,7 @@ import Content from "../UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
-  const { mint, start, tradeDeadline, end } = useDeployerDuration();
+  const { mint, start, tradeDeadline, end } = useDeployerDuration("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
 
