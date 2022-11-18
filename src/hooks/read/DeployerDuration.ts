@@ -47,17 +47,37 @@ export function useDeployerDuration(format: "local" | "utc") {
   useEffect(() => {
     if (!deployerDates) return;
 
-    console.log(deployerDates.start);
-
     setDates({
-      mint: { date: formatDateToLocal(deployerDates.start * 1000), phase: 1 },
-      start: { date: formatDateToLocal(deployerDates.start * 1000), phase: 2 },
+      mint: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.start * 1000)
+            : formatDateToUTC(deployerDates.start * 1000),
+        phase: 1,
+      },
+      start: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.start * 1000)
+            : formatDateToUTC(deployerDates.start * 1000),
+        phase: 2,
+      },
       tradeDeadline: {
-        date: formatDateToLocal(deployerDates.tradeDeadline * 1000),
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.tradeDeadline * 1000)
+            : formatDateToUTC(deployerDates.tradeDeadline * 1000),
         phase: 3,
       },
-      end: { date: formatDateToLocal(deployerDates.end * 1000), phase: 4 },
+      end: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.end * 1000)
+            : formatDateToUTC(deployerDates.end * 1000),
+        phase: 4,
+      },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deployerDates]);
 
   return dates;

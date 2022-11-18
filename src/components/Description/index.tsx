@@ -1,12 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useCountdown } from "../../hooks/Clock";
+import { useCountdown } from "../../hooks/Countdown";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
-import { formatDateHoursFromNow } from "../../utils/format/formatDate";
 import styles from "./Description.module.css";
 
 const Description = () => {
-  const { start, end, tradeDeadline } = useDeployerDuration("utc");
-  const duration = useCountdown({
+  const { end, tradeDeadline } = useDeployerDuration("utc");
+  const formatted = useCountdown({
     eventTime: 1669024800,
     interval: 1000,
   });
@@ -16,10 +15,7 @@ const Description = () => {
       <div className={styles.infoContainer}>
         <p>
           Minting ends & game starts:{" "}
-          <span className={styles.infoDates}>
-            In {duration.hours()}h, {duration.minutes()}m,
-            {duration.seconds()}s
-          </span>
+          <span className={styles.infoDates}>{formatted}</span>
         </p>
         <p>
           Trade deadline:{" "}
