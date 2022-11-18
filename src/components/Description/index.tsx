@@ -1,16 +1,21 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useCountdown } from "../../hooks/Countdown";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import styles from "./Description.module.css";
 
 const Description = () => {
-  const { start, end, tradeDeadline } = useDeployerDuration();
+  const { end, tradeDeadline } = useDeployerDuration("utc");
+  const formatted = useCountdown({
+    eventTime: 1669024800,
+    interval: 1000,
+  });
 
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <p>
           Minting ends & game starts:{" "}
-          <span className={styles.infoDates}>{start.date}</span>
+          <span className={styles.infoDates}>{formatted}</span>
         </p>
         <p>
           Trade deadline:{" "}

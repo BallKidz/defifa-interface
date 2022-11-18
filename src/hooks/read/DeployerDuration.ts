@@ -2,7 +2,10 @@ import { useContractRead, useNetwork } from "wagmi";
 import { getChainData } from "../../constants/addresses";
 import DefifaDeployer from "@jbx-protocol/juice-defifa/out/DefifaDeployer.sol/DefifaDeployer.json";
 import { useState, useEffect } from "react";
-import { formatDateToUTC } from "../../utils/format/formatDate";
+import {
+  formatDateToLocal,
+  formatDateToUTC,
+} from "../../utils/format/formatDate";
 
 type DescriptionDates = {
   mint: {
@@ -23,7 +26,7 @@ type DescriptionDates = {
   };
 };
 
-export function useDeployerDuration() {
+export function useDeployerDuration(format: "local" | "utc") {
   const network = useNetwork();
   const chainData = getChainData(network?.chain?.id);
   const defifaDeployer = chainData.defifaDeployer;
@@ -45,14 +48,36 @@ export function useDeployerDuration() {
     if (!deployerDates) return;
 
     setDates({
-      mint: { date: formatDateToUTC(deployerDates.start * 1000), phase: 1 },
-      start: { date: formatDateToUTC(deployerDates.start * 1000), phase: 2 },
+      mint: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.start * 1000)
+            : formatDateToUTC(deployerDates.start * 1000),
+        phase: 1,
+      },
+      start: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.start * 1000)
+            : formatDateToUTC(deployerDates.start * 1000),
+        phase: 2,
+      },
       tradeDeadline: {
-        date: formatDateToUTC(deployerDates.tradeDeadline * 1000),
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.tradeDeadline * 1000)
+            : formatDateToUTC(deployerDates.tradeDeadline * 1000),
         phase: 3,
       },
-      end: { date: formatDateToUTC(deployerDates.end * 1000), phase: 4 },
+      end: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDates.end * 1000)
+            : formatDateToUTC(deployerDates.end * 1000),
+        phase: 4,
+      },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deployerDates]);
 
   return dates;

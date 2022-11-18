@@ -1,11 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
+import { formatDateToUTC } from "../../utils/format/formatDate";
 import Content from "../UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
-  const { mint, start, tradeDeadline, end } = useDeployerDuration();
+  const { mint, start, tradeDeadline, end } = useDeployerDuration("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
 
@@ -68,7 +69,7 @@ const Rules = () => {
             <ul>
               <li>
                 The pot is locked and minting permenently ends before the first
-                kickoff on November 21, 2022 at 2 AM PST.
+                kickoff on {formatDateToUTC(1669024800 * 1000, true)} UTC.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>3</sup>
                 </a>
