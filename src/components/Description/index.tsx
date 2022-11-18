@@ -1,12 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useCountdown } from "../../hooks/Countdown";
+import { useDeployerDates } from "../../hooks/read/DeployerDates";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import styles from "./Description.module.css";
 
 const Description = () => {
-  const { end, tradeDeadline } = useDeployerDuration("utc");
+  const deployerDuration = useDeployerDuration();
+  const { end, tradeDeadline } = useDeployerDates("utc");
   const formatted = useCountdown({
-    eventTime: 1669024800,
+    eventTime: deployerDuration?.start,
     interval: 1000,
   });
 

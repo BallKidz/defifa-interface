@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
+import { useDeployerDates } from "../../hooks/read/DeployerDates";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { formatDateToUTC } from "../../utils/format/formatDate";
 import Content from "../UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
-  const { mint, start, tradeDeadline, end } = useDeployerDuration("local");
+  const { mint, start, tradeDeadline, end } = useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
 

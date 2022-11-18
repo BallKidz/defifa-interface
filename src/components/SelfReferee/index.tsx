@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 //nextjs Functional component
 
+import moment from "moment";
 import { ThreeDots } from "react-loader-spinner";
+import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
@@ -12,9 +14,12 @@ import styles from "./SelfReferee.module.css";
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
+  const deployerDuration = useDeployerDuration();
   const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
     useNextPhaseNeedsQueueing();
   let needsQueueing = queueData! as unknown as boolean;
+  const beforeEnd = moment(deployerDuration?.end * 1000).subtract(7, "days");
+
   return (
     <Content title="Self-Refereeing [Work in progress]" open={true}>
       <div className={styles.selfReferee}>
@@ -35,18 +40,12 @@ const SelfRefree = () => {
           If you hold an nft, you can send a transaction attesting to a
           submitted scorecard that conveys correct results of off-chain events.
         </p>
-        <p className={styles.attestationConfirm}>
-          You’ve attested to scorecard with root <b>0xasdf...1234</b> which
-          matches{" "}
-          <a
-            href=""
-            style={{ fontWeight: "bold", textDecoration: "underline" }}
-          >
-            these results
-          </a>
-          .
-        </p>
-        <Button onClick={() => {}} size="big">
+
+        <Button
+          onClick={() => {}}
+          size="big"
+          disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
+        >
           Change attestation
         </Button>
         <br />
