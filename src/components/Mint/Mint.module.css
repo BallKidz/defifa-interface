@@ -2,18 +2,19 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
+  margin-top: 20px;
 }
 
 .mostMintContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 70px;
+  margin-top: 20px;
 }
 
 .mintHeader {
   display: grid;
   justify-content: space-between;
-  grid-template-columns: repeat(4, auto);
   align-items: center;
   grid-gap: 20px;
 }

@@ -33,25 +33,27 @@ const MyTeam: FC<{
       <h3>{name}</h3>
       <p>Quantity : {quantity}</p>
       <p>Attestation power: {attestationPower}% </p>
-      <Button
-        onClick={() => {
-          write?.();
-          // onRedeemSuccess();
-        }}
-        disabled={!canRedeem || isRedeemLoading || disableRedeem}
-      >
-        {isRedeemLoading ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            style={{ marginTop: "5px" }}
-            src="/assets/defifa_spinner.gif"
-            alt="spinner"
-            width={35}
-          />
-        ) : (
-          <span>{getRedeemButtonText(fundingCycle)}</span>
-        )}
-      </Button>
+      {canRedeem && (
+        <Button
+          onClick={() => {
+            write?.();
+            // onRedeemSuccess();
+          }}
+          disabled={!canRedeem || isRedeemLoading || disableRedeem}
+        >
+          {isRedeemLoading ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              style={{ marginTop: "5px" }}
+              src="/assets/defifa_spinner.gif"
+              alt="spinner"
+              width={35}
+            />
+          ) : (
+            <span>{getRedeemButtonText(fundingCycle)}</span>
+          )}
+        </Button>
+      )}
     </div>
   );
 };
