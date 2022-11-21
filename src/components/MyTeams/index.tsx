@@ -23,7 +23,6 @@ const MyTeams = () => {
   });
   const canRedeem = fundingCycle === 1 || fundingCycle === 4;
 
-  console.log(fundingCycle);
   return (
     <TeamsContext.Provider value={teams}>
       <Content title="My Teams" open={true} socials={false}>
