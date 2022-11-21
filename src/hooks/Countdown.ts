@@ -19,18 +19,25 @@ export function useCountdown({
   const timerRef = useRef<any>(0);
   const timerCallback = useCallback(() => {
     const duration = calculateDuration(eventTime);
-    console.log(duration);
 
-    if (!duration.days()) {
+    if (!duration.isValid) {
+      setFormatted(`Nov 21, 2022`);
+      return;
+    }
+
+    if (!duration.days() && duration.hours()) {
       setFormatted(
         `In ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
       );
-    } else if (!duration.hours() && !duration.days()) {
+    } else if (!duration.hours() && !duration.days() && duration.minutes()) {
       setFormatted(`In ${duration.minutes()}m ${duration.seconds()}s`);
-    } else if (!duration.minutes()) {
+    } else if (
+      !duration.hours() &&
+      !duration.days() &&
+      !duration.minutes() &&
+      duration.seconds()
+    ) {
       setFormatted(`In ${duration.seconds()}seconds`);
-    } else if (!duration.isValid) {
-      setFormatted(`Finished`);
     } else {
       setFormatted(
         `In ${duration.days()}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
