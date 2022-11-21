@@ -19,12 +19,13 @@ export function useCountdown({
   const timerRef = useRef<any>(0);
   const timerCallback = useCallback(() => {
     const duration = calculateDuration(eventTime);
+    console.log(duration);
 
     if (!duration.days()) {
       setFormatted(
         `In ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
       );
-    } else if (!duration.hours()) {
+    } else if (!duration.hours() && !duration.days()) {
       setFormatted(`In ${duration.minutes()}m ${duration.seconds()}s`);
     } else if (!duration.minutes()) {
       setFormatted(`In ${duration.seconds()}seconds`);
