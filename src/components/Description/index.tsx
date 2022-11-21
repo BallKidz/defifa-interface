@@ -5,19 +5,14 @@ import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import styles from "./Description.module.css";
 
 const Description = () => {
-  const deployerDuration = useDeployerDuration();
-  const { end, tradeDeadline } = useDeployerDates("utc");
-  const formatted = useCountdown({
-    eventTime: deployerDuration?.start,
-    interval: 1000,
-  });
+  const { start, end, tradeDeadline } = useDeployerDates("utc");
 
   return (
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <p>
           Minting ends & game starts:{" "}
-          <span className={styles.infoDates}>{formatted}</span>
+          <span className={styles.infoDates}>{start.date}</span>
         </p>
         <p>
           Trade deadline:{" "}
