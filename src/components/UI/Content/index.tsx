@@ -88,9 +88,11 @@ const Content: React.FC<
               }
               className={styles.chevronDown}
             />
-            {props.title === "Mint teams" && fundingCycle !== 1 && (
+            {fundingCycle &&
+            fundingCycle !== 1 &&
+            props.title === "Mint teams" ? (
               <span className={styles.completed}>Completed</span>
-            )}
+            ) : null}
 
             {props.rightSection?.enabled && (
               <div className={styles.rightSection}>
