@@ -30,6 +30,16 @@ const Rules = () => {
     }
   };
 
+  const pillStyle = (phase: number) => {
+    if (currentFcNumber > phase) {
+      return styles.completed;
+    } else if (currentFcNumber === phase) {
+      return styles.active;
+    } else {
+      return styles.upcoming;
+    }
+  };
+
   return (
     <Content title="Rules" open={false} socials={true}>
       <div className={styles.rulesContainer}>
@@ -37,11 +47,7 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 1: Opening ceremony (Mint start)
-              <span
-                className={
-                  currentFcNumber === 1 ? styles.active : styles.upcoming
-                }
-              >
+              <span className={pillStyle(mint.phase)}>
                 {fillPill(mint.phase)}
               </span>
             </h1>
@@ -58,11 +64,7 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 2: Kickoff (Mint ends)
-              <span
-                className={
-                  currentFcNumber === 2 ? styles.active : styles.upcoming
-                }
-              >
+              <span className={pillStyle(start.phase)}>
                 {fillPill(start.phase)}
               </span>
             </h1>
@@ -93,11 +95,7 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 3: Trade deadline{" "}
-              <span
-                className={
-                  currentFcNumber === 3 ? styles.active : styles.upcoming
-                }
-              >
+              <span className={pillStyle(tradeDeadline.phase)}>
                 {fillPill(tradeDeadline.phase)}
               </span>
             </h1>
@@ -115,11 +113,7 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 4: Final whistle{" "}
-              <span
-                className={
-                  currentFcNumber === 4 ? styles.active : styles.upcoming
-                }
-              >
+              <span className={pillStyle(end.phase)}>
                 {fillPill(end.phase)}
               </span>
             </h1>

@@ -22,9 +22,11 @@ const MyTeams = () => {
     onSuccess: () => removeTeams(teams?.map((t) => t.id)),
   });
   const canRedeem = fundingCycle === 1 || fundingCycle === 4;
+
+  console.log(fundingCycle);
   return (
     <TeamsContext.Provider value={teams}>
-      <Content title="My Teams" open={false} socials={false}>
+      <Content title="My Teams" open={true} socials={false}>
         {isError && <div className={styles.error}>{error}</div>}
         {isLoading && (
           <div className={styles.loading}>

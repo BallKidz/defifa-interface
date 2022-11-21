@@ -117,7 +117,7 @@ const Mint = () => {
 
   return (
     <>
-      <Content title="Mint teams" open={true}>
+      <Content title="Mint teams" open={currentFcNumber === 1 ? true : false}>
         <div className={styles.mint}>
           <div
             className={styles.mintHeader}

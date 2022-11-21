@@ -19,7 +19,6 @@ export function useCountdown({
   const timerRef = useRef<any>(0);
   const timerCallback = useCallback(() => {
     const duration = calculateDuration(eventTime);
-    console.log(duration);
 
     if (!duration.days()) {
       setFormatted(
@@ -30,7 +29,7 @@ export function useCountdown({
     } else if (!duration.minutes()) {
       setFormatted(`In ${duration.seconds()}seconds`);
     } else if (!duration.isValid) {
-      setFormatted(`Finished`);
+      setFormatted(`Nov 21, 2022`);
     } else {
       setFormatted(
         `In ${duration.days()}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`

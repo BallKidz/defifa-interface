@@ -29,6 +29,17 @@
   background: var(--brown);
 }
 
+.completed {
+  margin-left: 10px;
+  font-size: 14px;
+  border: var(--pink);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--pink);
+  background: #14050d;
+}
+
 @keyframes active {
   50% {
     opacity: 0.8;

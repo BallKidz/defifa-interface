@@ -8,11 +8,11 @@ const CurrentPhase = () => {
     if (fc === 1) {
       return "Mint";
     } else if (fc === 2) {
-      return "Start";
+      return "Kickoff";
     } else if (fc === 3) {
       return "Trade deadline";
     } else if (fc === 4) {
-      return "End";
+      return "Final whistle";
     } else {
       return "Mint begins soon";
     }

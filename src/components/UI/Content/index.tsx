@@ -9,6 +9,7 @@ import React, {
 import { ChainDoesNotSupportMulticallError } from "wagmi";
 import { colors } from "../../../constants/colors";
 import constants from "../../../constants/UI";
+import { useProjectCurrentFundingCycle } from "../../../hooks/read/ProjectCurrentFundingCycle";
 import Socials from "../../Navbar/Info/Socials";
 import Button from "../Button";
 
@@ -30,6 +31,8 @@ const Content: React.FC<
   const [displayContent, setDisplayContent] = useState<boolean>(
     props?.open ?? false
   );
+  const { data } = useProjectCurrentFundingCycle();
+  const fundingCycle = data?.fundingCycle.number.toNumber();
 
   const contentTitle = useMemo<ReactElement>(() => {
     if (props.title === "Rules" && props.socials) {
@@ -85,6 +88,10 @@ const Content: React.FC<
               }
               className={styles.chevronDown}
             />
+            {props.title === "Mint teams" && fundingCycle !== 1 && (
+              <span className={styles.completed}>Completed</span>
+            )}
+
             {props.rightSection?.enabled && (
               <div className={styles.rightSection}>
                 <div className={styles.rightSectionButtonWrapper}> </div>
