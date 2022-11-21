@@ -25,7 +25,6 @@
   justify-content: flex-end;
 }
 
-
 .content {
   /* transform: scaleY(0); */
   overflow: hidden;
@@ -36,6 +35,17 @@
 
 .socials {
   margin-right: 30px;
+}
+
+.completed {
+  margin-left: 10px;
+  font-size: 14px;
+  border: var(--pink);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--pink);
+  background: #14050d;
 }
 
 .accordianInput:checked ~ .content {

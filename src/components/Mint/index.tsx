@@ -1,6 +1,6 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
-import { chunk } from "lodash";
+import { chunk, repeat } from "lodash";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
@@ -21,6 +21,8 @@ const Mint = () => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
+  const currentFcNumber = data?.fundingCycle.number.toNumber();
+
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
@@ -115,9 +117,15 @@ const Mint = () => {
 
   return (
     <>
-      <Content title="Mint teams" open={true}>
+      <Content title="Mint teams" open={false}>
         <div className={styles.mint}>
-          <div className={styles.mintHeader}>
+          <div
+            className={styles.mintHeader}
+            style={{
+              gridTemplateColumns:
+                currentFcNumber === 1 ? "repeat(4, auto)" : "repeat(3, auto)",
+            }}
+          >
             <div className={styles.subtitle}>
               Play: <span>0.022 ETH / NFT</span>
             </div>
@@ -130,46 +138,52 @@ const Mint = () => {
               <SortSelect onChange={onSortChange} />
             </div>
 
-            <div className={styles.buttonWrapper}>
-              <Button
-                disabled={isLoading || !tierIds.length ? true : false}
-                onClick={() => {
-                  if (!isConnected) {
-                    openConnectModal!();
-                  } else {
-                    write?.();
-                  }
+            {currentFcNumber === 1 && (
+              <div className={styles.buttonWrapper}>
+                <Button
+                  disabled={isLoading || !tierIds.length ? true : false}
+                  onClick={() => {
+                    if (!isConnected) {
+                      openConnectModal!();
+                    } else {
+                      write?.();
+                    }
+                  }}
+                >
+                  {isLoading ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      style={{ marginTop: "5px" }}
+                      src="/assets/defifa_spinner.gif"
+                      alt="spinner"
+                      width={35}
+                    />
+                  ) : (
+                    <span>Mint {tierIds.length ? tierIds.length : ""}</span>
+                  )}
+                </Button>
+              </div>
+            )}
+          </div>
+          {currentFcNumber === 1 && (
+            <div className={styles.selectAllWrapper}>
+              <button className={styles.selectAll} onClick={onSelectAllTeams}>
+                Select all
+              </button>
+              <button
+                className={styles.selectAll}
+                onClick={onUnselectAllTeams}
+                style={{
+                  display: tierIds.length === tiers?.length ? "block" : "none",
                 }}
               >
-                {isLoading ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    style={{ marginTop: "5px" }}
-                    src="/assets/defifa_spinner.gif"
-                    alt="spinner"
-                    width={35}
-                  />
-                ) : (
-                  <span>Mint {tierIds.length ? tierIds.length : ""}</span>
-                )}
-              </Button>
+                Unselect all
+              </button>
             </div>
-          </div>
-          <div className={styles.selectAllWrapper}>
-            <button className={styles.selectAll} onClick={onSelectAllTeams}>
-              Select all
-            </button>
-            <button
-              className={styles.selectAll}
-              onClick={onUnselectAllTeams}
-              style={{
-                display: tierIds.length === tiers?.length ? "block" : "none",
-              }}
-            >
-              Unselect all
-            </button>
-          </div>
+          )}
+
           <div
+            style={{ pointerEvents: currentFcNumber === 1 ? "auto" : "none" }}
             className={
               sortOption === "group"
                 ? styles.groupsContainer

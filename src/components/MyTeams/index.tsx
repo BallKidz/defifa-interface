@@ -21,9 +21,11 @@ const MyTeams = () => {
     tokenIds: getTokenIdsFromTeams(teams),
     onSuccess: () => removeTeams(teams?.map((t) => t.id)),
   });
+  const canRedeem = fundingCycle === 1 || fundingCycle === 4;
+
   return (
     <TeamsContext.Provider value={teams}>
-      <Content title="My Teams" open={false} socials={false}>
+      <Content title="My Teams" open={true} socials={false}>
         {isError && <div className={styles.error}>{error}</div>}
         {isLoading && (
           <div className={styles.loading}>
@@ -40,7 +42,7 @@ const MyTeams = () => {
         )}
         {!(isError || isLoading) && (
           <>
-            {teams && teams.length > 1 ? (
+            {teams && teams.length > 1 && canRedeem ? (
               <div className={styles.buttonContainer}>
                 <Button
                   size="medium"
