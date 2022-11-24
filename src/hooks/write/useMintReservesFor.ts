@@ -1,5 +1,4 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import DefifaDeployer from "@jbx-protocol/juice-defifa/out/DefifaDeployer.sol/DefifaDeployer.json";
 import {
   useAccount,
   useContractWrite,
@@ -9,18 +8,18 @@ import {
 } from "wagmi";
 import { getChainData } from "../../constants/addresses";
 import { simulateTransaction } from "../../lib/tenderly";
+import { useChainData } from "../useChainData";
 
 export function useMintReservesFor(simulate = false) {
   const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const { chainData } = useChainData();
 
-  const chainData = getChainData(network?.chain?.id);
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaDeployer,
-    contractInterface: DefifaDeployer.abi,
-    functionName: "queueNextPhaseOf",
-    overrides: { gasLimit: 210000 },
+    addressOrName: chainData.defifaDelegate.address,
+    contractInterface: chainData.defifaDelegate.interface,
+    functionName: "mintReservesFor",
     args: [chainData.projectId],
     chainId: chainData.chainId,
     onError: (error) => {
