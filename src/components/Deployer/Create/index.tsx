@@ -4,7 +4,6 @@ import styles from "./DeployerCreate.module.css";
 
 const DeployerCreate = () => {
   const onCreate = () => {
-    console.log("woop");
   };
   return (
     <form onSubmit={onCreate} className={styles.container}>

@@ -12,7 +12,7 @@ export function useNftRewardsTotalSupply() {
     addressOrName: JBTiered721DelegateStore?.address ?? "",
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "totalSupply",
-    args: chainData.defifaDelegate,
+    args: chainData.defifaDelegate.address,
     watch: true,
     chainId: chainData.chainId,
   });

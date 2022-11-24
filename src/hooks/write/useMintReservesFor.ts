@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
@@ -22,9 +23,17 @@ export function useMintReservesFor(simulate = true) {
     contractInterface: chainData.defifaDelegate.interface,
     functionName: "mintReservesFor",
     args: [outStanding],
+    overrides: { gasLimit: 21000000 },
     chainId: chainData.chainId,
     onError: (error) => {
-      console.error(error);
+      console.error(
+        outStanding.map((o) => [
+          BigNumber.from(o.tierId),
+          BigNumber.from(o.count),
+        ]),
+        "ERRRRORRR",
+        error
+      );
     },
   });
 
