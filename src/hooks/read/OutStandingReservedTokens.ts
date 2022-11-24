@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import { useContractRead, useProvider } from "wagmi";
 import { getChainData } from "../../constants/addresses";
@@ -5,7 +6,18 @@ import { getChainData } from "../../constants/addresses";
 export function useOutstandingNumber() {
   const provider = useProvider();
   getOutstandingNumberForAllTiers(provider);
-  return () => getOutstandingNumberForAllTiers(provider);
+  const [outstandingNumbers, setOutstandingNumbers] = useState<
+    JBTiered721MintReservesForTiersData[]
+  >([]);
+
+  useEffect(() => {
+    getOutstandingNumberForAllTiers(provider).then((data) => {
+      console.log("setOutstanding", data);
+      setOutstandingNumbers(data);
+    });
+  }, [provider]);
+
+  return outstandingNumbers;
 }
 export interface JBTiered721MintReservesForTiersData {
   tierId: number;

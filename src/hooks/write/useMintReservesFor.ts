@@ -6,28 +6,30 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
 import { simulateTransaction } from "../../lib/tenderly";
+import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
 
-export function useMintReservesFor(simulate = false) {
+export function useMintReservesFor(simulate = true) {
   const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
+  const outStanding = useOutstandingNumber();
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaDelegate.address,
     contractInterface: chainData.defifaDelegate.interface,
     functionName: "mintReservesFor",
-    args: [chainData.projectId],
+    args: [outStanding],
     chainId: chainData.chainId,
     onError: (error) => {
       console.error(error);
     },
   });
 
-  const simulateQueueNextPhase = () => {
+  const simulateOutStanding = () => {
+    console.log("simulateOutStanding");
     simulateTransaction({
       chainId: chainData.chainId,
       populatedTx: config.request,
@@ -46,7 +48,7 @@ export function useMintReservesFor(simulate = false) {
         openConnectModal!();
       }
       if (simulate) {
-        simulateQueueNextPhase();
+        simulateOutStanding();
       } else {
         write?.();
       }
