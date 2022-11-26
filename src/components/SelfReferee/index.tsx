@@ -62,7 +62,6 @@ const SelfRefree = () => {
 
         <Button
           onClick={() => {
-            console.log("mintReserves clicked");
             mintReserves?.();
           }}
           size="big"
