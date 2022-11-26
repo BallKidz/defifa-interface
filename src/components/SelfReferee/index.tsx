@@ -23,6 +23,7 @@ const SelfRefree = () => {
     isLoading: mintReservesLoading,
     isSuccess: mintReservesSuccess,
     isError: mintReservesError,
+    disabled: mintReservesDisabled,
   } = useMintReservesFor();
   let needsQueueing = queueData! as unknown as boolean;
   const beforeEnd = moment(deployerDuration?.end * 1000).subtract(7, "days");
@@ -56,15 +57,16 @@ const SelfRefree = () => {
           Change attestation
         </Button>
 
-        <p>
-          Mint reserved tokens for all tiers.
-        </p>
+        <p>Mint reserved tokens for all tiers.</p>
 
         <Button
           onClick={() => {
             mintReserves?.();
           }}
           size="big"
+          disabled={
+            mintReservesLoading || mintReservesSuccess || mintReservesDisabled
+          }
         >
           Mint Reserves
         </Button>
