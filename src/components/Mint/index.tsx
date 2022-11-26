@@ -22,7 +22,6 @@ const Mint = () => {
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
   const currentFcNumber = data?.fundingCycle.number.toNumber();
-
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []

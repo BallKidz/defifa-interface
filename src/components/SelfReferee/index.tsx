@@ -6,6 +6,7 @@ import { ThreeDots } from "react-loader-spinner";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
+import { useMintReservesFor } from "../../hooks/write/useMintReservesFor";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
@@ -17,6 +18,12 @@ const SelfRefree = () => {
   const deployerDuration = useDeployerDuration();
   const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
     useNextPhaseNeedsQueueing();
+  const {
+    write: mintReserves,
+    isLoading: mintReservesLoading,
+    isSuccess: mintReservesSuccess,
+    isError: mintReservesError,
+  } = useMintReservesFor();
   let needsQueueing = queueData! as unknown as boolean;
   const beforeEnd = moment(deployerDuration?.end * 1000).subtract(7, "days");
 
@@ -47,6 +54,19 @@ const SelfRefree = () => {
           disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
         >
           Change attestation
+        </Button>
+
+        <p>
+          Mint reserved tokens for all tiers.
+        </p>
+
+        <Button
+          onClick={() => {
+            mintReserves?.();
+          }}
+          size="big"
+        >
+          Mint Reserves
         </Button>
         <br />
         <br />
