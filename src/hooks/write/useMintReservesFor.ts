@@ -23,7 +23,7 @@ export function useMintReservesFor(simulate = false) {
     contractInterface: chainData.defifaDelegate.interface,
     functionName: "mintReservesFor((uint256,uint256)[])",
     args: [outStanding],
-    overrides: { gasLimit: 21000000 },
+    overrides: chainData?.chainId == 5 ? { gasLimit: 21000000 } : {},
     chainId: chainData.chainId,
     onError: (error) => {
       console.error(outStanding, "ERRRRORRR", error);
@@ -38,6 +38,10 @@ export function useMintReservesFor(simulate = false) {
       userAddress: address,
     });
   };
+
+  const filteredOutstanding = outStanding.filter((item) => {
+    return item.count > 0;
+  });
 
   const { data, write, error, isError } = useContractWrite(config);
 
@@ -60,5 +64,6 @@ export function useMintReservesFor(simulate = false) {
     isSuccess,
     error,
     isError,
+    disabled: filteredOutstanding.length == 0,
   };
 }
