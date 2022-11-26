@@ -11,7 +11,7 @@ import { simulateTransaction } from "../../lib/tenderly";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
 
-export function useMintReservesFor(simulate = true) {
+export function useMintReservesFor(simulate = false) {
   const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -21,19 +21,12 @@ export function useMintReservesFor(simulate = true) {
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaDelegate.address,
     contractInterface: chainData.defifaDelegate.interface,
-    functionName: "mintReservesFor",
+    functionName: "mintReservesFor((uint256,uint256)[])",
     args: [outStanding],
     overrides: { gasLimit: 21000000 },
     chainId: chainData.chainId,
     onError: (error) => {
-      console.error(
-        outStanding.map((o) => [
-          BigNumber.from(o.tierId),
-          BigNumber.from(o.count),
-        ]),
-        "ERRRRORRR",
-        error
-      );
+      console.error(outStanding, "ERRRRORRR", error);
     },
   });
 
@@ -55,11 +48,12 @@ export function useMintReservesFor(simulate = true) {
     write: () => {
       if (!isConnected) {
         openConnectModal!();
-      }
-      if (simulate) {
-        simulateOutStanding();
       } else {
-        write?.();
+        if (simulate) {
+          simulateOutStanding();
+        } else {
+          write?.();
+        }
       }
     },
     isLoading,

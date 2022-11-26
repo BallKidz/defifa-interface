@@ -49,14 +49,25 @@ const SelfRefree = () => {
         </p>
 
         <Button
+          onClick={() => {}}
+          size="big"
+          disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
+        >
+          Change attestation
+        </Button>
+
+        <p>
+          Mint reserved tokens for all tiers.
+        </p>
+
+        <Button
           onClick={() => {
             console.log("mintReserves clicked");
             mintReserves?.();
           }}
           size="big"
-          disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
         >
-          Change attestation
+          Mint Reserves
         </Button>
         <br />
         <br />
