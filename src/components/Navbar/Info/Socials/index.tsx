@@ -10,6 +10,11 @@ const Socials = () => {
         </Link>
       </p>
       <p>
+        <Link href="https://opensea.io/collection/defifa-2022-v2" passHref>
+          <a target="_blank">OpenSea</a>
+        </Link>
+      </p>
+      <p>
         <Link href="https://www.juicebox.money/v2/p/305" passHref>
           <a target="_blank">Juicebox</a>
         </Link>
