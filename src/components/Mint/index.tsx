@@ -40,8 +40,6 @@ const Mint = () => {
       (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
     );
 
-  console.log({ rewardTiers });
-
   const { write, isLoading, isSuccess, isError } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
     token: ETH_TOKEN_ADDRESS,
