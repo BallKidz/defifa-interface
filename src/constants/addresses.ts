@@ -1,5 +1,6 @@
 import DefifaDeployerABI from "@jbx-protocol/juice-defifa/out/DefifaDeployer.sol/DefifaDeployer.json";
 import DefifaDelegateABI from "@jbx-protocol/juice-defifa/out/DefifaDelegate.sol/DefifaDelegate.json";
+import DefifaGovernorABI from "@jbx-protocol/juice-defifa/out/DefifaGovernor.sol/DefifaGovernor.json";
 import { chain } from "wagmi";
 import IJBTiered721DelegateStore from "@jbx-protocol/juice-721-delegate/out/IJBTiered721DelegateStore.sol/IJBTiered721DelegateStore.json";
 import {
@@ -28,6 +29,10 @@ export const mainnetData = {
     address: "0xBC855060A8c96076a6778D547D430E6f43E9809A",
     interface: DefifaDelegateABI.abi,
   },
+  defifaGovernor: {
+    address: "0xd6a2c0383dcfe7c516275138fe035269f4a4a534",
+    interface: DefifaGovernorABI.abi,
+  },
   defifaDeployer: "0x9fb90042a8ba5249473476c0405fc1009652956d",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa",
@@ -46,6 +51,10 @@ export const goerliData = {
   defifaDelegate: {
     address: "0x6ED6d5E9A0A0a1d0eD341D0d52Ee5a2cd5d6d85f",
     interface: DefifaDelegateABI.abi,
+  },
+  defifaGovernor: {
+    address: "0x0d25194abe95185db8e4b0294f5669e21c534785",
+    interface: DefifaGovernorABI.abi,
   },
   defifaDeployer: "0x6f18cf9173136c0b5a6ebf45f19d58d3ff2e17e6",
   defifaDeployerInterface: DefifaDeployerABI.abi,

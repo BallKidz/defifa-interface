@@ -40,26 +40,26 @@ const Mint = () => {
       (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
     );
 
-  const { write, isLoading, isSuccess, isError } = usePay({
-    amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
-    token: ETH_TOKEN_ADDRESS,
-    minReturnedTokens: "0",
-    preferClaimedTokens: true,
-    memo: `Minted on defifa.net ${imgMemo}`,
-    metadata: {
-      dontMint: false,
-      expectMintFromExtraFunds: false,
-      dontOvespend: false,
-      tierIdsToMint: tierIds,
-    },
-  });
+  // const { write, isLoading, isSuccess, isError } = usePay({
+  //   amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
+  //   token: ETH_TOKEN_ADDRESS,
+  //   minReturnedTokens: "0",
+  //   preferClaimedTokens: true,
+  //   memo: `Minted on defifa.net ${imgMemo}`,
+  //   metadata: {
+  //     dontMint: false,
+  //     expectMintFromExtraFunds: false,
+  //     dontOvespend: false,
+  //     tierIdsToMint: tierIds,
+  //   },
+  // });
 
-  useEffect(() => {
-    if (isSuccess || isError) {
-      setTierIds([]);
-      setImgMemo("");
-    }
-  }, [isError, isSuccess]);
+  // useEffect(() => {
+  //   if (isSuccess || isError) {
+  //     setTierIds([]);
+  //     setImgMemo("");
+  //   }
+  // }, [isError, isSuccess]);
 
   useEffect(() => {
     if (!tierIds.length) return;
@@ -137,7 +137,7 @@ const Mint = () => {
               <SortSelect onChange={onSortChange} />
             </div>
 
-            {currentFcNumber === 1 && (
+            {/* {currentFcNumber === 1 && (
               <div className={styles.buttonWrapper}>
                 <Button
                   disabled={isLoading || !tierIds.length ? true : false}
@@ -162,7 +162,7 @@ const Mint = () => {
                   )}
                 </Button>
               </div>
-            )}
+            )} */}
           </div>
           {currentFcNumber === 1 && (
             <div className={styles.selectAllWrapper}>
@@ -203,7 +203,7 @@ const Mint = () => {
                         name={t.teamName}
                         minted={t.minted}
                         supply={totalSupply?.toNumber() ?? 0}
-                        txState={isSuccess || isError}
+                        // txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
                         onAddMultiple={onAddMultipleTeams}
@@ -220,7 +220,7 @@ const Mint = () => {
                     name={t.teamName}
                     minted={t.minted}
                     supply={totalSupply?.toNumber() ?? 0}
-                    txState={isSuccess || isError}
+                    // txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
                     onAddMultiple={onAddMultipleTeams}
