@@ -1,8 +1,10 @@
-import { FixedNumber } from "ethers";
 import { FC, useEffect, useState } from "react";
+import { useNetwork } from "wagmi";
+import { getChainData } from "../../constants/addresses";
 import { useSubmitScorecards } from "../../hooks/write/useSubmitScorecards";
 import Group from "../Group";
 import Button from "../UI/Button";
+import { ballkidsScorecard } from "./constants/ballKidsScorecard";
 import styles from "./Scorecard.module.css";
 
 interface ScoreCard {
@@ -14,14 +16,10 @@ interface ScoreCardProps {
   tiers: any[];
 }
 
-const ballkidsScoreCard = [
-  ...Array.from({ length: 32 }).map((_, i) => ({
-    id: i + 1,
-    redemptionWeight: 100 + Math.floor(Math.random() * 100) + 1,
-  })),
-];
-
 const ScoreCard: FC<ScoreCardProps> = (props) => {
+  const network = useNetwork();
+
+  const chainData = getChainData(network?.chain?.id);
   const [scoreCardOption, setScoreCardOption] = useState<number>(1);
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>([]);
   const [scoreCardWithPercents, setScoreCardWithPercents] = useState<
@@ -34,7 +32,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
   useEffect(() => {
     switch (scoreCardOption) {
       case 1:
-        const ballkidScoreCard = convertScoreCardToPercents(ballkidsScoreCard);
+        const ballkidScoreCard = convertScoreCardToPercents(ballkidsScorecard);
         setScoreCardWithPercents(ballkidScoreCard);
         break;
       case 2:
@@ -113,7 +111,8 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           by developers of this website and game.
         </p>
         <p className={styles.scoreCardOptionsLabel}>
-          2. Fill your own scorecard - lorem ipsum
+          2. Fill your own scorecard - create your own scorecard, you have the
+          freedom to fill it out as you see fit.
         </p>
         <p>
           You as the player are free to fill up your own scorecard and choose
@@ -154,7 +153,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
                       <input
                         readOnly
                         value={
-                          ballkidsScoreCard.find((score) => score.id === t.id)
+                          ballkidsScorecard.find((score) => score.id === t.id)
                             ?.redemptionWeight
                         }
                         type="number"
@@ -188,26 +187,28 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           ))}
         </div>
       </div>
-      <div className={styles.scoreCardButtonContainer}>
-        <Button size="medium" onClick={submitScoreCard} disabled={isLoading}>
-          {isLoading ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              style={{ marginTop: "5px" }}
-              src="/assets/defifa_spinner.gif"
-              alt="spinner"
-              width={35}
-            />
-          ) : (
-            "Submit"
-          )}
-        </Button>
-        {scoreCardOption === 2 && (
-          <Button size="medium" onClick={() => setScoreCard([])}>
-            Clear all
+      {chainData.chainId === 5 && (
+        <div className={styles.scoreCardButtonContainer}>
+          <Button size="medium" onClick={submitScoreCard} disabled={isLoading}>
+            {isLoading ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                style={{ marginTop: "5px" }}
+                src="/assets/defifa_spinner.gif"
+                alt="spinner"
+                width={35}
+              />
+            ) : (
+              "Submit"
+            )}
           </Button>
-        )}
-      </div>
+          {scoreCardOption === 2 && (
+            <Button size="medium" onClick={() => setScoreCard([])}>
+              Clear all
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
