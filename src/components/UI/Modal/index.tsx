@@ -34,6 +34,7 @@ const CustomModal: React.FC<
 
   return (
     <Modal
+      ariaHideApp={false}
       onAfterClose={props.onAfterClose}
       onRequestClose={() => handleCloseModal()}
       isOpen={modalIsOpen}
