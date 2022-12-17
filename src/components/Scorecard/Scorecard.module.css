@@ -21,6 +21,7 @@
   display: flex;
   gap: 50px;
   font-size: 18px;
+  font-weight: 600;
 }
 
 .scoreCardOptions p {
@@ -37,6 +38,19 @@
   display: flex;
   margin-top: 20px;
   gap: 20px;
+}
+
+.ballKidsScoreCard {
+  display: flex;
+}
+
+.ballKidsScoreCardInput {
+  background: var(--contentTitle);
+  border: 0;
+}
+
+.ballKidsScoreCardNotice {
+  margin-bottom: 30px;
 }
 
 @media only screen and (min-width: 375px) and (max-width: 1440px) {

@@ -21,7 +21,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
 
   const chainData = getChainData(network?.chain?.id);
   const [scoreCardOption, setScoreCardOption] = useState<number>(1);
-  const [scoreCard, setScoreCard] = useState<ScoreCard[]>([]);
+  const [scoreCard, setScoreCard] = useState<ScoreCard[]>(ballkidsScorecard);
   const [scoreCardWithPercents, setScoreCardWithPercents] = useState<
     ScoreCard[]
   >([]);
@@ -143,6 +143,16 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           Option 2: Fill your own scorecard
         </p>
       </div>
+      {scoreCardOption === 1 && (
+        <div className={styles.ballKidsScoreCardNotice}>
+          <p>
+            The Defifa ballkids scorecard is up to date except for the finale.
+            The final 20,032 points will be assigned to the winning tier after
+            the final match on Sunday.
+          </p>
+        </div>
+      )}
+
       <div className={styles.scoreCardOptionsContainer}>
         <div className={styles.scoreCardGroupsContainer}>
           {props.tiers.map((tiers: any, index: any) => (
@@ -151,6 +161,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
                 ? tiers.map((t: any) => (
                     <div key={t.id}>
                       <input
+                        className={styles.ballKidsScoreCardInput}
                         readOnly
                         value={
                           ballkidsScorecard.find((score) => score.id === t.id)
@@ -187,28 +198,26 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           ))}
         </div>
       </div>
-      {chainData.chainId === 5 && (
-        <div className={styles.scoreCardButtonContainer}>
-          <Button size="medium" onClick={submitScoreCard} disabled={isLoading}>
-            {isLoading ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                style={{ marginTop: "5px" }}
-                src="/assets/defifa_spinner.gif"
-                alt="spinner"
-                width={35}
-              />
-            ) : (
-              "Submit"
-            )}
-          </Button>
-          {scoreCardOption === 2 && (
-            <Button size="medium" onClick={() => setScoreCard([])}>
-              Clear all
-            </Button>
+      <div className={styles.scoreCardButtonContainer}>
+        <Button size="medium" onClick={submitScoreCard} disabled={isLoading}>
+          {isLoading ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              style={{ marginTop: "5px" }}
+              src="/assets/defifa_spinner.gif"
+              alt="spinner"
+              width={35}
+            />
+          ) : (
+            "Submit"
           )}
-        </div>
-      )}
+        </Button>
+        {scoreCardOption === 2 && (
+          <Button size="medium" onClick={() => setScoreCard([])}>
+            Clear all
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
