@@ -54,7 +54,7 @@ export const ballkidsScorecard: ScoreCard[] = [
   },
   {
     id: 13,
-    redemptionWeight: 18332,
+    redemptionWeight: 38364,
   },
   {
     id: 14,
