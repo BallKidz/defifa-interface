@@ -143,15 +143,6 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           Option 2: Fill your own scorecard
         </p>
       </div>
-      {scoreCardOption === 1 && (
-        <div className={styles.ballKidsScoreCardNotice}>
-          <p>
-            The Defifa ballkids scorecard is up to date except for the finale.
-            The final 20,032 points will be assigned to the winning tier after
-            the final match on Sunday.
-          </p>
-        </div>
-      )}
 
       <div className={styles.scoreCardOptionsContainer}>
         <div className={styles.scoreCardGroupsContainer}>
