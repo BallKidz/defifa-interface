@@ -190,7 +190,11 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
         </div>
       </div>
       <div className={styles.scoreCardButtonContainer}>
-        <Button size="medium" onClick={submitScoreCard} disabled={isLoading}>
+        <Button
+          size="medium"
+          onClick={submitScoreCard}
+          disabled={isLoading || scoreCardOption === 1}
+        >
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -199,6 +203,8 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
               alt="spinner"
               width={35}
             />
+          ) : scoreCardOption === 1 ? (
+            "Submitted"
           ) : (
             "Submit"
           )}

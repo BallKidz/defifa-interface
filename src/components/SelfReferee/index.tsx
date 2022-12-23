@@ -49,7 +49,7 @@ const SelfRefree = () => {
   };
 
   return (
-    <Content title="Self-Refereeing [Work in progress]" open={true}>
+    <Content title="Self-Refereeing" open={true}>
       <div className={styles.selfReferee}>
         <CustomModal
           openModal={openModal}
