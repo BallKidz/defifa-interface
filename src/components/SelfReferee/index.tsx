@@ -3,7 +3,7 @@
 
 import { chunk } from "lodash";
 import moment from "moment";
-import { useState } from "react";
+import React, { useMemo, useState } from "react";
 import useNftRewards from "../../hooks/NftRewards";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
@@ -11,11 +11,14 @@ import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { useMintReservesFor } from "../../hooks/write/useMintReservesFor";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
+import Attestation from "../Attestation";
 import ScoreCard from "../Scorecard";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import CustomModal from "../UI/Modal";
 import styles from "./SelfReferee.module.css";
+
+type modalOption = "scorecard" | "attestation";
 
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
@@ -39,6 +42,17 @@ const SelfRefree = () => {
   let needsQueueing = queueData! as unknown as boolean;
   const beforeEnd = moment(deployerDuration?.end * 1000).subtract(7, "days");
   const [openModal, setIsOpenModal] = useState<boolean>(false);
+  const [modalOption, setModalOption] = useState<modalOption>();
+
+  const onSubmitScoreCardClick = () => {
+    setModalOption("scorecard");
+    handleOpenModal();
+  };
+
+  const onSubmitAttestationClick = () => {
+    setModalOption("attestation");
+    handleOpenModal();
+  };
 
   const handleOpenModal = () => {
     setIsOpenModal(true);
@@ -48,6 +62,17 @@ const SelfRefree = () => {
     setIsOpenModal(false);
   };
 
+  const modalContent = useMemo<JSX.Element | undefined>(() => {
+    switch (modalOption) {
+      case "scorecard":
+        return <ScoreCard tiers={chunkedRewardTiers} />;
+      case "attestation":
+        return <Attestation />;
+      default:
+        break;
+    }
+  }, [chunkedRewardTiers, modalOption]);
+
   return (
     <Content title="Self-Refereeing" open={true}>
       <div className={styles.selfReferee}>
@@ -55,7 +80,7 @@ const SelfRefree = () => {
           openModal={openModal}
           onAfterClose={() => handleCloseModal()}
         >
-          <ScoreCard tiers={chunkedRewardTiers} />
+          {modalContent}
         </CustomModal>
         <p>
           Defifa relies on the integrity of a few transactions made by the
@@ -65,7 +90,7 @@ const SelfRefree = () => {
           Scorecards can be submitted that suggest the correct results of
           off-chain events.
         </p>
-        <Button onClick={() => handleOpenModal()} size="big">
+        <Button onClick={onSubmitScoreCardClick} size="big">
           Submit a scorecard
         </Button>
         <br />
@@ -76,11 +101,11 @@ const SelfRefree = () => {
         </p>
 
         <Button
-          onClick={() => {}}
+          onClick={onSubmitAttestationClick}
           size="big"
-          disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
+          // disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
         >
-          Change attestation
+          Submit attestation
         </Button>
 
         <p>Mint reserved tokens for all tiers.</p>
@@ -125,11 +150,6 @@ const SelfRefree = () => {
             </span>
           )}
         </Button>
-        {/* <br />
-        <br />
-        <Button onClick={() => {}} size="big" color="#736B6F">
-          PHASE 4 ALREADY QUEUED
-        </Button> */}
       </div>
     </Content>
   );

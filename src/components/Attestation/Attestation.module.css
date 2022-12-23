@@ -1,0 +1,8 @@
+.attestationContainer {
+  padding: 50px 30px 50px 30px;
+}
+
+.attestationHeader {
+  font-size: 18px;
+  color: var(--gold);
+}

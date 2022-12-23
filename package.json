@@ -18,6 +18,7 @@
     "@jbx-protocol/juice-721-delegate": "^3.0.0",
     "@jbx-protocol/juice-contracts-v3": "^2.0.2",
     "@jbx-protocol/juice-defifa": "^6.0.0",
+    "@openzeppelin/subgraphs": "*",
     "@rainbow-me/rainbowkit": "^0.7.0",
     "axios": "^1.1.3",
     "ethers": "^5.7.1",
