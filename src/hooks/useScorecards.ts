@@ -5,23 +5,21 @@ import { ethers } from "ethers";
 import { useInterval } from "./useInterval";
 
 const proposalsQuery = gql`
-  query proposalsQuery($owner: String!) {
-    {
-  proposals {
-    description
-    calls {
-      calldata
+  query proposalsQuery {
+    proposals {
+      description
+      calls {
+        calldata
+        id
+        index
+      }
+      eta
+      executed
       id
-      index
+      proposalId
+      queued
+      startBlock
     }
-    eta
-    executed
-    id
-    proposalId
-    queued
-    startBlock
-  }
-}
   }
 `;
 interface ScoreCard {
@@ -47,21 +45,29 @@ export function useScorecards() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorState, setError] = useState<boolean>(false);
 
+  useEffect(() => {
+    getScoreCardsAndSetScoreCards();
+  }, [chainData]);
+
   function getScoreCardsAndSetScoreCards() {
+    console.log("getScoreCardsAndSetScoreCards", graphUrl);
     if (graphUrl) {
       request(graphUrl, proposalsQuery)
         .then((data) => {
+          console.log(data);
           const scoreCards = getScoreCardsFromProposals(data.proposals);
           setScoreCards(scoreCards);
           setIsLoading(false);
         })
         .catch((error) => {
+          console.log(error);
           setError(true);
         });
     }
   }
 
   function getScoreCardsFromProposals(proposals: any) {
+    console.log("getScoreCardsFromProposals");
     let scoreCards: ScoreCard[] = [];
     proposals.forEach((proposal: any) => {
       proposal.calls.forEach((call: any) => {
@@ -74,12 +80,9 @@ export function useScorecards() {
         scoreCards.push(createScoreCardFromArray(scoreCard));
       });
     });
+    console.log("scoreCards", scoreCards);
     return scoreCards;
   }
-
-  useEffect(() => {
-    getScoreCardsAndSetScoreCards();
-  }, []);
 
   useInterval(() => {
     getScoreCardsAndSetScoreCards();
