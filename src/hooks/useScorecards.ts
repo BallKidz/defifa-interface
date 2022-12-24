@@ -53,6 +53,7 @@ export function useScorecards() {
         .then((data) => {
           const scoreCards = getScoreCardsFromProposals(data.proposals);
           setScoreCards(scoreCards);
+          setIsLoading(false);
         })
         .catch((error) => {
           setError(true);
@@ -83,4 +84,6 @@ export function useScorecards() {
   useInterval(() => {
     getScoreCardsAndSetScoreCards();
   }, 5000);
+
+  return { scoreCards, isLoading, errorState };
 }
