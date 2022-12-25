@@ -1,20 +1,51 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useEffect } from "react";
-import { goerliData, mainnetData } from "../../constants/addresses";
-import { useProposals } from "../../hooks/read/Scorecards";
+import { isEqual } from "lodash";
+import { useEffect, useState } from "react";
+import { useScorecards } from "../../hooks/useScorecards";
+import { convertScoreCardToPercents } from "../../utils/scorecard";
+import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
 import styles from "./Attestation.module.css";
 
+interface ScoreCard {
+  isEqual: boolean;
+  mappedScoreCard: {
+    id: number;
+    redemptionWeight: number;
+  };
+}
+
 const Attestation = () => {
-  const { proposals, loading, error } = useProposals(
-    mainnetData.defifaGovernor.address,
-    10,
-    "id",
-    "asc"
-  );
+  const { scoreCards } = useScorecards();
+  const [scoreCardAttestations, setScoreCardAttestations] =
+    useState<ScoreCard[]>();
 
   useEffect(() => {
-    console.log(proposals);
-  }, [proposals]);
+    if (!scoreCards) return;
+
+    const mappedScoreCards = scoreCards.map((scoreCard: { id: any[] }) => {
+      return scoreCard.id.map((id) => ({
+        id: id[0].toNumber(),
+        redemptionWeight: id[1].toNumber(),
+      }));
+    });
+
+    const mappedBallkidsScoreCard =
+      convertScoreCardToPercents(ballkidsScorecard);
+
+    const comparisonScoreCards = mappedScoreCards.map(
+      (mappedScoreCard: any) => {
+        return {
+          mappedScoreCard,
+          isEqual: isEqual(mappedScoreCard, mappedBallkidsScoreCard),
+        };
+      }
+    );
+
+    setScoreCardAttestations(comparisonScoreCards);
+  }, [scoreCards]);
+
+  console.log(scoreCardAttestations);
+
   return (
     <div className={styles.attestationContainer}>
       <div className={styles.attestationInfoContainer}>
@@ -24,6 +55,12 @@ const Attestation = () => {
           ratify it. Each team has 1 vote, divided between all holders of that
           team's NFTs.
         </p>
+        <div className={styles.proposals}>
+          {scoreCardAttestations?.map((scoreCard: any) => {
+            // eslint-disable-next-line react/jsx-key
+            return <div>{scoreCard.isEqual}</div>;
+          })}
+        </div>
       </div>
     </div>
   );
