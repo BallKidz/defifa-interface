@@ -6,6 +6,7 @@ import Group from "../Group";
 import Button from "../UI/Button";
 import { ballkidsScorecard } from "./constants/ballKidsScorecard";
 import styles from "./Scorecard.module.css";
+import { useScorecards } from "../../hooks/useScorecards";
 
 interface ScoreCard {
   id: number;
@@ -18,7 +19,6 @@ interface ScoreCardProps {
 
 const ScoreCard: FC<ScoreCardProps> = (props) => {
   const network = useNetwork();
-
   const chainData = getChainData(network?.chain?.id);
   const [scoreCardOption, setScoreCardOption] = useState<number>(1);
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>(ballkidsScorecard);
