@@ -80,7 +80,7 @@ const SelfRefree = () => {
           size="big"
           disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
         >
-          Change attestation
+          Submit attestation
         </Button>
 
         <p>Mint reserved tokens for all tiers.</p>
