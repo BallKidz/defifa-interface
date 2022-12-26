@@ -50,6 +50,7 @@
 
 .votingOptions {
   border: 1px solid var(--bgColor);
+  border-radius: 10px;
   padding: 5px;
   cursor: pointer;
 }

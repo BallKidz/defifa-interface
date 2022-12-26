@@ -68,6 +68,12 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           ratify it. Each team has 1 vote, divided between all holders of that
           team's NFTs.
         </p>
+        <p>
+          Since we want to incentivize fair play, we are offering the Defifa
+          Ballkids scorecard as the initial option. <br></br>However, as a
+          player, you are free to view and vote on any other scorecard that is
+          currently available.
+        </p>
         {isLoading && (
           <div
             style={{

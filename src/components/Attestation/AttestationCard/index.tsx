@@ -52,7 +52,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
     <div>
       <div className={styles.container}>
         <div className={styles.scoreCardExpand} onClick={handleOpenModal}>
-          <Button size="small">VIEW</Button>
+          <Button size="small">View</Button>
         </div>
 
         <div className={styles.scoreCardInfo}>
