@@ -68,25 +68,27 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           ratify it. Each team has 1 vote, divided between all holders of that
           team's NFTs.
         </p>
+        {isLoading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "30px",
+            }}
+          >
+            <img src="/assets/defifa_spinner.gif" alt="spinner" width={100} />
+          </div>
+        )}
+
         <div className={styles.proposals}>
-          {isLoading ? (
-            <div style={{ margin: "0 auto" }}>
-              <img
-                style={{ marginTop: "5px" }}
-                src="/assets/defifa_spinner.gif"
-                alt="spinner"
-                width={100}
-              />
-            </div>
-          ) : (
+          {!isLoading &&
             scoreCardAttestations?.map((proposal: ScoreCard, i: any) => (
               <AttestationCard
                 proposal={proposal}
                 key={i}
                 tiers={props.tiers}
               />
-            ))
-          )}
+            ))}
         </div>
       </div>
     </div>
