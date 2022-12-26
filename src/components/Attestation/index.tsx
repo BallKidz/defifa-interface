@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
 import { isEqual } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useScorecards } from "../../hooks/useScorecards";
 import { convertScoreCardToPercents } from "../../utils/scorecard";
 import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
@@ -47,7 +47,7 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           scoreCard,
           title: isBallkidsScoreCard
             ? "Defifa Ballkids scorecard"
-            : `Custom scorecard ${index + 1}`, // add the index + 1 to the title,
+            : `Custom scorecard #${index + 1}`, // add the index + 1 to the title,
         };
       })
       .sort((a: { isEqual: boolean }, b: { isEqual: boolean }) => {

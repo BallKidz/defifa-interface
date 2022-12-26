@@ -102,8 +102,8 @@ const SelfRefree = () => {
 
         <Button
           onClick={onSubmitAttestationClick}
+          disabled={beforeEnd.isBefore(deployerDuration?.end)}
           size="big"
-          // disabled={beforeEnd.isBefore(deployerDuration?.end * 1000)}
         >
           Submit attestation
         </Button>

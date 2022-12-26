@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useMemo, useState } from "react";
+import { useEffect, useImperativeHandle, useMemo, useState } from "react";
 import { useCastVote } from "../../../hooks/write/useCastVote";
 import { convertPercentsToPoints } from "../../../utils/scorecard";
 import Group from "../../Group";
@@ -16,10 +16,16 @@ interface AttestationCardProps {
 const AttestationCard: React.FC<AttestationCardProps> = (props) => {
   const [openModal, setIsOpenModal] = useState<boolean>(false);
   const [votingOption, setVotingOption] = useState<number>();
-  const { write, isLoading } = useCastVote(
+  const { write, isLoading, isError } = useCastVote(
     props.proposal.scoreCard.proposalId,
     votingOption
   );
+
+  useEffect(() => {
+    if (isLoading || isError) {
+      setVotingOption(undefined);
+    }
+  }, [isLoading, isError]);
 
   const icon = useMemo<string | undefined>(() => {
     switch (props.proposal.isEqual) {
@@ -40,12 +46,22 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
     setIsOpenModal(true);
   };
 
-  const onVoteYes = () => {
-    setVotingOption(1);
+  const toggleVotingYesOption = () => {
+    setVotingOption((prevValue) => {
+      if (prevValue === 1) {
+        return undefined;
+      }
+      return 1;
+    });
   };
 
-  const onVoteNo = () => {
-    setVotingOption(0);
+  const toggleVotingNoOption = () => {
+    setVotingOption((prevValue) => {
+      if (prevValue === 0) {
+        return undefined;
+      }
+      return 0;
+    });
   };
 
   return (
@@ -61,12 +77,12 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
             alt="Scorecard"
             width={props.proposal.isEqual ? 100 : 80}
           />
-          <p>{props.proposal.title}</p>
+          <p className={styles.scoreCardTitle}>{props.proposal.title}</p>
           <div className={styles.voteForm}>
             <p>Cast your vote</p>
             <div
               className={styles.votingOptions}
-              onClick={onVoteYes}
+              onClick={toggleVotingYesOption}
               style={{
                 border:
                   votingOption === 1
@@ -78,7 +94,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
             </div>
             <div
               className={styles.votingOptions}
-              onClick={onVoteNo}
+              onClick={toggleVotingNoOption}
               style={{
                 border:
                   votingOption === 0
@@ -111,9 +127,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
             onAfterClose={() => handleCloseModal()}
           >
             <div className={styles.scoreCardContainer}>
-              <div className={styles.scoreCardTitle}>
-                {props.proposal.title}
-              </div>
+              <p className={styles.scoreCardTitle}>{props.proposal.title}</p>
 
               <div className={styles.scoreCardGroupsContainer}>
                 {props.tiers.map((tiers: any, index: any) => (

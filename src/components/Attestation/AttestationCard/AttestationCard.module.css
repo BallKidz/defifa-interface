@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   border: 3px solid var(--gold);
-  width: 300px;
 }
 
 .scoreCardExpand {
@@ -16,8 +15,8 @@
 
 .scoreCardTitle {
   margin-bottom: 40px;
-  color: var(--gold);
   font-size: 18px;
+  font-weight: 500;
 }
 
 .scoreCardGroupsContainer {
@@ -49,12 +48,7 @@
 }
 
 .votingOptions {
-  border: 1px solid var(--bgColor);
-  border-radius: 10px;
+  border: 2px solid var(--bgColor);
   padding: 5px;
   cursor: pointer;
-}
-
-.votingOptions:hover {
-  border: 1px solid var(--gold);
 }
