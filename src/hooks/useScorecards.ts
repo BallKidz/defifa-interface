@@ -25,20 +25,24 @@ const proposalsQuery = gql`
 interface ScoreCard {
   id: number;
   redemptionWeight: number;
+  proposalId: number;
 }
 
 //createScoreCardFromArray
-export function createScoreCardFromArray(scoreCardArray: any) {
+export function createScoreCardFromArray(
+  scoreCardArray: any,
+  proposalId: number
+) {
   const scoreCard: ScoreCard = {
     id: scoreCardArray[0],
     redemptionWeight: scoreCardArray[1],
+    proposalId,
   };
   return scoreCard;
 }
 
 // get scorecards from proposals query and update state
 export function useScorecards() {
-  //chainData
   const { chainData } = useChainData();
   const graphUrl = chainData.governorSubgraph;
   const [scoreCards, setScoreCards] = useState<any>();
@@ -55,7 +59,6 @@ export function useScorecards() {
       request(graphUrl, proposalsQuery)
         .then((data) => {
           const scoreCards = getScoreCardsFromProposals(data.proposals);
-          console.log(data.proposals);
           setScoreCards(scoreCards);
           setIsLoading(false);
         })
@@ -74,8 +77,11 @@ export function useScorecards() {
           ["tuple(uint256,uint256)[] a"],
           ethers.utils.hexDataSlice(calldata, 4)
         );
-        const scoreCard = decodedCallData;
-        scoreCards.push(createScoreCardFromArray(scoreCard));
+        const scoreCard = createScoreCardFromArray(
+          decodedCallData,
+          proposal.proposalId
+        );
+        scoreCards.push(scoreCard);
       });
     });
     return scoreCards;

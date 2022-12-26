@@ -67,7 +67,7 @@ const SelfRefree = () => {
       case "scorecard":
         return <ScoreCard tiers={chunkedRewardTiers} />;
       case "attestation":
-        return <Attestation />;
+        return <Attestation tiers={chunkedRewardTiers} />;
       default:
         break;
     }

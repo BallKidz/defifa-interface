@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
 import { isEqual } from "lodash";
 import { useEffect, useState } from "react";
@@ -5,46 +6,58 @@ import { useScorecards } from "../../hooks/useScorecards";
 import { convertScoreCardToPercents } from "../../utils/scorecard";
 import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
 import styles from "./Attestation.module.css";
+import AttestationCard from "./AttestationCard";
+import { ScoreCard } from "./types";
 
-interface ScoreCard {
-  isEqual: boolean;
-  mappedScoreCard: {
-    id: number;
-    redemptionWeight: number;
-  };
+interface AttestationProps {
+  tiers: any[];
 }
 
-const Attestation = () => {
-  const { scoreCards } = useScorecards();
+const Attestation: React.FC<AttestationProps> = (props) => {
+  const { scoreCards, isLoading } = useScorecards();
   const [scoreCardAttestations, setScoreCardAttestations] =
     useState<ScoreCard[]>();
 
   useEffect(() => {
     if (!scoreCards) return;
 
-    const mappedScoreCards = scoreCards.map((scoreCard: { id: any[] }) => {
-      return scoreCard.id.map((id) => ({
-        id: id[0].toNumber(),
-        redemptionWeight: id[1].toNumber(),
-      }));
-    });
-
-    const mappedBallkidsScoreCard =
-      convertScoreCardToPercents(ballkidsScorecard);
-
-    const comparisonScoreCards = mappedScoreCards.map(
-      (mappedScoreCard: any) => {
+    const mappedScoreCards = scoreCards.map(
+      (scoreCard: { id: any[]; proposalId: any }) => {
         return {
-          mappedScoreCard,
-          isEqual: isEqual(mappedScoreCard, mappedBallkidsScoreCard),
+          proposalId: scoreCard.proposalId,
+          tierWeights: scoreCard.id.map((id) => ({
+            id: id[0].toNumber(),
+            redemptionWeight: id[1].toNumber(),
+          })),
         };
       }
     );
 
+    const mappedBallkidsScoreCard =
+      convertScoreCardToPercents(ballkidsScorecard);
+
+    const comparisonScoreCards = mappedScoreCards
+      .map((scoreCard: any, index: number) => {
+        const isBallkidsScoreCard = isEqual(
+          scoreCard.tierWeights,
+          mappedBallkidsScoreCard
+        );
+        return {
+          isEqual: isBallkidsScoreCard,
+          scoreCard,
+          title: isBallkidsScoreCard
+            ? "Defifa Ballkids scorecard"
+            : `Custom scorecard ${index + 1}`, // add the index + 1 to the title,
+        };
+      })
+      .sort((a: { isEqual: boolean }, b: { isEqual: boolean }) => {
+        if (a.isEqual) return -1;
+        if (b.isEqual) return 1;
+        return 0;
+      });
+
     setScoreCardAttestations(comparisonScoreCards);
   }, [scoreCards]);
-
-  console.log(scoreCardAttestations);
 
   return (
     <div className={styles.attestationContainer}>
@@ -56,10 +69,24 @@ const Attestation = () => {
           team's NFTs.
         </p>
         <div className={styles.proposals}>
-          {scoreCardAttestations?.map((scoreCard: any) => {
-            // eslint-disable-next-line react/jsx-key
-            return <div>{scoreCard.isEqual}</div>;
-          })}
+          {isLoading ? (
+            <div style={{ margin: "0 auto" }}>
+              <img
+                style={{ marginTop: "5px" }}
+                src="/assets/defifa_spinner.gif"
+                alt="spinner"
+                width={100}
+              />
+            </div>
+          ) : (
+            scoreCardAttestations?.map((proposal: ScoreCard, i: any) => (
+              <AttestationCard
+                proposal={proposal}
+                key={i}
+                tiers={props.tiers}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
