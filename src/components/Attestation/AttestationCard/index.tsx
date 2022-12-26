@@ -70,8 +70,8 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
               style={{
                 border:
                   votingOption === 1
-                    ? "1px solid var(--gold)"
-                    : "1px solid var(--bgColor)",
+                    ? "2px solid var(--gold)"
+                    : "2px solid var(--bgColor)",
               }}
             >
               YES
@@ -82,8 +82,8 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
               style={{
                 border:
                   votingOption === 0
-                    ? "1px solid var(--gold)"
-                    : "1px solid var(--bgColor)",
+                    ? "2px solid var(--gold)"
+                    : "2px solid var(--bgColor)",
               }}
             >
               NO
