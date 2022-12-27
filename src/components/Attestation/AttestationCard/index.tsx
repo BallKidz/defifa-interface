@@ -75,7 +75,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
           <img
             src={icon}
             alt="Scorecard"
-            width={props.proposal.isEqual ? 100 : 80}
+            width={props.proposal.isEqual ? 98 : 81}
           />
           <p className={styles.scoreCardTitle}>{props.proposal.title}</p>
           <div className={styles.voteForm}>
@@ -90,7 +90,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
                     : "2px solid var(--bgColor)",
               }}
             >
-              YES
+              Yes
             </div>
             <div
               className={styles.votingOptions}
@@ -102,7 +102,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
                     : "2px solid var(--bgColor)",
               }}
             >
-              NO
+              No
             </div>
 
             <Button
