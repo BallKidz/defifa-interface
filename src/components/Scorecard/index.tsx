@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
 import { useSubmitScorecards } from "../../hooks/write/useSubmitScorecards";
+import { convertScoreCardToPercents } from "../../utils/scorecard";
 import Group from "../Group";
 import Button from "../UI/Button";
 import { ballkidsScorecard } from "./constants/ballKidsScorecard";
@@ -18,8 +18,6 @@ interface ScoreCardProps {
 
 const ScoreCard: FC<ScoreCardProps> = (props) => {
   const network = useNetwork();
-
-  const chainData = getChainData(network?.chain?.id);
   const [scoreCardOption, setScoreCardOption] = useState<number>(1);
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>(ballkidsScorecard);
   const [scoreCardWithPercents, setScoreCardWithPercents] = useState<
@@ -49,24 +47,6 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
       setScoreCard([]);
     }
   }, [isError, isSuccess]);
-
-  const convertScoreCardToPercents = (scoreCard: ScoreCard[]) => {
-    const totalSum = scoreCard.reduce(
-      (total, obj) => total + obj.redemptionWeight,
-      0
-    );
-
-    const scoreCardWithPercents = scoreCard.map((obj) => {
-      const newObj = { ...obj };
-      newObj.redemptionWeight = Math.floor(
-        (newObj.redemptionWeight / totalSum) * 1000000000
-      );
-
-      return newObj;
-    });
-
-    return scoreCardWithPercents;
-  };
 
   const submitScoreCard = () => {
     write?.();
