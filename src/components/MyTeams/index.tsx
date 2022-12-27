@@ -64,12 +64,6 @@ const MyTeams = () => {
               </div>
             ) : null}
 
-            <div className={styles.lightNotice}>
-              You cannot redeem your NFTs until the user interface for the
-              voting system is done, on which we are currently working.<br></br>
-              Be patient; it will be available online very soon.
-            </div>
-
             <div className={styles.teams}>
               {teams &&
                 teams
