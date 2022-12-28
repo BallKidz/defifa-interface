@@ -1,57 +1,41 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import moment from "moment";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const calculateDuration = (eventTime: number) =>
-  moment.duration(
-    Math.max(eventTime - Math.floor(Date.now() / 1000), 0),
-    "seconds"
-  );
+export function useCountdown(targetDate: Date): string | null {
+  // Declare a state variable to store the time remaining
+  const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
 
-export function useCountdown({
-  eventTime,
-  interval,
-}: {
-  eventTime: number;
-  interval: number;
-}) {
-  const [formatted, setFormatted] = useState("");
-  const timerRef = useRef<any>(0);
-  const timerCallback = useCallback(() => {
-    const duration = calculateDuration(eventTime);
-
-    if (!duration.isValid) {
-      setFormatted(`Nov 21, 2022`);
-      return;
-    }
-
-    if (!duration.days() && duration.hours()) {
-      setFormatted(
-        `In ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
-      );
-    } else if (!duration.hours() && !duration.days() && duration.minutes()) {
-      setFormatted(`In ${duration.minutes()}m ${duration.seconds()}s`);
-    } else if (
-      !duration.hours() &&
-      !duration.days() &&
-      !duration.minutes() &&
-      duration.seconds()
-    ) {
-      setFormatted(`In ${duration.seconds()}seconds`);
-    } else {
-      setFormatted(
-        `In ${duration.days()}d ${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`
-      );
-    }
-  }, [eventTime]);
-
+  // Calculate the time remaining every second
   useEffect(() => {
-    timerRef.current = setInterval(timerCallback, interval);
+    const interval = setInterval(() => {
+      // Calculate the time remaining
+      const currentTime = new Date().getTime();
+      const timeDifference = targetDate.getTime() - currentTime;
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor(
+        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+      );
 
-    return () => {
-      clearInterval(timerRef.current);
-    };
-  }, [eventTime]);
+      // Set the time remaining in the state
+      let timeRemainingString = "";
+      if (days > 0) {
+        timeRemainingString += `${days}d `;
+      }
+      if (hours > 0) {
+        timeRemainingString += `${hours}h `;
+      }
+      if (minutes > 0) {
+        timeRemainingString += `${minutes}m `;
+      }
 
-  return formatted;
+      setTimeRemaining(timeRemainingString);
+    }, 1000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [targetDate]);
+
+  return timeRemaining;
 }
