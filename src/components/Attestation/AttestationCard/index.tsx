@@ -1,6 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useImperativeHandle, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useBlockNumber } from "wagmi";
+import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
+import { useProposalState } from "../../../hooks/read/ProposalState";
+import { useQuorum } from "../../../hooks/read/Quorum";
 import { useCastVote } from "../../../hooks/write/useCastVote";
+import { formatDateToUTC } from "../../../utils/format/formatDate";
 import { convertPercentsToPoints } from "../../../utils/scorecard";
 import Group from "../../Group";
 import Button from "../../UI/Button";
@@ -15,11 +20,66 @@ interface AttestationCardProps {
 
 const AttestationCard: React.FC<AttestationCardProps> = (props) => {
   const [openModal, setIsOpenModal] = useState<boolean>(false);
+  const { data: proposalDeadline } = useProposalDeadline(
+    props.proposal.scoreCard.proposalId
+  );
+  const { data: blockNumber } = useBlockNumber();
+
+  const { data: quorum } = useQuorum(props.proposal.scoreCard.proposalId);
+  const { data: proposalState } = useProposalState(
+    props.proposal.scoreCard.proposalId
+  );
   const [votingOption, setVotingOption] = useState<number>();
   const { write, isLoading, isError } = useCastVote(
     props.proposal.scoreCard.proposalId,
     votingOption
   );
+  const [proposalEnd, setProposalEnd] = useState<number>(0);
+  const [votingState, setVotingState] = useState<string>("");
+
+  useEffect(() => {
+    const state = proposalState?.toString();
+
+    switch (state) {
+      case "0":
+        setVotingState("Pending");
+        break;
+      case "1":
+        setVotingState("Active");
+        break;
+      case "2":
+        setVotingState("Canceled");
+        break;
+      case "3":
+        setVotingState("Defeated");
+        break;
+      case "4":
+        setVotingState("Queued");
+        break;
+      case "5":
+        setVotingState("Expired");
+        break;
+      case "6":
+        setVotingState("Executed");
+        break;
+
+      default:
+        break;
+    }
+  }, [proposalState]);
+
+  useEffect(() => {
+    if (!proposalDeadline || !blockNumber) return;
+
+    const blockDuration = 12;
+    const currentDate = new Date();
+    const proposalEnd = new Date(
+      currentDate.getTime() +
+        (proposalDeadline.toNumber() - blockNumber) * blockDuration * 1000
+    );
+    const proposalEndInMillis = proposalEnd.getTime();
+    setProposalEnd(proposalEndInMillis);
+  }, [proposalDeadline, blockNumber]);
 
   useEffect(() => {
     if (isLoading || isError) {
@@ -78,6 +138,8 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
             width={props.proposal.isEqual ? 98 : 81}
           />
           <p className={styles.scoreCardTitle}>{props.proposal.title}</p>
+          <p>Voting state: {votingState}</p>
+          <p>Voting ends: {formatDateToUTC(proposalEnd ?? 0, true)} UTC</p>
           <div className={styles.voteForm}>
             <p>Cast your vote</p>
             <div
