@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useBlockNumber } from "wagmi";
 import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
 import { useProposalState } from "../../../hooks/read/ProposalState";
+import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
 import { useQuorum } from "../../../hooks/read/Quorum";
 import { useCastVote } from "../../../hooks/write/useCastVote";
 import { formatDateToUTC } from "../../../utils/format/formatDate";
@@ -29,6 +30,9 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
   const { data: proposalState } = useProposalState(
     props.proposal.scoreCard.proposalId
   );
+  const { data: proposalVotes } = useProposalVotes(
+    props.proposal.scoreCard.proposalId
+  );
   const [votingOption, setVotingOption] = useState<number>();
   const { write, isLoading, isError } = useCastVote(
     props.proposal.scoreCard.proposalId,
@@ -36,6 +40,8 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
   );
   const [proposalEnd, setProposalEnd] = useState<number>(0);
   const [votingState, setVotingState] = useState<string>("");
+
+  console.log({ proposalVotes });
 
   useEffect(() => {
     const state = proposalState?.toString();
@@ -67,6 +73,19 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
         break;
     }
   }, [proposalState]);
+
+  function toStringWithSuffix(n: number): string {
+    if (n < 1000) {
+      return n.toString();
+    } else if (n < 1000000) {
+      return (n / 1000).toFixed(0) + " thousands";
+    } else if (n < 1000000000) {
+      return (n / 1000000).toFixed(0) + " millions";
+    } else {
+      return (n / 1000000000).toFixed(0) + " billions";
+    }
+  }
+  ``;
 
   useEffect(() => {
     if (!proposalDeadline || !blockNumber) return;
@@ -138,6 +157,10 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
             width={props.proposal.isEqual ? 98 : 81}
           />
           <p className={styles.scoreCardTitle}>{props.proposal.title}</p>
+          <p>
+            Quorum: {toStringWithSuffix(proposalVotes?.forVotes.toNumber())} /{" "}
+            {toStringWithSuffix(quorum?.toNumber())}
+          </p>
           <p>Voting state: {votingState}</p>
           <p>Voting ends: {formatDateToUTC(proposalEnd ?? 0, true)} UTC</p>
           <div className={styles.voteForm}>
