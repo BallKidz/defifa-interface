@@ -158,7 +158,14 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
           />
           <p className={styles.scoreCardTitle}>{props.proposal.title}</p>
           <p>
-            Quorum: {toStringWithSuffix(proposalVotes?.forVotes.toNumber())} /{" "}
+            For:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())} votes
+          </p>
+          <p>
+            Against:
+            {toStringWithSuffix(proposalVotes?.againstVotes.toNumber())} votes
+          </p>
+          <p>
+            Quorum:
             {toStringWithSuffix(quorum?.toNumber())}
           </p>
           <p>Voting state: {votingState}</p>
