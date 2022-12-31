@@ -166,7 +166,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
           </p>
           <p>
             Quorum:
-            {toStringWithSuffix(quorum?.toNumber())}
+            {toStringWithSuffix(quorum?.toNumber())} votes
           </p>
           <p>Voting state: {votingState}</p>
           <p>Voting ends: {formatDateToUTC(proposalEnd ?? 0, true)} UTC</p>
