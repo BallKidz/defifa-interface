@@ -4,13 +4,14 @@ import { fromWad, parseWad } from "../../../../utils/format/formatNumber";
 import styles from "./Treasury.module.css";
 
 const Treasury = () => {
-  const { data } = usePaymentTerminalBalance();
+  const { data: treasuryAmount } = usePaymentTerminalBalance();
   const { data: totalSupply } = useNftRewardsTotalSupply();
+  const treasuryFormatted = fromWad(treasuryAmount);
 
   return (
     <div className={styles.container}>
       <h1>
-        {fromWad(data)} ETH
+        {parseFloat(treasuryFormatted).toFixed(0)} ETH
         <span className={styles.mints}>
           {" "}
           from {totalSupply?.toNumber()} mints
