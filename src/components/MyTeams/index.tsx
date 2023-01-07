@@ -57,8 +57,10 @@ const MyTeams = () => {
                       alt="spinner"
                       width={35}
                     />
-                  ) : (
+                  ) : fundingCycle === 1 ? (
                     "Refund all"
+                  ) : (
+                    "Redeem all"
                   )}
                 </Button>
               </div>
