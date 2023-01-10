@@ -114,9 +114,11 @@ const Mint = () => {
     setSelectAll(false);
   };
 
+  console.log({ currentFcNumber });
+
   return (
     <>
-      <Content title="Mint teams" open={false}>
+      <Content title="Mint teams" open={true}>
         <div className={styles.mint}>
           <div
             className={styles.mintHeader}
