@@ -35,7 +35,7 @@ export const mainnetData = {
   },
   defifaDeployer: "0x1b05b64aa85822554cfebff33b7447b8ac0320d3",
   defifaDeployerInterface: DefifaDeployerABI.abi,
-  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa",
+  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl",
   governorSubgraph:
     "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-governor",
 };
@@ -60,7 +60,8 @@ export const goerliData = {
   },
   defifaDeployer: "0xb52f73d870fa8c4d7232cda5c34e4de43fed1d2a",
   defifaDeployerInterface: DefifaDeployerABI.abi,
-  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-goerli",
+  subgraph:
+    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-goerli",
   governorSubgraph:
     "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-governor-goerli",
 };

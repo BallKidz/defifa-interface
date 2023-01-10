@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   formatDateToLocal,
   formatDateToUTC,
+  formatSecondsToLocal,
+  formatSecondsToUTC,
 } from "../../utils/format/formatDate";
 import { useDeployerDuration } from "./DeployerDuration";
 
@@ -33,8 +35,6 @@ export function useDeployerDates(format: "local" | "utc") {
     end: { date: "", phase: 0 },
   });
 
-  console.log({ deployerDuration });
-
   useEffect(() => {
     if (!deployerDuration) return;
 
@@ -42,8 +42,16 @@ export function useDeployerDates(format: "local" | "utc") {
       mintDuration: {
         date:
           format === "local"
-            ? formatDateToLocal(deployerDuration.start * 1000)
-            : formatDateToUTC(deployerDuration.start * 1000),
+            ? formatSecondsToLocal(
+                deployerDuration.mintDuration +
+                  deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              )
+            : formatSecondsToUTC(
+                deployerDuration.mintDuration +
+                  deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              ),
         phase: 1,
       },
       start: {
@@ -56,8 +64,14 @@ export function useDeployerDates(format: "local" | "utc") {
       refundPeriodDuration: {
         date:
           format === "local"
-            ? formatDateToLocal(deployerDuration.tradeDeadline * 1000)
-            : formatDateToUTC(deployerDuration.tradeDeadline * 1000),
+            ? formatSecondsToLocal(
+                deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              )
+            : formatSecondsToUTC(
+                deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              ),
         phase: 3,
       },
       end: {

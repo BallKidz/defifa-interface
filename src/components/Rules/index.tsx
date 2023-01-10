@@ -65,8 +65,8 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 2: Refund deadline (Mint ends)
-              <span className={pillStyle(start.phase)}>
-                {fillPill(start.phase)}
+              <span className={pillStyle(refundPeriodDuration.phase)}>
+                {fillPill(refundPeriodDuration.phase)}
               </span>
             </h1>
             <ul>
@@ -83,14 +83,14 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 3: Kickoff
-              <span className={pillStyle(refundPeriodDuration.phase)}>
-                {fillPill(refundPeriodDuration.phase)}
+              <span className={pillStyle(start.phase)}>
+                {fillPill(start.phase)}
               </span>
             </h1>
             <ul>
               <li>
                 The pot is locked and minting permenently ends before the first
-                kickoff on {formatDateToUTC(1669024800 * 1000, true)} UTC.
+                kickoff on {formatDateToUTC(1673731800 * 1000, true)} UTC.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>3</sup>
                 </a>
