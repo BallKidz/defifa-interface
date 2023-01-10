@@ -18,10 +18,10 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <Head>
         <title>Defifa</title>
-        <meta property="og:image" content="https://i.imgur.com/mL0xrgD.png" />
+        <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is a Luxury World Cup Experience built with Juicebox and secured by Ethereum."
+          content="Defifa is a Luxury American Football Experience built with Juicebox and secured by Ethereum."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
