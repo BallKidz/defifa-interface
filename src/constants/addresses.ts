@@ -26,7 +26,7 @@ export const mainnetData = {
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
   defifaDelegate: {
-    address: "0xf41eaa1241c07833de9e4f48ce1b4c46dbb9d48d",
+    address: "0x600f3b83cD74175B9f10867B8218855d755c8923",
     interface: DefifaDelegateABI.abi,
   },
   defifaGovernor: {
