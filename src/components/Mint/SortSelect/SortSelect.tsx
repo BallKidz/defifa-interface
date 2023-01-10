@@ -24,8 +24,8 @@ const SortSelect: FC<SortSelectProps> = ({ onChange }) => {
           onChange={(e) => onSortOptionChange(e.target.value)}
           defaultValue={sortOption}
         >
-          <option value="group" className={styles.option}>
-            GROUP
+          <option value="conferences" className={styles.option}>
+            CONFERENCES
           </option>
           <option value="minted" className={styles.option}>
             MOST MINTED

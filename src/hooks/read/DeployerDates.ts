@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import {
   formatDateToLocal,
   formatDateToUTC,
+  formatSecondsToLocal,
+  formatSecondsToUTC,
 } from "../../utils/format/formatDate";
 import { useDeployerDuration } from "./DeployerDuration";
 
 type DescriptionDates = {
-  mint: {
+  mintDuration: {
     date: string;
     phase: number;
   };
@@ -14,7 +16,7 @@ type DescriptionDates = {
     date: string;
     phase: number;
   };
-  tradeDeadline: {
+  refundPeriodDuration: {
     date: string;
     phase: number;
   };
@@ -27,9 +29,9 @@ type DescriptionDates = {
 export function useDeployerDates(format: "local" | "utc") {
   const deployerDuration = useDeployerDuration();
   const [dates, setDates] = useState<DescriptionDates>({
-    mint: { date: "", phase: 0 },
+    mintDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
-    tradeDeadline: { date: "", phase: 0 },
+    refundPeriodDuration: { date: "", phase: 0 },
     end: { date: "", phase: 0 },
   });
 
@@ -37,11 +39,19 @@ export function useDeployerDates(format: "local" | "utc") {
     if (!deployerDuration) return;
 
     setDates({
-      mint: {
+      mintDuration: {
         date:
           format === "local"
-            ? formatDateToLocal(deployerDuration.start * 1000)
-            : formatDateToUTC(deployerDuration.start * 1000),
+            ? formatSecondsToLocal(
+                deployerDuration.mintDuration +
+                  deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              )
+            : formatSecondsToUTC(
+                deployerDuration.mintDuration +
+                  deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              ),
         phase: 1,
       },
       start: {
@@ -51,11 +61,17 @@ export function useDeployerDates(format: "local" | "utc") {
             : formatDateToUTC(deployerDuration.start * 1000),
         phase: 2,
       },
-      tradeDeadline: {
+      refundPeriodDuration: {
         date:
           format === "local"
-            ? formatDateToLocal(deployerDuration.tradeDeadline * 1000)
-            : formatDateToUTC(deployerDuration.tradeDeadline * 1000),
+            ? formatSecondsToLocal(
+                deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              )
+            : formatSecondsToUTC(
+                deployerDuration.refundPeriodDuration,
+                deployerDuration.start
+              ),
         phase: 3,
       },
       end: {

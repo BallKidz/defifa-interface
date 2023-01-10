@@ -11,6 +11,7 @@ export function useAttestationPower(id: number, mintsHeldFromTier: number) {
 
   useEffect(() => {
     if (!tiers) return;
+
     const tier = tiers.find((t) => t.id.toNumber() == id);
 
     const maxSupply = tier.initialQuantity.eq(

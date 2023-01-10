@@ -10,6 +10,8 @@ import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { usePay } from "../../hooks/write/usePay";
+import Conferences from "../Conferences";
+import FeelingLucky from "../FeelingLucky";
 import Group from "../Group";
 import Team from "../Team";
 import Button from "../UI/Button";
@@ -30,36 +32,34 @@ const Mint = () => {
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
 
-  const [sortOption, setSortOption] = useState<string>("group");
+  const [sortOption, setSortOption] = useState<string>("conferences");
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
-  const chunkedRewardTiers = chunk(rewardTiers, 4);
+  const chunkedRewardTiers = chunk(rewardTiers, 7);
   const mostMintedRewardTiers = rewardTiers
     ?.slice()
     .sort(
       (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
     );
 
-  // const { write, isLoading, isSuccess, isError } = usePay({
-  //   amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
-  //   token: ETH_TOKEN_ADDRESS,
-  //   minReturnedTokens: "0",
-  //   preferClaimedTokens: true,
-  //   memo: `Minted on defifa.net ${imgMemo}`,
-  //   metadata: {
-  //     dontMint: false,
-  //     expectMintFromExtraFunds: false,
-  //     dontOvespend: false,
-  //     tierIdsToMint: tierIds,
-  //   },
-  // });
+  const { write, isLoading, isSuccess, isError } = usePay({
+    amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
+    token: ETH_TOKEN_ADDRESS,
+    minReturnedTokens: "0",
+    preferClaimedTokens: true,
+    memo: `Minted on defifa.net ${imgMemo}`,
+    metadata: {
+      allowOverspending: false,
+      tierIdsToMint: tierIds,
+    },
+  });
 
-  // useEffect(() => {
-  //   if (isSuccess || isError) {
-  //     setTierIds([]);
-  //     setImgMemo("");
-  //   }
-  // }, [isError, isSuccess]);
+  useEffect(() => {
+    if (isSuccess || isError) {
+      setTierIds([]);
+      setImgMemo("");
+    }
+  }, [isError, isSuccess]);
 
   useEffect(() => {
     if (!tierIds.length) return;
@@ -126,7 +126,7 @@ const Mint = () => {
             }}
           >
             <div className={styles.subtitle}>
-              Play: <span>0.022 ETH / NFT</span>
+              Play: <span>0.07 ETH / NFT</span>
             </div>
 
             <div className={styles.subtitle}>
@@ -137,7 +137,7 @@ const Mint = () => {
               <SortSelect onChange={onSortChange} />
             </div>
 
-            {/* {currentFcNumber === 1 && (
+            {currentFcNumber === 1 && (
               <div className={styles.buttonWrapper}>
                 <Button
                   disabled={isLoading || !tierIds.length ? true : false}
@@ -162,7 +162,7 @@ const Mint = () => {
                   )}
                 </Button>
               </div>
-            )} */}
+            )}
           </div>
           {currentFcNumber === 1 && (
             <div className={styles.selectAllWrapper}>
@@ -184,33 +184,35 @@ const Mint = () => {
           <div
             style={{ pointerEvents: currentFcNumber === 1 ? "auto" : "none" }}
             className={
-              sortOption === "group"
+              sortOption === "conferences"
                 ? styles.groupsContainer
                 : styles.mostMintContainer
             }
           >
-            {sortOption === "group"
+            {sortOption === "conferences"
               ? chunkedRewardTiers.map((tiers: any, index: any) => (
-                  <Group
-                    groupName={`${String.fromCharCode(97 + index)}`}
+                  <Conferences
+                    name={index < 1 ? "American" : "National"}
+                    logo={index < 1 ? "/assets/ac.png" : "/assets/nc.png"}
                     key={index}
+                    tiers={tiers}
                   >
                     {tiers.map((t: any) => (
                       <Team
                         key={t.id}
                         id={t.id}
-                        img={t.teamImage}
+                        img={`nfl-assets/${t.id}.png`}
                         name={t.teamName}
                         minted={t.minted}
                         supply={totalSupply?.toNumber() ?? 0}
-                        // txState={isSuccess || isError}
+                        txState={isSuccess || isError}
                         selectAll={selectAll}
                         onClick={onTeamSelected}
                         onAddMultiple={onAddMultipleTeams}
                         onRemoveMultiple={onRemoveMultipleTeams}
                       />
                     ))}
-                  </Group>
+                  </Conferences>
                 ))
               : mostMintedRewardTiers?.map((t: any) => (
                   <Team
@@ -220,7 +222,7 @@ const Mint = () => {
                     name={t.teamName}
                     minted={t.minted}
                     supply={totalSupply?.toNumber() ?? 0}
-                    // txState={isSuccess || isError}
+                    txState={isSuccess || isError}
                     selectAll={selectAll}
                     onClick={onTeamSelected}
                     onAddMultiple={onAddMultipleTeams}

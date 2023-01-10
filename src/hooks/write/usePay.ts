@@ -22,9 +22,7 @@ export interface PayParams {
 }
 
 export interface PayMetadata {
-  dontMint: boolean;
-  expectMintFromExtraFunds: boolean;
-  dontOvespend: boolean;
+  allowOverspending: boolean;
   tierIdsToMint: number[];
 }
 
@@ -85,17 +83,15 @@ export function usePay({
 }
 
 function encodePayMetadata(metadata: PayMetadata) {
-  const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
+  const zeroBytes32 = ethers.constants.HashZero;
   const IJB721Delegate_INTERFACE_ID = "0xb3bcbb79";
   return ethers.utils.defaultAbiCoder.encode(
-    ["bytes32", "bytes32", "bytes4", "bool", "bool", "bool", "uint16[]"],
+    ["bytes32", "bytes32", "bytes4", "bool", "uint16[]"],
     [
       zeroBytes32,
       zeroBytes32,
       IJB721Delegate_INTERFACE_ID,
-      metadata.dontMint,
-      metadata.expectMintFromExtraFunds,
-      metadata.dontOvespend,
+      metadata.allowOverspending,
       metadata.tierIdsToMint,
     ]
   );

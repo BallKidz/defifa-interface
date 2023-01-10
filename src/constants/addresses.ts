@@ -1,6 +1,6 @@
-import DefifaDeployerABI from "@jbx-protocol/juice-defifa/out/DefifaDeployer.sol/DefifaDeployer.json";
-import DefifaDelegateABI from "@jbx-protocol/juice-defifa/out/DefifaDelegate.sol/DefifaDelegate.json";
-import DefifaGovernorABI from "@jbx-protocol/juice-defifa/out/DefifaGovernor.sol/DefifaGovernor.json";
+import DefifaDeployerABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
+import DefifaDelegateABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDelegate.sol/DefifaDelegate.json";
+import DefifaGovernorABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaGovernor.sol/DefifaGovernor.json";
 import { chain } from "wagmi";
 import IJBTiered721DelegateStore from "@jbx-protocol/juice-721-delegate/out/IJBTiered721DelegateStore.sol/IJBTiered721DelegateStore.json";
 import {
@@ -26,17 +26,18 @@ export const mainnetData = {
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: MainnetJBETHPaymentTerminal,
   defifaDelegate: {
-    address: "0xBC855060A8c96076a6778D547D430E6f43E9809A",
+    address: "0xf41eaa1241c07833de9e4f48ce1b4c46dbb9d48d",
     interface: DefifaDelegateABI.abi,
   },
   defifaGovernor: {
-    address: "0xd6a2c0383dcfe7c516275138fe035269f4a4a534",
+    address: "0x4361428f6962c808f3451e357610841c1d470306",
     interface: DefifaGovernorABI.abi,
   },
-  defifaDeployer: "0x9fb90042a8ba5249473476c0405fc1009652956d",
+  defifaDeployer: "0x1b05b64aa85822554cfebff33b7447b8ac0320d3",
   defifaDeployerInterface: DefifaDeployerABI.abi,
-  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa",
-  governorSubgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-governor",
+  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl",
+  governorSubgraph:
+    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-governor",
 };
 
 export const goerliData = {
@@ -50,17 +51,19 @@ export const goerliData = {
   projectId: DEFIFA_PROJECT_ID_GOERLI,
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
   defifaDelegate: {
-    address: "0x6ED6d5E9A0A0a1d0eD341D0d52Ee5a2cd5d6d85f",
+    address: "0x87ee2f4b8ee8f4c79523f36fecbb5f76b23e7d6f",
     interface: DefifaDelegateABI.abi,
   },
   defifaGovernor: {
-    address: "0x0d25194abe95185db8e4b0294f5669e21c534785",
+    address: "0x1f011db6b3d6729531e224281d2d4e82ce7f8e32",
     interface: DefifaGovernorABI.abi,
   },
-  defifaDeployer: "0x6f18cf9173136c0b5a6ebf45f19d58d3ff2e17e6",
+  defifaDeployer: "0xb52f73d870fa8c4d7232cda5c34e4de43fed1d2a",
   defifaDeployerInterface: DefifaDeployerABI.abi,
-  subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-goerli",
-  governorSubgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-governor-goerli",
+  subgraph:
+    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-goerli",
+  governorSubgraph:
+    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-governor-goerli",
 };
 
 export const mainnet = true;

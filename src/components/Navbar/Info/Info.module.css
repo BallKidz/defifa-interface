@@ -21,6 +21,23 @@
   font-size: 24px;
 }
 
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  gap: 10px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 1024px) {
+  .container {
+    margin: auto;
+  }
+
+  .buttonContainer {
+    margin: auto;
+  }
+}
+
 @media only screen and (max-width: 1440px) {
   .container {
     gap: 50px;

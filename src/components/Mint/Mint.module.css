@@ -2,14 +2,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 70px;
-  margin-top: 20px;
+  margin-top: 70px;
 }
 
 .mostMintContainer {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 70px;
-  margin-top: 20px;
+  margin-top: 70px;
 }
 
 .mintHeader {

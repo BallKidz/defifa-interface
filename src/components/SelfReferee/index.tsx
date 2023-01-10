@@ -90,7 +90,7 @@ const SelfRefree = () => {
           Scorecards can be submitted that suggest the correct results of
           off-chain events.
         </p>
-        <Button onClick={onSubmitScoreCardClick} size="big">
+        <Button onClick={onSubmitScoreCardClick} size="big" disabled={true}>
           Submit a scorecard
         </Button>
         <br />
@@ -102,7 +102,7 @@ const SelfRefree = () => {
 
         <Button
           onClick={onSubmitAttestationClick}
-          disabled={beforeEnd.isBefore(deployerDuration?.end)}
+          disabled={data?.fundingCycle.number.toNumber() !== 4}
           size="big"
         >
           Submit attestation
