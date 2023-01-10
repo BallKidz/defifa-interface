@@ -16,7 +16,7 @@ const Info = () => {
       <CurrentPhase />
       <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
         <Wallet />
-        <Button onClick={handleRedirect}>Defifa WC 2022</Button>
+        <Button onClick={handleRedirect}>Go to Defifa WC 2022</Button>
       </div>
     </div>
   );

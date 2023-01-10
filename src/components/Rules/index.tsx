@@ -71,12 +71,12 @@ const Rules = () => {
             </h1>
             <ul>
               <li>
-                NFTs are not transferable from the refund deadline until the
-                game’s end.
+                NFTs are no longer being minted, but refunds are still
+                permitted.
               </li>
               <li>
-                The refund deadline coincides with the start of the quarter
-                finals.
+                The refund deadline coincides with the start of the first
+                kickoff.
               </li>
             </ul>
           </div>
@@ -89,7 +89,7 @@ const Rules = () => {
             </h1>
             <ul>
               <li>
-                The pot is locked and minting permenently ends before the first
+                The pot is locked and refund permenently ends before the first
                 kickoff on {formatDateToUTC(1673731800 * 1000, true)} UTC.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>3</sup>
@@ -97,7 +97,7 @@ const Rules = () => {
               </li>
               <li>
                 Holders of each team’s NFTs benefit from the outcome of each
-                world cup game their team plays.
+                banny bowl game their team plays.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>1</sup>
                 </a>
