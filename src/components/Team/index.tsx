@@ -78,10 +78,7 @@ const Team: FC<TeamProps> = ({
 
   return (
     <div className={styles.container}>
-      <div
-        onClick={() => onTeamClicked(id)}
-        style={{ position: "relative", cursor: "pointer" }}
-      >
+      <div className={styles.imageContainer} onClick={() => onTeamClicked(id)}>
         <img
           src={img}
           style={{ opacity: selected ? 0.8 : 1 }}

@@ -6,7 +6,7 @@ import {
 import { useDeployerDuration } from "./DeployerDuration";
 
 type DescriptionDates = {
-  mint: {
+  mintDuration: {
     date: string;
     phase: number;
   };
@@ -14,7 +14,7 @@ type DescriptionDates = {
     date: string;
     phase: number;
   };
-  tradeDeadline: {
+  refundPeriodDuration: {
     date: string;
     phase: number;
   };
@@ -27,17 +27,19 @@ type DescriptionDates = {
 export function useDeployerDates(format: "local" | "utc") {
   const deployerDuration = useDeployerDuration();
   const [dates, setDates] = useState<DescriptionDates>({
-    mint: { date: "", phase: 0 },
+    mintDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
-    tradeDeadline: { date: "", phase: 0 },
+    refundPeriodDuration: { date: "", phase: 0 },
     end: { date: "", phase: 0 },
   });
+
+  console.log({ deployerDuration });
 
   useEffect(() => {
     if (!deployerDuration) return;
 
     setDates({
-      mint: {
+      mintDuration: {
         date:
           format === "local"
             ? formatDateToLocal(deployerDuration.start * 1000)
@@ -51,7 +53,7 @@ export function useDeployerDates(format: "local" | "utc") {
             : formatDateToUTC(deployerDuration.start * 1000),
         phase: 2,
       },
-      tradeDeadline: {
+      refundPeriodDuration: {
         date:
           format === "local"
             ? formatDateToLocal(deployerDuration.tradeDeadline * 1000)

@@ -6,7 +6,8 @@ import Content from "../UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
-  const { mint, start, tradeDeadline, end } = useDeployerDates("local");
+  const { mintDuration, start, refundPeriodDuration, end } =
+    useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
 
@@ -18,11 +19,11 @@ const Rules = () => {
     } else if (currentFcNumber < phase) {
       switch (phase) {
         case 1:
-          return `${mint.date}`;
+          return `${mintDuration.date}`;
         case 2:
           return `${start.date}`;
         case 3:
-          return `${tradeDeadline.date}`;
+          return `${refundPeriodDuration.date}`;
         default:
         case 4:
           return `${end.date}`;
@@ -47,14 +48,14 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 1: Opening ceremony (Mint start)
-              <span className={pillStyle(mint.phase)}>
-                {fillPill(mint.phase)}
+              <span className={pillStyle(mintDuration.phase)}>
+                {fillPill(mintDuration.phase)}
               </span>
             </h1>
             <ul>
               <li>
-                There are 32 teams representing the nations competing at the
-                2022 FIFA World Cup.
+                There are 14 teams representing the teams competing at the 2023
+                Defifa Bowl.
               </li>
               <li>Mint team NFTs to increase the game’s treasury.</li>
               <li>The NFTs are a claim on this treasury.</li>
@@ -63,9 +64,27 @@ const Rules = () => {
           </div>
           <div className={styles.phaseBox}>
             <h1>
-              Phase 2: Kickoff (Mint ends)
+              Phase 2: Refund deadline (Mint ends)
               <span className={pillStyle(start.phase)}>
                 {fillPill(start.phase)}
+              </span>
+            </h1>
+            <ul>
+              <li>
+                NFTs are not transferable from the refund deadline until the
+                game’s end.
+              </li>
+              <li>
+                The refund deadline coincides with the start of the quarter
+                finals.
+              </li>
+            </ul>
+          </div>
+          <div className={styles.phaseBox}>
+            <h1>
+              Phase 3: Kickoff
+              <span className={pillStyle(refundPeriodDuration.phase)}>
+                {fillPill(refundPeriodDuration.phase)}
               </span>
             </h1>
             <ul>
@@ -89,24 +108,6 @@ const Rules = () => {
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>2</sup>
                 </a>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.phaseBox}>
-            <h1>
-              Phase 3: Trade deadline{" "}
-              <span className={pillStyle(tradeDeadline.phase)}>
-                {fillPill(tradeDeadline.phase)}
-              </span>
-            </h1>
-            <ul>
-              <li>
-                NFTs are not transferable from the trade deadline until the
-                game’s end.
-              </li>
-              <li>
-                The trade deadline coincides with the start of the quarter
-                finals.
               </li>
             </ul>
           </div>
@@ -143,37 +144,40 @@ const Rules = () => {
           </h1>
           <div>
             <p className={styles.pointSystemDescription}>
-              There are 20,000 points available each round of the FIFA
+              There are 84,014 points available each round of the Defifa Bowl
               tournament, divided evenly between the winner of each game in the
-              round. There are 48 group stage games total, 8 round of 16 games,
-              4 quarterfinal, 2 semifinal, and 1 final.
+              round.
             </p>
             <div className={styles.pointSystemCalculation}>
               <p>
-                Each group stage:{" "}
-                <span className={styles.pointSystemPoints}>416</span>
+                Each winner in wildcard week:{" "}
+                <span className={styles.pointSystemPoints}>
+                  3,669 (26.2% of total points)
+                </span>
               </p>
               <p>
-                Each round of 16:{" "}
-                <span className={styles.pointSystemPoints}>2,500</span>
+                Each divisional winner:{" "}
+                <span className={styles.pointSystemPoints}>
+                  4,000 (19% of total points)
+                </span>
               </p>
               <p>
-                Each quarterfinal:{" "}
-                <span className={styles.pointSystemPoints}>5,000</span>
+                Each conference winner:{" "}
+                <span className={styles.pointSystemPoints}>
+                  10,000 (23.8% of total points)
+                </span>
               </p>
               <p>
-                Each semifinal:{" "}
-                <span className={styles.pointSystemPoints}>10,000</span>
-              </p>
-              <p>
-                The final:{" "}
-                <span className={styles.pointSystemPoints}>20,032</span>
+                The final winner:{" "}
+                <span className={styles.pointSystemPoints}>
+                  26,000 (31% of total points)
+                </span>
               </p>
             </div>
             <p className={styles.pointSystemDescription}>
               The scorecard that is ratified should represent the amount of
               accumulated points by each team divided by the total available
-              100,000 points.
+              84,014 points.
             </p>
           </div>
         </div>

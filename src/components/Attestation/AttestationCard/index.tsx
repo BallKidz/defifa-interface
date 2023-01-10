@@ -41,8 +41,6 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
   const [proposalEnd, setProposalEnd] = useState<number>(0);
   const [votingState, setVotingState] = useState<string>("");
 
-  console.log({ proposalVotes });
-
   useEffect(() => {
     const state = proposalState?.toString();
 

@@ -11,7 +11,10 @@ export function useAttestationPower(id: number, mintsHeldFromTier: number) {
 
   useEffect(() => {
     if (!tiers) return;
+
     const tier = tiers.find((t) => t.id.toNumber() == id);
+
+    if (!tier) return;
 
     const maxSupply = tier.initialQuantity.eq(
       BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)

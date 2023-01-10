@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.container h3,
+.container p {
+  margin: 0;
+}
+
+.description {
+  display: flex;
+  gap: 20px;
+  height: 200px;
+  align-items: center;
+}
+
+.conferenceName {
+  font-size: 18px;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.teamContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+  margin-top: 80px;
+}
+
+@media only screen and (max-width: 600px) {
+  .teamContainer {
+    grid-template-columns: 1fr;
+  }
+}
