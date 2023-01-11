@@ -23,7 +23,10 @@ const Socials = () => {
         </Link>
       </p>
       <p>
-        <Link href="https://github.com/jbx-protocol/juice-defifa" passHref>
+        <Link
+          href="https://github.com/jbx-protocol/juice-defifa-nfl-playoff-edition"
+          passHref
+        >
           <a target="_blank">Code</a>
         </Link>
       </p>
