@@ -21,13 +21,13 @@ const MyTeams = () => {
     tokenIds: getTokenIdsFromTeams(teams),
     onSuccess: () => removeTeams(teams?.map((t) => t.id)),
   });
-  const canRedeem = fundingCycle === 1 || fundingCycle === 4;
+  const canRedeem =
+    fundingCycle === 1 || fundingCycle === 2 || fundingCycle === 4;
 
   return (
     <TeamsContext.Provider value={teams}>
       <Content title="My Teams" open={true} socials={false}>
-        The section for your teams will be available shortly.
-        {/* {isError && <div className={styles.error}>{error}</div>}
+        {isError && <div className={styles.error}>{error}</div>}
         {isLoading && (
           <div className={styles.loading}>
             <div className={styles.spinner}>
@@ -58,7 +58,7 @@ const MyTeams = () => {
                       alt="spinner"
                       width={35}
                     />
-                  ) : fundingCycle === 1 ? (
+                  ) : fundingCycle === 1 || fundingCycle === 2 ? (
                     "Refund all"
                   ) : (
                     "Redeem all"
@@ -82,7 +82,7 @@ const MyTeams = () => {
               {teams?.length === 0 && <div>You dont have any teams yet.</div>}
             </div>
           </>
-        )} */}
+        )}
       </Content>
     </TeamsContext.Provider>
   );

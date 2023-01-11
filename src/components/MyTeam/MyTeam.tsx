@@ -16,7 +16,8 @@ const MyTeam: FC<{
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const attestationPower = useAttestationPower(id, quantity);
-  const canRedeem = fundingCycle === 1 || fundingCycle === 4;
+  const canRedeem =
+    fundingCycle === 1 || fundingCycle === 2 || fundingCycle === 4;
   const {
     write,
     isLoading: isRedeemLoading,
@@ -59,7 +60,7 @@ const MyTeam: FC<{
 };
 
 export function getRedeemButtonText(fundingCycle?: number) {
-  if (fundingCycle === 1) {
+  if (fundingCycle === 1 || fundingCycle === 2) {
     return "Refund";
   } else if (fundingCycle === 4) {
     return "Redeem";
