@@ -9,6 +9,7 @@ interface TeamProps {
   name: string;
   minted: number;
   supply: number;
+  isVersus?: boolean;
   selectAll: boolean;
   txState?: boolean;
   onClick?: (id: number) => void;
@@ -22,6 +23,7 @@ const Team: FC<TeamProps> = ({
   name,
   minted,
   supply,
+  isVersus,
   txState,
   selectAll,
   onClick,
@@ -77,49 +79,59 @@ const Team: FC<TeamProps> = ({
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.imageContainer} onClick={() => onTeamClicked(id)}>
-        <img
-          src={img}
-          style={{ opacity: selected ? 0.8 : 1 }}
-          crossOrigin="anonymous"
-          alt="Team"
-          className={styles.teamImg}
-        />
-        <img
-          style={{ opacity: checkStampOpacity }}
-          className={styles.teamChecked}
-          src="/assets/team_selected.png"
-          alt="Check"
-        />
-      </div>
+    <div className={styles.parent}>
+      <div className={styles.container}>
+        <div
+          className={styles.imageContainer}
+          onClick={() => onTeamClicked(id)}
+        >
+          <img
+            src={img}
+            style={{ opacity: selected ? 0.8 : 1 }}
+            crossOrigin="anonymous"
+            alt="Team"
+            className={styles.teamImg}
+          />
+          <img
+            style={{ opacity: checkStampOpacity }}
+            className={styles.teamChecked}
+            src="/assets/team_selected.png"
+            alt="Check"
+          />
+        </div>
 
-      <div
-        className={styles.dataContainer}
-        style={{
-          display: "flex",
-          gap: "15px",
-          alignItems: "center",
-          height: "35px",
-        }}
-      >
-        <h3>{name}</h3>
-        {selected ? (
-          <div className={styles.quantityContainer}>
-            <p>{tierIds.length}</p>
-            <Button size="extraSmall" onClick={onAddTierIds}>
-              +
-            </Button>
-            <Button onClick={onRemoveTierIds} size="extraSmall">
-              -
-            </Button>
-          </div>
-        ) : null}
-      </div>
+        <div
+          className={styles.dataContainer}
+          style={{
+            display: "flex",
+            gap: "15px",
+            alignItems: "center",
+            height: "35px",
+          }}
+        >
+          <h3>{name}</h3>
+          {selected ? (
+            <div className={styles.quantityContainer}>
+              <p>{tierIds.length}</p>
+              <Button size="extraSmall" onClick={onAddTierIds}>
+                +
+              </Button>
+              <Button onClick={onRemoveTierIds} size="extraSmall">
+                -
+              </Button>
+            </div>
+          ) : null}
+        </div>
 
-      <p>
-        Mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
-      </p>
+        <p>
+          Mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
+        </p>
+      </div>
+      {isVersus ? (
+        <div className={styles.vsContainer}>
+          <p>VS</p>
+        </div>
+      ) : null}
     </div>
   );
 };

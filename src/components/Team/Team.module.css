@@ -1,3 +1,7 @@
+.parent {
+  display: flex;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -6,11 +10,18 @@
   line-height: 18.2px;
   color: white;
   font-weight: 500;
+  width: 300px;
 }
 
 .imageContainer {
   position: relative;
   cursor: pointer;
+}
+
+.vsContainer {
+  align-self: center;
+  font-size: 2rem;
+  margin-left: 2rem;
 }
 
 .container h3,
@@ -51,4 +62,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 27rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .vsContainer {
+    display: none;
+  }
 }

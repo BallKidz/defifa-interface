@@ -1,6 +1,6 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
-import { chunk, repeat } from "lodash";
+import { chunk } from "lodash";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
@@ -10,9 +10,8 @@ import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { usePay } from "../../hooks/write/usePay";
+import { formBrackets } from "../../utils/array";
 import Conferences from "../Conferences";
-import FeelingLucky from "../FeelingLucky";
-import Group from "../Group";
 import Team from "../Team";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
@@ -35,7 +34,26 @@ const Mint = () => {
   const [sortOption, setSortOption] = useState<string>("conferences");
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
-  const chunkedRewardTiers = chunk(rewardTiers, 7);
+  const bracketFormatted = formBrackets((rewardTiers as any[]) ?? [], [
+    "Buffalo",
+    "Miami",
+    "Cincinnati",
+    "Baltimore",
+    "Jacksonville",
+    "Los Angeles",
+    "Kansas City",
+    "San Francisco",
+    "Seattle",
+    "Minnesota",
+    "New York",
+    "Tampa Bay",
+    "Dallas",
+    "Philadelphia",
+  ]);
+
+  console.log(bracketFormatted);
+
+  const chunkedRewardTiers = chunk(bracketFormatted, 7);
   const mostMintedRewardTiers = rewardTiers
     ?.slice()
     .sort(
@@ -113,8 +131,6 @@ const Mint = () => {
     setTierIds([]);
     setSelectAll(false);
   };
-
-  console.log({ currentFcNumber });
 
   return (
     <>
@@ -205,6 +221,7 @@ const Mint = () => {
                         id={t.id}
                         img={`nfl-assets/${t.id}.png`}
                         name={t.teamName}
+                        isVersus={t.isSpecial}
                         minted={t.minted}
                         supply={totalSupply?.toNumber() ?? 0}
                         txState={isSuccess || isError}
