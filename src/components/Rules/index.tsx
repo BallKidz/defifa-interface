@@ -89,7 +89,7 @@ const Rules = () => {
             </h1>
             <ul>
               <li>
-                The pot is locked and refund permenently ends before the first
+                The pot is locked and refunds permanently end before the first
                 kickoff on {formatDateToUTC(1673731800 * 1000, true)} UTC.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>3</sup>
@@ -144,9 +144,8 @@ const Rules = () => {
           </h1>
           <div>
             <p className={styles.pointSystemDescription}>
-              There are 84,014 points available each round of the Defifa Bowl
-              tournament, divided evenly between the winner of each game in the
-              round.
+              Total points:{" "}
+              <span className={styles.pointSystemPoints}>84,014</span>
             </p>
             <div className={styles.pointSystemCalculation}>
               <p>

@@ -132,11 +132,10 @@ const Team: FC<TeamProps> = ({
         </p>
         <p>Seed: #{id < 8 ? id : calculateSeed(8, id)}</p>
       </div>
-      {isVersus ? (
-        <div className={styles.vsContainer}>
-          <p>VS</p>
-        </div>
-      ) : null}
+
+      <div className={styles.vsContainer}>
+        <p style={{ visibility: isVersus ? "visible" : "hidden" }}>VS</p>
+      </div>
     </div>
   );
 };

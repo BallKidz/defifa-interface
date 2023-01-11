@@ -19,7 +19,7 @@ export const formatSecondsToUTC = (
 export const formatSecondsToLocal = (
   seconds: number,
   fromDate: number,
-  format = "MMMM Do YYYY, HH:mm"
+  format = "MMM Do, HH:mm"
 ) => {
   const future_unix_timestamp = fromDate;
   const future = moment.unix(future_unix_timestamp);
@@ -39,7 +39,7 @@ export const formatDateToUTC = (dateMillis: number, includeTime?: boolean) => {
 
 export const formatDateToLocal = (
   dateMillis: number,
-  format = "MMMM Do YYYY, HH:mm"
+  format = "MMM Do, HH:mm"
 ) => {
   const local = moment(dateMillis).local().format(format);
 

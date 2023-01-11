@@ -13,7 +13,7 @@ const Conferences = ({ name, logo, tiers, children }: ConferencesProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.description}>
-        <img src={logo} alt="conference" width={220} />
+        <img src={logo} alt="conference" width={180} />
         <p>
           <span className={styles.conferenceName}>{name} conference</span>
           <br></br>
