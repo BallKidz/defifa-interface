@@ -20,8 +20,9 @@
 
 .vsContainer {
   align-self: center;
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-left: 2rem;
+  color: var(--gold);
 }
 
 .container h3,
