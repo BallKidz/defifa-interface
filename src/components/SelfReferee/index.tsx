@@ -116,7 +116,11 @@ const SelfRefree = () => {
           }}
           size="big"
           disabled={
-            mintReservesLoading || mintReservesSuccess || mintReservesDisabled
+            mintReservesLoading ||
+            mintReservesSuccess ||
+            mintReservesDisabled ||
+            data?.fundingCycle.number.toNumber() !== 3 ||
+            data?.fundingCycle.number.toNumber() !== 4
           }
         >
           Mint Reserves

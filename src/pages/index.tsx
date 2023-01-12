@@ -46,6 +46,7 @@ const Home: NextPage = () => {
         <Info />
       </Navbar>
       <Description />
+      <Divider />
       <Rules />
       <Divider />
       <Mint />

@@ -35,27 +35,6 @@ const Content: React.FC<
   const fundingCycle = data?.fundingCycle.number.toNumber();
 
   const contentTitle = useMemo<ReactElement>(() => {
-    if (props.title === "Rules" && props.socials) {
-      return (
-        <div style={{ display: "flex" }}>
-          <div className={styles.socials}>
-            <Socials />
-          </div>
-          <h1
-            className={styles.contentTitle}
-            style={{
-              color: "white",
-              alignSelf: "center",
-              textDecoration: "underline",
-              fontSize: "16px",
-            }}
-          >
-            {props.title}
-          </h1>
-        </div>
-      );
-    }
-
     return (
       <h1
         className={styles.contentTitle}
@@ -64,7 +43,7 @@ const Content: React.FC<
         {props.title}
       </h1>
     );
-  }, [displayContent, props.socials, props.title]);
+  }, [displayContent, props.title]);
 
   return (
     <>
@@ -83,9 +62,7 @@ const Content: React.FC<
             <FontAwesomeIcon
               icon={faChevronDown}
               size="sm"
-              color={
-                props.title === "Rules" ? "white" : constants.contentTitleColor
-              }
+              color={constants.contentTitleColor}
               className={styles.chevronDown}
             />
             {fundingCycle &&

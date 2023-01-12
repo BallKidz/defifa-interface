@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useCountdown } from "../../hooks/Countdown";
 import { useDeployerDates } from "../../hooks/read/DeployerDates";
+import Socials from "../Navbar/Info/Socials";
 import styles from "./Description.module.css";
 
 const Description = () => {
@@ -34,6 +34,7 @@ const Description = () => {
             agreeing on the outcome of the competition once it's over.
           </li>
         </ol>
+        <Socials />
       </div>
     </div>
   );

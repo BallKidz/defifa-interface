@@ -7,3 +7,7 @@
   text-decoration: underline;
   font-weight: 500;
 }
+
+.container a {
+  font-size: 18px;
+}
