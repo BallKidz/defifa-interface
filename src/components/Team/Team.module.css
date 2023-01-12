@@ -50,6 +50,8 @@
 }
 
 .teamImg {
+  max-width: 100%;
+  max-height: 100%;
   width: 100%;
   cursor: pointer;
   opacity: 0.9;
@@ -67,5 +69,9 @@
 @media only screen and (max-width: 768px) {
   .vsContainer {
     display: none;
+  }
+
+  .teamImg {
+    width: 300px;
   }
 }
