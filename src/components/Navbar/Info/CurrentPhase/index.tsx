@@ -46,16 +46,6 @@ const CurrentPhase = () => {
     }
   }, [fundingCycle, deployerDuration]);
 
-  const phase = (fc: number) => {
-    const phaseMap: Record<number, string> = {
-      1: "Mint",
-      2: "Refund deadline",
-      3: "Kickoff",
-      4: "Final whistle",
-    };
-    return phaseMap[fc] || "Mint begins soon";
-  };
-
   const dateCollapsibleTitle = useMemo(() => {
     return timeRemaining
       ? `${titleTimeRemaining} ${timeRemaining}`
@@ -65,10 +55,11 @@ const CurrentPhase = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Current phase: {phase(fundingCycle)} </h1>
-
       {titleTimeRemaining && (
-        <Content title={dateCollapsibleTitle} fontSize="16">
+        <Content
+          title={`${dateCollapsibleTitle} See all game phase times`}
+          fontSize="16"
+        >
           <div className={styles.dateInfoContainer}>
             <p>
               Mint ends:{" "}

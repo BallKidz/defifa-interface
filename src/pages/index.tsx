@@ -44,7 +44,6 @@ const Home: NextPage = () => {
         theme="dark"
       />
       <Navbar>
-        <Socials />
         <Info />
       </Navbar>
       <Description />

@@ -4,15 +4,12 @@ export function useCountdown(targetDate: Date | undefined): {
   timeRemaining: string | null;
   isOver: boolean;
 } {
-  // Declare a state variable to store the time remaining
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
   const [isOver, setIsOver] = useState<boolean>(false);
 
-  // Calculate the time remaining every second
   useEffect(() => {
     if (!targetDate) return;
     const interval = setInterval(() => {
-      // Calculate the time remaining
       const currentTime = new Date().getTime();
       const timeDifference = targetDate.getTime() - currentTime;
       const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
@@ -34,16 +31,16 @@ export function useCountdown(targetDate: Date | undefined): {
       if (minutes > 0) {
         timeRemainingString += `${minutes}m `;
       }
-      if (seconds > 0) {
+      if (hours === 0 && minutes === 0 && seconds > 0) {
         timeRemainingString += `${seconds}s `;
       }
       if (timeRemainingString === "") {
         setIsOver(true);
+      } else {
+        timeRemainingString = timeRemainingString.replace(/\s$/, ".");
       }
       setTimeRemaining(timeRemainingString);
     }, 1000);
-
-    // Clear the interval when the component unmounts
     return () => clearInterval(interval);
   }, [targetDate]);
 

@@ -2,11 +2,13 @@
 import CurrentPhase from "../Navbar/Info/CurrentPhase";
 import Treasury from "../Navbar/Info/Treasury";
 import Rules from "../Rules";
+import Title from "../Title";
 import styles from "./Description.module.css";
 
 const Description = () => {
   return (
     <div className={styles.container}>
+      <Title title="Defifa: American Football Playoffs 2023 edition" />
       <Treasury />
       <CurrentPhase />
       <div className={styles.gameplayContainer}>
