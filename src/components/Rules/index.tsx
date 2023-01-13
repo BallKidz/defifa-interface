@@ -42,7 +42,7 @@ const Rules = () => {
   };
 
   return (
-    <Content title="Rules" open={false} socials={true}>
+    <Content title="See full rules" open={false} fontSize={"16"}>
       <div className={styles.rulesContainer}>
         <div className={styles.phases}>
           <div className={styles.phaseBox}>

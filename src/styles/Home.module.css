@@ -1,6 +1,6 @@
 .container {
   width: fit-content;
-  padding: 65px 8% 35px 8%;
+  padding: 35px 8% 35px 8%;
 }
 
 @media only screen and (min-width: 768px) {
@@ -26,7 +26,7 @@
 }
 @media only screen and (max-width: 1300px) {
   .container {
-    padding: 65px 5% 112px 5%;
+    padding: 35px 5% 112px 5%;
   }
 }
 

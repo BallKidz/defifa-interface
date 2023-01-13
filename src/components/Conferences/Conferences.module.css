@@ -12,8 +12,8 @@
 .description {
   display: flex;
   gap: 20px;
-  height: 200px;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .conferenceName {
@@ -26,7 +26,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 35px;
-  margin-top: 80px;
 }
 
 @media only screen and (max-width: 600px) {

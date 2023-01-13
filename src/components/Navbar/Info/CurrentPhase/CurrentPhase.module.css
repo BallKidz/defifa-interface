@@ -1,7 +1,30 @@
+.container {
+  margin-top: 20px;
+}
+
 .container h1 {
   color: var(--gold);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
 }
 
 .container p {
   color: var(--purple);
+  margin: 0;
+}
+
+.timeRemaining {
+  font-size: 16px;
+}
+
+.dateInfoContainer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dateInfoContainer p {
+  font-size: 16px !important;
 }

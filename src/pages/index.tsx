@@ -13,11 +13,12 @@ import styles from "../styles/Home.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import MyTeams from "../components/MyTeams";
 import Script from "next/script";
+import Socials from "../components/Navbar/Info/Socials";
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Defifa</title>
+        <title>Defifa: American Football Playoffs 2023</title>
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
@@ -43,11 +44,10 @@ const Home: NextPage = () => {
         theme="dark"
       />
       <Navbar>
+        <Socials />
         <Info />
       </Navbar>
       <Description />
-      <Divider />
-      <Rules />
       <Divider />
       <Mint />
       <Divider />

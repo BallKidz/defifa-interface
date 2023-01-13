@@ -6,11 +6,9 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { ChainDoesNotSupportMulticallError } from "wagmi";
 import { colors } from "../../../constants/colors";
 import constants from "../../../constants/UI";
 import { useProjectCurrentFundingCycle } from "../../../hooks/read/ProjectCurrentFundingCycle";
-import Socials from "../../Navbar/Info/Socials";
 import Button from "../Button";
 
 import styles from "./Content.module.css";
@@ -20,6 +18,7 @@ const Content: React.FC<
     open?: boolean;
     title?: string;
     socials?: boolean;
+    fontSize?: string;
     rightSection?: {
       enabled: boolean;
       title: string;
@@ -38,12 +37,15 @@ const Content: React.FC<
     return (
       <h1
         className={styles.contentTitle}
-        style={{ color: displayContent ? colors.gold : colors.purple }}
+        style={{
+          color: displayContent ? colors.gold : colors.purple,
+          fontSize: `${props.fontSize}px`,
+        }}
       >
         {props.title}
       </h1>
     );
-  }, [displayContent, props.title]);
+  }, [displayContent, props.fontSize, props.title]);
 
   return (
     <>

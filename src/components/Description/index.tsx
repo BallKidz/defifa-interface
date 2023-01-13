@@ -1,29 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useDeployerDates } from "../../hooks/read/DeployerDates";
-import Socials from "../Navbar/Info/Socials";
+import CurrentPhase from "../Navbar/Info/CurrentPhase";
+import Treasury from "../Navbar/Info/Treasury";
+import Rules from "../Rules";
 import styles from "./Description.module.css";
 
 const Description = () => {
-  const { start, end, refundPeriodDuration, mintDuration } =
-    useDeployerDates("local");
-
   return (
     <div className={styles.container}>
-      <div className={styles.infoContainer}>
-        <p>
-          Minting ends:{" "}
-          <span className={styles.infoDates}>{refundPeriodDuration.date}</span>
-        </p>
-        <p>
-          Refund ends: <span className={styles.infoDates}>{start.date}</span>
-        </p>
-        <p>
-          Game starts: <span className={styles.infoDates}>{start.date}</span>
-        </p>
-        <p>
-          Game ends: <span className={styles.infoDates}>{end.date}</span>{" "}
-        </p>
-      </div>
+      <Treasury />
+      <CurrentPhase />
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>TLDR Gameplay:</h1>
         <ol>
@@ -34,8 +19,8 @@ const Description = () => {
             agreeing on the outcome of the competition once it's over.
           </li>
         </ol>
-        <Socials />
       </div>
+      <Rules />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function useCountdown(targetDate: Date): {
+export function useCountdown(targetDate: Date | undefined): {
   timeRemaining: string | null;
   isOver: boolean;
 } {
@@ -10,6 +10,7 @@ export function useCountdown(targetDate: Date): {
 
   // Calculate the time remaining every second
   useEffect(() => {
+    if (!targetDate) return;
     const interval = setInterval(() => {
       // Calculate the time remaining
       const currentTime = new Date().getTime();

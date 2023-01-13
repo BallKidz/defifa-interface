@@ -10,14 +10,12 @@ const Treasury = () => {
   return (
     <div className={styles.container}>
       <h1>
-        {fromWad(treasuryAmount)} ETH
+        Current pot: {fromWad(treasuryAmount)} ETH
         <span className={styles.mints}>
           {" "}
           from {totalSupply?.toNumber()} mints
         </span>
       </h1>
-
-      <p>Current pot</p>
     </div>
   );
 };

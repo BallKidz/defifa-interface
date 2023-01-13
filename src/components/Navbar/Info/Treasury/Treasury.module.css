@@ -1,6 +1,8 @@
 .container h1 {
   color: var(--gold);
   font-weight: 500;
+  margin: 0;
+  font-size: 20px;
 }
 
 .container p {

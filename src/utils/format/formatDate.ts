@@ -1,31 +1,34 @@
 import moment from "moment";
 
+export const formatMillistoMoment = (dateMillis: number) => {
+  return moment.unix(dateMillis);
+};
+
+export const formatSecondsToMoment = (seconds: number, fromDate: number) => {
+  let start = moment.unix(fromDate);
+  return moment(start).subtract(seconds, "seconds");
+};
+
 export const formatSecondsToUTC = (
   seconds: number,
   fromDate: number,
   includetime?: boolean
 ) => {
-  const future_unix_timestamp = fromDate;
-  const future = moment.unix(future_unix_timestamp);
-  const duration = moment.duration(seconds, "seconds");
-  const new_unix_timestamp = moment(future).subtract(duration).unix();
-  const date = moment.unix(new_unix_timestamp).toDate();
+  let start = moment.unix(fromDate);
+  let date = moment(start).subtract(seconds, "seconds");
   if (!includetime) {
-    return moment(date).utc().format("ll");
+    return moment(date).utc().format();
   }
-  return moment(date).utc().format("MMMM Do YYYY, h A");
+  return moment(date).utc().format("MMMM Do YYYY, HH:mm");
 };
 
 export const formatSecondsToLocal = (
   seconds: number,
   fromDate: number,
-  format = "MMM Do, HH:mm"
+  format = "MMMM Do YYYY, HH:mm"
 ) => {
-  const future_unix_timestamp = fromDate;
-  const future = moment.unix(future_unix_timestamp);
-  const duration = moment.duration(seconds, "seconds");
-  const new_unix_timestamp = moment(future).subtract(duration).unix();
-  const date = moment.unix(new_unix_timestamp).toDate();
+  let start = moment.unix(fromDate);
+  let date = moment(start).subtract(seconds, "seconds");
 
   return moment(date).local().format(format);
 };
@@ -39,7 +42,7 @@ export const formatDateToUTC = (dateMillis: number, includeTime?: boolean) => {
 
 export const formatDateToLocal = (
   dateMillis: number,
-  format = "MMM Do, HH:mm"
+  format = "MMMM Do YYYY, HH:mm"
 ) => {
   const local = moment(dateMillis).local().format(format);
 
