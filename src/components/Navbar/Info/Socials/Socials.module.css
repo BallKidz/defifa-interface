@@ -9,6 +9,7 @@
 }
 
 .container a {
+  color: var(--violet);
   font-size: 14px;
 }
 

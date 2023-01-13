@@ -55,10 +55,12 @@ const CurrentPhase = () => {
 
   return (
     <div className={styles.container}>
+      <p style={{ fontSize: "16px" }}>{dateCollapsibleTitle}</p>
       {titleTimeRemaining && (
         <Content
-          title={`${dateCollapsibleTitle} See all game phase times`}
+          title={`See all game phase times`}
           fontSize="16"
+          color="var(--violet)"
         >
           <div className={styles.dateInfoContainer}>
             <p>

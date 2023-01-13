@@ -42,7 +42,12 @@ const Rules = () => {
   };
 
   return (
-    <Content title="See full rules" open={false} fontSize={"16"}>
+    <Content
+      title="See full rules"
+      open={false}
+      fontSize={"16"}
+      color="var(--violet)"
+    >
       <div className={styles.rulesContainer}>
         <div className={styles.phases}>
           <div className={styles.phaseBox}>

@@ -9,13 +9,13 @@ import React, {
 import { colors } from "../../../constants/colors";
 import constants from "../../../constants/UI";
 import { useProjectCurrentFundingCycle } from "../../../hooks/read/ProjectCurrentFundingCycle";
-import Button from "../Button";
 
 import styles from "./Content.module.css";
 
 const Content: React.FC<
   PropsWithChildren<{
     open?: boolean;
+    color?: string;
     title?: string;
     socials?: boolean;
     fontSize?: string;
@@ -26,7 +26,7 @@ const Content: React.FC<
       loading: boolean;
     };
   }>
-> = (props) => {
+> = ({ color = colors.purple, ...props }) => {
   const [displayContent, setDisplayContent] = useState<boolean>(
     props?.open ?? false
   );
@@ -38,14 +38,14 @@ const Content: React.FC<
       <h1
         className={styles.contentTitle}
         style={{
-          color: displayContent ? colors.gold : colors.purple,
+          color: displayContent ? colors.gold : color,
           fontSize: `${props.fontSize}px`,
         }}
       >
         {props.title}
       </h1>
     );
-  }, [displayContent, props.fontSize, props.title]);
+  }, [color, displayContent, props.fontSize, props.title]);
 
   return (
     <>
@@ -72,29 +72,6 @@ const Content: React.FC<
             props.title === "Mint teams" ? (
               <span className={styles.completed}>Completed</span>
             ) : null}
-
-            {props.rightSection?.enabled && (
-              <div className={styles.rightSection}>
-                <div className={styles.rightSectionButtonWrapper}> </div>
-                <Button
-                  onClick={props.rightSection?.onClick}
-                  disabled={props.rightSection?.loading}
-                  size="medium"
-                >
-                  {props.rightSection?.loading ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      style={{ marginTop: "5px" }}
-                      src="/assets/defifa_spinner.gif"
-                      alt="spinner"
-                      width={35}
-                    />
-                  ) : (
-                    props.rightSection?.title
-                  )}
-                </Button>
-              </div>
-            )}
           </div>
         </label>
         <div className={styles.content}>{props.children}</div>
