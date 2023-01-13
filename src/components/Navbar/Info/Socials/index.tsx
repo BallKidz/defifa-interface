@@ -36,6 +36,11 @@ const Socials = () => {
           <a target="_blank">Twitter</a>
         </Link>
       </p>
+      <p>
+        <Link href="https://wc2022.defifa.net" passHref>
+          <a target="_blank">Past tournaments</a>
+        </Link>
+      </p>
     </div>
   );
 };

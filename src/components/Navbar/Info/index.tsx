@@ -1,5 +1,3 @@
-import Title from "../../Title";
-import Button from "../../UI/Button";
 import { Logo } from "../Logo";
 import Wallet from "../Wallet";
 import styles from "./Info.module.css";
@@ -16,7 +14,6 @@ const Info = () => {
 
       <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
         <Wallet />
-        <Button onClick={handleRedirect}>Go to Defifa WC 2022</Button>
       </div>
     </div>
   );
