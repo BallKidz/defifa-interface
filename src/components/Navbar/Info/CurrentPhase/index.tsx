@@ -36,7 +36,7 @@ const CurrentPhase = () => {
         setCountdownDate(formatMillistoMoment(start).toDate());
         setTitleTimeRemaining(`Refunding ends in`);
         break;
-      case 2:
+      case 3:
         setCountdownDate(new Date());
         setTitleTimeRemaining(`Game ends`);
         break;
