@@ -3,3 +3,10 @@
   color: var(--gold);
   font-weight: 500;
 }
+
+.container a {
+  color: var(--violet);
+  font-size: 14px;
+  text-decoration: underline;
+  cursor: pointer;
+}
