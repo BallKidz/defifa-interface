@@ -2,10 +2,9 @@
 //nextjs Functional component
 
 import { chunk } from "lodash";
-import moment from "moment";
 import { useMemo, useState } from "react";
 import useNftRewards from "../../hooks/NftRewards";
-import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
+import { useDeployerDates } from "../../hooks/read/DeployerDates";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
@@ -23,6 +22,8 @@ type modalOption = "scorecard" | "attestation";
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
+  const { end } = useDeployerDates("local");
+
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
@@ -89,6 +90,7 @@ const SelfRefree = () => {
           Scorecards can be submitted that suggest the correct results of
           off-chain events.
         </p>
+        <p>Scorecard submission will be available on {end.date}.</p>
         <Button onClick={onSubmitScoreCardClick} size="big" disabled={true}>
           Submit a scorecard
         </Button>
@@ -98,7 +100,7 @@ const SelfRefree = () => {
           If you hold an nft, you can send a transaction attesting to a
           submitted scorecard that conveys correct results of off-chain events.
         </p>
-
+        <p>Attestation submission will be available on {end.date}.</p>
         <Button
           onClick={onSubmitAttestationClick}
           disabled={fundingCycle !== 4}
