@@ -23,6 +23,7 @@ type modalOption = "scorecard" | "attestation";
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
+  const fundingCycle = data?.fundingCycle.number.toNumber();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
@@ -102,7 +103,7 @@ const SelfRefree = () => {
 
         <Button
           onClick={onSubmitAttestationClick}
-          disabled={data?.fundingCycle.number.toNumber() !== 4}
+          disabled={fundingCycle !== 4}
           size="big"
         >
           Submit attestation
@@ -119,8 +120,8 @@ const SelfRefree = () => {
             mintReservesLoading ||
             mintReservesSuccess ||
             mintReservesDisabled ||
-            data?.fundingCycle.number.toNumber() !== 3 ||
-            data?.fundingCycle.number.toNumber() !== 4
+            fundingCycle == 1 ||
+            fundingCycle === 2
           }
         >
           Mint Reserves
@@ -146,12 +147,9 @@ const SelfRefree = () => {
               width={35}
             />
           ) : needsQueueing ? (
-            <span> Queue phase {data?.fundingCycle.number.toNumber() + 1}</span>
+            <span> Queue phase {fundingCycle + 1}</span>
           ) : (
-            <span>
-              {" "}
-              Phase {data?.fundingCycle.number.toNumber() + 1} Already Queued
-            </span>
+            <span> Phase {fundingCycle + 1} Already Queued</span>
           )}
         </Button>
       </div>
