@@ -54,13 +54,6 @@ export function useDeployerDates(format: "local" | "utc") {
               ),
         phase: 1,
       },
-      start: {
-        date:
-          format === "local"
-            ? formatDateToLocal(deployerDuration.start * 1000)
-            : formatDateToUTC(deployerDuration.start * 1000),
-        phase: 2,
-      },
       refundPeriodDuration: {
         date:
           format === "local"
@@ -72,6 +65,13 @@ export function useDeployerDates(format: "local" | "utc") {
                 deployerDuration.refundPeriodDuration,
                 deployerDuration.start
               ),
+        phase: 2,
+      },
+      start: {
+        date:
+          format === "local"
+            ? formatDateToLocal(deployerDuration.start * 1000)
+            : formatDateToUTC(deployerDuration.start * 1000),
         phase: 3,
       },
       end: {

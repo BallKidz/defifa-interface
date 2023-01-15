@@ -21,9 +21,9 @@ const Rules = () => {
         case 1:
           return `${mintDuration.date}`;
         case 2:
-          return `${start.date}`;
-        case 3:
           return `${refundPeriodDuration.date}`;
+        case 3:
+          return `${start.date}`;
         default:
         case 4:
           return `${end.date}`;
