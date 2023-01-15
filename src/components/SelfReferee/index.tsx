@@ -3,7 +3,7 @@
 
 import { chunk } from "lodash";
 import moment from "moment";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useNftRewards from "../../hooks/NftRewards";
 import { useDeployerDuration } from "../../hooks/read/DeployerDuration";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
@@ -30,7 +30,6 @@ const SelfRefree = () => {
   );
   const chunkedRewardTiers = chunk(rewardTiers, 4);
 
-  const deployerDuration = useDeployerDuration();
   const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
     useNextPhaseNeedsQueueing();
   const {
@@ -41,7 +40,6 @@ const SelfRefree = () => {
     disabled: mintReservesDisabled,
   } = useMintReservesFor();
   let needsQueueing = queueData! as unknown as boolean;
-  const beforeEnd = moment(deployerDuration?.end * 1000).subtract(7, "days");
   const [openModal, setIsOpenModal] = useState<boolean>(false);
   const [modalOption, setModalOption] = useState<modalOption>();
 

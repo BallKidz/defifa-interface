@@ -147,43 +147,41 @@ const Rules = () => {
           <h1 className={styles.pointHeader}>
             <sup className={styles.superScript}>1 </sup>Point system:
           </h1>
-          <div>
-            <p className={styles.pointSystemDescription}>
-              Total points:{" "}
-              <span className={styles.pointSystemPoints}>84,014</span>
+          <p className={styles.pointSystemDescription}>
+            Total points:{" "}
+            <span className={styles.pointSystemPoints}>84,014</span>
+          </p>
+          <div className={styles.pointSystemCalculation}>
+            <p>
+              Each winner in wildcard week:{" "}
+              <span className={styles.pointSystemPoints}>
+                3,669 (26.2% of total points)
+              </span>
             </p>
-            <div className={styles.pointSystemCalculation}>
-              <p>
-                Each winner in wildcard week:{" "}
-                <span className={styles.pointSystemPoints}>
-                  3,669 (26.2% of total points)
-                </span>
-              </p>
-              <p>
-                Each divisional winner:{" "}
-                <span className={styles.pointSystemPoints}>
-                  4,000 (19% of total points)
-                </span>
-              </p>
-              <p>
-                Each conference winner:{" "}
-                <span className={styles.pointSystemPoints}>
-                  10,000 (23.8% of total points)
-                </span>
-              </p>
-              <p>
-                The final winner:{" "}
-                <span className={styles.pointSystemPoints}>
-                  26,000 (31% of total points)
-                </span>
-              </p>
-            </div>
-            <p className={styles.pointSystemDescription}>
-              The scorecard that is ratified should represent the amount of
-              accumulated points by each team divided by the total available
-              84,014 points.
+            <p>
+              Each divisional winner:{" "}
+              <span className={styles.pointSystemPoints}>
+                4,000 (19% of total points)
+              </span>
+            </p>
+            <p>
+              Each conference winner:{" "}
+              <span className={styles.pointSystemPoints}>
+                10,000 (23.8% of total points)
+              </span>
+            </p>
+            <p>
+              The final winner:{" "}
+              <span className={styles.pointSystemPoints}>
+                26,000 (31% of total points)
+              </span>
             </p>
           </div>
+          <p className={styles.pointSystemDescription}>
+            The scorecard that is ratified should represent the amount of
+            accumulated points by each team divided by the total available
+            84,014 points.
+          </p>
         </div>
         <div className={styles.disclaimerContainer} id="disclaimerContainer">
           <p className={styles.disclaimer}>
