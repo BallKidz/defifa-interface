@@ -29,6 +29,7 @@
     "moment": "^2.29.4",
     "next": "12.3.1",
     "react": "18.2.0",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-ipfs-image": "^0.7.0",
@@ -36,6 +37,7 @@
     "react-modal": "^3.16.1",
     "react-query": "^3.39.2",
     "react-toastify": "^9.1.1",
+    "styled-components": "^5.3.6",
     "wagmi": "^0.6.7"
   },
   "devDependencies": {
