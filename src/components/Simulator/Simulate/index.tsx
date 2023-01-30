@@ -1,64 +1,41 @@
-import styles from "./SimulatorCreate.module.css";
+import { Fragment } from "react";
 import DataTable, { createTheme } from 'react-data-table-component';
-import { useNftRewardsTotalSupply } from "../../../hooks/read/NftRewardsTotalSupply";
-import { usePaymentTerminalBalance } from "../../../hooks/read/PaymentTerminalBalance";
-import { fromWad } from "../../../utils/format/formatNumber";
-import { liveScores } from "../../../constants/liveScores";
+import { CurrentScore } from '../../../hooks/read/CurrentScore';
 
 const SimulatorCreate = () => {
-  const { data: totalSupply } = useNftRewardsTotalSupply();
-  const { data: treasuryAmount } = usePaymentTerminalBalance();
-  
-  const columns = [
-    {
-      name: 'Team',
-      selector: (row: { team: any; }) => row.team,
-    },
-    {
-      name: 'Mints',
-      selector: (row: { mints: any; }) => row.mints,
-    },
-    {
-      name: 'Expected Burn Value',
-      selector: (row: { ev: any; }) => row.ev,
-    },
-    {
-      name: 'WCW',
-      selector: (row: { wcw: any; }) => row.wcw,
-    },
-    {
-      name: 'Divisional',
-      selector: (row: { divisional: any; }) => row.divisional,
-    },
-    {
-      name: 'Conference',
-      selector: (row: { conference: any; }) => row.conference,
-    },
-    {
-      name: 'Finals',
-      selector: (row: { finals: any; }) => row.finals,
-    },
-
-  ];
-  
-  const data1 = liveScores?.map((tier) => {
-    return {
-      team: tier.team,
-      mints: tier.mints,
-      ev: tier.ev,
-      wcw: tier.wcw,
-      divisional: tier.divisional,
-      conference: tier.conference,
-      finals: tier.finals,
-      };
-  });
-  // Sort for readability. Not needed if liveScores is already sorted.
-  const data = data1?.slice()
-    .sort(
-      (a: { mints: number }, b: { mints: number }) => {
-        return b.mints - a.mints;
-      }
+  const data: any  = CurrentScore();
+  let bulidColumns = []
+  for (let key in data[0]) {
+    bulidColumns.push({
+      name: key
+    }
     );
+  }
+  // TODO: Need to figure out how to dynamically create the selector function.
+  let columns = bulidColumns.map(obj => Object.assign({}, obj, { selector: (row: { team: any; }) => row.team }));
+  for(let i = 0; i < columns.length; i++) {
+    if(columns[i].name === "Teams") {
+      columns[i].selector = (row: { Teams: any; }) => row.Teams;
+    } else if(columns[i].name === "Mints") {
+      columns[i].selector = (row: { Mints: any; }) => row.Mints;
+    } else if(columns[i].name === "WCW") {
+      columns[i].selector = (row: { WCW: any; }) => row.WCW;
+    } else if(columns[i].name === "Divisional") {
+      columns[i].selector = (row: { Divisional: any; }) => row.Divisional;
+    } else if(columns[i].name === "Conference") {
+      columns[i].selector = (row: { Conference: any; }) => row.Conference;
+    } else if(columns[i].name === "Final") {
+      columns[i].selector = (row: { Final: any; }) => row.Final;
+    } else if(columns[i].name === "Total_Points") {
+      columns[i].selector = (row: { Total_Points: any; }) => row.Total_Points;
+    } else if(columns[i].name === "Accumulated") {
+      columns[i].selector = (row: { Accumulated: any; }) => row.Accumulated;
+    } else if(columns[i].name === "Redemption") {
+      columns[i].selector = (row: { Redemption: any; }) => row.Redemption;
+    } else if(columns[i].name === "ROI") {
+      columns[i].selector = (row: { ROI: any; }) => row.ROI;
+    }
+  }
 
   // createTheme creates a new theme with the given name and overrides
   createTheme('default', {
@@ -72,42 +49,17 @@ const SimulatorCreate = () => {
     },   
   });
 
-  const onCreate = () => {
-  };
-  // TODO: Mobile view is not working. Need to fix. Scoring rubric is cut off.
-  // Consider moving data to json file and importing it. Create tourny flow for updating json file.
+  // TODO: Live scorecard could be part of tournament create flow as well as attestation process.
   return (
-    <form onSubmit={onCreate} className={styles.container}>
-      <h1 className={styles.contentTitle}>SCORING RUBRIC</h1>
-      <div className={styles.inputContainer}>
-        <label className={styles.label}>
-          MINTS: <span>{totalSupply?.toNumber()}</span>
-        </label>
-        <label className={styles.label}>
-          THE POT: {fromWad(treasuryAmount)} ETH
-        </label>
-        <label className={styles.label}>
-          WCW=3669
-        </label>
-        <label className={styles.label}>
-          DIVISIONAL=4000
-        </label>
-        <label className={styles.label}>
-          CONFERENCE=10000
-        </label>
-        <label className={styles.label}>
-          FINALS=26000
-        </label>
-      </div>
-      <h1 className={styles.contentTitle}>LIVE SCORECARD</h1>
-      <DataTable
-        title="Expected score"
-        columns={columns}
-        data={data}
-        dense
-        // See https://react-data-table-component.netlify.app/?path=/docs/api-custom-styles--page
-      />
-    </form>
+      <Fragment>
+        <DataTable
+          title="Expected scores. Not yet attested."
+          columns={columns}
+          data={data}
+          dense
+          // See https://react-data-table-component.netlify.app/?path=/docs/api-custom-styles--page
+        />
+    </Fragment>
   );
 };
 
