@@ -1,0 +1,16 @@
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.description h3 {
+  font-size: 18px;
+}
+
+.description h3,
+.description p {
+  margin: 0;
+}
