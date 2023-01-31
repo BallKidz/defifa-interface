@@ -1,0 +1,20 @@
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.table th,
+.table td {
+  border: 1px solid var(--violet);
+  padding: 8px;
+  text-align: start;
+}

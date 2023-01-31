@@ -31,7 +31,7 @@ pnpm-lock.yaml
 
 # local env files
 .env*.local
-
+.env
 # vercel
 .vercel
 

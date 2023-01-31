@@ -14,6 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import MyTeams from "../components/MyTeams";
 import Script from "next/script";
 import Socials from "../components/Navbar/Info/Socials";
+import SimWrapper from "../components/Simulator";
+
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
@@ -51,6 +53,8 @@ const Home: NextPage = () => {
       <Mint />
       <Divider />
       <MyTeams />
+      <Divider />
+      <SimWrapper />
       <Divider />
       <SelfRefree />
       <Divider />
