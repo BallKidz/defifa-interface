@@ -11,9 +11,9 @@ const SimulatorWrapper = () => {
       <div className={styles.description}>
         <h3>Defifa Ballkids Scorecard</h3>
         <p>
-          In a table below you will find an official defifa ballkids scorecard,
-          the scorecard is primarily created using Google Sheets and is
-          presented on the Defifa website for easy accessibility.
+          In a table below you will find an unofficial defifa ballkids
+          scorecard, the scorecard is primarily created using Google Sheets and
+          is presented on the Defifa website for easy accessibility.
         </p>
       </div>
       <SimulatorCreate />
