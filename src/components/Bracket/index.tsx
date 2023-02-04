@@ -30,9 +30,9 @@ const BracketWrapper = () => {
       </Navbar>
       <BracketDescription />
       <Divider />
-      <Content title="BRACKET">
+      {/* <Content title="BRACKET"> */}
         <BracketView />
-      </Content>
+      {/* </Content> */}
     </MainWrapper>
   );
 };

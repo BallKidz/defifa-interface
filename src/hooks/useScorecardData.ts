@@ -8,7 +8,7 @@ interface Column {
 }
 
 const useScorecardTable = () => {
-  const data = CurrentScore();
+  const data = CurrentScore(process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_SHEETS_NAME);
   const [columns, setColumns] = useState<Column[]>([]);
 
   useEffect(() => {
