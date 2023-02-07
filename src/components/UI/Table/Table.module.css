@@ -5,6 +5,7 @@
 .table {
   width: 100%;
   border-collapse: collapse;
+  background: rgba(37, 34, 44, 0.9);
 }
 
 .table th {
