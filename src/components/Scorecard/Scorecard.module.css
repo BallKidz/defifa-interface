@@ -1,7 +1,3 @@
-.scoreCardContainer {
-  padding: 50px 30px 50px 30px;
-}
-
 .scoreCardHeader {
   font-size: 18px;
   color: var(--gold);
@@ -14,6 +10,7 @@
 .scoreCardOptionsContainer {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   margin-top: 20px;
 }
 

@@ -20,6 +20,7 @@ interface AttestationCardProps {
 }
 
 const AttestationCard: React.FC<AttestationCardProps> = (props) => {
+  console.log(props.proposal);
   const [openModal, setIsOpenModal] = useState<boolean>(false);
   const { data: proposalDeadline } = useProposalDeadline(
     props.proposal.scoreCard.proposalId
@@ -72,7 +73,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
     }
   }, [proposalState]);
 
-  function toStringWithSuffix(n: number): string {
+  const toStringWithSuffix = (n: number): string => {
     if (n < 1000) {
       return n.toString();
     } else if (n < 1000000) {
@@ -82,8 +83,7 @@ const AttestationCard: React.FC<AttestationCardProps> = (props) => {
     } else {
       return (n / 1000000000).toFixed(0) + " billions";
     }
-  }
-  ``;
+  };
 
   useEffect(() => {
     if (!proposalDeadline || !blockNumber) return;

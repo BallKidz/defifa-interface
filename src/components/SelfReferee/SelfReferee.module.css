@@ -8,7 +8,36 @@
   font-size: 16px;
 }
 
-.selfReferee p {
-  max-width: 700px;
+.tabsWrapper {
+  margin-top: 10px;
+}
+
+.tabsWrapper ul {
+  border-bottom: 1px solid var(--bgColor);
+}
+
+/* Style for selected tab */
+.tabSelected {
+  background: var(--bgColor) !important;
+  border-color: var(--violet) !important;
+  color: var(--gold) !important;
+  border-radius: 5px 5px 0 0;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.description h3 {
+  font-size: 18px;
   font-weight: 500;
+}
+
+.description h3,
+.description p {
+  margin: 0;
 }

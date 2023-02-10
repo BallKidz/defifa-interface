@@ -3,6 +3,7 @@ import { useNetwork } from "wagmi";
 import { useSubmitScorecards } from "../../hooks/write/useSubmitScorecards";
 import { convertScoreCardToPercents } from "../../utils/scorecard";
 import Group from "../Group";
+import SimulatorCreate from "../Simulator/Simulate";
 import Button from "../UI/Button";
 import { ballkidsScorecard } from "./constants/ballKidsScorecard";
 import styles from "./Scorecard.module.css";
@@ -17,7 +18,6 @@ interface ScoreCardProps {
 }
 
 const ScoreCard: FC<ScoreCardProps> = (props) => {
-  const network = useNetwork();
   const [scoreCardOption, setScoreCardOption] = useState<number>(1);
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>(ballkidsScorecard);
   const [scoreCardWithPercents, setScoreCardWithPercents] = useState<
@@ -26,21 +26,6 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
   const { write, isLoading, isSuccess, isError } = useSubmitScorecards(
     scoreCardWithPercents
   );
-
-  useEffect(() => {
-    switch (scoreCardOption) {
-      case 1:
-        const ballkidScoreCard = convertScoreCardToPercents(ballkidsScorecard);
-        setScoreCardWithPercents(ballkidScoreCard);
-        break;
-      case 2:
-        const customScoreCard = convertScoreCardToPercents(scoreCard);
-        setScoreCardWithPercents(customScoreCard);
-        break;
-      default:
-        break;
-    }
-  }, [scoreCardOption, scoreCard]);
 
   useEffect(() => {
     if (isSuccess || isError) {
@@ -84,7 +69,6 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
   return (
     <div className={styles.scoreCardContainer}>
       <div className={styles.scoreCardInfo}>
-        <p className={styles.scoreCardHeader}>Submit a scorecard</p>
         <p>Defifa provides players with 2 options to submit a scorecard:</p>
         <p className={styles.scoreCardOptionsLabel}>
           1. Defifa Ballkids scorecard - prefilled scorecard which is ratified
@@ -94,80 +78,11 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           2. Fill your own scorecard - create your own scorecard, you have the
           freedom to fill it out as you see fit.
         </p>
-        <p>
-          You as the player are free to fill up your own scorecard and choose
-          how you want to use points, even though we as Defifa Ballkids have
-          chosen option 1 as the default since we want to inspire fair play.
-          This is just a game, after all.
-        </p>
-      </div>
-      <div className={styles.scoreCardOptions}>
-        <p
-          onClick={() => setScoreCardOption(1)}
-          style={{
-            borderBottom:
-              scoreCardOption === 1 ? "1px solid var(--gold)" : "none",
-            color: scoreCardOption === 1 ? "var(--gold)" : "inherit",
-          }}
-        >
-          Option 1: Defifa Ballkids scorecard
-        </p>
-        <p
-          onClick={() => setScoreCardOption(2)}
-          style={{
-            borderBottom:
-              scoreCardOption === 2 ? "1px solid var(--gold)" : "none",
-            color: scoreCardOption === 2 ? "var(--gold)" : "inherit",
-          }}
-        >
-          Option 2: Fill your own scorecard
-        </p>
       </div>
 
       <div className={styles.scoreCardOptionsContainer}>
-        <div className={styles.scoreCardGroupsContainer}>
-          {props.tiers.map((tiers: any, index: any) => (
-            <Group groupName={`${String.fromCharCode(97 + index)}`} key={index}>
-              {scoreCardOption === 1
-                ? tiers.map((t: any) => (
-                    <div key={t.id}>
-                      <input
-                        className={styles.ballKidsScoreCardInput}
-                        readOnly
-                        value={
-                          ballkidsScorecard.find((score) => score.id === t.id)
-                            ?.redemptionWeight
-                        }
-                        type="number"
-                      />
-                      <p>{t.teamName}</p>
-                    </div>
-                  ))
-                : tiers.map((t: any) => (
-                    <div key={t.id}>
-                      <input
-                        value={
-                          scoreCard.find((score) => score.id === t.id)
-                            ? scoreCard.find((score) => score.id === t.id)
-                                ?.redemptionWeight
-                            : 0
-                        }
-                        onChange={(e) =>
-                          onTierScoreChange(
-                            parseFloat(e.currentTarget.value),
-                            t.id
-                          )
-                        }
-                        min={0}
-                        step={1}
-                        type="number"
-                      />
-                      <p>{t.teamName}</p>
-                    </div>
-                  ))}
-            </Group>
-          ))}
-        </div>
+        <h3>Defifa Ballkids Scorecard</h3>
+        <SimulatorCreate />
       </div>
       <div className={styles.scoreCardButtonContainer}>
         <Button

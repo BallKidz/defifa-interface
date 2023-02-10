@@ -1,14 +1,15 @@
 .container {
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--gold);
-  box-shadow: 0 0 2px 0 var(--gold);
+  border: 2px solid var(--violet);
+  box-shadow: 0 0 2px 0 var(--violet);
   transition: box-shadow 0.2s ease-in-out;
+  background: rgba(37, 34, 44, 0.9);
 }
 
 .container:hover,
 .container:focus {
-  box-shadow: 0 0 8px 0 var(--gold);
+  box-shadow: 0 0 8px 0 var(--violet);
 }
 
 .scoreCardExpand {

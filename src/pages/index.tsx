@@ -50,8 +50,6 @@ const Home: NextPage = () => {
       </Navbar>
       <Description />
       <Divider />
-      <SimWrapper />
-      <Divider />
       <SelfRefree />
       <Divider />
       <MyTeams />
