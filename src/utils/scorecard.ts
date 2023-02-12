@@ -1,4 +1,7 @@
-import ScoreCard from "../components/Scorecard";
+interface ScoreCard {
+  id: number;
+  redemptionWeight: number;
+}
 
 export const convertScoreCardToPercents = (scoreCard: ScoreCard[]) => {
   const totalSum = scoreCard.reduce(
@@ -28,6 +31,6 @@ export const convertPercentsToPoints = (
     (total, obj) => total + obj.redemptionWeight,
     0
   ); // calculate the total sum using the redemptionWeight values of the scoreCard objects
-  const weight = Math.round((percentages / 10000000000000) * totalSum); // convert the percentages to a weight using the total sum
+  const weight = Math.round((percentages / 1000000000000) * totalSum); // convert the percentages to a weight using the total sum
   return weight; // return the converted weight
 };

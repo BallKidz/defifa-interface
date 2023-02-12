@@ -51,8 +51,6 @@ const Mint = () => {
     "Philadelphia",
   ]);
 
-  console.log({ rewardTiers });
-
   const chunkedRewardTiers = chunk(bracketFormatted, 7);
   const mostMintedRewardTiers = rewardTiers
     ?.slice()

@@ -7,6 +7,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { getChainData } from "../../constants/addresses";
+import { convertScoreCardToPercents } from "../../utils/scorecard";
 
 interface ScoreCard {
   id: number;
@@ -18,12 +19,13 @@ export function useSubmitScorecards(_tierWeights: ScoreCard[]) {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const chainData = getChainData(network?.chain?.id);
+  const scoreCardPercents = convertScoreCardToPercents(_tierWeights);
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaGovernor.address,
     contractInterface: chainData.defifaGovernor.interface,
     functionName: "submitScorecards",
-    args: [_tierWeights],
+    args: [scoreCardPercents],
     chainId: chainData.chainId,
   });
 

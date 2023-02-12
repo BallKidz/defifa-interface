@@ -7,13 +7,6 @@
   text-indent: 5px;
 }
 
-.scoreCardOptionsContainer {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  margin-top: 20px;
-}
-
 .scoreCardOptions {
   display: flex;
   gap: 50px;
@@ -23,12 +16,7 @@
 
 .scoreCardOptions p {
   cursor: pointer;
-}
-
-.scoreCardGroupsContainer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 50px;
+  font-weight: 400;
 }
 
 .scoreCardButtonContainer {
@@ -37,17 +25,28 @@
   gap: 20px;
 }
 
-.ballKidsScoreCard {
+.scoreCards {
   display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
-.ballKidsScoreCardInput {
-  background: var(--contentTitle);
-  border: 0;
+.tiersContainer {
+  display: grid;
+  width: 800px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  border: 1px solid var(--violet);
+  padding: 20px;
+  background: rgba(37, 34, 44, 0.9);
 }
 
-.ballKidsScoreCardNotice {
-  margin-bottom: 30px;
+.input {
+  border: 1px solid var(--violet);
+  background: transparent;
+  color: var(--contentTitle);
+  padding: 5px;
 }
 
 @media only screen and (min-width: 375px) and (max-width: 1440px) {

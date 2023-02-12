@@ -13,14 +13,14 @@
 }
 
 .tabsWrapper ul {
-  border-bottom: 1px solid var(--bgColor);
+  border-bottom: 1px solid var(--contentTitle);
 }
 
 /* Style for selected tab */
 .tabSelected {
-  background: var(--bgColor) !important;
-  border-color: var(--violet) !important;
-  color: var(--gold) !important;
+  background: var(--blue);
+  border-color: var(--contentTitle);
+  color: var(--gold);
   border-radius: 5px 5px 0 0;
 }
 
@@ -34,7 +34,7 @@
 
 .description h3 {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .description h3,

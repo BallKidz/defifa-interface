@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 800px;
+}
+
+.container h3 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.tiersContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  border: 1px solid var(--violet);
+  padding: 20px;
+  background: rgba(37, 34, 44, 0.9);
+}
+
+.buttonContainer {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.input {
+  border: 1px solid var(--violet);
+  background: transparent;
+  color: var(--contentTitle);
+  padding: 5px;
+}

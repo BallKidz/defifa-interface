@@ -1,7 +1,4 @@
-interface ScoreCard {
-  id: number;
-  redemptionWeight: number;
-}
+import { ScoreCard } from "../types";
 
 export const ballkidsScorecard: ScoreCard[] = [
   {
