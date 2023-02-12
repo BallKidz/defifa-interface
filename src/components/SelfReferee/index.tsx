@@ -2,9 +2,8 @@
 //nextjs Functional component
 
 import { chunk } from "lodash";
-import { useMemo, useState } from "react";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import useNftRewards from "../../hooks/NftRewards";
-import { useDeployerDates } from "../../hooks/read/DeployerDates";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
@@ -14,22 +13,18 @@ import Attestation from "../Attestation";
 import ScoreCard from "../Scorecard";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
-import CustomModal from "../UI/Modal";
 import styles from "./SelfReferee.module.css";
-
-type modalOption = "scorecard" | "attestation";
 
 const SelfRefree = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
-  const { end } = useDeployerDates("local");
 
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const chunkedRewardTiers = chunk(rewardTiers, 4);
+  const chunkedRewardTiers = chunk(rewardTiers);
 
   const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
     useNextPhaseNeedsQueueing();
@@ -41,117 +36,115 @@ const SelfRefree = () => {
     disabled: mintReservesDisabled,
   } = useMintReservesFor();
   let needsQueueing = queueData! as unknown as boolean;
-  const [openModal, setIsOpenModal] = useState<boolean>(false);
-  const [modalOption, setModalOption] = useState<modalOption>();
-
-  const onSubmitScoreCardClick = () => {
-    setModalOption("scorecard");
-    handleOpenModal();
-  };
-
-  const onSubmitAttestationClick = () => {
-    setModalOption("attestation");
-    handleOpenModal();
-  };
-
-  const handleOpenModal = () => {
-    setIsOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsOpenModal(false);
-  };
-
-  const modalContent = useMemo<JSX.Element | undefined>(() => {
-    switch (modalOption) {
-      case "scorecard":
-        return <ScoreCard tiers={chunkedRewardTiers} />;
-      case "attestation":
-        return <Attestation tiers={chunkedRewardTiers} />;
-      default:
-        break;
-    }
-  }, [chunkedRewardTiers, modalOption]);
 
   return (
     <Content title="Self-Refereeing" open={true}>
       <div className={styles.selfReferee}>
-        <CustomModal
-          openModal={openModal}
-          onAfterClose={() => handleCloseModal()}
-        >
-          {modalContent}
-        </CustomModal>
-        <p>
-          Defifa relies on the integrity of a few transactions made by the
-          game’s participants.
-        </p>
-        <p>
-          Scorecards can be submitted that suggest the correct results of
-          off-chain events.
-        </p>
-        <p>Scorecard submission will be available on {end.date}.</p>
-        <Button onClick={onSubmitScoreCardClick} size="big" disabled={true}>
-          Submit a scorecard
-        </Button>
-        <br />
-        <br />
-        <p>
-          If you hold an nft, you can send a transaction attesting to a
-          submitted scorecard that conveys correct results of off-chain events.
-        </p>
-        <p>Attestation submission will be available on {end.date}.</p>
-        <Button
-          onClick={onSubmitAttestationClick}
-          disabled={fundingCycle !== 4}
-          size="big"
-        >
-          Submit attestation
-        </Button>
+        <div className={styles.description}>
+          <h3>
+            Defifa relies on the integrity of a few transactions made by the
+            game’s participants.
+          </h3>
+        </div>
 
-        <p>Mint reserved tokens for all tiers.</p>
-
-        <Button
-          onClick={() => {
-            mintReserves?.();
-          }}
-          size="big"
-          disabled={
-            mintReservesLoading ||
-            mintReservesSuccess ||
-            mintReservesDisabled ||
-            fundingCycle == 1 ||
-            fundingCycle === 2
-          }
-        >
-          Mint Reserves
-        </Button>
-        <br />
-        <br />
-        <p>
-          Each game phase must also be queued by someone in the public in a
-          timely manner.
-        </p>
-        <Button
-          onClick={() => {
-            write?.();
-          }}
-          size="big"
-          disabled={false || nextPhaseNeedsQueueingLoading || !needsQueueing}
-        >
-          {isLoading || nextPhaseNeedsQueueingLoading ? (
-            <img
-              style={{ marginTop: "5px" }}
-              src="/assets/defifa_spinner.gif"
-              alt="spinner"
-              width={35}
-            />
-          ) : needsQueueing ? (
-            <span> Queue phase {fundingCycle + 1}</span>
-          ) : (
-            <span> Phase {fundingCycle + 1} Already Queued</span>
-          )}
-        </Button>
+        <div className={styles.tabsWrapper}>
+          <Tabs forceRenderTabPanel defaultIndex={0}>
+            <TabList>
+              <Tab selectedClassName={styles.tabSelected}>Scorecard</Tab>
+              <Tab selectedClassName={styles.tabSelected}>Queue phase</Tab>
+              <Tab selectedClassName={styles.tabSelected}>Mint reserves</Tab>
+            </TabList>
+            <TabPanel>
+              <div className={styles.description}>
+                <h3>
+                  Scorecard is primarily used for the end-game, or final phase
+                  of the game. Players are responsible for both the submission
+                  and attestation processes.
+                </h3>
+                <p>
+                  1.
+                  <span style={{ color: "var(--gold)" }}>
+                    Scorecard submission
+                  </span>{" "}
+                  process allows users to submit either a Defifa ballkids
+                  scorecard or a custom one. In simple terms, submission
+                  involves assigning points to all tiers, which determines how
+                  the treasury is to be allocated.
+                </p>
+                <p>
+                  2.
+                  <span style={{ color: "var(--gold)" }}>
+                    Scorecard attestation
+                  </span>{" "}
+                  process allows users to vote for one of the previously
+                  submitted scorecards in the scorecard submission section.
+                </p>
+              </div>
+              <Tabs forceRenderTabPanel>
+                <TabList>
+                  <Tab selectedClassName={styles.tabSelected}>
+                    Scorecard submission
+                  </Tab>
+                  <Tab selectedClassName={styles.tabSelected}>
+                    Scorecard attestation
+                  </Tab>
+                </TabList>
+                <TabPanel>
+                  <ScoreCard tiers={rewardTiers as []} />
+                </TabPanel>
+                <TabPanel>
+                  <Attestation tiers={rewardTiers as []} />
+                </TabPanel>
+              </Tabs>
+            </TabPanel>
+            <TabPanel>
+              <p>
+                Each game phase must also be queued by someone in the public in
+                a timely manner.
+              </p>
+              <Button
+                onClick={() => {
+                  write?.();
+                }}
+                size="big"
+                disabled={
+                  false || nextPhaseNeedsQueueingLoading || !needsQueueing
+                }
+              >
+                {isLoading || nextPhaseNeedsQueueingLoading ? (
+                  <img
+                    style={{ marginTop: "5px" }}
+                    src="/assets/defifa_spinner.gif"
+                    alt="spinner"
+                    width={35}
+                  />
+                ) : needsQueueing ? (
+                  <span> Queue phase {fundingCycle + 1}</span>
+                ) : (
+                  <span> Phase {fundingCycle + 1} Already Queued</span>
+                )}
+              </Button>
+            </TabPanel>
+            <TabPanel>
+              <p>Mint reserved tokens for all tiers.</p>
+              <Button
+                onClick={() => {
+                  mintReserves?.();
+                }}
+                size="big"
+                disabled={
+                  mintReservesLoading ||
+                  mintReservesSuccess ||
+                  mintReservesDisabled ||
+                  fundingCycle == 1 ||
+                  fundingCycle === 2
+                }
+              >
+                Mint Reserves
+              </Button>
+            </TabPanel>
+          </Tabs>
+        </div>
       </div>
     </Content>
   );

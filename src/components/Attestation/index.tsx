@@ -47,7 +47,7 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           scoreCard,
           title: isBallkidsScoreCard
             ? "Defifa Ballkids scorecard"
-            : `Custom scorecard #${index + 1}`, // add the index + 1 to the title,
+            : `Custom scorecard #${index + 1}`,
         };
       })
       .sort((a: { isEqual: boolean }, b: { isEqual: boolean }) => {
@@ -62,11 +62,10 @@ const Attestation: React.FC<AttestationProps> = (props) => {
   return (
     <div className={styles.attestationContainer}>
       <div className={styles.attestationInfoContainer}>
-        <p className={styles.attestationHeader}>Submit scorecard attestation</p>
         <p>
-          50% of NFT holders from all teams attest to the correct scorecard to
-          ratify it. Each team has 1 vote, divided between all holders of that
-          team's NFTs.
+          In scorecard attestation 50% of NFT holders from all teams attest to
+          the correct scorecard to ratify it. Each team has 1 vote, divided
+          between all holders of that team's NFTs.
         </p>
         <p>
           Since we want to incentivize fair play, we are offering the Defifa
