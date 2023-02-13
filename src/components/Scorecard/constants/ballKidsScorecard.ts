@@ -3,7 +3,7 @@ import { ScoreCard } from "../types";
 export const ballkidsScorecard: ScoreCard[] = [
   {
     id: 1,
-    redemptionWeight: 14000,
+    redemptionWeight: 40000,
   },
   {
     id: 2,
