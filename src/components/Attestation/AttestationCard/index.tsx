@@ -183,7 +183,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
             </Button>
             <Button
               onClick={() => approveScorecard?.()}
-              disabled={quorum?.toNumber() > proposalVotes?.forVotes.toNumber()}
+              disabled={quorum?.gt(proposalVotes?.forVotes)}
             >
               {isApproveScorecardLoading ? (
                 <img
