@@ -2,8 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { useBlockNumber } from "wagmi";
+import { useCountdown } from "../../../hooks/Countdown";
 import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
-import { useProposalState } from "../../../hooks/read/ProposalState";
 import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
 import { useQuorum } from "../../../hooks/read/Quorum";
 import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
@@ -37,9 +37,6 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
 
   const { data: quorum } = useQuorum(proposal.scoreCard.proposalId);
 
-  const { data: proposalState } = useProposalState(
-    proposal.scoreCard.proposalId
-  );
   const { data: proposalVotes } = useProposalVotes(
     proposal.scoreCard.proposalId
   );
@@ -49,9 +46,9 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { write: approveScorecard, isLoading: isApproveScorecardLoading } =
     useApproveScorecard(proposal.scoreCard.tierWeights);
   const [proposalEnd, setProposalEnd] = useState<number>(0);
-  const [votingState, setVotingState] = useState<string>("");
   const [isFlipped, setIsFlipped] = useState(false);
   const [scoreCardData, setScoreCardData] = useState<ScorecardData[]>([]);
+  const { timeRemaining } = useCountdown(new Date(proposalEnd));
 
   useEffect(() => {
     if (!tiers || !proposal) return;
@@ -74,37 +71,6 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
       .sort((a, b) => b.Points - a.Points);
     setScoreCardData(scoreCardData);
   }, [tiers, proposal]);
-
-  useEffect(() => {
-    const state = proposalState?.toString();
-
-    switch (state) {
-      case "0":
-        setVotingState("Pending");
-        break;
-      case "1":
-        setVotingState("Active");
-        break;
-      case "2":
-        setVotingState("Canceled");
-        break;
-      case "3":
-        setVotingState("Defeated");
-        break;
-      case "4":
-        setVotingState("Queued");
-        break;
-      case "5":
-        setVotingState("Expired");
-        break;
-      case "6":
-        setVotingState("Executed");
-        break;
-
-      default:
-        break;
-    }
-  }, [proposalState]);
 
   useEffect(() => {
     if (!proposalDeadline || !blockNumber) return;
@@ -159,15 +125,15 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
           <img src={icon} alt="Scorecard" width={proposal.isEqual ? 98 : 81} />
           <p className={styles.scoreCardTitle}>{proposal.title}</p>
           <p>
-            For:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())} votes
+            Status:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())}{" "}
+            confirmations
           </p>
 
           <p>
             Quorum:
-            {toStringWithSuffix(quorum?.toNumber())} votes
+            {toStringWithSuffix(quorum?.toNumber())} confirmations
           </p>
-          <p>Voting state: {votingState}</p>
-          <p>Voting ends: {formatDateToUTC(proposalEnd ?? 0, true)} UTC</p>
+          <p>Confirmation deadline: In {timeRemaining}</p>
           <div className={styles.voteForm}>
             <Button onClick={() => write?.()} disabled={isLoading}>
               {isLoading ? (
@@ -178,7 +144,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
                   width={35}
                 />
               ) : (
-                "Vote"
+                "Confirm"
               )}
             </Button>
             <Button
@@ -193,7 +159,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
                   width={35}
                 />
               ) : (
-                "Approve"
+                "Lock in"
               )}
             </Button>
           </div>

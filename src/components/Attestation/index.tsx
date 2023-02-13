@@ -71,15 +71,17 @@ const Attestation: React.FC<AttestationProps> = (props) => {
     <div className={styles.attestationContainer}>
       <div className={styles.attestationInfoContainer}>
         <p>
-          In scorecard attestation 50% of NFT holders from all teams attest to
-          the correct scorecard to ratify it. Each team has 1 vote, divided
-          between all holders of that team's NFTs.
+          The Defifa Ballkidz community, maintainers of the Defifa game, have
+          submitted a scorecard with the points distribution based on those in
+          the Rules. Anyone else can submit other scorecards if they wish.
         </p>
         <p>
-          Since we want to incentivize fair play, we are offering the Defifa
-          Ballkids scorecard as the initial option. <br></br>However, as a
-          player, you are free to view and vote on any other scorecard that is
-          currently available.
+          Each NFT holders uses their confirmation power to confirm any
+          submitted scorecard.After 50% of confirmation power from all teams
+          confirm a scorecard, it can be locked in and redemptions can be
+          opened. <br></br>Each NFT team has equal confirmation power. Each
+          individual NFT has a confirmation power equal to that of its team's
+          divided by the total supply of NFTs of the team.
         </p>
         {!loadingState && scoreCardAttestations.length === 0 ? (
           <div className={styles.zeroProposals}>

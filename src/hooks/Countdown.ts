@@ -1,46 +1,45 @@
 import { useState, useEffect } from "react";
 
-export function useCountdown(targetDate: Date | undefined): {
-  timeRemaining: string | null;
-  isOver: boolean;
-} {
+export function useCountdown(targetDate: Date | undefined) {
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
-  const [isOver, setIsOver] = useState<boolean>(false);
+  const [isOver, setIsOver] = useState(false);
 
   useEffect(() => {
     if (!targetDate) return;
     const interval = setInterval(() => {
       const currentTime = new Date().getTime();
       const timeDifference = targetDate.getTime() - currentTime;
-      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor(
-        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
-      );
-      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-      // Set the time remaining in the state
-      let timeRemainingString = "";
-      if (days > 0) {
-        timeRemainingString += `${days}d `;
-      }
-      if (hours > 0) {
-        timeRemainingString += `${hours}h `;
-      }
-      if (minutes > 0) {
-        timeRemainingString += `${minutes}m `;
-      }
-      if (hours === 0 && minutes === 0 && seconds > 0) {
-        timeRemainingString += `${seconds}s `;
-      }
-      if (timeRemainingString === "") {
+
+      if (timeDifference <= 0) {
         setIsOver(true);
+        setTimeRemaining("0s");
       } else {
-        timeRemainingString = timeRemainingString.replace(/\s$/, ".");
+        let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
+        let minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+
+        if (days > 1) {
+          setTimeRemaining(`${days} days`);
+        } else {
+          let timeRemainingString = "";
+
+          if (days === 1) {
+            timeRemainingString += `${hours}h ${minutes}m`;
+          } else {
+            if (hours > 0) {
+              timeRemainingString += `${hours}h `;
+            }
+
+            if (minutes > 0) {
+              timeRemainingString += `${minutes}m`;
+            }
+          }
+
+          setTimeRemaining(timeRemainingString);
+        }
       }
-      setTimeRemaining(timeRemainingString);
     }, 1000);
+
     return () => clearInterval(interval);
   }, [targetDate]);
 
