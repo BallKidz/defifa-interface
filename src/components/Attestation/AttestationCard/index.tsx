@@ -5,8 +5,7 @@ import { useBlockNumber } from "wagmi";
 import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
 import { useProposalState } from "../../../hooks/read/ProposalState";
 import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
-import { useQuorum, useQuorumReached } from "../../../hooks/read/Quorum";
-import { useHasVoted } from "../../../hooks/read/useHasVoted";
+import { useQuorum } from "../../../hooks/read/Quorum";
 import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
 import { useCastVote } from "../../../hooks/write/useCastVote";
 import { formatDateToUTC } from "../../../utils/format/formatDate";
@@ -37,9 +36,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { data: blockNumber } = useBlockNumber();
 
   const { data: quorum } = useQuorum(proposal.scoreCard.proposalId);
-  const { data: quorumReached } = useQuorumReached(
-    proposal.scoreCard.proposalId
-  );
+
   const { data: proposalState } = useProposalState(
     proposal.scoreCard.proposalId
   );
@@ -49,7 +46,6 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { write, isLoading, isError } = useCastVote(
     proposal.scoreCard.proposalId
   );
-  const { data: hasVoted } = useHasVoted(proposal.scoreCard.proposalId);
   const { write: approveScorecard, isLoading: isApproveScorecardLoading } =
     useApproveScorecard(proposal.scoreCard.tierWeights);
   const [proposalEnd, setProposalEnd] = useState<number>(0);
@@ -58,6 +54,8 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const [scoreCardData, setScoreCardData] = useState<ScorecardData[]>([]);
 
   useEffect(() => {
+    if (!tiers || !proposal) return;
+
     // Keeping it like this for now until we find better way to include redemptionWeight in tiers
     const scoreCardData: ScorecardData[] = tiers
       .map((obj) => {
@@ -185,7 +183,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
             </Button>
             <Button
               onClick={() => approveScorecard?.()}
-              disabled={!quorumReached}
+              disabled={quorum?.toNumber() > proposalVotes?.forVotes.toNumber()}
             >
               {isApproveScorecardLoading ? (
                 <img
