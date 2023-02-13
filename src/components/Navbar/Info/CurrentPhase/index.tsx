@@ -40,6 +40,10 @@ const CurrentPhase = () => {
         setCountdownDate(new Date());
         setTitleTimeRemaining(`Game ends`);
         break;
+      case 4:
+        setCountdownDate(new Date());
+        setTitleTimeRemaining(`Game over`);
+        break;
       default:
         setTitleTimeRemaining("");
         break;
