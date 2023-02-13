@@ -5,7 +5,9 @@ import { useBlockNumber } from "wagmi";
 import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
 import { useProposalState } from "../../../hooks/read/ProposalState";
 import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
-import { useQuorum } from "../../../hooks/read/Quorum";
+import { useQuorum, useQuorumReached } from "../../../hooks/read/Quorum";
+import { useHasVoted } from "../../../hooks/read/useHasVoted";
+import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
 import { useCastVote } from "../../../hooks/write/useCastVote";
 import { formatDateToUTC } from "../../../utils/format/formatDate";
 import { convertPercentsToPoints } from "../../../utils/scorecard";
@@ -35,17 +37,21 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { data: blockNumber } = useBlockNumber();
 
   const { data: quorum } = useQuorum(proposal.scoreCard.proposalId);
+  const { data: quorumReached } = useQuorumReached(
+    proposal.scoreCard.proposalId
+  );
   const { data: proposalState } = useProposalState(
     proposal.scoreCard.proposalId
   );
   const { data: proposalVotes } = useProposalVotes(
     proposal.scoreCard.proposalId
   );
-  const [votingOption, setVotingOption] = useState<number>();
   const { write, isLoading, isError } = useCastVote(
-    proposal.scoreCard.proposalId,
-    votingOption
+    proposal.scoreCard.proposalId
   );
+  const { data: hasVoted } = useHasVoted(proposal.scoreCard.proposalId);
+  const { write: approveScorecard, isLoading: isApproveScorecardLoading } =
+    useApproveScorecard(proposal.scoreCard.tierWeights);
   const [proposalEnd, setProposalEnd] = useState<number>(0);
   const [votingState, setVotingState] = useState<string>("");
   const [isFlipped, setIsFlipped] = useState(false);
@@ -61,14 +67,12 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
         if (tierWeight) {
           return {
             Teams: obj.teamName,
-            Points: convertPercentsToPoints(
-              tierWeight.redemptionWeight,
-              proposal.scoreCard.tierWeights
-            ),
+            Points: convertPercentsToPoints(tierWeight.redemptionWeight),
           };
         }
         return { Teams: obj.teamName, Points: 0 }; // add this line to handle cases where there is no matching tierWeight object
       })
+      .filter((obj) => obj.Points !== 0) // exclude objects with Points equal to 0
       .sort((a, b) => b.Points - a.Points);
     setScoreCardData(scoreCardData);
   }, [tiers, proposal]);
@@ -117,21 +121,15 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
     setProposalEnd(proposalEndInMillis);
   }, [proposalDeadline, blockNumber]);
 
-  useEffect(() => {
-    if (isLoading || isError) {
-      setVotingOption(undefined);
-    }
-  }, [isLoading, isError]);
-
   const toStringWithSuffix = (n: number): string => {
     if (n < 1000) {
       return n.toString();
     } else if (n < 1000000) {
-      return (n / 1000).toFixed(0) + " thousands";
+      return (n / 1000).toFixed(0) + "k";
     } else if (n < 1000000000) {
-      return (n / 1000000).toFixed(0) + " millions";
+      return (n / 1000000).toFixed(0) + "m";
     } else {
-      return (n / 1000000000).toFixed(0) + " billions";
+      return (n / 1000000000).toFixed(0) + "bn";
     }
   };
 
@@ -150,24 +148,6 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
     setIsFlipped((prevState) => !prevState);
   };
 
-  const toggleVotingYesOption = () => {
-    setVotingOption((prevValue) => {
-      if (prevValue === 1) {
-        return undefined;
-      }
-      return 1;
-    });
-  };
-
-  const toggleVotingNoOption = () => {
-    setVotingOption((prevValue) => {
-      if (prevValue === 0) {
-        return undefined;
-      }
-      return 0;
-    });
-  };
-
   return (
     <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
       <div className={styles.container} key="front">
@@ -183,10 +163,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
           <p>
             For:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())} votes
           </p>
-          <p>
-            Against:
-            {toStringWithSuffix(proposalVotes?.againstVotes.toNumber())} votes
-          </p>
+
           <p>
             Quorum:
             {toStringWithSuffix(quorum?.toNumber())} votes
@@ -194,35 +171,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
           <p>Voting state: {votingState}</p>
           <p>Voting ends: {formatDateToUTC(proposalEnd ?? 0, true)} UTC</p>
           <div className={styles.voteForm}>
-            <div
-              className={styles.votingOptions}
-              onClick={toggleVotingYesOption}
-              style={{
-                border:
-                  votingOption === 1
-                    ? "2px solid var(--gold)"
-                    : "2px solid var(--bgColor)",
-              }}
-            >
-              Yes
-            </div>
-            <div
-              className={styles.votingOptions}
-              onClick={toggleVotingNoOption}
-              style={{
-                border:
-                  votingOption === 0
-                    ? "2px solid var(--gold)"
-                    : "2px solid var(--bgColor)",
-              }}
-            >
-              No
-            </div>
-
-            <Button
-              onClick={() => write?.()}
-              disabled={votingOption === undefined}
-            >
+            <Button onClick={() => write?.()} disabled={isLoading}>
               {isLoading ? (
                 <img
                   style={{ marginTop: "5px" }}
@@ -232,6 +181,21 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
                 />
               ) : (
                 "Vote"
+              )}
+            </Button>
+            <Button
+              onClick={() => approveScorecard?.()}
+              disabled={!quorumReached}
+            >
+              {isApproveScorecardLoading ? (
+                <img
+                  style={{ marginTop: "5px" }}
+                  src="/assets/defifa_spinner.gif"
+                  alt="spinner"
+                  width={35}
+                />
+              ) : (
+                "Approve"
               )}
             </Button>
           </div>

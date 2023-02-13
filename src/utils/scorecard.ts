@@ -3,16 +3,13 @@ interface ScoreCard {
   redemptionWeight: number;
 }
 
-export const convertScoreCardToPercents = (scoreCard: ScoreCard[]) => {
-  const totalSum = scoreCard.reduce(
-    (total, obj) => total + obj.redemptionWeight,
-    0
-  );
+const totalPoints = 84014;
 
+export const convertScoreCardToPercents = (scoreCard: ScoreCard[]) => {
   const scoreCardWithPercents = scoreCard.map((obj) => {
     const newObj = { ...obj };
     newObj.redemptionWeight = Math.floor(
-      (newObj.redemptionWeight / totalSum) * 1000000000
+      (newObj.redemptionWeight / totalPoints) * 1000000000
     );
 
     return newObj;
@@ -21,16 +18,9 @@ export const convertScoreCardToPercents = (scoreCard: ScoreCard[]) => {
   return scoreCardWithPercents;
 };
 
-export const convertPercentsToPoints = (
-  percentages: number | undefined,
-  scoreCard: ScoreCard[]
-) => {
+export const convertPercentsToPoints = (percentages: number | undefined) => {
   if (!percentages) return 0; // return 0 if the percentages parameter is undefined
+  const weight = Math.round((percentages * totalPoints) / 1000000000);
 
-  const totalSum = scoreCard.reduce(
-    (total, obj) => total + obj.redemptionWeight,
-    0
-  ); // calculate the total sum using the redemptionWeight values of the scoreCard objects
-  const weight = Math.round((percentages / 1000000000000) * totalSum); // convert the percentages to a weight using the total sum
-  return weight; // return the converted weight
+  return weight;
 };

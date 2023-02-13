@@ -31,7 +31,6 @@ export function useMintReservesFor(simulate = false) {
   });
 
   const simulateOutStanding = () => {
-    console.log("simulateOutStanding");
     simulateTransaction({
       chainId: chainData.chainId,
       populatedTx: config.request,

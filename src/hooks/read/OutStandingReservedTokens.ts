@@ -46,14 +46,6 @@ export function getOutstandingNumberForAllTiers(
 
         return res;
       } catch (error) {
-        console.log(
-          "error",
-          tier,
-          error,
-          chainData.defifaDelegate.address,
-          chainData.JBTiered721DelegateStore.address,
-          chainData.chainId
-        );
         return { tierId: 0, count: 0 };
       }
     })

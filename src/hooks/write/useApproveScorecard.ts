@@ -6,15 +6,10 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+import { ScoreCard } from "../../components/Scorecard/types";
 import { getChainData } from "../../constants/addresses";
-import { convertScoreCardToPercents } from "../../utils/scorecard";
 
-interface ScoreCard {
-  id: number;
-  redemptionWeight: number;
-}
-
-export function useSubmitScorecards(_tierWeights: ScoreCard[]) {
+export function useApproveScorecard(_tierWeights: ScoreCard[]) {
   const network = useNetwork();
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -23,7 +18,7 @@ export function useSubmitScorecards(_tierWeights: ScoreCard[]) {
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.defifaGovernor.address,
     contractInterface: chainData.defifaGovernor.interface,
-    functionName: "submitScorecards",
+    functionName: "ratifyScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,
   });

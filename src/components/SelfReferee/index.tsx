@@ -2,6 +2,7 @@
 //nextjs Functional component
 
 import { chunk } from "lodash";
+import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import useNftRewards from "../../hooks/NftRewards";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
@@ -24,7 +25,7 @@ const SelfRefree = () => {
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const chunkedRewardTiers = chunk(rewardTiers);
+  const [selectedTab, setSelectedTab] = useState(0);
 
   const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
     useNextPhaseNeedsQueueing();
@@ -37,6 +38,10 @@ const SelfRefree = () => {
   } = useMintReservesFor();
   let needsQueueing = queueData! as unknown as boolean;
 
+  const handleTabClick = (index: number) => {
+    setSelectedTab(index);
+  };
+
   return (
     <Content title="Self-Refereeing" open={true}>
       <div className={styles.selfReferee}>
@@ -48,54 +53,29 @@ const SelfRefree = () => {
         </div>
 
         <div className={styles.tabsWrapper}>
-          <Tabs forceRenderTabPanel defaultIndex={0}>
+          <Tabs
+            forceRenderTabPanel
+            onSelect={handleTabClick}
+            selectedIndex={selectedTab}
+          >
             <TabList>
-              <Tab selectedClassName={styles.tabSelected}>Scorecard</Tab>
+              <Tab selectedClassName={styles.tabSelected}>
+                Scorecard attestation
+              </Tab>
+              <Tab selectedClassName={styles.tabSelected}>
+                Scorecard submission
+              </Tab>
               <Tab selectedClassName={styles.tabSelected}>Queue phase</Tab>
               <Tab selectedClassName={styles.tabSelected}>Mint reserves</Tab>
             </TabList>
             <TabPanel>
-              <div className={styles.description}>
-                <h3>
-                  Scorecard is primarily used for the end-game, or final phase
-                  of the game. Players are responsible for both the submission
-                  and attestation processes.
-                </h3>
-                <p>
-                  1.
-                  <span style={{ color: "var(--gold)" }}>
-                    Scorecard submission
-                  </span>{" "}
-                  process allows users to submit either a Defifa ballkids
-                  scorecard or a custom one. In simple terms, submission
-                  involves assigning points to all tiers, which determines how
-                  the treasury is to be allocated.
-                </p>
-                <p>
-                  2.
-                  <span style={{ color: "var(--gold)" }}>
-                    Scorecard attestation
-                  </span>{" "}
-                  process allows users to vote for one of the previously
-                  submitted scorecards in the scorecard submission section.
-                </p>
-              </div>
-              <Tabs forceRenderTabPanel>
-                <TabList>
-                  <Tab selectedClassName={styles.tabSelected}>
-                    Scorecard submission
-                  </Tab>
-                  <Tab selectedClassName={styles.tabSelected}>
-                    Scorecard attestation
-                  </Tab>
-                </TabList>
-                <TabPanel>
-                  <ScoreCard tiers={rewardTiers as []} />
-                </TabPanel>
-                <TabPanel>
-                  <Attestation tiers={rewardTiers as []} />
-                </TabPanel>
-              </Tabs>
+              <Attestation
+                tiers={rewardTiers as []}
+                onScoreCardSubmission={() => handleTabClick(1)}
+              />
+            </TabPanel>
+            <TabPanel>
+              <ScoreCard tiers={rewardTiers as []} />
             </TabPanel>
             <TabPanel>
               <p>

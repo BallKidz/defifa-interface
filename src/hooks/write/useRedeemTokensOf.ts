@@ -48,7 +48,6 @@ export function useRedeemTokensOf({
   });
 
   const simulatePay = () => {
-    console.log("simulatePay", config.args, tokenIds);
     simulateTransaction({
       chainId: chain?.id,
       populatedTx: config.request,

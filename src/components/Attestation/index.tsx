@@ -5,18 +5,26 @@ import { useEffect, useRef, useState } from "react";
 import { useScorecards } from "../../hooks/useScorecards";
 import { convertScoreCardToPercents } from "../../utils/scorecard";
 import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
+import Button from "../UI/Button";
 import styles from "./Attestation.module.css";
 import AttestationCard from "./AttestationCard";
 import { ScoreCard } from "./types";
 
 interface AttestationProps {
   tiers: any[];
+  onScoreCardSubmission?: () => void;
 }
 
 const Attestation: React.FC<AttestationProps> = (props) => {
   const { scoreCards, isLoading } = useScorecards();
-  const [scoreCardAttestations, setScoreCardAttestations] =
-    useState<ScoreCard[]>();
+  const [loadingState, setLoadingState] = useState(true);
+  const [scoreCardAttestations, setScoreCardAttestations] = useState<
+    ScoreCard[]
+  >([]);
+
+  useEffect(() => {
+    setLoadingState(isLoading);
+  }, [isLoading]);
 
   useEffect(() => {
     if (!scoreCards) return;
@@ -73,7 +81,27 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           player, you are free to view and vote on any other scorecard that is
           currently available.
         </p>
-        {isLoading && (
+        {!loadingState && scoreCardAttestations.length === 0 ? (
+          <div className={styles.zeroProposals}>
+            <p>It appears that the scorecard has not been submitted yet!</p>
+            <Button size="medium" onClick={props.onScoreCardSubmission}>
+              Submit scorecard
+            </Button>
+          </div>
+        ) : (
+          <div className={styles.proposals}>
+            {!loadingState &&
+              scoreCardAttestations.map((proposal: ScoreCard, i: any) => (
+                <AttestationCard
+                  proposal={proposal}
+                  key={i}
+                  tiers={props.tiers}
+                />
+              ))}
+          </div>
+        )}
+
+        {loadingState && (
           <div
             style={{
               display: "flex",
@@ -84,17 +112,6 @@ const Attestation: React.FC<AttestationProps> = (props) => {
             <img src="/assets/defifa_spinner.gif" alt="spinner" width={100} />
           </div>
         )}
-
-        <div className={styles.proposals}>
-          {!isLoading &&
-            scoreCardAttestations?.map((proposal: ScoreCard, i: any) => (
-              <AttestationCard
-                proposal={proposal}
-                key={i}
-                tiers={props.tiers}
-              />
-            ))}
-        </div>
       </div>
     </div>
   );
