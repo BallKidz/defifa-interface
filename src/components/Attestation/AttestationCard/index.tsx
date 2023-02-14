@@ -3,12 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { useBlockNumber } from "wagmi";
 import { useCountdown } from "../../../hooks/Countdown";
+import { usePaymentTerminalBalance } from "../../../hooks/read/PaymentTerminalBalance";
 import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
 import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
 import { useQuorum } from "../../../hooks/read/Quorum";
 import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
 import { useCastVote } from "../../../hooks/write/useCastVote";
-import { formatDateToUTC } from "../../../utils/format/formatDate";
+import { fromWad } from "../../../utils/format/formatNumber";
 import { convertPercentsToPoints } from "../../../utils/scorecard";
 import { buildColumns } from "../../../utils/table/columns";
 import Button from "../../UI/Button";
@@ -24,12 +25,16 @@ interface AttestationCardProps {
 interface ScorecardData {
   Teams: string;
   Points: number;
+  "Treasury Share": string;
+  Redemption: string;
 }
 
 const AttestationCard: React.FC<AttestationCardProps> = ({
   proposal,
   tiers,
 }) => {
+  const { data: treasuryAmount } = usePaymentTerminalBalance();
+
   const { data: proposalDeadline } = useProposalDeadline(
     proposal.scoreCard.proposalId
   );
@@ -51,26 +56,41 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { timeRemaining } = useCountdown(new Date(proposalEnd));
 
   useEffect(() => {
-    if (!tiers || !proposal) return;
+    if (!tiers || !proposal || !treasuryAmount) return;
 
-    // Keeping it like this for now until we find better way to include redemptionWeight in tiers
-    const scoreCardData: ScorecardData[] = tiers
-      .map((obj) => {
-        const tierWeight = proposal.scoreCard.tierWeights.find(
-          (tw) => tw.id === obj.id
-        );
-        if (tierWeight) {
-          return {
-            Teams: obj.teamName,
-            Points: convertPercentsToPoints(tierWeight.redemptionWeight),
-          };
-        }
-        return { Teams: obj.teamName, Points: 0 }; // add this line to handle cases where there is no matching tierWeight object
-      })
-      .filter((obj) => obj.Points !== 0) // exclude objects with Points equal to 0
-      .sort((a, b) => b.Points - a.Points);
-    setScoreCardData(scoreCardData);
-  }, [tiers, proposal]);
+    const totalPot = parseFloat(fromWad(treasuryAmount));
+
+    const scoreCardData: ScorecardData[] = proposal.scoreCard.tierWeights
+      .filter((tw) => tiers.some((t) => t.id === tw.id))
+      .map((tw) => {
+        const team = tiers.find((t) => t.id === tw.id);
+        return {
+          Teams: team ? team.teamName : "",
+          Points: convertPercentsToPoints(tw.redemptionWeight),
+          "Treasury Share": "",
+          Redemption: "0",
+        };
+      });
+
+    const totalRedemption = scoreCardData.reduce(
+      (sum, obj) => sum + obj.Points,
+      0
+    );
+    scoreCardData.forEach((obj) => {
+      if (obj.Points !== 0) {
+        obj["Treasury Share"] =
+          ((obj.Points / totalRedemption) * 100).toFixed(2) + "%";
+        obj.Redemption = (totalPot * (obj.Points / totalRedemption)).toFixed(4);
+        obj.Redemption = `Ξ${obj.Redemption}`;
+      }
+    });
+
+    setScoreCardData(
+      scoreCardData
+        .filter((obj) => obj.Points !== 0)
+        .sort((a, b) => b.Points - a.Points)
+    );
+  }, [tiers, proposal, treasuryAmount]);
 
   useEffect(() => {
     if (!proposalDeadline || !blockNumber) return;
@@ -117,7 +137,10 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
       <div className={styles.container} key="front">
         <div className={styles.scoreCardExpand}>
           <Button size="medium" onClick={handleClick}>
-            View proposal
+            <div className={styles.buttonContent}>
+              <img src="/icons/flip-icon.png" alt="Flip" width={27} />
+              View proposal
+            </div>
           </Button>
         </div>
 
@@ -168,7 +191,10 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
       <div key="back" className={styles.container}>
         <div className={styles.scoreCardExpand}>
           <Button size="medium" onClick={handleClick}>
-            View scorecard
+            <div className={styles.buttonContent}>
+              <img src="/icons/flip-icon.png" alt="Flip" width={27} />
+              View scorecard
+            </div>
           </Button>
         </div>
         <div className={styles.scoreCardInfo}>

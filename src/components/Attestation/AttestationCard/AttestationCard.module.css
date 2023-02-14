@@ -55,6 +55,12 @@
   gap: 10px;
 }
 
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
 .votingOptions {
   border: 2px solid var(--bgColor);
   padding: 5px;
