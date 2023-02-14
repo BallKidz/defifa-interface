@@ -12,7 +12,7 @@ export function useCountdown(targetDate: Date | undefined) {
 
       if (timeDifference <= 0) {
         setIsOver(true);
-        setTimeRemaining("0s");
+        setTimeRemaining("");
       } else {
         let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         let hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
