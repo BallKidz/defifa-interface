@@ -9,3 +9,16 @@ export interface ScoreCard {
   };
   isEqual?: boolean;
 }
+
+export interface AttestationCardProps {
+  proposal: ScoreCard;
+  tiers: any[];
+}
+
+export interface ScoreCardTableData {
+  Teams: string;
+  Points: number;
+  "Treasury Share": string;
+  Redemption: string;
+  minted?: number;
+}

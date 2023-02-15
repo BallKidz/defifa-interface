@@ -10,12 +10,16 @@ import { useQuorum } from "../../../hooks/read/Quorum";
 import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
 import { useCastVote } from "../../../hooks/write/useCastVote";
 import { fromWad } from "../../../utils/format/formatNumber";
-import { convertPercentsToPoints } from "../../../utils/scorecard";
 import { buildColumns } from "../../../utils/table/columns";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table";
 import { ScoreCard } from "../types";
 import styles from "./AttestationCard.module.css";
+import {
+  calculateTotalRedemption,
+  getScoreCardTableData,
+  updateRedemptionAndShare,
+} from "./utils";
 
 interface AttestationCardProps {
   proposal: ScoreCard;
@@ -27,6 +31,7 @@ interface ScorecardData {
   Points: number;
   "Treasury Share": string;
   Redemption: string;
+  minted?: number;
 }
 
 const AttestationCard: React.FC<AttestationCardProps> = ({
@@ -56,39 +61,24 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { timeRemaining } = useCountdown(new Date(proposalEnd));
 
   useEffect(() => {
-    if (!tiers || !proposal || !treasuryAmount) return;
+    if (!(tiers && proposal && treasuryAmount)) return;
 
     const totalPot = parseFloat(fromWad(treasuryAmount));
+    const scoreCardTableData = getScoreCardTableData(tiers, proposal);
 
-    const scoreCardData: ScorecardData[] = proposal.scoreCard.tierWeights
-      .filter((tw) => tiers.some((t) => t.id === tw.id))
-      .map((tw) => {
-        const team = tiers.find((t) => t.id === tw.id);
-        return {
-          Teams: team ? team.teamName : "",
-          Points: convertPercentsToPoints(tw.redemptionWeight),
-          "Treasury Share": "",
-          Redemption: "0",
-        };
-      });
-
-    const totalRedemption = scoreCardData.reduce(
-      (sum, obj) => sum + obj.Points,
-      0
+    scoreCardTableData.forEach((obj) =>
+      updateRedemptionAndShare(
+        obj,
+        totalPot,
+        calculateTotalRedemption(scoreCardTableData)
+      )
     );
-    scoreCardData.forEach((obj) => {
-      if (obj.Points !== 0) {
-        obj["Treasury Share"] =
-          ((obj.Points / totalRedemption) * 100).toFixed(2) + "%";
-        obj.Redemption = (totalPot * (obj.Points / totalRedemption)).toFixed(4);
-        obj.Redemption = `Ξ${obj.Redemption}`;
-      }
-    });
 
     setScoreCardData(
-      scoreCardData
-        .filter((obj) => obj.Points !== 0)
+      scoreCardTableData
+        .filter((obj) => obj.Points)
         .sort((a, b) => b.Points - a.Points)
+        .map(({ minted, ...rest }) => rest)
     );
   }, [tiers, proposal, treasuryAmount]);
 
