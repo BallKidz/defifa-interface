@@ -13,7 +13,7 @@ import { fromWad } from "../../../utils/format/formatNumber";
 import { buildColumns } from "../../../utils/table/columns";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table";
-import { ScoreCard } from "../types";
+import { ScoreCard, ScoreCardTableData } from "../types";
 import styles from "./AttestationCard.module.css";
 import {
   calculateTotalRedemption,
@@ -24,14 +24,6 @@ import {
 interface AttestationCardProps {
   proposal: ScoreCard;
   tiers: any[];
-}
-
-interface ScorecardData {
-  Teams: string;
-  Points: number;
-  "Treasury Share": string;
-  Redemption: string;
-  minted?: number;
 }
 
 const AttestationCard: React.FC<AttestationCardProps> = ({
@@ -57,7 +49,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
     useApproveScorecard(proposal.scoreCard.tierWeights);
   const [proposalEnd, setProposalEnd] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState(false);
-  const [scoreCardData, setScoreCardData] = useState<ScorecardData[]>([]);
+  const [scoreCardData, setScoreCardData] = useState<ScoreCardTableData[]>([]);
   const { timeRemaining } = useCountdown(new Date(proposalEnd));
 
   useEffect(() => {

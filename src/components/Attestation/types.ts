@@ -19,6 +19,6 @@ export interface ScoreCardTableData {
   Teams: string;
   Points: number;
   "Treasury Share": string;
-  Redemption: string;
+  "Redemption per token": string;
   minted?: number;
 }

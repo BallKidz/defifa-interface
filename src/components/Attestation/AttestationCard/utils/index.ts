@@ -11,7 +11,7 @@ export const getScoreCardTableData = (tiers: any[], proposal: ScoreCard) => {
         Teams: teamName,
         Points: convertPercentsToPoints(tw.redemptionWeight),
         "Treasury Share": "",
-        Redemption: "0",
+        "Redemption per token": "0",
         minted,
       };
     });
@@ -31,9 +31,9 @@ export const updateRedemptionAndShare = (
   const { Points, minted } = obj;
   if (Points !== 0 && minted) {
     obj["Treasury Share"] = `${((Points / totalRedemption) * 100).toFixed(2)}%`;
-    obj.Redemption = `Ξ${(
+    obj["Redemption per token"] = `Ξ${(
       (totalPot * (Points / totalRedemption)) /
       minted
-    ).toFixed(5)} per token`;
+    ).toFixed(5)}`;
   }
 };
