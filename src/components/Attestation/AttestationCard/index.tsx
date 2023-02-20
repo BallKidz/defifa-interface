@@ -91,11 +91,14 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
     if (n < 1000) {
       return n.toString();
     } else if (n < 1000000) {
-      return (n / 1000).toFixed(0) + "k";
+      const num = n / 1000;
+      return num.toFixed(num % 1 !== 0 ? 2 : 0) + "k";
     } else if (n < 1000000000) {
-      return (n / 1000000).toFixed(0) + "m";
+      const num = n / 1000000;
+      return num.toFixed(num % 1 !== 0 ? 2 : 0) + "m";
     } else {
-      return (n / 1000000000).toFixed(0) + "bn";
+      const num = n / 1000000000;
+      return num.toFixed(num % 1 !== 0 ? 2 : 0) + "bn";
     }
   };
 
