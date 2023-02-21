@@ -22,3 +22,14 @@ export interface ScoreCardTableData {
   "Redemption per token": string;
   minted?: number;
 }
+
+export enum ScoreCardProposalState {
+  "Pending",
+  "Active",
+  "Canceled",
+  "Defeated",
+  "Succeeded",
+  "Queued",
+  "Expired",
+  "Executed",
+}

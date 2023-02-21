@@ -14,7 +14,11 @@ import { fromWad } from "../../../utils/format/formatNumber";
 import { buildColumns } from "../../../utils/table/columns";
 import Button from "../../UI/Button";
 import Table from "../../UI/Table";
-import { ScoreCard, ScoreCardTableData } from "../types";
+import {
+  ScoreCard,
+  ScoreCardProposalState,
+  ScoreCardTableData,
+} from "../types";
 import styles from "./AttestationCard.module.css";
 import {
   calculateTotalRedemption,
@@ -56,6 +60,9 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const [scoreCardData, setScoreCardData] = useState<ScoreCardTableData[]>([]);
   const { timeRemaining } = useCountdown(new Date(proposalEnd));
   const quourumReached = quorum?.lte(proposalVotes?.forVotes);
+  const scoreCardProposalStateValues = Object.values(ScoreCardProposalState);
+  const scoreCardProposalState =
+    scoreCardProposalStateValues[proposalState as any];
 
   useEffect(() => {
     if (!(tiers && proposal && treasuryAmount)) return;
@@ -148,7 +155,9 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
               ? "Reached"
               : `${toStringWithSuffix(quorum?.toNumber())} confirmations`}
           </p>
-          <p>Confirmation deadline: In {timeRemaining}</p>
+          {!quourumReached && <p>Confirmation deadline: In {timeRemaining}</p>}
+          <p>State: {scoreCardProposalState}</p>
+
           <div className={styles.voteForm}>
             <Button
               onClick={() => write?.()}
