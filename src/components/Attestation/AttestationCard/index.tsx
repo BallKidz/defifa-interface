@@ -176,7 +176,9 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
             </Button>
             <Button
               onClick={() => approveScorecard?.()}
-              disabled={!quourumReached}
+              disabled={
+                !quourumReached || scoreCardProposalState === "Executed"
+              }
             >
               {isApproveScorecardLoading ? (
                 <img
