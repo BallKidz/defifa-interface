@@ -5,6 +5,7 @@ import { useBlockNumber } from "wagmi";
 import { useCountdown } from "../../../hooks/Countdown";
 import { usePaymentTerminalBalance } from "../../../hooks/read/PaymentTerminalBalance";
 import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
+import { useProposalState } from "../../../hooks/read/ProposalState";
 import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
 import { useQuorum } from "../../../hooks/read/Quorum";
 import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
@@ -45,12 +46,16 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { write, isLoading, isError } = useCastVote(
     proposal.scoreCard.proposalId
   );
+  const { data: proposalState } = useProposalState(
+    proposal.scoreCard.proposalId
+  );
   const { write: approveScorecard, isLoading: isApproveScorecardLoading } =
     useApproveScorecard(proposal.scoreCard.tierWeights);
   const [proposalEnd, setProposalEnd] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [scoreCardData, setScoreCardData] = useState<ScoreCardTableData[]>([]);
   const { timeRemaining } = useCountdown(new Date(proposalEnd));
+  const quourumReached = quorum?.lte(proposalVotes?.forVotes);
 
   useEffect(() => {
     if (!(tiers && proposal && treasuryAmount)) return;
@@ -139,38 +144,42 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
 
           <p>
             Quorum:
-            {toStringWithSuffix(quorum?.toNumber())} confirmations
+            {quourumReached
+              ? "Reached"
+              : `${toStringWithSuffix(quorum?.toNumber())} confirmations`}
           </p>
           <p>Confirmation deadline: In {timeRemaining}</p>
-          <div className={styles.voteForm}>
-            <Button onClick={() => write?.()} disabled={isLoading}>
-              {isLoading ? (
-                <img
-                  style={{ marginTop: "5px" }}
-                  src="/assets/defifa_spinner.gif"
-                  alt="spinner"
-                  width={35}
-                />
-              ) : (
-                "Confirm"
-              )}
-            </Button>
-            <Button
-              onClick={() => approveScorecard?.()}
-              disabled={quorum?.gt(proposalVotes?.forVotes)}
-            >
-              {isApproveScorecardLoading ? (
-                <img
-                  style={{ marginTop: "5px" }}
-                  src="/assets/defifa_spinner.gif"
-                  alt="spinner"
-                  width={35}
-                />
-              ) : (
-                "Lock in"
-              )}
-            </Button>
-          </div>
+          {!quourumReached && (
+            <div className={styles.voteForm}>
+              <Button onClick={() => write?.()} disabled={isLoading}>
+                {isLoading ? (
+                  <img
+                    style={{ marginTop: "5px" }}
+                    src="/assets/defifa_spinner.gif"
+                    alt="spinner"
+                    width={35}
+                  />
+                ) : (
+                  "Confirm"
+                )}
+              </Button>
+              <Button
+                onClick={() => approveScorecard?.()}
+                disabled={!quourumReached}
+              >
+                {isApproveScorecardLoading ? (
+                  <img
+                    style={{ marginTop: "5px" }}
+                    src="/assets/defifa_spinner.gif"
+                    alt="spinner"
+                    width={35}
+                  />
+                ) : (
+                  "Lock in"
+                )}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <div key="back" className={styles.container}>
