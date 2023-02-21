@@ -149,37 +149,38 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
               : `${toStringWithSuffix(quorum?.toNumber())} confirmations`}
           </p>
           <p>Confirmation deadline: In {timeRemaining}</p>
-          {!quourumReached && (
-            <div className={styles.voteForm}>
-              <Button onClick={() => write?.()} disabled={isLoading}>
-                {isLoading ? (
-                  <img
-                    style={{ marginTop: "5px" }}
-                    src="/assets/defifa_spinner.gif"
-                    alt="spinner"
-                    width={35}
-                  />
-                ) : (
-                  "Confirm"
-                )}
-              </Button>
-              <Button
-                onClick={() => approveScorecard?.()}
-                disabled={!quourumReached}
-              >
-                {isApproveScorecardLoading ? (
-                  <img
-                    style={{ marginTop: "5px" }}
-                    src="/assets/defifa_spinner.gif"
-                    alt="spinner"
-                    width={35}
-                  />
-                ) : (
-                  "Lock in"
-                )}
-              </Button>
-            </div>
-          )}
+          <div className={styles.voteForm}>
+            <Button
+              onClick={() => write?.()}
+              disabled={isLoading || quourumReached}
+            >
+              {isLoading ? (
+                <img
+                  style={{ marginTop: "5px" }}
+                  src="/assets/defifa_spinner.gif"
+                  alt="spinner"
+                  width={35}
+                />
+              ) : (
+                "Confirm"
+              )}
+            </Button>
+            <Button
+              onClick={() => approveScorecard?.()}
+              disabled={!quourumReached}
+            >
+              {isApproveScorecardLoading ? (
+                <img
+                  style={{ marginTop: "5px" }}
+                  src="/assets/defifa_spinner.gif"
+                  alt="spinner"
+                  width={35}
+                />
+              ) : (
+                "Lock in"
+              )}
+            </Button>
+          </div>
         </div>
       </div>
       <div key="back" className={styles.container}>
