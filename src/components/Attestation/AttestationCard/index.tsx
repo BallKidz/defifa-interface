@@ -144,10 +144,12 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
         <div className={styles.scoreCardInfo}>
           <img src={icon} alt="Scorecard" width={proposal.isEqual ? 98 : 81} />
           <p className={styles.scoreCardTitle}>{proposal.title}</p>
-          <p>
-            Status:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())}{" "}
-            confirmations
-          </p>
+          {!quourumReached && (
+            <p>
+              Status:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())}{" "}
+              confirmations
+            </p>
+          )}
 
           <p>
             Quorum:
