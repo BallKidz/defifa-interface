@@ -47,9 +47,11 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const { data: proposalVotes } = useProposalVotes(
     proposal.scoreCard.proposalId
   );
-  const { write, isLoading, isError } = useCastVote(
-    proposal.scoreCard.proposalId
-  );
+  const {
+    write: attestToScorecard,
+    isLoading,
+    isError,
+  } = useCastVote(proposal.scoreCard.proposalId);
   const { data: proposalState } = useProposalState(
     proposal.scoreCard.proposalId
   );
@@ -63,6 +65,9 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const scoreCardProposalStateValues = Object.values(ScoreCardProposalState);
   const scoreCardProposalState =
     scoreCardProposalStateValues[proposalState as any];
+  const displayLockIn =
+    scoreCardProposalState === "Active" ||
+    scoreCardProposalState === "Succeeded";
 
   useEffect(() => {
     if (!(tiers && proposal && treasuryAmount)) return;
@@ -144,6 +149,8 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
         <div className={styles.scoreCardInfo}>
           <img src={icon} alt="Scorecard" width={proposal.isEqual ? 98 : 81} />
           <p className={styles.scoreCardTitle}>{proposal.title}</p>
+          <p>State: {scoreCardProposalState}</p>
+
           {!quourumReached && (
             <p>
               Status:{toStringWithSuffix(proposalVotes?.forVotes.toNumber())}{" "}
@@ -154,45 +161,50 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
           <p>
             Quorum:
             {quourumReached
-              ? "Reached"
+              ? " Reached"
               : `${toStringWithSuffix(quorum?.toNumber())} confirmations`}
           </p>
           {!quourumReached && <p>Confirmation deadline: In {timeRemaining}</p>}
-          <p>State: {scoreCardProposalState}</p>
+          {quourumReached && scoreCardProposalState === "Active" && (
+            <p>Lock in begins: In {timeRemaining}</p>
+          )}
 
           <div className={styles.voteForm}>
-            <Button
-              onClick={() => write?.()}
-              disabled={isLoading || quourumReached}
-            >
-              {isLoading ? (
-                <img
-                  style={{ marginTop: "5px" }}
-                  src="/assets/defifa_spinner.gif"
-                  alt="spinner"
-                  width={35}
-                />
-              ) : (
-                "Confirm"
-              )}
-            </Button>
-            <Button
-              onClick={() => approveScorecard?.()}
-              disabled={
-                !quourumReached || scoreCardProposalState === "Executed"
-              }
-            >
-              {isApproveScorecardLoading ? (
-                <img
-                  style={{ marginTop: "5px" }}
-                  src="/assets/defifa_spinner.gif"
-                  alt="spinner"
-                  width={35}
-                />
-              ) : (
-                "Lock in"
-              )}
-            </Button>
+            {!quourumReached && (
+              <Button
+                onClick={() => attestToScorecard?.()}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <img
+                    style={{ marginTop: "5px" }}
+                    src="/assets/defifa_spinner.gif"
+                    alt="spinner"
+                    width={35}
+                  />
+                ) : (
+                  "Confirm"
+                )}
+              </Button>
+            )}
+
+            {quourumReached && displayLockIn && (
+              <Button
+                onClick={() => approveScorecard?.()}
+                disabled={scoreCardProposalState === "Active"}
+              >
+                {isApproveScorecardLoading ? (
+                  <img
+                    style={{ marginTop: "5px" }}
+                    src="/assets/defifa_spinner.gif"
+                    alt="spinner"
+                    width={35}
+                  />
+                ) : (
+                  "Lock in"
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </div>
