@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC } from "react";
+import { FC, useState } from "react";
 import { IpfsImage } from "react-ipfs-image";
 import { useAttestationPower } from "../../hooks/read/AttestationPower";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
@@ -7,12 +7,16 @@ import { TeamTier } from "../../hooks/useMyTeams";
 import useRedeemTokensOf from "../../hooks/write/useRedeemTokensOf";
 import Button from "../UI/Button";
 import styles from "./MyTeam.module.css";
+
 const MyTeam: FC<{
   team: TeamTier;
   onRedeemSuccess: () => void;
   disableRedeem: boolean;
 }> = ({ team, onRedeemSuccess, disableRedeem }) => {
   const { id, image, name, quantity } = team;
+  const [quantityToRedeem, setQuantityToRedeem] = useState<string[]>(
+    team.tokenIds
+  );
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const attestationPower = useAttestationPower(id, quantity);
@@ -24,21 +28,45 @@ const MyTeam: FC<{
     isError: isRedeemError,
     error: redeemError,
   } = useRedeemTokensOf({
-    tokenIds: team.tokenIds,
+    tokenIds: quantityToRedeem,
     onSuccess: onRedeemSuccess,
   });
+
+  const increaseQuantity = () => {
+    if (quantityToRedeem.length < team.tokenIds.length) {
+      setQuantityToRedeem((q) => [...q, team.tokenIds[q.length]]);
+    }
+  };
+
+  const decreaseQuantity = () => {
+    if (quantityToRedeem.length > 1) {
+      setQuantityToRedeem((q) => q.slice(0, -1));
+    }
+  };
 
   return (
     <div className={styles.container}>
       <IpfsImage hash={image} className={styles.teamImg} />
       <h3>{name}</h3>
-      <p>Quantity : {quantity}</p>
+      <div className={styles.quantityContainer}>
+        <p>Quantity : {quantityToRedeem.length}</p>
+        {quantity > 1 && (
+          <>
+            <Button size="extraSmall" onClick={increaseQuantity}>
+              +
+            </Button>
+            <Button size="extraSmall" onClick={decreaseQuantity}>
+              -
+            </Button>
+          </>
+        )}
+      </div>
       <p>Attestation power: {attestationPower}% </p>
+
       {canRedeem && (
         <Button
           onClick={() => {
             write?.();
-            // onRedeemSuccess();
           }}
           disabled={!canRedeem || isRedeemLoading || disableRedeem}
         >

@@ -3,7 +3,8 @@
   gap: 20px;
 }
 .container p {
-  color: lightgray;
+  color: var(--violet);
+
   text-decoration: underline;
   font-weight: 500;
 }
