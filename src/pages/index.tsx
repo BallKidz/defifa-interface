@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Defifa: American Football Playoffs 2023</title>
+        <title>Defifa: Create your own tournament edition</title>
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta name="description" content="Create your own tournament." />
         <link rel="icon" href="/favicon.ico" />

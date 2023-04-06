@@ -73,6 +73,8 @@ const DeployerCreate = () => {
   const [editedTier, setEditedTier] = useState<DefifaTier | null>(null);
   const minDate = unixToDatetimeLocal(currentUnixTimestamp);
 
+  console.log(formValues);
+
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTier>>();
 

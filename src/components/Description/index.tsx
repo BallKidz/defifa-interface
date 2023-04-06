@@ -8,7 +8,7 @@ import styles from "./Description.module.css";
 const Description = () => {
   return (
     <div className={styles.container}>
-      <Title title="Defifa: American Football Playoffs 2023 edition" />
+      <Title title="Defifa: Create your own tournament edition" />
       <Treasury />
       <CurrentPhase />
       <div className={styles.gameplayContainer}>
