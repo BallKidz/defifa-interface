@@ -1,3 +1,5 @@
+import { BigNumber } from "ethers";
+
 export interface DefifaTier {
   name: string;
   price: number;
@@ -8,6 +10,22 @@ export interface DefifaTier {
   encodedIPFSUri: string;
   shouldUseReservedTokenBeneficiaryAsDefault: boolean;
 }
+
+export type JB721TierParams = {
+  id?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
+  remainingQuantity?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
+
+  contributionFloor: BigNumber; //uint128
+  lockedUntil: BigNumber;
+  initialQuantity: BigNumber; //uint64
+  votingUnits: number;
+  reservedRate: number;
+  reservedTokenBeneficiary: string;
+  encodedIPFSUri: string; // encoded link to the rewardTier on IPFS
+  allowManualMint: boolean;
+  shouldUseBeneficiaryAsDefault: boolean;
+  transfersPausable: boolean;
+};
 
 export interface DefifaLaunchProjectData {
   name: string;
