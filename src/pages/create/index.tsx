@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import DeployerWrapper from "../../components/Deployer";
 
-const Deployer: NextPage = () => {
+const Create: NextPage = () => {
   return <DeployerWrapper />;
 };
 
-export default Deployer;
+export default Create;

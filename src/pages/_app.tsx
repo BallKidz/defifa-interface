@@ -1,13 +1,21 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import {
+  connectorsForWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
+import {
+  braveWallet,
+  injectedWallet,
+  rainbowWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
-import { publicProvider } from "wagmi/providers/public";
 import "../styles/globals.css";
-import { QueryClientProvider, QueryClient } from "react-query";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(
@@ -19,10 +27,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     ]
   );
 
-  const { connectors } = getDefaultWallets({
-    appName: "Defifa",
-    chains,
-  });
+  const connectors = connectorsForWallets([
+    {
+      groupName: "Recommended",
+      wallets: [
+        injectedWallet({ chains }),
+        rainbowWallet({ chains }),
+        walletConnectWallet({ chains }),
+      ],
+    },
+  ]);
 
   const wagmiClient = createClient({
     autoConnect: true,
