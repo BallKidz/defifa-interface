@@ -61,18 +61,22 @@
 }
 
 .tier {
-  display: grid;
-  grid-template-columns: repeat(4, 2fr);
-  gap: 1rem;
+  display: flex;
+  justify-content: space-between;
   background: rgba(37, 34, 44, 0.9);
   padding: 10px 20px;
   border: 1px solid var(--blue);
   align-items: center;
 }
 
+.tierDetails {
+  display: grid;
+  grid-template-columns: repeat(4, 2fr);
+  gap: 1rem;
+}
+
 .tierIcons {
   display: flex;
-  justify-content: end;
   gap: 30px;
 }
 
@@ -80,7 +84,6 @@
   cursor: pointer;
   color: var(--blue);
 }
-
 .overlayModal {
   background: linear-gradient(
     308.94deg,

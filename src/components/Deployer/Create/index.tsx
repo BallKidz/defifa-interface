@@ -73,8 +73,6 @@ const DeployerCreate = () => {
   const [editedTier, setEditedTier] = useState<DefifaTier | null>(null);
   const minDate = unixToDatetimeLocal(currentUnixTimestamp);
 
-  console.log(formValues);
-
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTier>>();
 
@@ -187,6 +185,17 @@ const DeployerCreate = () => {
       ...tier,
       ...tierGeneralValues,
     };
+
+    // Check if there's at least one tier with reservedRate and reservedTokenBeneficiary set
+    const hasReservedRateTier = formValues.tiers.some(
+      (t) => t.reservedRate && t.reservedTokenBeneficiary
+    );
+
+    if (hasReservedRateTier) {
+      mergedTier.reservedRate = 0;
+      mergedTier.reservedTokenBeneficiary = "";
+      mergedTier.shouldUseReservedTokenBeneficiaryAsDefault = true;
+    }
 
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -436,15 +445,24 @@ const DeployerCreate = () => {
                 <p>List of your NFTs</p>
                 {formValues.tiers.map((tier, index) => (
                   <div key={index} className={styles.tier}>
-                    <p>Name: {tier.name}</p>
-                    <p>Price: Ξ{tier.price}</p>
-                    <p>
-                      For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
-                      {tier.reservedTokenBeneficiary
-                        ? truncateAddress(tier.reservedTokenBeneficiary, 3, 3)
-                        : "not you"}
-                      !
-                    </p>
+                    <div className={styles.tierDetails}>
+                      <p>Name: {tier.name}</p>
+                      <p>Price: Ξ{tier.price}</p>
+                      {tier.reservedRate ? (
+                        <p>
+                          For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
+                          {tier.reservedTokenBeneficiary
+                            ? truncateAddress(
+                                tier.reservedTokenBeneficiary,
+                                3,
+                                3
+                              )
+                            : "not you"}
+                          !
+                        </p>
+                      ) : null}
+                    </div>
+
                     <div className={styles.tierIcons}>
                       <span>
                         <FontAwesomeIcon
