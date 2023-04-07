@@ -9,10 +9,6 @@ import {
 import { getChainData } from "../../constants/addresses";
 import { DefifaLaunchProjectData } from "../../types/interfaces";
 
-const convertDatetimeLocalToUnix = (value: string) => {
-  return new Date(value).getTime() / 1000;
-};
-
 export function useCreateTournament(
   _launchProjectData?: DefifaLaunchProjectData
 ) {
@@ -25,6 +21,7 @@ export function useCreateTournament(
     addressOrName: chainData.defifaCreate.address,
     contractInterface: chainData.defifaCreate.interface,
     functionName: "launchGameWith",
+
     args: [_launchProjectData],
     chainId: chainData.chainId,
   });

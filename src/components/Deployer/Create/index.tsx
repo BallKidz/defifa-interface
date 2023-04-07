@@ -216,6 +216,8 @@ const DeployerCreate = () => {
     setAddNftOpen(false);
   };
 
+  console.log({ formValues });
+
   const onRemoveTier = (index: number) => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -448,7 +450,7 @@ const DeployerCreate = () => {
                     <div className={styles.tierDetails}>
                       <p>Name: {tier.name}</p>
                       <p>Price: Ξ{tier.price}</p>
-                      {tier.reservedRate ? (
+                      {tier.reservedRate > 0 ? (
                         <p>
                           For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
                           {tier.reservedTokenBeneficiary
