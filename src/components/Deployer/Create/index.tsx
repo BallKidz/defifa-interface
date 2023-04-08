@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
@@ -15,6 +17,8 @@ import { colors } from "../../../constants/colors";
 import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
 import { truncateAddress } from "../../../utils/truncate";
 import { contractUri, projectMetadataUri } from "../../../uri/contractUri";
+import bs58 from "bs58";
+import BigNumber from "bignumber.js";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -36,18 +40,20 @@ const DeployerCreate = () => {
   const chainData = getChainData(network?.chain?.id);
   const { ethPaymentTerminal, JBTiered721DelegateStore } = chainData;
   const [addNftOpen, setAddNftOpen] = useState(false);
+
   const [tier, setTier] = useState<DefifaTier>({
     name: "",
     price: 0,
     reservedRate: 0,
-    reservedTokenBeneficiary: "",
+    reservedTokenBeneficiary: "0x0",
     royaltyRate: 0,
     royaltyBeneficiary: "",
-    encodedIPFSUri: "",
+    encodedIPFSUri: "0x0",
     shouldUseReservedTokenBeneficiaryAsDefault: false,
   });
   const currentUnixTimestamp = Math.floor(Date.now() / 1000);
-
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
     name: "",
     mintDuration: currentUnixTimestamp,
@@ -87,7 +93,7 @@ const DeployerCreate = () => {
 
       setFormValues((prevValues) => ({
         ...prevValues,
-        contractUri: contractUriCid,
+        contractUri: `ipfs://${contractUriCid}`,
         projectMetadata: {
           content: projectMetadataCid,
           domain: 0,
@@ -120,11 +126,14 @@ const DeployerCreate = () => {
     const { name, value } = e.target;
 
     if (name === "encodedIPFSUri") {
-      const ipfsHash = await handleFileUpload(e);
+      setIsUploading(true);
+      let ipfsHash = (await handleFileUpload(e)) ?? "";
+      ipfsHash = `0x${bs58.decode(ipfsHash).slice(2).toString("hex")}`;
       setTier((prevState) => ({
         ...prevState,
         [name]: ipfsHash ?? "",
       }));
+      setIsUploading(false);
     } else {
       setTier((prevState) => ({
         ...prevState,
@@ -139,6 +148,8 @@ const DeployerCreate = () => {
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+      const imageUri = URL.createObjectURL(file);
+      setImageUri(imageUri);
       try {
         const ipfsHash = await uploadToIPFS(file);
         return ipfsHash;
@@ -159,18 +170,43 @@ const DeployerCreate = () => {
 
   const handleTierGeneralValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    let newValue = value;
+
     setTierGeneralValues((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: newValue,
     }));
 
     // Update all tiers in the tiers array if it exists
     if (formValues.tiers && formValues.tiers.length > 0) {
       setFormValues((prevState) => {
-        const updatedTiers = prevState.tiers.map((tier) => ({
-          ...tier,
-          [name]: value,
-        }));
+        const shouldUpdatePreviousTiers =
+          name === "reservedRate" || name === "reservedTokenBeneficiary";
+
+        const updatedTiers = prevState.tiers.map((tier, index) => {
+          if (shouldUpdatePreviousTiers) {
+            if (index === 0) {
+              return {
+                ...tier,
+                [name]: newValue,
+                shouldUseReservedTokenBeneficiaryAsDefault: false,
+              };
+            } else {
+              return {
+                ...tier,
+                reservedRate: 0,
+                reservedTokenBeneficiary: "0x0",
+                shouldUseReservedTokenBeneficiaryAsDefault: true,
+              };
+            }
+          } else {
+            return {
+              ...tier,
+              [name]: newValue,
+            };
+          }
+        });
 
         return {
           ...prevState,
@@ -193,7 +229,7 @@ const DeployerCreate = () => {
 
     if (hasReservedRateTier) {
       mergedTier.reservedRate = 0;
-      mergedTier.reservedTokenBeneficiary = "";
+      mergedTier.reservedTokenBeneficiary = "0x0";
       mergedTier.shouldUseReservedTokenBeneficiaryAsDefault = true;
     }
 
@@ -209,14 +245,12 @@ const DeployerCreate = () => {
       reservedTokenBeneficiary: "",
       royaltyRate: 0,
       royaltyBeneficiary: "",
-      encodedIPFSUri: "",
+      encodedIPFSUri: "0x0",
       shouldUseReservedTokenBeneficiaryAsDefault: false,
     });
 
     setAddNftOpen(false);
   };
-
-  console.log({ formValues });
 
   const onRemoveTier = (index: number) => {
     setFormValues((prevValues) => ({
@@ -434,10 +468,15 @@ const DeployerCreate = () => {
                     name="encodedIPFSUri"
                     id="encodedIPFSUri"
                   />
+                  <div style={{ marginTop: "20px" }}>
+                    {!isUploading && <img src={imageUri} width={200} />}
+                  </div>
                 </div>
 
                 <div style={{ marginTop: "20px" }}>
-                  <Button onClick={onAddNFT}>Add</Button>
+                  <Button onClick={onAddNFT} disabled={isUploading}>
+                    Add
+                  </Button>
                 </div>
               </div>
             </Content>
@@ -450,19 +489,21 @@ const DeployerCreate = () => {
                     <div className={styles.tierDetails}>
                       <p>Name: {tier.name}</p>
                       <p>Price: Ξ{tier.price}</p>
-                      {tier.reservedRate > 0 ? (
+                      {formValues.tiers.some(
+                        (tier) => tier.reservedRate > 0
+                      ) && (
                         <p>
                           For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
                           {tier.reservedTokenBeneficiary
                             ? truncateAddress(
-                                tier.reservedTokenBeneficiary,
+                                formValues.tiers[0].reservedTokenBeneficiary,
                                 3,
                                 3
                               )
                             : "not you"}
                           !
                         </p>
-                      ) : null}
+                      )}
                     </div>
 
                     <div className={styles.tierIcons}>
