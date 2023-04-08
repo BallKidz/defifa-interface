@@ -249,6 +249,8 @@ const DeployerCreate = () => {
       shouldUseReservedTokenBeneficiaryAsDefault: false,
     });
 
+    setImageUri("");
+
     setAddNftOpen(false);
   };
 
