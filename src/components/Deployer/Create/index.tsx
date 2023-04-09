@@ -45,10 +45,10 @@ const DeployerCreate = () => {
     name: "",
     price: 0,
     reservedRate: 0,
-    reservedTokenBeneficiary: "0x0",
+    reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
     royaltyRate: 0,
-    royaltyBeneficiary: "",
-    encodedIPFSUri: "0x0",
+    royaltyBeneficiary: "0x0000000000000000000000000000000000000000",
+    encodedIPFSUri: "",
     shouldUseReservedTokenBeneficiaryAsDefault: false,
   });
   const currentUnixTimestamp = Math.floor(Date.now() / 1000);
@@ -196,7 +196,8 @@ const DeployerCreate = () => {
               return {
                 ...tier,
                 reservedRate: 0,
-                reservedTokenBeneficiary: "0x0",
+                reservedTokenBeneficiary:
+                  "0x0000000000000000000000000000000000000000",
                 shouldUseReservedTokenBeneficiaryAsDefault: true,
               };
             }
@@ -229,7 +230,8 @@ const DeployerCreate = () => {
 
     if (hasReservedRateTier) {
       mergedTier.reservedRate = 0;
-      mergedTier.reservedTokenBeneficiary = "0x0";
+      mergedTier.reservedTokenBeneficiary =
+        "0x0000000000000000000000000000000000000000";
       mergedTier.shouldUseReservedTokenBeneficiaryAsDefault = true;
     }
 
@@ -242,10 +244,10 @@ const DeployerCreate = () => {
       name: "",
       price: 0,
       reservedRate: 0,
-      reservedTokenBeneficiary: "",
+      reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
       royaltyRate: 0,
-      royaltyBeneficiary: "",
-      encodedIPFSUri: "0x0",
+      royaltyBeneficiary: "0x0000000000000000000000000000000000000000",
+      encodedIPFSUri: "",
       shouldUseReservedTokenBeneficiaryAsDefault: false,
     });
 

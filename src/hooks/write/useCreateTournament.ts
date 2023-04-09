@@ -1,5 +1,5 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import BigNumber from "bignumber.js";
+import { BigNumber, utils } from "ethers";
 import {
   useAccount,
   useContractWrite,
@@ -11,7 +11,10 @@ import { getChainData } from "../../constants/addresses";
 import { DefifaLaunchProjectData } from "../../types/interfaces";
 
 const convertTo18Decimals = (value: number) => {
-  return new BigNumber(value).times(new BigNumber(10).pow(18)).toNumber();
+  const decimals = 18;
+  // Convert the floating-point number to a fixed-point string
+  const fixedValue = utils.parseUnits(value.toString(), decimals);
+  return fixedValue.toString();
 };
 
 export function useCreateTournament(
@@ -36,8 +39,6 @@ export function useCreateTournament(
     addressOrName: chainData.defifaCreate.address,
     contractInterface: chainData.defifaCreate.interface,
     functionName: "launchGameWith",
-    overrides: chainData?.chainId == 5 ? { gasLimit: 21000000 } : {},
-
     args: [preparedLaunchProjectData],
     chainId: chainData.chainId,
   });

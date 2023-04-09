@@ -19,14 +19,17 @@ export const ETH_TOKEN_ADDRESS = "0x000000000000000000000000000000000000eeee";
 
 export const mainnetData = {
   JBTiered721DelegateStore: {
-    address: "0xffb2cd8519439a7ddcf2c933caedd938053067d2",
+    address: "0x167ea060D75727Aa93C1c02873f189d22ef98856",
     interface: IJBTiered721DelegateStore.abi,
   },
   chainId: chain.mainnet.id,
   JBController: JBControllerMainnet,
   JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
-  ethPaymentTerminal: MainnetJBETHPaymentTerminal,
+  ethPaymentTerminal: {
+    address: "0xFA391De95Fcbcd3157268B91d8c7af083E607A5C",
+    abi: MainnetJBETHPaymentTerminal.abi,
+  },
   defifaDelegate: {
     address: "0x600f3b83cD74175B9f10867B8218855d755c8923",
     interface: DefifaDelegateABI.abi,
@@ -48,14 +51,17 @@ export const mainnetData = {
 
 export const goerliData = {
   JBTiered721DelegateStore: {
-    address: "0x3ea16deff07f031e86bd13c55961eb576cd579a6",
+    address: "0xF85DC8C2b9dFfeab95c614A306141882048dE467",
     interface: IJBTiered721DelegateStore.abi,
   },
   chainId: chain.goerli.id,
   JBController: JBControllerGoerli,
   JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_GOERLI,
-  ethPaymentTerminal: GoerliJBETHPaymentTerminal,
+  ethPaymentTerminal: {
+    address: "0x0baCb87Cf7DbDdde2299D92673A938E067a9eb29",
+    abi: GoerliJBETHPaymentTerminal.abi,
+  },
   defifaDelegate: {
     address: "0x87ee2f4b8ee8f4c79523f36fecbb5f76b23e7d6f",
     interface: DefifaDelegateABI.abi,

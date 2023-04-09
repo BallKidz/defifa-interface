@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 
 export interface DefifaTier {
   name: string;
-  price: number;
+  price: any;
   reservedRate: number;
   reservedTokenBeneficiary: string;
   royaltyRate: number;
