@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPen, faRemove } from "@fortawesome/free-solid-svg-icons";
 
 import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
@@ -78,6 +78,7 @@ const DeployerCreate = () => {
   });
   const [editedTier, setEditedTier] = useState<DefifaTier | null>(null);
   const minDate = unixToDatetimeLocal(currentUnixTimestamp);
+  const [inputKey, setInputKey] = useState(0);
 
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTier>>();
@@ -467,13 +468,31 @@ const DeployerCreate = () => {
                     Upload file
                   </label>
                   <input
+                    key={inputKey}
                     type="file"
                     onChange={handleTierChange}
                     name="encodedIPFSUri"
                     id="encodedIPFSUri"
                   />
-                  <div style={{ marginTop: "20px" }}>
+                  <div
+                    style={{ marginTop: "20px", display: "flex", gap: "30px" }}
+                  >
                     {!isUploading && <img src={imageUri} width={200} />}
+                    {!isUploading && imageUri && (
+                      <FontAwesomeIcon
+                        icon={faRemove}
+                        color="var(--pink)"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setTier((prevState) => ({
+                            ...prevState,
+                            encodedIPFSUri: "",
+                          }));
+                          setImageUri("");
+                          setInputKey((prevKey) => prevKey + 1); // Increment the inputKey
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
 
