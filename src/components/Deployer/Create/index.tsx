@@ -56,8 +56,8 @@ const DeployerCreate = () => {
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
     name: "",
-    mintDuration: currentUnixTimestamp,
-    refundPeriodDuration: currentUnixTimestamp,
+    mintDuration: 24 * 60 * 60,
+    refundPeriodDuration: 24 * 60 * 60,
     start: currentUnixTimestamp,
     end: currentUnixTimestamp,
     votingPeriod: 0,
@@ -108,18 +108,26 @@ const DeployerCreate = () => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const datetimeLocalFields: Array<keyof DefifaLaunchProjectData> = [
-      "mintDuration",
-      "refundPeriodDuration",
       "start",
       "end",
     ];
+
+    let newValue: string | number;
+
+    if (name === "mintDuration" || name === "refundPeriodDuration") {
+      // Convert the input value (in hours) to seconds.
+      newValue = parseFloat(value) * 60 * 60;
+    } else if (
+      datetimeLocalFields.includes(name as keyof DefifaLaunchProjectData)
+    ) {
+      newValue = datetimeLocalToUnix(value);
+    } else {
+      newValue = value;
+    }
+
     setFormValues((prevFormValues) => ({
       ...prevFormValues,
-      [name]: datetimeLocalFields.includes(
-        name as keyof DefifaLaunchProjectData
-      )
-        ? datetimeLocalToUnix(value)
-        : value,
+      [name]: newValue,
     }));
   };
 
@@ -128,8 +136,10 @@ const DeployerCreate = () => {
 
     if (name === "encodedIPFSUri") {
       setIsUploading(true);
+
       let ipfsHash = (await handleFileUpload(e)) ?? "";
       ipfsHash = `0x${bs58.decode(ipfsHash).slice(2).toString("hex")}`;
+
       setTier((prevState) => ({
         ...prevState,
         [name]: ipfsHash ?? "",
@@ -346,31 +356,33 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="mintDuration" className={styles.label}>
-                Minting Date
+                Mint Duration (hours)
               </label>
               <input
-                type="datetime-local"
+                type="number"
                 id="mintDuration"
                 name="mintDuration"
                 className={styles.input}
-                value={unixToDatetimeLocal(formValues.mintDuration)}
+                value={formValues.mintDuration / 60 / 60} // convert seconds to hours for display
                 onChange={handleInputChange}
-                min={minDate}
+                min={0} // set the minimum value allowed
+                step={1} // set the step size, e.g., 1 hour increments
                 required
               />
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="refundPeriodDuration" className={styles.label}>
-                Refund Date
+                Refund Date (hours)
               </label>
               <input
-                type="datetime-local"
+                type="number"
                 id="refundPeriodDuration"
                 name="refundPeriodDuration"
                 className={styles.input}
-                value={unixToDatetimeLocal(formValues.refundPeriodDuration)}
+                value={formValues.refundPeriodDuration / 60 / 60} // convert seconds to hours for display: ;
                 onChange={handleInputChange}
-                min={minDate}
+                min={0} // set the minimum value allowed
+                step={1} // set the step size, e.g., 1 hour increments
                 required
               />
             </div>
