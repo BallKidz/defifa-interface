@@ -40,6 +40,7 @@ export function useCreateTournament(
     contractInterface: chainData.defifaCreate.interface,
     functionName: "launchGameWith",
     args: [preparedLaunchProjectData],
+    overrides: chainData?.chainId == 5 ? { gasLimit: 21000000 } : {},
     chainId: chainData.chainId,
   });
 
