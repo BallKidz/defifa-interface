@@ -46,6 +46,9 @@ export function useCreateTournament(
 
   const { data, write, error, isError } = useContractWrite(config);
 
+  console.log("payload", preparedLaunchProjectData);
+  console.log("Contract call:", config);
+
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
   const handleWrite = () => {
