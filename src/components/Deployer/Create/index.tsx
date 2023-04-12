@@ -372,7 +372,7 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="refundPeriodDuration" className={styles.label}>
-                Refund Date (hours)
+                Refund duration (hours)
               </label>
               <input
                 type="number"

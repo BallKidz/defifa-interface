@@ -38,7 +38,7 @@ export interface DefifaLaunchProjectData {
   refundPeriodDuration: number;
   start: number;
   end: number;
-  splits: any;
+  splits: any[];
   distributionLimit: number;
   ballkidzFeeProjectTokenAccount: string;
   votingPeriod: number;
