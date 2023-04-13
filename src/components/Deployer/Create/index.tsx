@@ -48,7 +48,8 @@ const DeployerCreate = () => {
     reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
     royaltyRate: 0,
     royaltyBeneficiary: "0x0000000000000000000000000000000000000000",
-    encodedIPFSUri: "",
+    encodedIPFSUri:
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
     shouldUseReservedTokenBeneficiaryAsDefault: false,
   });
   const currentUnixTimestamp = Math.floor(Date.now() / 1000);
@@ -258,7 +259,8 @@ const DeployerCreate = () => {
       reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
       royaltyRate: 0,
       royaltyBeneficiary: "0x0000000000000000000000000000000000000000",
-      encodedIPFSUri: "",
+      encodedIPFSUri:
+        "0x0000000000000000000000000000000000000000000000000000000000000000",
       shouldUseReservedTokenBeneficiaryAsDefault: false,
     });
 
@@ -498,7 +500,8 @@ const DeployerCreate = () => {
                         onClick={() => {
                           setTier((prevState) => ({
                             ...prevState,
-                            encodedIPFSUri: "",
+                            encodedIPFSUri:
+                              "0x0000000000000000000000000000000000000000000000000000000000000000",
                           }));
                           setImageUri("");
                           setInputKey((prevKey) => prevKey + 1); // Increment the inputKey
