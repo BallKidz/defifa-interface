@@ -39,7 +39,7 @@ export const mainnetData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x4361428f6962C808f3451e357610841C1D470306",
+    address: "0x21c9Fe9ce18eD09f8D6D38343F7435402154b751",
     interface: DefifaCreateABI.abi,
   },
   defifaDeployer: "0x1b05b64aa85822554cfebff33b7447b8ac0320d3",
@@ -71,7 +71,7 @@ export const goerliData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x1EAC2DA804c0BDD9d73a7EA145B260c089aD01b9",
+    address: "0x21c9Fe9ce18eD09f8D6D38343F7435402154b751",
     interface: DefifaCreateABI.abi,
   },
   defifaDeployer: "0xb52f73d870fa8c4d7232cda5c34e4de43fed1d2a",
