@@ -25,9 +25,14 @@ export function useCreateTournament(
   const { openConnectModal } = useConnectModal();
   const chainData = getChainData(network?.chain?.id);
 
+  const defaultTokenUriResolver =
+    _launchProjectData?.defaultTokenUriResolver ||
+    "0x0000000000000000000000000000000000000000";
+
   const preparedLaunchProjectData = _launchProjectData
     ? {
         ..._launchProjectData,
+        defaultTokenUriResolver,
         tiers: _launchProjectData.tiers.map((tier) => ({
           ...tier,
           price: convertTo18Decimals(tier.price),

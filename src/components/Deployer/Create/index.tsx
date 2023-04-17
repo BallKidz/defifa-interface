@@ -68,6 +68,7 @@ const DeployerCreate = () => {
     ballkidzFeeProjectTokenAccount:
       "0x11834239698c7336EF232C00a2A9926d3375DF9D",
     terminal: ethPaymentTerminal.address,
+    defaultTokenUriResolver: "0x0000000000000000000000000000000000000000",
     contractUri: "",
     baseUri: "ipfs://",
     distributionLimit: 0,
@@ -416,6 +417,19 @@ const DeployerCreate = () => {
                 onChange={handleInputChange}
                 min={minDate}
                 required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="defaultTokenUriResolver" className={styles.label}>
+                Token URI
+              </label>
+              <input
+                type="string"
+                id="defaultTokenUriResolver"
+                name="defaultTokenUriResolver"
+                className={styles.input}
+                value={formValues.defaultTokenUriResolver}
+                onChange={handleInputChange}
               />
             </div>
           </>

@@ -41,6 +41,7 @@ export interface DefifaLaunchProjectData {
   splits: any[];
   distributionLimit: number;
   ballkidzFeeProjectTokenAccount: string;
+  defaultTokenUriResolver: string;
   votingPeriod: number;
   terminal: any;
   store: any;
