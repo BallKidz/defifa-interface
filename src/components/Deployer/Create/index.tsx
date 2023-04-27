@@ -545,7 +545,12 @@ const DeployerCreate = () => {
                         (tier) => tier.reservedRate > 0
                       ) && (
                         <p>
-                          For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
+                          For every{" "}
+                          {
+                            formValues.tiers.find((t) => t.reservedRate)
+                              ?.reservedRate
+                          }{" "}
+                          NFTs minted, 1 goes to{" "}
                           {tier.reservedTokenBeneficiary
                             ? truncateAddress(
                                 formValues.tiers[0].reservedTokenBeneficiary,
