@@ -1,24 +1,23 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
+import { faPen, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPen, faRemove } from "@fortawesome/free-solid-svg-icons";
 
+import bs58 from "bs58";
 import { useEffect, useState } from "react";
+import { confirmAlert } from "react-confirm-alert";
 import { useNetwork } from "wagmi";
 import { ETH_TOKEN_ADDRESS, getChainData } from "../../../constants/addresses";
+import { colors } from "../../../constants/colors";
+import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "../../../lib/uploadToIPFS";
 import { DefifaLaunchProjectData, DefifaTier } from "../../../types/interfaces";
+import { contractUri, projectMetadataUri } from "../../../uri/contractUri";
+import { truncateAddress } from "../../../utils/truncate";
 import Button from "../../UI/Button";
 import Content from "../../UI/Content";
 import styles from "./DeployerCreate.module.css";
-import { confirmAlert } from "react-confirm-alert";
-import { colors } from "../../../constants/colors";
-import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
-import { truncateAddress } from "../../../utils/truncate";
-import { contractUri, projectMetadataUri } from "../../../uri/contractUri";
-import bs58 from "bs58";
-import BigNumber from "bignumber.js";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);

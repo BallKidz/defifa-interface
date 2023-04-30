@@ -71,7 +71,7 @@ export const goerliData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x21c9Fe9ce18eD09f8D6D38343F7435402154b751",
+    address: "0x65c8AE99784179F0D604125b5D2A8f56965fB3Bc",
     interface: DefifaCreateABI.abi,
   },
   defifaDeployer: "0xb52f73d870fa8c4d7232cda5c34e4de43fed1d2a",
