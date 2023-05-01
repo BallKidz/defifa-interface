@@ -54,7 +54,6 @@ export const goerliData = {
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
   DefifaDelegateABI: DefifaDelegateABI.abi,
   defifaGovernor: {
-    address: "0x8e1aec30063565e597705e71ba14dffc4c390ef0",
     interface: DefifaGovernorABI.abi,
   },
   defifaDeployer: "0xb52f73d870fa8c4d7232cda5c34e4de43fed1d2a",
