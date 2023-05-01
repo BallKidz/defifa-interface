@@ -1,9 +1,7 @@
-import { BigNumber } from "ethers";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
@@ -11,23 +9,22 @@ import { simulateTransaction } from "../../lib/tenderly";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
 
-export function useMintReservesFor(simulate = false, dataSourceAddress?: string) {
-  const network = useNetwork();
+export function useMintReservesFor(
+  simulate = false,
+  dataSourceAddress: string
+) {
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
   const outStanding = useOutstandingNumber();
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: dataSourceAddress??,
-    contractInterface: chainData.defifaDelegate.interface,
+    addressOrName: dataSourceAddress,
+    contractInterface: dataSourceAddress,
     functionName: "mintReservesFor((uint256,uint256)[])",
     args: [outStanding],
     overrides: chainData?.chainId == 5 ? { gasLimit: 21000000 } : {},
     chainId: chainData.chainId,
-    onError: (error) => {
-      console.error(outStanding, "ERRRRORRR", error);
-    },
   });
 
   const simulateOutStanding = () => {

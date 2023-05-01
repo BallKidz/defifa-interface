@@ -9,14 +9,17 @@ import {
 import { ScoreCard } from "../../components/Scorecard/types";
 import { getChainData } from "../../constants/addresses";
 
-export function useApproveScorecard(_tierWeights: ScoreCard[]) {
+export function useApproveScorecard(
+  _tierWeights: ScoreCard[],
+  governor: string
+) {
   const network = useNetwork();
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const chainData = getChainData(network?.chain?.id);
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaGovernor.address,
+    addressOrName: governor,
     contractInterface: chainData.defifaGovernor.interface,
     functionName: "ratifyScorecard",
     args: [_tierWeights],

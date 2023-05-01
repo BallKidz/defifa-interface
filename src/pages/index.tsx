@@ -47,13 +47,12 @@ const Home: NextPage = () => {
       </Navbar>
       <Description />
       <Divider />
-      <SelfRefree />
+      <Mint />
       <Divider />
       <MyTeams />
       <Divider />
-      <Mint />
+      <SelfRefree />
       <Divider />
-
       <Footer />
     </div>
   );

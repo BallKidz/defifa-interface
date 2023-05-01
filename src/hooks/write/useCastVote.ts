@@ -8,14 +8,14 @@ import {
 } from "wagmi";
 import { getChainData } from "../../constants/addresses";
 
-export function useCastVote(proposalId: number) {
+export function useCastVote(proposalId: number, governor: string) {
   const network = useNetwork();
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const chainData = getChainData(network?.chain?.id);
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaGovernor.address,
+    addressOrName: governor,
     contractInterface: chainData.defifaGovernor.interface,
     functionName: "attestToScorecard",
     args: [proposalId],

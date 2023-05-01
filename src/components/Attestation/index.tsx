@@ -2,6 +2,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { isEqual } from "lodash";
 import { useEffect, useState } from "react";
+import { useFetchGovernor } from "../../hooks/read/useFetchGovernor";
 import { useScorecards } from "../../hooks/useScorecards";
 import { convertScoreCardToPercents } from "../../utils/scorecard";
 import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
@@ -13,10 +14,12 @@ import { ScoreCard } from "./types";
 interface AttestationProps {
   tiers: any[];
   onScoreCardSubmission?: () => void;
+  dataSource: string;
 }
 
 const Attestation: React.FC<AttestationProps> = (props) => {
   const { scoreCards, isLoading } = useScorecards();
+  const { data: governor } = useFetchGovernor(props.dataSource);
   const [loadingState, setLoadingState] = useState(true);
   const [scoreCardAttestations, setScoreCardAttestations] = useState<
     ScoreCard[]
@@ -95,6 +98,7 @@ const Attestation: React.FC<AttestationProps> = (props) => {
             {!loadingState &&
               scoreCardAttestations.map((proposal: ScoreCard, i: any) => (
                 <AttestationCard
+                  governor={governor?.toString() ?? ""}
                   proposal={proposal}
                   key={i}
                   tiers={props.tiers}

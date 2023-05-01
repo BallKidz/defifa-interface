@@ -27,36 +27,41 @@ import {
 } from "./utils";
 
 interface AttestationCardProps {
+  governor: string;
   proposal: ScoreCard;
   tiers: any[];
 }
 
 const AttestationCard: React.FC<AttestationCardProps> = ({
   proposal,
+  governor,
   tiers,
 }) => {
   const { data: treasuryAmount } = usePaymentTerminalBalance();
 
   const { data: proposalDeadline } = useProposalDeadline(
-    proposal.scoreCard.proposalId
+    proposal.scoreCard.proposalId,
+    governor
   );
   const { data: blockNumber } = useBlockNumber();
 
-  const { data: quorum } = useQuorum(proposal.scoreCard.proposalId);
+  const { data: quorum } = useQuorum(proposal.scoreCard.proposalId, governor);
 
   const { data: proposalVotes } = useProposalVotes(
-    proposal.scoreCard.proposalId
+    proposal.scoreCard.proposalId,
+    governor
   );
   const {
     write: attestToScorecard,
     isLoading,
     isError,
-  } = useCastVote(proposal.scoreCard.proposalId);
+  } = useCastVote(proposal.scoreCard.proposalId, governor);
   const { data: proposalState } = useProposalState(
-    proposal.scoreCard.proposalId
+    proposal.scoreCard.proposalId,
+    governor
   );
   const { write: approveScorecard, isLoading: isApproveScorecardLoading } =
-    useApproveScorecard(proposal.scoreCard.tierWeights);
+    useApproveScorecard(proposal.scoreCard.tierWeights, governor);
   const [proposalEnd, setProposalEnd] = useState<number>(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [scoreCardData, setScoreCardData] = useState<ScoreCardTableData[]>([]);

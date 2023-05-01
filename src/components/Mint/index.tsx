@@ -18,15 +18,15 @@ const Mint = () => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
-  console.log(data);
   const currentFcNumber = data?.fundingCycle.number.toNumber();
-  console.log(currentFcNumber)
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
-  console.log(tiers)
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const { data: totalSupply } = useNftRewardsTotalSupply(data?.metadata.dataSource);
+  const { data: totalSupply } = useNftRewardsTotalSupply(
+    data?.metadata.dataSource
+  );
+
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
 
@@ -178,21 +178,21 @@ const Mint = () => {
             style={{ pointerEvents: currentFcNumber === 1 ? "auto" : "none" }}
             className={styles.mostMintContainer}
           >
-            { mostMintedRewardTiers?.map((t: any) => (
-                  <Team
-                    key={t.id}
-                    id={t.id}
-                    img={t.teamImage}
-                    name={t.teamName}
-                    minted={t.minted}
-                    supply={totalSupply?.toNumber() ?? 0}
-                    txState={isSuccess || isError}
-                    selectAll={selectAll}
-                    onClick={onTeamSelected}
-                    onAddMultiple={onAddMultipleTeams}
-                    onRemoveMultiple={onRemoveMultipleTeams}
-                  />
-                ))}
+            {mostMintedRewardTiers?.map((t: any) => (
+              <Team
+                key={t.id}
+                id={t.id}
+                img={t.teamImage}
+                name={t.teamName}
+                minted={t.minted}
+                supply={totalSupply?.toNumber() ?? 0}
+                txState={isSuccess || isError}
+                selectAll={selectAll}
+                onClick={onTeamSelected}
+                onAddMultiple={onAddMultipleTeams}
+                onRemoveMultiple={onRemoveMultipleTeams}
+              />
+            ))}
           </div>
         </div>
       </Content>

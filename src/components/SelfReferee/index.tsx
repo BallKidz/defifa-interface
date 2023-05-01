@@ -35,7 +35,7 @@ const SelfRefree = () => {
     isSuccess: mintReservesSuccess,
     isError: mintReservesError,
     disabled: mintReservesDisabled,
-  } = useMintReservesFor();
+  } = useMintReservesFor(false, data?.metadata.dataSource);
   let needsQueueing = queueData! as unknown as boolean;
 
   const handleTabClick = (index: number) => {
@@ -70,6 +70,7 @@ const SelfRefree = () => {
             </TabList>
             <TabPanel>
               <Attestation
+                dataSource={data?.metadata.dataSource}
                 tiers={rewardTiers as []}
                 onScoreCardSubmission={() => handleTabClick(1)}
               />
