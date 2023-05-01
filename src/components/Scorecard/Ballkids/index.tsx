@@ -6,10 +6,12 @@ import Table from "../../UI/Table";
 import { ballkidsScorecard } from "../constants/ballKidsScorecard";
 import styles from "./BallkidsScorecard.module.css";
 
-const BallkidsScorecard = () => {
+const BallkidsScorecard = (governor: string) => {
   const { data, columns } = useScorecardTable();
-  const { write, isLoading, isSuccess, isError, error } =
-    useSubmitScorecards(ballkidsScorecard);
+  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecards(
+    ballkidsScorecard,
+    governor
+  );
 
   return (
     <div className={styles.container}>

@@ -1,20 +1,21 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FC, useState } from "react";
 import { useSubmitScorecards } from "../../../hooks/write/useSubmitScorecards";
-import { convertScoreCardToPercents } from "../../../utils/scorecard";
 import Button from "../../UI/Button";
-import { ballkidsScorecard } from "../constants/ballKidsScorecard";
 import { ScoreCard } from "../types";
 import styles from "./Custom.module.css";
 
 interface CustomScorecardProps {
   tiers: any[];
+  governor: string;
 }
 
-const CustomScorecard: FC<CustomScorecardProps> = ({ tiers }) => {
+const CustomScorecard: FC<CustomScorecardProps> = ({ tiers, governor }) => {
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>([]);
-  const { write, isLoading, isSuccess, isError, error } =
-    useSubmitScorecards(scoreCard);
+  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecards(
+    scoreCard,
+    governor
+  );
 
   const onTierScoreChange = (redemptionWeight: number, id: number) => {
     // Check if an object with the same id already exists in the scoreCard array

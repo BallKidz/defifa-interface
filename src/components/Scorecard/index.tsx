@@ -3,7 +3,6 @@ import { useNetwork } from "wagmi";
 import useScorecardTable from "../../hooks/useScorecardData";
 import { useSubmitScorecards } from "../../hooks/write/useSubmitScorecards";
 import { convertScoreCardToPercents } from "../../utils/scorecard";
-import Group from "../Group";
 import Button from "../UI/Button";
 import Table from "../UI/Table";
 import { ballkidsScorecard } from "./constants/ballKidsScorecard";
@@ -16,18 +15,20 @@ interface ScoreCard {
 
 interface ScoreCardProps {
   tiers: any[];
+  governor: string;
 }
 
 const ScoreCard: FC<ScoreCardProps> = (props) => {
-  const network = useNetwork();
   const { data, columns } = useScorecardTable();
+
   const [scoreCardOption, setScoreCardOption] = useState<number>(1);
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>(ballkidsScorecard);
   const [scoreCardWithPercents, setScoreCardWithPercents] = useState<
     ScoreCard[]
   >([]);
   const { write, isLoading, isSuccess, isError } = useSubmitScorecards(
-    scoreCardWithPercents
+    scoreCardWithPercents,
+    props.governor
   );
 
   useEffect(() => {

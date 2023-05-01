@@ -8,6 +8,7 @@ import useNftRewards from "../../hooks/NftRewards";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
+import { useFetchGovernor } from "../../hooks/read/useFetchGovernor";
 import { useMintReservesFor } from "../../hooks/write/useMintReservesFor";
 import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
 import Attestation from "../Attestation";
@@ -22,6 +23,7 @@ const SelfRefree = () => {
 
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
+  const { data: governor } = useFetchGovernor(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
@@ -76,7 +78,10 @@ const SelfRefree = () => {
               />
             </TabPanel>
             <TabPanel>
-              <ScoreCard tiers={rewardTiers as []} />
+              <ScoreCard
+                tiers={rewardTiers as []}
+                governor={governor?.toString() ?? ""}
+              />
             </TabPanel>
             <TabPanel>
               <p>
