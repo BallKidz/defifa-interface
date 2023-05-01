@@ -1,6 +1,5 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
-import { chunk } from "lodash";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
@@ -10,48 +9,30 @@ import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
 import { usePay } from "../../hooks/write/usePay";
-import { formBrackets } from "../../utils/array";
-import Conferences from "../Conferences";
 import Team from "../Team";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
-import SortSelect from "./SortSelect/SortSelect";
 
 const Mint = () => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
+  console.log(data);
   const currentFcNumber = data?.fundingCycle.number.toNumber();
+  console.log(currentFcNumber)
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
+  console.log(tiers)
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const { data: totalSupply } = useNftRewardsTotalSupply();
+  const { data: totalSupply } = useNftRewardsTotalSupply(data?.metadata.dataSource);
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
 
   const [sortOption, setSortOption] = useState<string>("conferences");
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
-  const bracketFormatted = formBrackets((rewardTiers as any[]) ?? [], [
-    "Buffalo",
-    "Miami",
-    "Cincinnati",
-    "Baltimore",
-    "Jacksonville",
-    "Los Angeles",
-    "Kansas City",
-    "San Francisco",
-    "Seattle",
-    "Minnesota",
-    "New York",
-    "Tampa Bay",
-    "Dallas",
-    "Philadelphia",
-  ]);
-
-  const chunkedRewardTiers = chunk(bracketFormatted, 7);
   const mostMintedRewardTiers = rewardTiers
     ?.slice()
     .sort(
@@ -142,15 +123,11 @@ const Mint = () => {
             }}
           >
             <div className={styles.subtitle}>
-              Play: <span>0.07 ETH / NFT</span>
+              Play: <span>0.01 ETH / NFT</span>
             </div>
 
             <div className={styles.subtitle}>
               Mints: <span>{totalSupply?.toNumber()}</span>
-            </div>
-
-            <div className={styles.sortSelectWrapper}>
-              <SortSelect onChange={onSortChange} />
             </div>
 
             {currentFcNumber === 1 && (
@@ -199,39 +176,9 @@ const Mint = () => {
 
           <div
             style={{ pointerEvents: currentFcNumber === 1 ? "auto" : "none" }}
-            className={
-              sortOption === "conferences"
-                ? styles.groupsContainer
-                : styles.mostMintContainer
-            }
+            className={styles.mostMintContainer}
           >
-            {sortOption === "conferences"
-              ? chunkedRewardTiers.map((tiers: any, index: any) => (
-                  <Conferences
-                    name={index < 1 ? "American" : "National"}
-                    logo={index < 1 ? "/assets/ac.png" : "/assets/nc.png"}
-                    key={index}
-                    tiers={tiers}
-                  >
-                    {tiers.map((t: any) => (
-                      <Team
-                        key={t.id}
-                        id={t.id}
-                        img={`nfl-assets/${t.id}.png`}
-                        name={t.teamName}
-                        isVersus={t.isSpecial}
-                        minted={t.minted}
-                        supply={totalSupply?.toNumber() ?? 0}
-                        txState={isSuccess || isError}
-                        selectAll={selectAll}
-                        onClick={onTeamSelected}
-                        onAddMultiple={onAddMultipleTeams}
-                        onRemoveMultiple={onRemoveMultipleTeams}
-                      />
-                    ))}
-                  </Conferences>
-                ))
-              : mostMintedRewardTiers?.map((t: any) => (
+            { mostMintedRewardTiers?.map((t: any) => (
                   <Team
                     key={t.id}
                     id={t.id}

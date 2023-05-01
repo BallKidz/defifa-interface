@@ -17,7 +17,7 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "tiers",
     enabled: !!hasDataSource,
-    args: hasDataSource ? [dataSourceAddress, 0, 32] : null,
+    args: hasDataSource ? [dataSourceAddress, 1, 0, 32] : null,
     chainId: chainData.chainId,
   });
 }

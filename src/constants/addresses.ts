@@ -42,7 +42,7 @@ export const mainnetData = {
 
 export const goerliData = {
   JBTiered721DelegateStore: {
-    address: "0x3ea16deff07f031e86bd13c55961eb576cd579a6",
+    address: "0xF85DC8C2b9dFfeab95c614A306141882048dE467",
     interface: IJBTiered721DelegateStore.abi,
   },
   chainId: chain.goerli.id,
@@ -50,14 +50,6 @@ export const goerliData = {
   JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_GOERLI,
   ethPaymentTerminal: GoerliJBETHPaymentTerminal,
-  defifaDelegate: {
-    address: "0x87ee2f4b8ee8f4c79523f36fecbb5f76b23e7d6f",
-    interface: DefifaDelegateABI.abi,
-  },
-  defifaGovernor: {
-    address: "0x8e1aec30063565e597705e71ba14dffc4c390ef0",
-    interface: DefifaGovernorABI.abi,
-  },
   defifaDeployer: "0xb52f73d870fa8c4d7232cda5c34e4de43fed1d2a",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph:

@@ -11,7 +11,7 @@ import { simulateTransaction } from "../../lib/tenderly";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
 
-export function useMintReservesFor(simulate = false) {
+export function useMintReservesFor(simulate = false, dataSourceAddress?: string) {
   const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -19,7 +19,7 @@ export function useMintReservesFor(simulate = false) {
   const outStanding = useOutstandingNumber();
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaDelegate.address,
+    addressOrName: dataSourceAddress??,
     contractInterface: chainData.defifaDelegate.interface,
     functionName: "mintReservesFor((uint256,uint256)[])",
     args: [outStanding],

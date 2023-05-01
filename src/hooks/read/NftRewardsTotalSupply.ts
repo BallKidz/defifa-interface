@@ -1,7 +1,7 @@
 import { useContractRead, useNetwork } from "wagmi";
 import { getChainData } from "../../constants/addresses";
 
-export function useNftRewardsTotalSupply() {
+export function useNftRewardsTotalSupply(dataSourceAddress: string | undefined) {
   const network = useNetwork();
 
   const chainData = getChainData(network?.chain?.id);
@@ -12,7 +12,7 @@ export function useNftRewardsTotalSupply() {
     addressOrName: JBTiered721DelegateStore?.address ?? "",
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "totalSupply",
-    args: chainData.defifaDelegate.address,
+    args: dataSourceAddress,
     watch: true,
     chainId: chainData.chainId,
   });

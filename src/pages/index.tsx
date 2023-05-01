@@ -17,11 +17,11 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Defifa: American Football Playoffs 2023</title>
+        <title>Defifa: American Basketball Playoffs 2023</title>
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is a Luxury American Football Experience built with Juicebox and secured by Ethereum."
+          content="Defifa is a Luxury American Basketball Experience built with Juicebox and secured by Ethereum."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

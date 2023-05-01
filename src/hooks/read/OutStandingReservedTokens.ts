@@ -26,7 +26,8 @@ export interface JBTiered721MintReservesForTiersData {
 
 export function getOutstandingNumberForAllTiers(
   provider: ethers.providers.Provider,
-  chainData: any
+  chainData: any,
+  dataSourceAddress?: string
 ): Promise<JBTiered721MintReservesForTiersData[]> {
   const contract = new ethers.Contract(
     chainData.JBTiered721DelegateStore.address,
@@ -39,7 +40,7 @@ export function getOutstandingNumberForAllTiers(
       try {
         const num: BigNumber =
           await contract.numberOfReservedTokensOutstandingFor(
-            chainData.defifaDelegate.address,
+            dataSourceAddress,
             tier
           );
         const res = { tierId: tier, count: num.toNumber() };

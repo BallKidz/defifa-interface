@@ -59,12 +59,11 @@ const Rules = () => {
             </h1>
             <ul>
               <li>
-                There are 14 teams representing the teams competing at the 2023
-                Defifa Bowl.
+                There are 8 NFTs competing in this tournament.
               </li>
-              <li>Mint team NFTs to increase the game’s treasury.</li>
-              <li>The NFTs are a claim on this treasury.</li>
-              <li>You can get a full refund anytime before the game starts.</li>
+              <li>Mint an NFT to join a team and increase the game’s pot.</li>
+              <li>The NFTs are a claim on this pot.</li>
+              <li>You can get a full refund anytime before the tournament starts.</li>
             </ul>
           </div>
           <div className={styles.phaseBox}>
@@ -81,13 +80,13 @@ const Rules = () => {
               </li>
               <li>
                 The refund deadline coincides with the start of the first
-                kickoff.
+                tip-off.
               </li>
             </ul>
           </div>
           <div className={styles.phaseBox}>
             <h1>
-              Phase 3: Kickoff
+              Phase 3: Tip-off
               <span className={pillStyle(start.phase)}>
                 {fillPill(start.phase)}
               </span>
@@ -101,8 +100,8 @@ const Rules = () => {
                 </a>
               </li>
               <li>
-                Holders of each team’s NFTs benefit from the outcome of each
-                banny bowl game their team plays.
+                Holders of each NFT may benefit from the outcome of each
+                basketball game their team plays.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>1</sup>
                 </a>
@@ -124,12 +123,13 @@ const Rules = () => {
               </span>
             </h1>
             <ul>
-              <li>The game is self refereed.</li>
+              <li>The tournament is self refereed.</li>
               <li>
-                A final scorecard is uploaded on-chain that says how the game’s
-                treasury should be shared.
+                A final scorecard is uploaded on-chain that says how the tournament's
+                pot should be shared.
               </li>
               <li>
+                When you mint an NFT you are on a team with the other minters of that NFT. 
                 50% of NFT holders from all teams attest to the correct
                 scorecard to ratify it. Each team has 1 vote, divided between
                 all holders of that team's NFTs.
@@ -149,38 +149,27 @@ const Rules = () => {
           </h1>
           <p className={styles.pointSystemDescription}>
             Total points:{" "}
-            <span className={styles.pointSystemPoints}>84,014</span>
+            <span className={styles.pointSystemPoints}>100,000</span>
           </p>
           <div className={styles.pointSystemCalculation}>
             <p>
-              Each winner in wildcard week:{" "}
-              <span className={styles.pointSystemPoints}>
-                3,669 (26.2% of total points)
-              </span>
+            <span className={styles.pointSystemPoints}>
+            40% of the pot</span> is split between players who pick the correct winning team and the correct number of games.
             </p>
             <p>
-              Each divisional winner:{" "}
-              <span className={styles.pointSystemPoints}>
-                4,000 (19% of total points)
-              </span>
+            <span className={styles.pointSystemPoints}>
+            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number of games.
             </p>
             <p>
-              Each conference winner:{" "}
-              <span className={styles.pointSystemPoints}>
-                10,000 (23.8% of total points)
-              </span>
-            </p>
-            <p>
-              The final winner:{" "}
-              <span className={styles.pointSystemPoints}>
-                26,000 (31% of total points)
-              </span>
+            <span className={styles.pointSystemPoints}>
+            10% of the pot</span> is split between players who pick the correct number of games, but an incorrect winning team.
             </p>
           </div>
           <p className={styles.pointSystemDescription}>
             The scorecard that is ratified should represent the amount of
-            accumulated points by each team divided by the total available
-            84,014 points.
+            points by each team divided by the total available
+            100,000 points. Keep in mind your NFTeam's winnings is divided
+            up by all holders of that NFTeam.
           </p>
         </div>
         <div className={styles.disclaimerContainer} id="disclaimerContainer">

@@ -8,7 +8,7 @@ import styles from "./Description.module.css";
 const Description = () => {
   return (
     <div className={styles.container}>
-      <Title title="Defifa: American Football Playoffs 2023 edition" />
+      <Title title="Defifa: American Basketball Playoffs 2023 edition" />
       <Treasury />
       <CurrentPhase />
       <div className={styles.gameplayContainer}>
@@ -17,7 +17,7 @@ const Description = () => {
           <li>Mint teams to load the pot.</li>
           <li>The pot will back the value of the winning team's NFTs.</li>
           <li>
-            The spread of winning teams is determined by 50% of all teams
+            The payout for the winning teams is determined by 50% of all teams
             agreeing on the outcome of the competition once it's over.
           </li>
         </ol>
