@@ -30,7 +30,9 @@ export const mainnetData = {
     interface: DefifaDelegateABI.abi,
   },
   DefifaDelegateABI: DefifaDelegateABI.abi,
-
+  defifaGovernor: {
+    interface: DefifaGovernorABI.abi,
+  },
   defifaCreate: {
     address: "0xeecB2A4D1Eb38f36a45510f1625E95120d1ed6F0",
     interface: DefifaDelegateABI.abi,
