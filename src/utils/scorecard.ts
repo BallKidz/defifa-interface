@@ -3,7 +3,7 @@ interface ScoreCard {
   redemptionWeight: number;
 }
 
-const totalPoints = 84014;
+const totalPoints = 100000;
 
 export const convertScoreCardToPercents = (scoreCard: ScoreCard[]) => {
   const scoreCardWithPercents = scoreCard.map((obj) => {

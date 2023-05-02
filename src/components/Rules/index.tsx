@@ -94,14 +94,13 @@ const Rules = () => {
             <ul>
               <li>
                 The pot is locked and refunds permanently end before the first
-                kickoff on {formatDateToUTC(1673731800 * 1000, true)} UTC.
+                tipoff on {formatDateToUTC(1673731800 * 1000, true)} UTC.
                 <a href="#pointsSystem">
-                  <sup className={styles.superScript}>3</sup>
+                  {/* <sup className={styles.superScript}>3</sup> */}
                 </a>
               </li>
               <li>
-                Holders of each NFT may benefit from the outcome of each
-                basketball game their team plays.
+                Holders of each NFT may benefit from the outcome of the playoff series.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>1</sup>
                 </a>
@@ -129,13 +128,11 @@ const Rules = () => {
                 pot should be shared.
               </li>
               <li>
-                When you mint an NFT you are on a team with the other minters of that NFT. 
-                50% of NFT holders from all teams attest to the correct
-                scorecard to ratify it. Each team has 1 vote, divided between
-                all holders of that team's NFTs.
+                50% of NFT holders attest to the correct scorecard to ratify it. 
+                Each NFT type has 1 vote, divided between all holders of that NFT type.
               </li>
               <li>
-                Burn your team’s NFT to reclaim ETH from the game at any time
+                Burn your NFTs to reclaim ETH from the game at any time
                 after a scorecard has been ratified. Or, keep and trade them
                 forever – their value will remain backed by the pot.
               </li>
@@ -168,8 +165,8 @@ const Rules = () => {
           <p className={styles.pointSystemDescription}>
             The scorecard that is ratified should represent the amount of
             points by each team divided by the total available
-            100,000 points. Keep in mind your NFTeam's winnings is divided
-            up by all holders of that NFTeam.
+            100,000 points. Keep in mind your NFT's winnings are divided
+            up by all holders of that NFT.
           </p>
         </div>
         <div className={styles.disclaimerContainer} id="disclaimerContainer">
@@ -177,11 +174,11 @@ const Rules = () => {
             <sup className={styles.superScript}>2</sup> The outcome is subject
             to the ratified scorecard during Phase 4.
           </p>
-          <p className={styles.disclaimer}>
+         {/*  <p className={styles.disclaimer}>
             <sup className={styles.superScript}>3</sup> After kickoff, 1 of
             every 10 NFTs minted for each team will be reserved for the Defifa
             Ballkidz who developed this game.
-          </p>
+          </p> */}
         </div>
 
         <br />
