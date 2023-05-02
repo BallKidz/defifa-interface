@@ -180,7 +180,7 @@ const Rules = () => {
           <p className={styles.disclaimer}>
             <sup className={styles.superScript}>3</sup> After kickoff, 1 of
             every 10 NFTs minted for each team will be reserved for the Defifa
-            Ballkids who developed this game.
+            Ballkidz who developed this game.
           </p>
         </div>
 

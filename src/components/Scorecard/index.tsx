@@ -90,7 +90,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
       <div className={styles.scoreCardInfo}>
         <p>Defifa provides players with 2 options to submit a scorecard:</p>
         <p className={styles.scoreCardOptionsLabel}>
-          1. Defifa Ballkids scorecard - prefilled scorecard which is ratified
+          1. Defifa Ballkidz scorecard - prefilled scorecard which is ratified
           by developers of this website and game.
         </p>
         <p className={styles.scoreCardOptionsLabel}>
@@ -107,7 +107,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
             color: scoreCardOption === 1 ? "var(--gold)" : "inherit",
           }}
         >
-          Option 1: Defifa Ballkids scorecard
+          Option 1: Defifa Ballkidz scorecard
         </p>
         <p
           onClick={() => setScoreCardOption(2)}

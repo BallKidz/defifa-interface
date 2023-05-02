@@ -9,7 +9,7 @@ const Info = () => {
 
   return (
     <div className={styles.container}>
-      <Logo src="/assets/defifa-nfl-logo.png" />
+      <Logo src="/assets/defifa.svg" />
       <Socials />
 
       <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
