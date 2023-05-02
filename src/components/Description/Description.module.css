@@ -20,7 +20,7 @@
 }
 
 .gameplayHeader {
-  color: white;
+  color: var(--gold);
   font-size: 18px;
   font-weight: 500;
 }

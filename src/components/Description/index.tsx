@@ -8,18 +8,15 @@ import styles from "./Description.module.css";
 const Description = () => {
   return (
     <div className={styles.container}>
-      <Title title="Defifa: American Basketball Playoffs 2023 edition" />
+      <Title title="DEFIFA: Warriors v Lakers 2023 Playoffs" />
       <Treasury />
       <CurrentPhase />
       <div className={styles.gameplayContainer}>
-        <h1 className={styles.gameplayHeader}>TLDR Gameplay:</h1>
+        <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>
         <ol>
-          <li>Mint teams to load the pot.</li>
-          <li>The pot will back the value of the winning team's NFTs.</li>
-          <li>
-            The payout for the winning teams is determined by 50% of all teams
-            agreeing on the outcome of the competition once it's over.
-          </li>
+          <li>Play: Mint NFTs to load the pot.</li>
+          <li>Manage: The pot backs the value of the winning NFTs.</li>
+          <li>Referee: NFT holders themselves determing the winners.</li>
         </ol>
       </div>
       <Rules />

@@ -19,7 +19,10 @@ const Mint = () => {
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
   const currentFcNumber = data?.fundingCycle.number.toNumber();
+  console.log("currentFcNumber", currentFcNumber);
+  console.log("data", data);
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
+  console.log("tiers", tiers);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
@@ -113,7 +116,7 @@ const Mint = () => {
 
   return (
     <>
-      <Content title="Mint teams" open={true}>
+      <Content title="Play" open={true}>
         <div className={styles.mint}>
           <div
             className={styles.mintHeader}
@@ -123,7 +126,7 @@ const Mint = () => {
             }}
           >
             <div className={styles.subtitle}>
-              Play: <span>0.01 ETH / NFT</span>
+              Price: <span>0.01 ETH / NFT</span>
             </div>
 
             <div className={styles.subtitle}>

@@ -24,7 +24,7 @@ export function useSubmitScorecards(
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor,
-    contractInterface: chainData.defifaGovernor.interface,
+    contractInterface: chainData.defifaDeployerInterface,
     functionName: "submitScorecards",
     args: [_tierWeights],
     chainId: chainData.chainId,

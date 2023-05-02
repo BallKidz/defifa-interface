@@ -26,7 +26,7 @@ const MyTeams = () => {
 
   return (
     <TeamsContext.Provider value={teams}>
-      <Content title="My Teams" open={true} socials={false}>
+      <Content title="Manage" open={true} socials={false}>
         {isError && <div className={styles.error}>{error}</div>}
         {isLoading && (
           <div className={styles.loading}>

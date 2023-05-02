@@ -43,7 +43,7 @@ const Rules = () => {
 
   return (
     <Content
-      title="See full rules"
+      title="Rules"
       open={false}
       fontSize={"16"}
       color="var(--violet)"

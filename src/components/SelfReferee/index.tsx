@@ -45,7 +45,7 @@ const SelfRefree = () => {
   };
 
   return (
-    <Content title="Self-Refereeing" open={true}>
+    <Content title="Referee" open={true}>
       <div className={styles.selfReferee}>
         <div className={styles.description}>
           <h3>
