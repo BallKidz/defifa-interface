@@ -14,9 +14,9 @@ const Description = () => {
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>
         <ol>
-          <li>Play: Mint NFTs to load the pot.</li>
-          <li>Manage: The pot backs the value of the winning NFTs.</li>
-          <li>Referee: NFT holders themselves determing the winners.</li>
+          <li><span style={{ color: "white" }}>Play: </span>Mint NFTs to load the pot.</li>
+          <li><span style={{ color: "white" }}>Manage: </span>The pot backs the value of the winning NFTs.</li>
+          <li><span style={{ color: "white" }}>Referee: </span>NFT holders themselves determing the winners.</li>
         </ol>
       </div>
       <Rules />
