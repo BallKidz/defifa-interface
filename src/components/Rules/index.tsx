@@ -151,15 +151,15 @@ const Rules = () => {
           <div className={styles.pointSystemCalculation}>
             <p>
             <span className={styles.pointSystemPoints}>
-            40% of the pot</span> is split between players who pick the correct winning team and the correct number of games.
+            40% of the pot</span> is split between players who pick the correct winning team and the correct number of high scorers.
             </p>
             <p>
             <span className={styles.pointSystemPoints}>
-            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number of games.
+            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number high scorers.
             </p>
             <p>
             <span className={styles.pointSystemPoints}>
-            10% of the pot</span> is split between players who pick the correct number of games, but an incorrect winning team.
+            10% of the pot</span> is split between players who pick the correct number of high scorers, but an incorrect winning team.
             </p>
           </div>
           <p className={styles.pointSystemDescription}>
