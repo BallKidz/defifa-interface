@@ -8,7 +8,7 @@ import styles from "./Description.module.css";
 const Description = () => {
   return (
     <div className={styles.container}>
-      <Title title="DEFIFA: Warriors v Lakers 2023 Playoffs" />
+      <Title title="DEFIFA: 76ers v Celtics - Game 5" />
       <Treasury />
       <CurrentPhase />
       <div className={styles.gameplayContainer}>
