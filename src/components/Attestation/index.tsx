@@ -79,13 +79,14 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           the Rules. Anyone else can submit other scorecards if they wish.
         </p>
         <p>
-          Each NFT holder uses their confirmation power to confirm any
-          submitted scorecard. After 50% of confirmation power from all teams
-          confirm a scorecard, it can be locked in and redemptions can be
-          opened.</p>
-          <p>Each NFT team has equal confirmation power. Each
-          individual NFT has a confirmation power equal to that of its team's
-          divided by the total supply of NFTs of the team.
+          Each NFT holder uses their confirmation power to confirm any submitted
+          scorecard. After 50% of confirmation power from all teams confirm a
+          scorecard, it can be locked in and redemptions can be opened.
+        </p>
+        <p>
+          Each NFT team has equal confirmation power. Each individual NFT has a
+          confirmation power equal to that of its team's divided by the total
+          supply of NFTs of the team.
         </p>
         {!loadingState && scoreCardAttestations.length === 0 ? (
           <div className={styles.zeroProposals}>

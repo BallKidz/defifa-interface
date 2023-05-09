@@ -8,6 +8,7 @@ import useNftRewards from "../../hooks/NftRewards";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
+import { useFetchSvgs } from "../../hooks/read/useFetchSvgs";
 import { usePay } from "../../hooks/write/usePay";
 import Team from "../Team";
 import Button from "../UI/Button";
@@ -19,13 +20,16 @@ const Mint = () => {
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
   const currentFcNumber = data?.fundingCycle.number.toNumber();
-  console.log("currentFcNumber", currentFcNumber);
-  console.log("data", data);
+
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
-  console.log("tiers", tiers);
+  const { data: svgs } = useFetchSvgs(data?.metadata.dataSource);
+
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
+
+  console.log({ svgs });
+
   const { data: totalSupply } = useNftRewardsTotalSupply(
     data?.metadata.dataSource
   );
