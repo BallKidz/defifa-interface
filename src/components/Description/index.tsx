@@ -9,8 +9,8 @@ const Description = () => {
   return (
     <div className={styles.container}>
       <Title title="DEFIFA: 76ers v Celtics - Game 5" />
+      <Title title="Pick winner and # of ballplayers with > 29.5 points" /> 
       <Treasury />
-      <CurrentPhase />
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>
         <ol>
@@ -20,6 +20,7 @@ const Description = () => {
         </ol>
       </div>
       <Rules />
+      <CurrentPhase />
     </div>
   );
 };

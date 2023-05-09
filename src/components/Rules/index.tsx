@@ -61,7 +61,7 @@ const Rules = () => {
               <li>
                 There are 8 NFTs competing in this tournament.
               </li>
-              <li>Mint an NFT to join a team and increase the game’s pot.</li>
+              <li>Minting NFTs increases the game’s pot.</li>
               <li>The NFTs are a claim on this pot.</li>
               <li>You can get a full refund anytime before the tournament starts.</li>
             </ul>
@@ -93,14 +93,14 @@ const Rules = () => {
             </h1>
             <ul>
               <li>
-                The pot is locked and refunds permanently end before the first
-                tipoff on {formatDateToUTC(1673731800 * 1000, true)} UTC.
+                The pot is locked and refunds permanently end before the
+                tipoff.
                 <a href="#pointsSystem">
                   {/* <sup className={styles.superScript}>3</sup> */}
                 </a>
               </li>
               <li>
-                Holders of each NFT may benefit from the outcome of the playoff series.
+                Holders of each NFT may benefit from the outcome of the game.
                 <a href="#pointsSystem">
                   <sup className={styles.superScript}>1</sup>
                 </a>
@@ -151,15 +151,15 @@ const Rules = () => {
           <div className={styles.pointSystemCalculation}>
             <p>
             <span className={styles.pointSystemPoints}>
-            40% of the pot</span> is split between players who pick the correct winning team and the correct number of high scorers.
+            40% of the pot</span> is split between players who pick the correct winning team and the correct number of ballplayers scoring {'>'} 29.5 points.
             </p>
             <p>
             <span className={styles.pointSystemPoints}>
-            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number high scorers.
+            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number ballplayers scoring {'>'} 29.5 points.
             </p>
             <p>
             <span className={styles.pointSystemPoints}>
-            10% of the pot</span> is split between players who pick the correct number of high scorers, but an incorrect winning team.
+            10% of the pot</span> is split between players who pick the correct number of ballplayers scoring {'>'} 29.5 points, but an incorrect winning team.
             </p>
           </div>
           <p className={styles.pointSystemDescription}>
