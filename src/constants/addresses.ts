@@ -34,10 +34,10 @@ export const mainnetData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x65c8AE99784179F0D604125b5D2A8f56965fB3Bc",
+    address: "0x2B7AE0f7a002e76aA2BC473877AA09583C55A2dA",
     interface: DefifaDelegateABI.abi,
   },
-  defifaDeployer: "0x65c8AE99784179F0D604125b5D2A8f56965fB3Bc",
+  defifaDeployer: "0x2B7AE0f7a002e76aA2BC473877AA09583C55A2dA",
 
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl",
@@ -60,10 +60,10 @@ export const goerliData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x685d909D3e03806cb5d211f83273dDb046de1b4a",
+    address: "0x75d81896199e0BC8A8EdA102623CE5189bA0ec54",
     interface: DefifaDelegateABI.abi,
   },
-  defifaDeployer: "0x685d909D3e03806cb5d211f83273dDb046de1b4a",
+  defifaDeployer: "0x75d81896199e0BC8A8EdA102623CE5189bA0ec54",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph:
     "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-goerli",
