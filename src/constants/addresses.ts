@@ -71,10 +71,10 @@ export const goerliData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x75d81896199e0BC8A8EdA102623CE5189bA0ec54",
+    address: "0x2B7AE0f7a002e76aA2BC473877AA09583C55A2dA",
     interface: DefifaCreateABI.abi,
   },
-  defifaDeployer: "0x75d81896199e0BC8A8EdA102623CE5189bA0ec54",
+  defifaDeployer: "0x2B7AE0f7a002e76aA2BC473877AA09583C55A2dA",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph:
     "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-goerli",
