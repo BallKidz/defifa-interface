@@ -39,7 +39,7 @@ async function fetchImagesForAllTiers(
   let fakeTokenIds: any[] = [];
   forEach(tiers, async (tier: any, index: number) => {
      const tierNum = tier.id.toNumber().toString();
-     if(tierNum.length > 9) {
+     if(index > 9) {
      fakeTokenIds[index] = tierNum + "1000000001".substring(2)
      } else {
       fakeTokenIds[index] = tierNum + "1000000001".substring(1);
