@@ -25,7 +25,7 @@ const unixToDatetimeLocal = (timestamp: number): string => {
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
   const day = `${date.getDate()}`.padStart(2, "0");
   const hours = `${date.getHours()}`.padStart(2, "0");
-  const minutes = `${date.getMinutes()}`.padStart(2, "0");
+  const minutes = `${date.getMinutes()+5}`.padStart(2, "0"); //now + 5 minutes
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
@@ -42,7 +42,7 @@ const DeployerCreate = () => {
 
   const [tier, setTier] = useState<DefifaTier>({
     name: "",
-    price: 0,
+    price: 0.01,
     reservedRate: 0,
     reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
     royaltyRate: 0,
@@ -56,10 +56,10 @@ const DeployerCreate = () => {
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
     name: "",
-    mintDuration: 24 * 60 * 60,
-    refundPeriodDuration: 24 * 60 * 60,
-    start: currentUnixTimestamp,
-    end: currentUnixTimestamp,
+    mintDuration: 1 * 60 * 60,
+    refundPeriodDuration: 60 * 60,
+    start: currentUnixTimestamp+(1 * 60 * 60)+(1 * 60 * 60),
+    end: currentUnixTimestamp+(1 * 60 * 60)+(2 * 60 * 60),
     votingPeriod: 0,
     tiers: [],
     splits: [],
@@ -254,7 +254,7 @@ const DeployerCreate = () => {
 
     setTier({
       name: "",
-      price: 0,
+      price: 0.01, // default price if nothing entered
       reservedRate: 0,
       reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
       royaltyRate: 0,
@@ -358,7 +358,7 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="mintDuration" className={styles.label}>
-                Mint Duration (hours)
+                Mint Duration (hours prior to kickoff)
               </label>
               <input
                 type="number"
@@ -374,7 +374,7 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="refundPeriodDuration" className={styles.label}>
-                Refund duration (hours)
+                Refund duration (final hours before kickoff, optional)
               </label>
               <input
                 type="number"
@@ -390,7 +390,7 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="start" className={styles.label}>
-                Start Date
+                Start Date (kickoff time &gt; now + mint duration + refund duration)
               </label>
               <input
                 type="datetime-local"
@@ -405,7 +405,7 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="end" className={styles.label}>
-                End Date
+                End Date (final whistle)
               </label>
               <input
                 type="datetime-local"
