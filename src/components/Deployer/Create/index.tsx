@@ -12,7 +12,11 @@ import { ETH_TOKEN_ADDRESS, getChainData } from "../../../constants/addresses";
 import { colors } from "../../../constants/colors";
 import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "../../../lib/uploadToIPFS";
-import { DefifaLaunchProjectData, DefifaTier } from "../../../types/interfaces";
+import {
+  DefifaLaunchProjectData,
+  DefifaTier,
+  FarcasterSignerRequest,
+} from "../../../types/interfaces";
 import { contractUri, projectMetadataUri } from "../../../uri/contractUri";
 import { truncateAddress } from "../../../utils/truncate";
 import Button from "../../UI/Button";
@@ -25,7 +29,7 @@ const unixToDatetimeLocal = (timestamp: number): string => {
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
   const day = `${date.getDate()}`.padStart(2, "0");
   const hours = `${date.getHours()}`.padStart(2, "0");
-  const minutes = `${date.getMinutes()+5}`.padStart(2, "0"); //now + 5 minutes
+  const minutes = `${date.getMinutes() + 5}`.padStart(2, "0"); //now + 5 minutes
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
@@ -33,7 +37,7 @@ const datetimeLocalToUnix = (value: string): number => {
   return Math.floor(new Date(value).getTime() / 1000);
 };
 
-const DeployerCreate = () => {
+const DeployerCreate = ({ fcr }: { fcr?: FarcasterSignerRequest }) => {
   const [step, setStep] = useState(1);
   const network = useNetwork();
   const chainData = getChainData(network?.chain?.id);
@@ -58,8 +62,8 @@ const DeployerCreate = () => {
     name: "",
     mintDuration: 1 * 60 * 60,
     refundPeriodDuration: 60 * 60,
-    start: currentUnixTimestamp+(1 * 60 * 60)+(1 * 60 * 60),
-    end: currentUnixTimestamp+(1 * 60 * 60)+(2 * 60 * 60),
+    start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
+    end: currentUnixTimestamp + 1 * 60 * 60 + 2 * 60 * 60,
     votingPeriod: 0,
     tiers: [],
     splits: [],
@@ -390,7 +394,8 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="start" className={styles.label}>
-                Start Date (kickoff time &gt; now + mint duration + refund duration)
+                Start Date (kickoff time &gt; now + mint duration + refund
+                duration)
               </label>
               <input
                 type="datetime-local"

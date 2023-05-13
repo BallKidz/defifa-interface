@@ -1,5 +1,15 @@
 import { BigNumber } from "ethers";
 
+export interface FarcasterSignerRequest {
+  base64SignedMessage: string;
+  fid: number;
+  messageHash: string;
+  name: string;
+  publicKey: string;
+  timestamp: number;
+  token: string;
+}
+
 export interface DefifaTier {
   name: string;
   price: any;
