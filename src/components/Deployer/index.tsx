@@ -5,6 +5,7 @@ import MainWrapper from "../UI/MainWrapper";
 import DeployerCreate from "./Create";
 import styles from "./DeployerWrapper.module.css";
 import DeployerDescription from "./Description";
+import Farcaster from "./Navbar/Farcaster";
 import DeployerInfo from "./Navbar/Info";
 
 const DeployerWrapper = () => {
@@ -16,6 +17,7 @@ const DeployerWrapper = () => {
           <DeployerInfo />
           <div className={styles.buttonContainer}>
             <Wallet />
+            <Farcaster />
           </div>
         </div>
       </Navbar>

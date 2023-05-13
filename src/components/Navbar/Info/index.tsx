@@ -1,5 +1,5 @@
 import { Logo } from "../Logo";
-import Wallet from "../Wallet";
+import Wallet from "../../Deployer/Navbar/Wallet";
 import styles from "./Info.module.css";
 import Socials from "./Socials";
 const Info = () => {
