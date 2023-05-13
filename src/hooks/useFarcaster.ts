@@ -1,12 +1,9 @@
-import styles from "./Farcaster.module.css";
-import React, { useState, useEffect } from "react";
-//import styles from "./DeployerInfo.module.css";
+import { useEffect, useState } from "react";
+import { generateKeyPair, toHexString } from "../utils";
 import axios from "axios";
-import QRCode from "react-qr-code";
-import Button from "../../../UI/Button";
-import { generateKeyPair, toHexString } from "../../../../utils";
+import { FarcasterSignerRequest } from "../types/interfaces";
 
-const pollForSigner = async (token: any) => {
+const pollForSigner = async (token: any): Promise<FarcasterSignerRequest> => {
   while (true) {
     // Make sure to poll at a reasonable rate to avoid rate limiting
     // Sleep for 2 seconds
@@ -21,17 +18,16 @@ const pollForSigner = async (token: any) => {
       .then((response) => response.data.result.signerRequest);
 
     if (signerRequest.base64SignedMessage) {
-      console.log(signerRequest);
       console.log("Signer is approved with fid:", signerRequest.fid);
-      break;
+      return signerRequest;
     }
   }
 };
 
-const Farcaster = () => {
+export const useFarcaster = () => {
   const [deepLinkUrl, setDeepLinkUrl] = useState("");
-  const [isFlipped, setIsFlipped] = useState(false);
-  const [isLoggedInAs, setLoggedInAs] = useState("");
+  const [fcr, setFcr] = useState<FarcasterSignerRequest | undefined>(undefined);
+
   useEffect(() => {
     const qrme = async () => {
       try {
@@ -50,7 +46,8 @@ const Farcaster = () => {
         console.log("Deep Link URL:", deepLinkUrl);
         setDeepLinkUrl(response.data.result.deepLinkUrl);
 
-        await pollForSigner(token); // Wait for the response from the pollForSigner function
+        const fcr = await pollForSigner(token); // Wait for the response from the pollForSigner function
+        setFcr(fcr);
       } catch (error) {
         console.error("An error occurred:", error);
       }
@@ -59,31 +56,5 @@ const Farcaster = () => {
     qrme();
   }, []);
 
-  function handleLogin(deepLinkUrl: { deepLinkUrl: any }) {
-    window.open(deepLinkUrl, "_blank");
-    console.log("Login", deepLinkUrl);
-  }
-
-  const handleClick = () => {
-    setIsFlipped((prevState) => !prevState);
-  };
-
-  return (
-    <div className={styles.container}>
-      {deepLinkUrl && (
-        <>
-          <Button size="medium" onClick={() => handleLogin?.({ deepLinkUrl })}>
-            Login with Farcaster
-          </Button>
-          <DeepLinkQRCode deepLinkUrl={deepLinkUrl} />
-        </>
-      )}
-    </div>
-  );
+  return { deepLinkUrl, fcr };
 };
-
-const DeepLinkQRCode = ({ deepLinkUrl }) => {
-  return <QRCode value={deepLinkUrl} size={100} />;
-};
-
-export default Farcaster;
