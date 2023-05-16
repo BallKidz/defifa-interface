@@ -48,8 +48,6 @@ async function getRewardTierFromSVG({
   const url = tier.resolvedUri;
   const response = await axios.get(url);
 
-  console.log({ tier });
-
   const ipfsRewardTier: any = response.data;
   const maxSupply = tier.initialQuantity.eq(
     BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)
