@@ -42,7 +42,7 @@ export const mainnetData = {
     address: "0x21c9Fe9ce18eD09f8D6D38343F7435402154b751",
     interface: DefifaCreateABI.abi,
   },
-  defifaDeployer: "0x1b05b64aa85822554cfebff33b7447b8ac0320d3",
+  defifaDeployer: "0x5e49F480f2Cdf6e638d0aBB7faa703e6aBAD46d1",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph: "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl",
   governorSubgraph:
