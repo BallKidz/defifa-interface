@@ -25,7 +25,7 @@ export const mainnetData = {
   JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
   ethPaymentTerminal: {
-    address: MainnetJBETHPaymentTerminal.address,
+    address: "0xFA391De95Fcbcd3157268B91d8c7af083E607A5C",
     interface: MainnetJBETHPaymentTerminal.abi,
   },
   defifaDelegate: {
