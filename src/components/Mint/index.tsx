@@ -24,6 +24,7 @@ const Mint = () => {
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
+
   const { data: totalSupply } = useNftRewardsTotalSupply(
     data?.metadata.dataSource
   );
