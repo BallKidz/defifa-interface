@@ -47,7 +47,7 @@ export const mainnetData = {
 
 export const goerliData = {
   JBTiered721DelegateStore: {
-    address: "0xF85DC8C2b9dFfeab95c614A306141882048dE467",
+    address: "0xC7E775BbA411Df1D3c5D70Ec4C45f3DF8A85B0d0",
     interface: IJBTiered721DelegateStore.abi,
   },
   chainId: chain.goerli.id,
@@ -60,10 +60,10 @@ export const goerliData = {
     interface: DefifaGovernorABI.abi,
   },
   defifaCreate: {
-    address: "0x75d81896199e0BC8A8EdA102623CE5189bA0ec54",
+    address: "0x21263a042aFE4bAE34F08Bb318056C181bD96D3b",
     interface: DefifaDelegateABI.abi,
   },
-  defifaDeployer: "0x75d81896199e0BC8A8EdA102623CE5189bA0ec54",
+  defifaDeployer: "0x21263a042aFE4bAE34F08Bb318056C181bD96D3b",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph:
     "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-goerli",

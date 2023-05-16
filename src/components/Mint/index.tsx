@@ -8,39 +8,21 @@ import useNftRewards from "../../hooks/NftRewards";
 import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
 import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import { useFetchSvgs } from "../../hooks/read/useFetchSvgs";
-import { useTiersImages } from "../../hooks/read/useFetchImagesAllTiers";
 import { usePay } from "../../hooks/write/usePay";
 import Team from "../Team";
 import Button from "../UI/Button";
 import Content from "../UI/Content";
 import styles from "./Mint.module.css";
-import { forEach } from "lodash";
 
 const Mint = () => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { data } = useProjectCurrentFundingCycle();
   const currentFcNumber = data?.fundingCycle.number.toNumber();
-
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
-  
-  const imageInfo  = useTiersImages(tiers, data?.metadata.dataSource);
-/*   forEach(imageInfo, (value, key) => {
-    // console.log('value:', value)
-    if (value.imageInfo.startsWith("Qm")) {
-      //const { data: svgs } = useFetchSvgs("1000000001", data?.metadata.dataSource);
-
-      }
-  }) */
-  const { data: svgs } = useFetchSvgs("1000000001", data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   ); 
-  console.log('svg:', svgs)
-  console.log('Tiers:', tiers)
-  console.log('Tier images:', imageInfo)
-  console.log('Reward tiers:', rewardTiers) // TODO jacob, need new subgraph per tournament
   const { data: totalSupply } = useNftRewardsTotalSupply(
     data?.metadata.dataSource
   );
