@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
@@ -22,27 +23,21 @@ const Mint = () => {
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
-  ); 
+  );
   const { data: totalSupply } = useNftRewardsTotalSupply(
     data?.metadata.dataSource
   );
 
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
-
   const [sortOption, setSortOption] = useState<string>("conferences");
   const [selectAll, setSelectAll] = useState<boolean>(false);
-  
+
   const mostMintedRewardTiers = rewardTiers
     ?.slice()
     .sort(
       (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
     );
-  console.log('mostMintedRewardTiers', mostMintedRewardTiers);
-  console.log('rewardTiers',rewardTiers);
-  console.log('tiers',tiers);
-  console.log('data', data);
-  console.log(currentFcNumber);
   const { write, isLoading, isSuccess, isError } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
     token: ETH_TOKEN_ADDRESS,
@@ -50,7 +45,7 @@ const Mint = () => {
     preferClaimedTokens: true,
     memo: `Minted on defifa.net ${imgMemo}`,
     metadata: {
-      allowOverspending: false,
+      _votingDelegate: "0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1",
       tierIdsToMint: tierIds,
     },
   });
@@ -62,19 +57,19 @@ const Mint = () => {
     }
   }, [isError, isSuccess]);
 
-  useEffect(() => {
-    if (!tierIds.length) return;
-    let newImgMemo = "";
-    for (let i = 0; i < tierIds.length; i++) {
-      const imgStr = rewardTiers?.find(
-        (tier) => tier.id === tierIds[i]
-      ).teamImage;
-      newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
-    }
-    setImgMemo(newImgMemo);
+  // useEffect(() => {
+  //   if (!tierIds.length) return;
+  //   let newImgMemo = "";
+  //   for (let i = 0; i < tierIds.length; i++) {
+  //     const imgStr = rewardTiers?.find(
+  //       (tier) => tier.id === tierIds[i]
+  //     ).teamImage;
+  //     newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
+  //   }
+  //   setImgMemo(newImgMemo);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tierIds]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [tierIds]);
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
@@ -123,7 +118,7 @@ const Mint = () => {
             className={styles.mintHeader}
             style={{
               gridTemplateColumns:
-                currentFcNumber === 1 ? "repeat(4, auto)" : "repeat(3, auto)",
+                currentFcNumber === 1 ? "repeat(3, auto)" : "repeat(3, auto)",
             }}
           >
             <div className={styles.subtitle}>
@@ -147,7 +142,6 @@ const Mint = () => {
                   }}
                 >
                   {isLoading ? (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       style={{ marginTop: "5px" }}
                       src="/assets/defifa_spinner.gif"

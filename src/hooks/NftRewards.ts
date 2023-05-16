@@ -21,7 +21,7 @@ async function getRewardTierFromIPFS({
   tier: Result;
   index: number;
 }): Promise<any> {
- const maxSupply = tier.initialQuantity.eq(
+  const maxSupply = tier.initialQuantity.eq(
     BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)
   )
     ? DEFAULT_NFT_MAX_SUPPLY
@@ -45,7 +45,6 @@ async function getRewardTierFromSVG({
   tier: Result;
   index: number;
 }): Promise<any> {
-
   const url = tier.resolvedUri;
   const response = await axios.get(url);
 
@@ -55,8 +54,8 @@ async function getRewardTierFromSVG({
   )
     ? DEFAULT_NFT_MAX_SUPPLY
     : tier.initialQuantity.toNumber();
- return {
-    id: ipfsRewardTier.description,
+  return {
+    id: tier.id.toNumber(),
     description: ipfsRewardTier.description,
     teamName: ipfsRewardTier.name,
     teamImage: ipfsRewardTier.image,
@@ -76,17 +75,20 @@ export default function useNftRewards(tiers: Result): UseQueryResult<Result> {
       }
 
       return await Promise.all(
-        tiers.map((tier, index) =>{
-        if(tier.encodedIPFSUri === "0x0000000000000000000000000000000000000000000000000000000000000000") {
-              return getRewardTierFromSVG({
-            tier,
-            index,
-          })
+        tiers.map((tier, index) => {
+          if (
+            tier.encodedIPFSUri ===
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ) {
+            return getRewardTierFromSVG({
+              tier,
+              index,
+            });
           } else {
             return getRewardTierFromIPFS({
               tier,
               index,
-            })
+            });
           }
         })
       );

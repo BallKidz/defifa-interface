@@ -22,7 +22,7 @@ export interface PayParams {
 }
 
 export interface PayMetadata {
-  allowOverspending: boolean;
+  _votingDelegate: string;
   tierIdsToMint: number[];
 }
 
@@ -61,6 +61,8 @@ export function usePay({
     ],
   });
 
+  console.log({ config });
+
   const simulatePay = () =>
     simulateTransaction({
       chainId: chain?.id,
@@ -84,14 +86,14 @@ export function usePay({
 
 function encodePayMetadata(metadata: PayMetadata) {
   const zeroBytes32 = ethers.constants.HashZero;
-  const IJB721Delegate_INTERFACE_ID = "0xb3bcbb79";
+  const IJB721Delegate_INTERFACE_ID = "0xace10733";
   return ethers.utils.defaultAbiCoder.encode(
-    ["bytes32", "bytes32", "bytes4", "bool", "uint16[]"],
+    ["bytes32", "bytes32", "bytes4", "address", "uint16[]"],
     [
       zeroBytes32,
       zeroBytes32,
       IJB721Delegate_INTERFACE_ID,
-      metadata.allowOverspending,
+      metadata._votingDelegate,
       metadata.tierIdsToMint,
     ]
   );
