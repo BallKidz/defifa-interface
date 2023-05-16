@@ -41,9 +41,9 @@ export function usePay({
 
   const { config } = usePrepareContractWrite({
     addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.abi,
+    contractInterface: ethPaymentTerminal.interface,
     functionName: "pay",
-    overrides: { value: amount, gasLimit: 21000000 },
+    overrides: { value: amount },
     onError: (error) => {
       if (error.message.includes("insufficient funds")) {
         toastError("Insufficient funds");
@@ -69,8 +69,6 @@ export function usePay({
     });
 
   const { data, write, error, isError } = useContractWrite(config);
-
-  console.log({ data });
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 

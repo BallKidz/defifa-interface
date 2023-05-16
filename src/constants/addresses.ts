@@ -24,7 +24,10 @@ export const mainnetData = {
   JBController: JBControllerMainnet,
   JBSingleTokenPaymentTerminalStore: MainnetJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_MAINNET,
-  ethPaymentTerminal: MainnetJBETHPaymentTerminal,
+  ethPaymentTerminal: {
+    address: MainnetJBETHPaymentTerminal.address,
+    interface: MainnetJBETHPaymentTerminal.abi,
+  },
   defifaDelegate: {
     address: "0x600f3b83cD74175B9f10867B8218855d755c8923",
     interface: DefifaDelegateABI.abi,
@@ -54,7 +57,10 @@ export const goerliData = {
   JBController: JBControllerGoerli,
   JBSingleTokenPaymentTerminalStore: GoerliJJBSingleTokenPaymentTerminalStore,
   projectId: DEFIFA_PROJECT_ID_GOERLI,
-  ethPaymentTerminal: GoerliJBETHPaymentTerminal,
+  ethPaymentTerminal: {
+    address: "0x0baCb87Cf7DbDdde2299D92673A938E067a9eb29",
+    interface: GoerliJBETHPaymentTerminal.abi,
+  },
   DefifaDelegateABI: DefifaDelegateABI.abi,
   defifaGovernor: {
     interface: DefifaGovernorABI.abi,

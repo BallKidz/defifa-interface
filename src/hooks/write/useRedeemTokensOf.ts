@@ -28,7 +28,7 @@ export function useRedeemTokensOf({
 
   const { config } = usePrepareContractWrite({
     addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.abi,
+    contractInterface: ethPaymentTerminal.interface,
     functionName: "redeemTokensOf",
     onError: (error) => {
       if (error.message.includes("insufficient funds")) {
