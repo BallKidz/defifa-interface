@@ -38,7 +38,11 @@ const Mint = () => {
     .sort(
       (a: { minted: number }, b: { minted: number }) => b.minted - a.minted
     );
-  
+  console.log('mostMintedRewardTiers', mostMintedRewardTiers);
+  console.log('rewardTiers',rewardTiers);
+  console.log('tiers',tiers);
+  console.log('data', data);
+  console.log(currentFcNumber);
   const { write, isLoading, isSuccess, isError } = usePay({
     amount: BigNumber.from(MINT_PRICE).mul(`${tierIds.length}`).toString(),
     token: ETH_TOKEN_ADDRESS,
