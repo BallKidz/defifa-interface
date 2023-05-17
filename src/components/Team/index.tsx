@@ -38,10 +38,6 @@ const Team: FC<TeamProps> = ({
     onClick?.(id);
   };
 
-  const calculateSeed = (threshold: number, id: number) => {
-    return id - threshold + 1;
-  };
-
   useEffect(() => {
     if (txState) {
       setSelected(false);
@@ -130,11 +126,6 @@ const Team: FC<TeamProps> = ({
         <p>
           Mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
         </p>
-        <p>Seed: #{id < 8 ? id : calculateSeed(8, id)}</p>
-      </div>
-
-      <div className={styles.vsContainer}>
-        <p style={{ visibility: isVersus ? "visible" : "hidden" }}>VS</p>
       </div>
     </div>
   );
