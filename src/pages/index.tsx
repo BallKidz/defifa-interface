@@ -9,7 +9,6 @@ import Mint from "../components/Mint";
 import MyTeams from "../components/MyTeams";
 import Navbar from "../components/Navbar";
 import Info from "../components/Navbar/Info";
-import SelfRefree from "../components/SelfReferee";
 import Divider from "../components/UI/Divider";
 import styles from "../styles/Home.module.css";
 

@@ -24,7 +24,7 @@
 
 .buttonContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin-left: auto;
   gap: 10px;
 }

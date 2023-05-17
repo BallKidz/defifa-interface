@@ -18,6 +18,7 @@ const Content: React.FC<
     color?: string;
     title?: string;
     socials?: boolean;
+    createIcon?: boolean;
     fontSize?: string;
     rightSection?: {
       enabled: boolean;
@@ -59,7 +60,13 @@ const Content: React.FC<
           onChange={(e) => setDisplayContent(e.target.checked)}
         />
         <label htmlFor={props.title} className={styles.accordianLabel}>
-          <div className={styles.contentHeader}>
+          <div
+            className={
+              props.createIcon
+                ? styles.createContentHeader
+                : styles.contentHeader
+            }
+          >
             <div> {contentTitle}</div>
             <FontAwesomeIcon
               icon={faChevronDown}
@@ -67,6 +74,7 @@ const Content: React.FC<
               color={constants.contentTitleColor}
               className={styles.chevronDown}
             />
+
             {fundingCycle &&
             fundingCycle !== 1 &&
             props.title === "Mint teams" ? (

@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { colors } from "../../constants/colors";
 import Navbar from "../Navbar";
 import { Logo } from "../Navbar/Logo";
 import Wallet from "../Navbar/Wallet";
 import Button from "../UI/Button";
-import Content from "../UI/Content";
-import Divider from "../UI/Divider";
 import MainWrapper from "../UI/MainWrapper";
 import DeployerCreate from "./Create";
 import styles from "./DeployerWrapper.module.css";
@@ -20,18 +17,15 @@ const DeployerWrapper = () => {
           <Logo src="/assets/banny-visible.svg" />
           <DeployerInfo />
           <div className={styles.buttonContainer}>
-            <Wallet />
             <Link href="/">
-              <Button color={colors.pink}>GO BACK</Button>
+              <Button>Back</Button>
             </Link>
+            <Wallet />
           </div>
         </div>
       </Navbar>
       <DeployerDescription />
-      <Divider />
-      <Content title="CREATE">
-        <DeployerCreate />
-      </Content>
+      <DeployerCreate />
     </MainWrapper>
   );
 };

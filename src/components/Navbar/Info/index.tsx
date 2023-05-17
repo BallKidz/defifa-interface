@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Button from "../../UI/Button";
 import { Logo } from "../Logo";
 import Wallet from "../Wallet";
 import styles from "./Info.module.css";
@@ -13,6 +15,9 @@ const Info = () => {
       <Socials />
 
       <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
+        <Link href="/create">
+          <Button color="var(--gold)">Create</Button>
+        </Link>
         <Wallet />
       </div>
     </div>

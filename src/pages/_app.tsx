@@ -2,12 +2,11 @@ import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "react-query";
 import "reactjs-popup/dist/index.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
 import "../styles/globals.css";
-
-import { QueryClient, QueryClientProvider } from "react-query";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(

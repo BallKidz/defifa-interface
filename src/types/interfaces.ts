@@ -1,5 +1,16 @@
 import { BigNumber } from "ethers";
 
+export interface DefifaTier {
+  name: string;
+  price: any;
+  reservedRate: number;
+  reservedTokenBeneficiary: string;
+  royaltyRate: number;
+  royaltyBeneficiary: string;
+  encodedIPFSUri: string;
+  shouldUseReservedTokenBeneficiaryAsDefault: boolean;
+}
+
 export type JB721TierParams = {
   id?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
   remainingQuantity?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
@@ -15,6 +26,31 @@ export type JB721TierParams = {
   shouldUseBeneficiaryAsDefault: boolean;
   transfersPausable: boolean;
 };
+
+export interface DefifaLaunchProjectData {
+  name: string;
+  projectMetadata: JBProjectMetadata;
+  contractUri: string;
+  baseUri: string;
+  tiers: DefifaTier[];
+  token: string;
+  mintDuration: number;
+  refundPeriodDuration: number;
+  start: number;
+  end: number;
+  splits: any[];
+  distributionLimit: number;
+  ballkidzFeeProjectTokenAccount: string;
+  defaultTokenUriResolver: string;
+  votingPeriod: number;
+  terminal: any;
+  store: any;
+}
+
+interface JBProjectMetadata {
+  content: string;
+  domain: number; // 0
+}
 
 export type Chain = {
   id: number;

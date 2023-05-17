@@ -4,6 +4,22 @@
   align-items: center;
 }
 
+.createContentHeader {
+  padding: 10px;
+  background: rgba(37, 34, 44, 0.9);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--blue);
+  padding-left: 20px;
+}
+
+.createContent {
+  padding: 20px;
+  background: rgba(37, 34, 44, 0.9);
+  box-shadow: 0 0 2px 0 var(--violet);
+}
+
 .chevronDown {
   height: 15px;
   padding: 0 8px;

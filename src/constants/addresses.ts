@@ -1,6 +1,7 @@
 import DefifaDeployerABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
 import DefifaDelegateABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDelegate.sol/DefifaDelegate.json";
 import DefifaGovernorABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaGovernor.sol/DefifaGovernor.json";
+import DefifaCreateABI from "@ballkidz/defifa-collection-deployer/out/DefifaDeployer.sol/DefifaDeployer.json";
 import { chain } from "wagmi";
 import IJBTiered721DelegateStore from "@jbx-protocol/juice-721-delegate/out/IJBTiered721DelegateStore.sol/IJBTiered721DelegateStore.json";
 import {
@@ -9,6 +10,7 @@ import {
 } from "./constants";
 import JBControllerMainnet from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBController.json";
 import JBControllerGoerli from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBController.json";
+
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import MainnetJBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json";
@@ -17,7 +19,7 @@ export const ETH_TOKEN_ADDRESS = "0x000000000000000000000000000000000000eeee";
 
 export const mainnetData = {
   JBTiered721DelegateStore: {
-    address: "0xffb2cd8519439a7ddcf2c933caedd938053067d2",
+    address: "0x167ea060D75727Aa93C1c02873f189d22ef98856",
     interface: IJBTiered721DelegateStore.abi,
   },
   chainId: chain.mainnet.id,
@@ -67,7 +69,7 @@ export const goerliData = {
   },
   defifaCreate: {
     address: "0x5e49F480f2Cdf6e638d0aBB7faa703e6aBAD46d1",
-    interface: DefifaDelegateABI.abi,
+    interface: DefifaCreateABI.abi,
   },
   defifaDeployer: "0x5e49F480f2Cdf6e638d0aBB7faa703e6aBAD46d1",
   defifaDeployerInterface: DefifaDeployerABI.abi,

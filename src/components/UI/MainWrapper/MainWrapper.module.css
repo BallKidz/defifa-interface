@@ -1,15 +1,6 @@
 .container {
-  padding: 65px 10% 112px 10%;
-}
-
-@media only screen and (max-width: 1300px) {
-  .container {
-    padding: 65px 5% 112px 5%;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .container {
-    padding-top: 35px;
-  }
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
