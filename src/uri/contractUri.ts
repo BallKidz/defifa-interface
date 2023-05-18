@@ -4,7 +4,7 @@ export const contractUri = {
   logoUri: "ipfs://QmRDbH19SJMPNarJjprLFNQfuSmmwYVQrCqp9r6bVZGGsq",
   description:
     "Defifa is an NFT treasury game. The game's treasury will be programmed by the community to attest to the outcome of the 2023 NBA Playoffs. Redeem tokens any time after the final game for their share of the treasury. Defifa is built on Juicebox, secured by Ethereum.",
-  twitter: "",
+  twitter: "@defifa420",
   discord: "",
   tokens: [],
   version: 5,
