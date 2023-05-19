@@ -61,7 +61,9 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
   const [scoreCardData, setScoreCardData] = useState<ScoreCardTableData[]>([]);
   const { timeRemaining } = useCountdown(new Date(proposalEnd));
-  const quourumReached = quorum?.lte(proposalVotes?.forVotes);
+  const quourumReached = proposalVotes?.forVotes
+    ? quorum?.lte(proposalVotes.forVotes)
+    : false;
   const scoreCardProposalStateValues = Object.values(ScoreCardProposalState);
   const scoreCardProposalState =
     scoreCardProposalStateValues[proposalState as any];
