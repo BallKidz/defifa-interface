@@ -9,7 +9,6 @@ const Button = ({
   color = colors.turquoise,
   size,
   textColor,
-  onClick,
   ...props
 }: {
   children: any;
