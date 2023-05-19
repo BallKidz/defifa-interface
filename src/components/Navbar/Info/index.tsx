@@ -16,7 +16,9 @@ const Info = () => {
 
       <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
         <Link href="/create">
-          <Button color="var(--gold)">Create</Button>
+          <div>
+            <Button color="var(--gold)">Create tournament</Button>
+          </div>
         </Link>
         <Wallet />
       </div>

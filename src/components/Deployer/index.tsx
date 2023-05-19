@@ -2,7 +2,6 @@ import Link from "next/link";
 import Navbar from "../Navbar";
 import { Logo } from "../Navbar/Logo";
 import Wallet from "../Navbar/Wallet";
-import Button from "../UI/Button";
 import MainWrapper from "../UI/MainWrapper";
 import DeployerCreate from "./Create";
 import styles from "./DeployerWrapper.module.css";
@@ -17,9 +16,7 @@ const DeployerWrapper = () => {
           <Logo src="/assets/banny-visible.svg" />
           <DeployerInfo />
           <div className={styles.buttonContainer}>
-            <Link href="/">
-              <Button>Back</Button>
-            </Link>
+            <Link href="/">Back</Link>
             <Wallet />
           </div>
         </div>
