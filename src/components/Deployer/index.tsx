@@ -18,7 +18,9 @@ const DeployerWrapper = () => {
           <DeployerInfo />
           <div className={styles.buttonContainer}>
             <Link href="/">
-              <Button>Back</Button>
+              <div>
+                <Button>Back</Button>
+              </div>
             </Link>
             <Wallet />
           </div>

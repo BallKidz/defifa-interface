@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { HTMLAttributes, useMemo } from "react";
 import { colors } from "../../../constants/colors";
 import styles from "./Button.module.css";
 
@@ -10,6 +10,7 @@ const Button = ({
   size,
   textColor,
   onClick,
+  ...props
 }: {
   children: any;
   type?: "button" | "submit";
@@ -17,8 +18,7 @@ const Button = ({
   color?: string;
   size?: "extraSmall" | "small" | "medium" | "big";
   textColor?: string;
-  onClick?: VoidFunction;
-}) => {
+} & HTMLAttributes<HTMLButtonElement>) => {
   const buttonSize = useMemo<string>(() => {
     switch (size) {
       case "extraSmall":
@@ -37,7 +37,6 @@ const Button = ({
   return (
     <button
       type={type}
-      onClick={onClick}
       className={`${styles.button} ${buttonSize}`}
       style={{
         backgroundColor: color,
@@ -45,6 +44,7 @@ const Button = ({
         pointerEvents: disabled ? "none" : "auto",
         opacity: disabled ? 0.5 : 1,
       }}
+      {...props}
     >
       {children}
     </button>
