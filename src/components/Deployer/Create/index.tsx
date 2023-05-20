@@ -18,6 +18,7 @@ import { truncateAddress } from "../../../utils/truncate";
 import Button from "../../UI/Button";
 import Content from "../../UI/Content";
 import styles from "./DeployerCreate.module.css";
+import EthSymbol from "../../UI/EthSymbol/EthSymbol";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -540,7 +541,9 @@ const DeployerCreate = () => {
                   <div key={index} className={styles.tier}>
                     <div className={styles.tierDetails}>
                       <p>Name: {tier.name}</p>
-                      <p>Price: Ξ{tier.price}</p>
+                      <p>
+                        Price: <EthSymbol />{tier.price}
+                      </p>
                       {formValues.tiers.some(
                         (tier) => tier.reservedRate > 0
                       ) && (
