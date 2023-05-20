@@ -4,22 +4,20 @@ const DeployerDescription = () => {
   return (
     <div className={styles.container}>
       <div className={styles.gameplayContainer}>
-        <p>Create flow consists of 2 steps:</p>
+        <p>Create a new Defifa game in 2 steps:</p>
 
-        <ul>
+        <ol>
           <li className={styles.listItem}>
-            <span className={styles.keywords}>Tournament setup:</span> In this
-            step, gather all the required information for your tournament,
-            including its name, as well as the dates for the mint period, refund
-            period, and the start and end of the tournament.
+            <span className={styles.keywords}>Game Setup:</span> Add details
+            about your game.
           </li>
           <li className={styles.listItem}>
-            <span className={styles.keywords}>NFT setup:</span> This step
-            involves customizing NFTs for your tournament. Determine the price
-            and set a fixed price for all tiers. Include artwork for the NFTs
-            and set aside reserved NFTs for you as the creator.
+            <span className={styles.keywords}>NFT Setup:</span> Customize your
+            game&apos;s NFTs. Set their price, and set a fixed price for all
+            tiers. Add NFT artwork and set aside reserved NFTs for you, the
+            creator.
           </li>
-        </ul>
+        </ol>
       </div>
     </div>
   );
