@@ -25,7 +25,7 @@ const unixToDatetimeLocal = (timestamp: number): string => {
   const month = `${date.getMonth() + 1}`.padStart(2, "0");
   const day = `${date.getDate()}`.padStart(2, "0");
   const hours = `${date.getHours()}`.padStart(2, "0");
-  const minutes = `${date.getMinutes()+5}`.padStart(2, "0"); //now + 5 minutes
+  const minutes = `${date.getMinutes() + 5}`.padStart(2, "0"); //now + 5 minutes
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
@@ -58,8 +58,8 @@ const DeployerCreate = () => {
     name: "",
     mintDuration: 1 * 60 * 60,
     refundPeriodDuration: 60 * 60,
-    start: currentUnixTimestamp+(1 * 60 * 60)+(1 * 60 * 60),
-    end: currentUnixTimestamp+(1 * 60 * 60)+(2 * 60 * 60),
+    start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
+    end: currentUnixTimestamp + 1 * 60 * 60 + 2 * 60 * 60,
     votingPeriod: 0,
     tiers: [],
     splits: [],
@@ -390,7 +390,8 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="start" className={styles.label}>
-                Start Date (kickoff time &gt; now + mint duration + refund duration)
+                Start Date (kickoff time &gt; now + mint duration + refund
+                duration)
               </label>
               <input
                 type="datetime-local"
@@ -491,7 +492,7 @@ const DeployerCreate = () => {
                   />
                 </div>
                 <div className={styles.formGroup}>
-                  <label htmlFor="file" className={styles.label}>
+                  <label htmlFor="encodedIPFSUri" className={styles.label}>
                     Upload file
                   </label>
                   <input
@@ -509,7 +510,7 @@ const DeployerCreate = () => {
                       <FontAwesomeIcon
                         icon={faRemove}
                         color="var(--pink)"
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", width: "1rem" }}
                         onClick={() => {
                           setTier((prevState) => ({
                             ...prevState,
