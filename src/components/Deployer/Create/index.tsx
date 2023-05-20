@@ -18,6 +18,7 @@ import { truncateAddress } from "../../../utils/truncate";
 import Button from "../../UI/Button";
 import Content from "../../UI/Content";
 import styles from "./DeployerCreate.module.css";
+import EthSymbol from "../../UI/EthSymbol/EthSymbol";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -336,9 +337,9 @@ const DeployerCreate = () => {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.stepTitle}>
-        Step {step}: {step === 1 ? "Tournament Setup" : "NFT Setup"}
-      </h3>
+      <h2 className={styles.stepTitle}>
+        {step}. {step === 1 ? "Game Setup" : "NFT Setup"}
+      </h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         {step === 1 && (
           <>
@@ -438,7 +439,7 @@ const DeployerCreate = () => {
           <>
             <div className={styles.formGroup}>
               <label htmlFor="price" className={styles.label}>
-                Price for each NFT (ETH)
+                NFT price (ETH)
               </label>
               <input
                 type="number"
@@ -476,7 +477,7 @@ const DeployerCreate = () => {
                 onChange={handleTierGeneralValues}
               />
             </div>
-            <Content title="Upload NFT" createIcon open={addNftOpen}>
+            <Content title="Add NFT" createIcon open={addNftOpen}>
               <div className={styles.addNftContainer}>
                 <div className={styles.formGroup}>
                   <label htmlFor="name" className={styles.label}>
@@ -527,7 +528,7 @@ const DeployerCreate = () => {
 
                 <div style={{ marginTop: "20px" }}>
                   <Button onClick={onAddNFT} disabled={isUploading}>
-                    Add
+                    Add NFT
                   </Button>
                 </div>
               </div>
@@ -540,7 +541,9 @@ const DeployerCreate = () => {
                   <div key={index} className={styles.tier}>
                     <div className={styles.tierDetails}>
                       <p>Name: {tier.name}</p>
-                      <p>Price: Ξ{tier.price}</p>
+                      <p>
+                        Price: <EthSymbol />{tier.price}
+                      </p>
                       {formValues.tiers.some(
                         (tier) => tier.reservedRate > 0
                       ) && (
@@ -588,9 +591,17 @@ const DeployerCreate = () => {
             size={step === 2 ? "big" : "medium"}
             color={step === 2 ? "var(--gold)" : colors.turquoise}
           >
-            {step === 1 ? "Next" : "Create tournament"}
+            {step === 1 ? "Next" : "Create game"}
           </Button>
-          {step === 2 && <Button onClick={() => setStep(1)}>Back</Button>}
+          {step === 2 && (
+            <span
+              role="button"
+              onClick={() => setStep(1)}
+              style={{ cursor: "pointer" }}
+            >
+              Back
+            </span>
+          )}
         </div>
       </form>
     </div>
