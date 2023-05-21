@@ -74,9 +74,9 @@ export const goerliData = {
   defifaDeployer: "0x47f699C71B3dfB25299dE9a22f1ad01774EA91A1",
   defifaDeployerInterface: DefifaDeployerABI.abi,
   subgraph:
-    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-goerli",
+    "https://api.studio.thegraph.com/proxy/5023/defifa-goerli/v0.0.12",
   governorSubgraph:
-    "https://api.thegraph.com/subgraphs/name/devianyeth/defifa-nfl-governor-goerli",
+    "https://api.studio.thegraph.com/proxy/5023/defifa-goerli/v0.0.12",
 };
 
 export const mainnet = true;
