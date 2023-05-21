@@ -17,25 +17,7 @@ const Socials = () => {
           <a target="_blank">OpenSea</a>
         </Link>
       </p>
-      <p>
-        <Link href="https://www.juicebox.money/v2/p/464" passHref>
-          <a target="_blank">Juicebox</a>
-        </Link>
-      </p>
-      <p>
-        <Link
-          href="https://github.com/ballkidz"
-          passHref
-        >
-          <a target="_blank">Code</a>
-        </Link>
-      </p>
 
-      <p>
-        <Link href="https://twitter.com/Defifa420" passHref>
-          <a target="_blank">Twitter</a>
-        </Link>
-      </p>
       <p>
         <Link href="https://wc2022.defifa.net" passHref>
           <a target="_blank">Past tournaments</a>

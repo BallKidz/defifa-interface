@@ -14,13 +14,13 @@ import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Defifa: American Basketball Playoffs 2023</title>
+        <title>Defifa: NBA Playoffs 2023</title>
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is a Luxury American Basketball Experience built with Juicebox and secured by Ethereum."
+          content="Defifa is a Luxury NBA Experience built with Juicebox, secured by Ethereum."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -42,18 +42,24 @@ const Home: NextPage = () => {
         theme="dark"
       />
       <Navbar>
-        <Info />
+        <Info withCreateButton />
       </Navbar>
-      <Description />
-      <Divider />
-      <Mint />
-      <Divider />
-      <MyTeams />
-      <Divider />
-      {/* <SelfRefree /> */}
-      <Divider />
+
+      <main className={styles.container}>
+        <Description />
+
+        <Divider />
+        <Mint />
+
+        <Divider />
+        <MyTeams />
+
+        <Divider />
+        {/* <SelfRefree /> */}
+      </main>
+
       <Footer />
-    </div>
+    </>
   );
 };
 

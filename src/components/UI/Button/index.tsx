@@ -6,7 +6,7 @@ const Button = ({
   children,
   type = "button",
   disabled = false,
-  color = colors.turquoise,
+  color = colors.purple,
   size,
   textColor,
   ...props
