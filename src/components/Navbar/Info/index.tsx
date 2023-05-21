@@ -4,22 +4,26 @@ import { Logo } from "../Logo";
 import Wallet from "../Wallet";
 import styles from "./Info.module.css";
 import Socials from "./Socials";
-const Info = () => {
-  const handleRedirect = () => {
-    window.open("https://wc2022.defifa.net");
-  };
 
+const Info = ({ withCreateButton }: { withCreateButton?: boolean }) => {
   return (
     <div className={styles.container}>
-      <Logo src="/assets/defifa.svg" />
+      <Link href="/">
+        <a>
+          <Logo src="/assets/defifa.svg" />
+        </a>
+      </Link>
       <Socials />
 
       <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
-        <Link href="/create">
-          <div>
-            <Button color="var(--gold)">Create game</Button>
-          </div>
-        </Link>
+        {withCreateButton ? (
+          <Link href="/create">
+            <div>
+              <Button color="var(--gold)">Create game</Button>
+            </div>
+          </Link>
+        ) : null}
+
         <Wallet />
       </div>
     </div>

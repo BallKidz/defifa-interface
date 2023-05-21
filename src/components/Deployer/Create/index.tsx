@@ -542,7 +542,8 @@ const DeployerCreate = () => {
                     <div className={styles.tierDetails}>
                       <p>Name: {tier.name}</p>
                       <p>
-                        Price: <EthSymbol />{tier.price}
+                        Price: <EthSymbol />
+                        {tier.price}
                       </p>
                       {formValues.tiers.some(
                         (tier) => tier.reservedRate > 0
@@ -589,7 +590,7 @@ const DeployerCreate = () => {
           <Button
             type="submit"
             size={step === 2 ? "big" : "medium"}
-            color={step === 2 ? "var(--gold)" : colors.turquoise}
+            color={step === 2 ? "var(--gold)" : colors.purple}
           >
             {step === 1 ? "Next" : "Create game"}
           </Button>

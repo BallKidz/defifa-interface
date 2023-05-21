@@ -3,8 +3,7 @@
   transition: opacity 0.3s;
   font-family: inherit;
   height: 41px;
-  color: var(--blue);
-  font-weight: 500;
+  color: black;
   font-size: 0.875rem;
   border: 1px solid black;
   border-radius: 3px;

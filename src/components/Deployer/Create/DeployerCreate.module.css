@@ -87,10 +87,5 @@
   color: var(--blue);
 }
 .overlayModal {
-  background: linear-gradient(
-    308.94deg,
-    rgba(33, 28, 50, 0.3) 11.72%,
-    /* Set opacity to 80% for the first color stop */ rgba(24, 20, 36, 0.3)
-      15.03% /* Set opacity to 80% for the second color stop */
-  );
+  background-color: var(--bgColor);
 }

@@ -5,9 +5,8 @@
 :root {
   --contentTitle: #c0b3f0;
   --textColor: var(--contentTitle);
-  --bgColor: #5c517c;
+  --bgColor: #13072A;
   --titleColor: #17e4f1;
-  --turquoise: #17e4f1;
   --gold: #fea282;
   --brown: #522a1c;
   --blue: #4a3e6e;
@@ -24,18 +23,15 @@
 
 html {
   min-height: 100%;
+  background-color: #0E051E;
 }
+
 body {
-  background: linear-gradient(
-    308.94deg,
-    rgba(33, 28, 50, 0.94) 21.72%,
-    #181424 85.03%
-  );
+  background-color: var(--bgColor);
   color: var(--textColor);
   height: 100%;
   padding: 0;
-  max-width: 1920px;
-  margin: auto;
+  margin: 0;
   font-family: "DM Mono", monospace;
 }
 
