@@ -9,10 +9,10 @@ import Button from "../UI/Button";
 import styles from "./MyTeam.module.css";
 
 const MyTeam: FC<{
-  team: TeamTier;
-  onRedeemSuccess: () => void;
-  disableRedeem: boolean;
-}> = ({ team, onRedeemSuccess, disableRedeem }) => {
+    team: TeamTier;
+    onRedeemSuccess: () => void;
+    disableRedeem: boolean;
+  }> = ({ team, onRedeemSuccess, disableRedeem }) => {
   const { id, image, name, quantity } = team;
   const [quantityToRedeem, setQuantityToRedeem] = useState<string[]>(
     team.tokenIds
@@ -46,7 +46,8 @@ const MyTeam: FC<{
 
   return (
     <div className={styles.container}>
-      <IpfsImage hash={image} className={styles.teamImg} />
+      {/* <IpfsImage hash={image} className={styles.teamImg} /> */}
+      <img src={image} alt="defifa nft" className={styles.teamImg} />
       <h3>{name}</h3>
       <div className={styles.quantityContainer}>
         <p>Quantity : {quantityToRedeem.length}</p>

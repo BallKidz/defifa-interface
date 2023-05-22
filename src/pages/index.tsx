@@ -11,6 +11,7 @@ import Navbar from "../components/Navbar";
 import Info from "../components/Navbar/Info";
 import Divider from "../components/UI/Divider";
 import styles from "../styles/Home.module.css";
+import SelfRefree from "../components/SelfReferee";
 
 const Home: NextPage = () => {
   return (
@@ -55,7 +56,7 @@ const Home: NextPage = () => {
         <MyTeams />
 
         <Divider />
-        {/* <SelfRefree /> */}
+        <SelfRefree />
       </main>
 
       <Footer />

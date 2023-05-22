@@ -49,7 +49,7 @@ export function useMyTeams() {
   }
 
   function formatSubgData(data:any) {
-   // TODO: This is a hack. We should look to add this to the sol token svg resolver then the subgraph should return the correct data.
+   // TODO: This is a bit of a hack. We might want to look to add this in sol token svg resolver then the subgraph should return the correct data.
     data.contracts[0].mintedTokens.forEach((token: { id: { split: (arg0: string) => [any, any]; }; contractAddress: any; identifier: number; }) => {
       const [contractAddress, tokenId] = token.id.split('-');
       token.contractAddress = contractAddress;
@@ -61,7 +61,7 @@ export function useMyTeams() {
       token.metadata.identifier = tierId;
       token.metadata.tags = ['Option',token.metadata.description];
     });
-    console.log('this is the cleand up data ', data);
+    console.log('this is the cleaned up data ', data);
     return data;
   }
 
@@ -69,16 +69,20 @@ export function useMyTeams() {
     if (address && graphUrl) {
       request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
         .then((data) => { 
-          const formattedData = formatSubgData(data);
-          const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
-          console.log('this is the user teams ', userTeams);
-          if (teams?.length === userTeams.length) {
-            setIsTeamRecentlyRemoved(false);
-          }
+          if(data.contracts[0].mintedTokens != undefined) {
+            const formattedData = formatSubgData(data);
+            const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
+            console.log('this is the user teams ', userTeams);
+            if (teams?.length === userTeams.length) {
+              setIsTeamRecentlyRemoved(false);
+            }
 
-          !isTeamRecentlyRemoved && setTeams(userTeams);
+            !isTeamRecentlyRemoved && setTeams(userTeams);
+          } else {
+            // TODO error handling ??
+            console.log('subg query response is empty contracts');}
         })
-        .catch((error) => {});
+        .catch((error) => {console.log('this is the error ', error);});
     }
   }
 
@@ -92,21 +96,28 @@ export function useMyTeams() {
 
     try {
       setIsLoading(true);
-
-      const response: { tokens: any[] } = await request(
-        graphUrl,
-        myTeamsQuery,
-        variables
-      );
-      console.log('this is subg query response ', response);
-      // TODO: add type for response
-      const teamTiers = getTeamTiersFromToken(response.contracts[0].mintedTokens);
-      setTeams(teamTiers);
-      setIsLoading(false);
+      const response:{
+        contracts: any; data: any[] } = await  request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
+  
+      console.log('fetchMyTeams this is subg query response ', response, response.contracts[0].mintedTokens.length);
+      if(response.contracts[0].mintedTokens.length !== 0 || undefined) {
+        const formattedData = formatSubgData(response);
+        console.log('fetchMyTeams formattedData ', formattedData);
+        const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
+        console.log('fetchMyTeams user teams ', userTeams);
+        console.log('fetchMyTeams response ', response);
+        setTeams(userTeams);
+        setIsLoading(false);
+      }
+      else {
+        console.log('fetchMyTeams response is empty');
+        setError({ error: "No mints found in subgraph. Waiting...", isError: true });
+        setIsLoading(false);
+    }
     } catch (error) {
       setError({ error: "Something went wrong", isError: true });
       setIsLoading(false);
-    }
+    } 
   };
   useEffect(() => {
     if (isConnecting) {

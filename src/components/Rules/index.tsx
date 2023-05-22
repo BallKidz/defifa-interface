@@ -49,6 +49,39 @@ const Rules = () => {
       color="var(--violet)"
     >
       <div className={styles.rulesContainer}>
+      <div className={styles.pointSystemWrapper} id="pointsSystem">
+          <h1 className={styles.pointHeader}>
+            {/* <sup className={styles.superScript}>1 </sup>Point system: */}
+          </h1>
+          <p className={styles.pointSystemDescription}>
+            Each game has its own point system which is proposed by the person launching the game.
+            For this game, the point system is as follows:
+          </p>
+          <p className={styles.pointSystemDescription}>
+            Total points:{" "}
+            <span className={styles.pointSystemPoints}>100,000</span>
+          </p>
+          <div className={styles.pointSystemCalculation}>
+            <p>
+            <span className={styles.pointSystemPoints}>
+            40% of the pot</span> is split between players who pick the correct winning team and the correct number of ballplayers scoring {'>'} 29.5 points.
+            </p>
+            <p>
+            <span className={styles.pointSystemPoints}>
+            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number ballplayers scoring {'>'} 29.5 points.
+            </p>
+            <p>
+            <span className={styles.pointSystemPoints}>
+            10% of the pot</span> is split between players who pick the correct number of ballplayers scoring {'>'} 29.5 points, but an incorrect winning team.
+            </p>
+          </div>
+          <p className={styles.pointSystemDescription}>
+            The scorecard that is ratified should represent the amount of
+            points by each team divided by the total available
+            100,000 points. Keep in mind your NFT's winnings are divided
+            up by all holders of that NFT.
+          </p>
+        </div>
         <div className={styles.phases}>
           <div className={styles.phaseBox}>
             <h1>
@@ -140,35 +173,7 @@ const Rules = () => {
           </div>
         </div>
         <br />
-        <div className={styles.pointSystemWrapper} id="pointsSystem">
-          <h1 className={styles.pointHeader}>
-            <sup className={styles.superScript}>1 </sup>Point system:
-          </h1>
-          <p className={styles.pointSystemDescription}>
-            Total points:{" "}
-            <span className={styles.pointSystemPoints}>100,000</span>
-          </p>
-          <div className={styles.pointSystemCalculation}>
-            <p>
-            <span className={styles.pointSystemPoints}>
-            40% of the pot</span> is split between players who pick the correct winning team and the correct number of ballplayers scoring {'>'} 29.5 points.
-            </p>
-            <p>
-            <span className={styles.pointSystemPoints}>
-            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number ballplayers scoring {'>'} 29.5 points.
-            </p>
-            <p>
-            <span className={styles.pointSystemPoints}>
-            10% of the pot</span> is split between players who pick the correct number of ballplayers scoring {'>'} 29.5 points, but an incorrect winning team.
-            </p>
-          </div>
-          <p className={styles.pointSystemDescription}>
-            The scorecard that is ratified should represent the amount of
-            points by each team divided by the total available
-            100,000 points. Keep in mind your NFT's winnings are divided
-            up by all holders of that NFT.
-          </p>
-        </div>
+      
         <div className={styles.disclaimerContainer} id="disclaimerContainer">
           <p className={styles.disclaimer}>
             <sup className={styles.superScript}>2</sup> The outcome is subject
