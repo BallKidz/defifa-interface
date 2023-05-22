@@ -10,6 +10,11 @@ import styles from "./index.module.css";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error, removeTeams } = useMyTeams();
+  console.log("teams", teams);
+  console.log("isError", isError);
+  console.log("isLoading", isLoading);
+  console.log("error", error);
+
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const {
@@ -94,7 +99,7 @@ function getTokenIdsFromTeams(teams?: TeamTier[]) {
   const tokenIds: string[] = [];
   teams?.forEach((team) => {
     team.tokenIds.forEach((tokenId) => {
-      tokenIds.push(tokenId);
+      tokenIds.push(tokenId); 
     });
   });
   return tokenIds;

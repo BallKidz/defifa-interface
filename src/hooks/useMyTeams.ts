@@ -3,19 +3,23 @@ import { useChainData } from "./useChainData";
 import request, { gql } from "graphql-request";
 import { useEffect, useState } from "react";
 import { useInterval } from "./useInterval";
+import {DEFIFA_PROJECT_ID_GOERLI} from "../constants/constants";
+import { DEFAULT_NFT_MAX_SUPPLY } from "../../src/hooks/NftRewards";
 
 const myTeamsQuery = gql`
-  query myTeamsQuery($owner: String!) {
-    tokens(where: { owner: $owner }) {
-      id
-      number
-      metadata {
-        description
+  query myTeamsQuery($owner: String!, $gameId: String!) {
+    contracts(where: {gameId: $gameId}) {  
+      mintedTokens(where: { owner: $owner }) {
         id
-        identifier
-        image
-        name
-        tags
+        number
+        metadata {
+          description
+          id
+          identifier
+          image
+          name
+          tags
+        }
       }
     }
   }
@@ -44,11 +48,30 @@ export function useMyTeams() {
     setTeams(newTeams);
   }
 
+  function formatSubgData(data:any) {
+   // TODO: This is a hack. We should look to add this to the sol token svg resolver then the subgraph should return the correct data.
+    data.contracts[0].mintedTokens.forEach((token: { id: { split: (arg0: string) => [any, any]; }; contractAddress: any; identifier: number; }) => {
+      const [contractAddress, tokenId] = token.id.split('-');
+      token.contractAddress = contractAddress;
+      token.identifier = parseInt(tokenId, 10); // Convert tokenId to number??
+    });
+  // TODO ALL IN ONE forEach? Could be more efficient. Bad kmac.
+    data.contracts[0].mintedTokens.forEach((token: Token) => {
+      const tierId: number = Math.floor(token.identifier/DEFAULT_NFT_MAX_SUPPLY);
+      token.metadata.identifier = tierId;
+      token.metadata.tags = ['Option',token.metadata.description];
+    });
+    console.log('this is the cleand up data ', data);
+    return data;
+  }
+
   function getTeamsAndSetTeams() {
     if (address && graphUrl) {
-      request(graphUrl, myTeamsQuery, { owner: address.toLowerCase() })
-        .then((data) => {
-          const userTeams = getTeamTiersFromToken(data.tokens);
+      request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
+        .then((data) => { 
+          const formattedData = formatSubgData(data);
+          const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
+          console.log('this is the user teams ', userTeams);
           if (teams?.length === userTeams.length) {
             setIsTeamRecentlyRemoved(false);
           }
@@ -64,6 +87,7 @@ export function useMyTeams() {
     if (!address) return;
     const variables = {
       owner: address?.toLowerCase(),
+      gameId: DEFIFA_PROJECT_ID_GOERLI.toString(),
     };
 
     try {
@@ -74,7 +98,9 @@ export function useMyTeams() {
         myTeamsQuery,
         variables
       );
-      const teamTiers = getTeamTiersFromToken(response.tokens);
+      console.log('this is subg query response ', response);
+      // TODO: add type for response
+      const teamTiers = getTeamTiersFromToken(response.contracts[0].mintedTokens);
       setTeams(teamTiers);
       setIsLoading(false);
     } catch (error) {
@@ -117,7 +143,9 @@ export interface TeamTier {
 
 export interface Token {
   id: string;
+  identifier: number;
   metadata: {
+    description: string;
     identifier: number;
     image: string;
     tags: string[];
@@ -130,17 +158,16 @@ function getTeamTiersFromToken(token: Token[]) {
     if (userTiers.has(t.metadata.identifier)) {
       const teamTier = userTiers.get(t.metadata.identifier);
       teamTier!.quantity++;
-      teamTier!.tokenIds.push(t.id);
+      teamTier!.tokenIds.push(t.identifier.toString());
     } else {
       userTiers.set(t.metadata.identifier, {
         id: t.metadata.identifier,
         quantity: 1,
         image: t.metadata.image,
         name: t.metadata.tags[1],
-        tokenIds: [t.id],
+        tokenIds: [t.identifier.toString()],
       });
     }
   });
-
   return Array.from(userTiers.values());
 }
