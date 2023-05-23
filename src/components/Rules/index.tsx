@@ -64,15 +64,15 @@ const Rules = () => {
           <div className={styles.pointSystemCalculation}>
             <p>
             <span className={styles.pointSystemPoints}>
-            40% of the pot</span> is split between players who pick the correct winning team and the correct number of ballplayers scoring {'>'} 29.5 points.
+            50% of pot</span> is split between players who pick the correct most popular artist.
             </p>
             <p>
             <span className={styles.pointSystemPoints}>
-            50% of the pot</span> is split between players who pick the correct winning team, but an incorrect number ballplayers scoring {'>'} 29.5 points.
+            30% of the pot</span> is split between players who pick the second most popular artist.
             </p>
             <p>
             <span className={styles.pointSystemPoints}>
-            10% of the pot</span> is split between players who pick the correct number of ballplayers scoring {'>'} 29.5 points, but an incorrect winning team.
+            20% of the pot</span> is split between players who pick the #3-5 most popular artist.
             </p>
           </div>
           <p className={styles.pointSystemDescription}>

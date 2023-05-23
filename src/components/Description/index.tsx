@@ -8,7 +8,7 @@ import styles from "./Description.module.css";
 const Description = () => {
   return (
     <div className={styles.container}>
-      <Title title="DEFIFA: Your game name here" />
+      <Title title="DEFIFA: Top Spotify Artists June 2023" />
       <Treasury />
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>

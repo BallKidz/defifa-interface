@@ -29,7 +29,8 @@ export function useMyTeams() {
   const { chainData } = useChainData();
   const { address, isConnecting, isDisconnected } = useAccount();
   const graphUrl = chainData.subgraph;
-  const [teams, setTeams] = useState<TeamTier[]>();
+  const [teams, setTeams] = useState<TeamTier[]>([]);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isTeamRecentlyRemoved, setIsTeamRecentlyRemoved] =
     useState<boolean>(false);
@@ -47,7 +48,7 @@ export function useMyTeams() {
     const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
     setTeams(newTeams);
   }
-
+  
   function formatSubgData(data:any) {
    // TODO: This is a bit of a hack. We might want to look to add this in sol token svg resolver then the subgraph should return the correct data.
     data.contracts[0].mintedTokens.forEach((token: { id: { split: (arg0: string) => [any, any]; }; contractAddress: any; identifier: number; }) => {
@@ -69,10 +70,10 @@ export function useMyTeams() {
     if (address && graphUrl) {
       request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
         .then((data) => { 
+          console.log('this is the subg query response ', data);
           if(data.contracts[0].mintedTokens != undefined) {
             const formattedData = formatSubgData(data);
             const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
-            console.log('this is the user teams ', userTeams);
             if (teams?.length === userTeams.length) {
               setIsTeamRecentlyRemoved(false);
             }
@@ -80,6 +81,8 @@ export function useMyTeams() {
             !isTeamRecentlyRemoved && setTeams(userTeams);
           } else {
             // TODO error handling ??
+            setError({ error: "No mints found in subgraph. Waiting...", isError: true });
+            setIsLoading(true);
             console.log('subg query response is empty contracts');}
         })
         .catch((error) => {console.log('this is the error ', error);});
@@ -102,17 +105,14 @@ export function useMyTeams() {
       console.log('fetchMyTeams this is subg query response ', response, response.contracts[0].mintedTokens.length);
       if(response.contracts[0].mintedTokens.length !== 0 || undefined) {
         const formattedData = formatSubgData(response);
-        console.log('fetchMyTeams formattedData ', formattedData);
         const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
-        console.log('fetchMyTeams user teams ', userTeams);
-        console.log('fetchMyTeams response ', response);
         setTeams(userTeams);
         setIsLoading(false);
       }
       else {
         console.log('fetchMyTeams response is empty');
         setError({ error: "No mints found in subgraph. Waiting...", isError: true });
-        setIsLoading(false);
+        setIsLoading(true);
     }
     } catch (error) {
       setError({ error: "Something went wrong", isError: true });
@@ -134,7 +134,7 @@ export function useMyTeams() {
     fetchMyTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, isConnecting, isDisconnected, graphUrl]);
-
+  
   return {
     teams,
     isLoading,

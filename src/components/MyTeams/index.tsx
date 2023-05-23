@@ -10,9 +10,12 @@ import styles from "./index.module.css";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error, removeTeams } = useMyTeams();
-  const { data } = useProjectCurrentFundingCycle();
-  const fundingCycle = data?.fundingCycle.number.toNumber();
+  console.log("MyTeams ", isError, isLoading, teams, error)
 
+  const { data, isSuccess } = useProjectCurrentFundingCycle();
+  const fundingCycle = data?.fundingCycle.number.toNumber();
+  console.log("fundingCycle MyTeams", data)
+  
   const {
     write,
     isLoading: isRedeemLoading,
@@ -24,7 +27,7 @@ const MyTeams = () => {
   });
   const canRedeem =
     fundingCycle === 1 || fundingCycle === 2 || fundingCycle === 4;
-
+    
   return (
     <TeamsContext.Provider value={teams}>
       <Content title="Manage" open={true} socials={false}>
