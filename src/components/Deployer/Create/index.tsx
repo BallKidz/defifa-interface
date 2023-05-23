@@ -56,7 +56,8 @@ const DeployerCreate = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
-    name: "",
+    name: "under 30 characters long",
+    rules: "The rules go here. This can be a a few sentences.",
     mintDuration: 1 * 60 * 60,
     refundPeriodDuration: 60 * 60,
     start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
@@ -89,7 +90,13 @@ const DeployerCreate = () => {
 
   useEffect(() => {
     const uploadJsons = async () => {
+      // This is the 'collection' name in OS.
+      contractUri.name = formValues.name;
+      // This is the 'collection' description in OS can be long. Use as rules.
+      contractUri.description = formValues.rules + " " + 'For more info visit' + " " + contractUri.infoUri;
       const contractUriCid = await uploadJsonToIpfs(contractUri);
+      projectMetadataUri.name = formValues.name; // This should be a tier name on OS (??)
+      projectMetadataUri.description = formValues.rules + " " + 'For more info visit' + " " + contractUri.infoUri;
       const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
 
       if (!contractUriCid || !projectMetadataCid) return;
@@ -358,6 +365,20 @@ const DeployerCreate = () => {
               />
             </div>
             <div className={styles.formGroup}>
+              <label htmlFor="rules" className={styles.label}>
+                Rules
+              </label>
+              <input
+                type="text"
+                id="rules"
+                name="rules"
+                className={styles.input}
+                value={formValues.rules}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
               <label htmlFor="mintDuration" className={styles.label}>
                 Mint Duration (hours prior to kickoff)
               </label>
@@ -420,7 +441,7 @@ const DeployerCreate = () => {
                 required
               />
             </div>
-            <div className={styles.formGroup}>
+            {/* <div className={styles.formGroup}>
               <label htmlFor="defaultTokenUriResolver" className={styles.label}>
                 Token URI
               </label>
@@ -432,7 +453,7 @@ const DeployerCreate = () => {
                 value={formValues.defaultTokenUriResolver}
                 onChange={handleInputChange}
               />
-            </div>
+            </div> */}
           </>
         )}
         {step === 2 && (

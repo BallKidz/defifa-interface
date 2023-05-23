@@ -29,6 +29,7 @@ export type JB721TierParams = {
 
 export interface DefifaLaunchProjectData {
   name: string;
+  rules: string;
   projectMetadata: JBProjectMetadata;
   contractUri: string;
   baseUri: string;
