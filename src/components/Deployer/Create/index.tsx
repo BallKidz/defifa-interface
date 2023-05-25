@@ -19,6 +19,7 @@ import Button from "../../UI/Button";
 import Content from "../../UI/Content";
 import styles from "./DeployerCreate.module.css";
 import EthSymbol from "../../UI/EthSymbol/EthSymbol";
+import { constants } from "ethers";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -45,9 +46,9 @@ const DeployerCreate = () => {
     name: "",
     price: 0.01,
     reservedRate: 0,
-    reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
+    reservedTokenBeneficiary: constants.AddressZero,
     royaltyRate: 0,
-    royaltyBeneficiary: "0x0000000000000000000000000000000000000000",
+    royaltyBeneficiary: constants.AddressZero,
     encodedIPFSUri:
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     shouldUseReservedTokenBeneficiaryAsDefault: false,
@@ -69,7 +70,7 @@ const DeployerCreate = () => {
     ballkidzFeeProjectTokenAccount:
       "0x11834239698c7336EF232C00a2A9926d3375DF9D",
     terminal: ethPaymentTerminal.address,
-    defaultTokenUriResolver: "0x0000000000000000000000000000000000000000",
+    defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
     baseUri: "ipfs://",
     distributionLimit: 0,
@@ -86,17 +87,27 @@ const DeployerCreate = () => {
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTier>>();
 
-  const { data, write } = useCreateTournament(formValues);
+  const { write: createTournament } = useCreateTournament(formValues);
 
   useEffect(() => {
     const uploadJsons = async () => {
       // This is the 'collection' name in OS.
       contractUri.name = formValues.name;
       // This is the 'collection' description in OS can be long. Use as rules.
-      contractUri.description = formValues.rules + " " + 'For more info visit' + " " + contractUri.infoUri;
+      contractUri.description =
+        formValues.rules +
+        " " +
+        "For more info visit" +
+        " " +
+        contractUri.infoUri;
       const contractUriCid = await uploadJsonToIpfs(contractUri);
       projectMetadataUri.name = formValues.name; // This should be a tier name on OS (??)
-      projectMetadataUri.description = formValues.rules + " " + 'For more info visit' + " " + contractUri.infoUri;
+      projectMetadataUri.description =
+        formValues.rules +
+        " " +
+        "For more info visit" +
+        " " +
+        contractUri.infoUri;
       const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
 
       if (!contractUriCid || !projectMetadataCid) return;
@@ -184,7 +195,7 @@ const DeployerCreate = () => {
     if (step === 1) {
       setStep(2);
     } else {
-      write?.();
+      createTournament();
     }
   };
 
@@ -216,8 +227,7 @@ const DeployerCreate = () => {
               return {
                 ...tier,
                 reservedRate: 0,
-                reservedTokenBeneficiary:
-                  "0x0000000000000000000000000000000000000000",
+                reservedTokenBeneficiary: constants.AddressZero,
                 shouldUseReservedTokenBeneficiaryAsDefault: true,
               };
             }
@@ -250,8 +260,7 @@ const DeployerCreate = () => {
 
     if (hasReservedRateTier) {
       mergedTier.reservedRate = 0;
-      mergedTier.reservedTokenBeneficiary =
-        "0x0000000000000000000000000000000000000000";
+      mergedTier.reservedTokenBeneficiary = constants.AddressZero;
       mergedTier.shouldUseReservedTokenBeneficiaryAsDefault = true;
     }
 
@@ -264,9 +273,9 @@ const DeployerCreate = () => {
       name: "",
       price: 0.01, // default price if nothing entered
       reservedRate: 0,
-      reservedTokenBeneficiary: "0x0000000000000000000000000000000000000000",
+      reservedTokenBeneficiary: constants.AddressZero,
       royaltyRate: 0,
-      royaltyBeneficiary: "0x0000000000000000000000000000000000000000",
+      royaltyBeneficiary: constants.AddressZero,
       encodedIPFSUri:
         "0x0000000000000000000000000000000000000000000000000000000000000000",
       shouldUseReservedTokenBeneficiaryAsDefault: false,
