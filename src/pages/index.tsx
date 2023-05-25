@@ -56,7 +56,7 @@ const Home: NextPage = () => {
         <MyTeams />
 
         <Divider />
-        <SelfRefree />
+        <SelfRefree /> 
       </main>
 
       <Footer />

@@ -1,16 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useDeployerDates } from "../../hooks/read/DeployerDates";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
+// import { useGameMetadata } from "../../hooks/read/GameMetadata";
 import { formatDateToUTC } from "../../utils/format/formatDate";
 import Content from "../UI/Content";
 import styles from "./index.module.css";
+
 
 const Rules = () => {
   const { mintDuration, start, refundPeriodDuration, end } =
     useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
-
+  //const { data: gameMetadata } = useGameMetadata(); //uugh need gameId here
+  
+  //console.log("gameMetadata Rules", gameMetadata)
   const fillPill = (phase: number) => {
     if (currentFcNumber === phase) {
       return "Active";

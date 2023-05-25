@@ -10,6 +10,7 @@ import {
 } from "./constants";
 import JBControllerMainnet from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBController.json";
 import JBControllerGoerli from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBController.json";
+import JBProjects from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBProjects.json";
 
 import MainnetJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
 import GoerliJBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
@@ -51,6 +52,10 @@ export const mainnetData = {
 };
 
 export const goerliData = {
+  JBProjects: {
+    address: "0x21263a042aFE4bAE34F08Bb318056C181bD96D3b",
+    interface: JBProjects.abi,
+  },
   JBTiered721DelegateStore: {
     address: "0xC7E775BbA411Df1D3c5D70Ec4C45f3DF8A85B0d0",
     interface: IJBTiered721DelegateStore.abi,

@@ -14,6 +14,8 @@ const MyTeam: FC<{
     disableRedeem: boolean;
   }> = ({ team, onRedeemSuccess, disableRedeem }) => {
   const { id, image, name, quantity } = team;
+  console.log("MyTeam team", id, quantity)
+  console.log("MyTeam team", team.tokenIds)
   const [quantityToRedeem, setQuantityToRedeem] = useState<string[]>(
     team.tokenIds
   );

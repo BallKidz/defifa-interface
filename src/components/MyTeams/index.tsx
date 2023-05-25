@@ -10,9 +10,11 @@ import styles from "./index.module.css";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error, removeTeams } = useMyTeams();
-  console.log("MyTeams ", isError, isLoading, teams, error)
-
-  const { data, isSuccess } = useProjectCurrentFundingCycle();
+  console.log("MyTeams stil loading ", isLoading)
+  if (!isLoading) {
+    console.log("MyTeams teams ", teams)
+  }
+  const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
   console.log("fundingCycle MyTeams", data)
   
@@ -83,8 +85,7 @@ const MyTeams = () => {
                       disableRedeem={isRedeemLoading}
                     />
                   ))}
-                  {/* was teams?.length === 0 */}
-              {teams == undefined && <div>You dont have any teams yet.</div>}
+              {teams?.length === 0 && <div>You dont have any teams yet.</div>}
             </div>
           </>
         )}
@@ -102,5 +103,6 @@ function getTokenIdsFromTeams(teams?: TeamTier[]) {
       tokenIds.push(tokenId); 
     });
   });
+  console.log("getTokenIdsFromTeams", tokenIds)
   return tokenIds;
 }

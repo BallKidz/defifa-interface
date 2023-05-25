@@ -31,7 +31,6 @@ const Mint = () => {
 
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
-  const [sortOption, setSortOption] = useState<string>("conferences");
   const [selectAll, setSelectAll] = useState<boolean>(false);
 
   const mostMintedRewardTiers = rewardTiers
@@ -46,7 +45,7 @@ const Mint = () => {
     preferClaimedTokens: true,
     memo: `Minted on defifa.net ${imgMemo}`,
     metadata: {
-      _votingDelegate: "0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1",
+      _votingDelegate: "0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1", //?? who's is this?
       tierIdsToMint: tierIds,
     },
   });
@@ -58,19 +57,19 @@ const Mint = () => {
     }
   }, [isError, isSuccess]);
 
-  // useEffect(() => {
-  //   if (!tierIds.length) return;
-  //   let newImgMemo = "";
-  //   for (let i = 0; i < tierIds.length; i++) {
-  //     const imgStr = rewardTiers?.find(
-  //       (tier) => tier.id === tierIds[i]
-  //     ).teamImage;
-  //     newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
-  //   }
-  //   setImgMemo(newImgMemo);
+/*    useEffect(() => {
+     if (!tierIds.length) return;
+     let newImgMemo = "";
+     for (let i = 0; i < tierIds.length; i++) {
+       const imgStr = rewardTiers?.find(
+         (tier) => tier.id === tierIds[i]
+       ).teamImage;
+       newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
+     }
+     setImgMemo(newImgMemo);
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [tierIds]);
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [tierIds]); */
 
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
@@ -101,12 +100,6 @@ const Mint = () => {
   };
 
   const onUnselectAllTeams = () => {
-    setTierIds([]);
-    setSelectAll(false);
-  };
-
-  const onSortChange = (option: string) => {
-    setSortOption(option);
     setTierIds([]);
     setSelectAll(false);
   };

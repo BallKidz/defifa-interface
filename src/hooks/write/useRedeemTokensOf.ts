@@ -25,7 +25,6 @@ export function useRedeemTokensOf({
   const { chain } = useNetwork();
   const { address } = useAccount();
   const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
-  if (tokenIds.length === 0) {console.log("redeem tokens is empty");}
   const { config } = usePrepareContractWrite({
     addressOrName: ethPaymentTerminal.address,
     contractInterface: ethPaymentTerminal.interface,
@@ -36,7 +35,7 @@ export function useRedeemTokensOf({
       }
     },
     args: [
-      address, // _holder address
+      address, //user _holder address
       projectId,
       "0", //_tokenCount
       ETH_TOKEN_ADDRESS,

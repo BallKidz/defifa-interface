@@ -29,7 +29,7 @@ export function useMyTeams() {
   const { chainData } = useChainData();
   const { address, isConnecting, isDisconnected } = useAccount();
   const graphUrl = chainData.subgraph;
-  const [teams, setTeams] = useState<TeamTier[]>([]);
+  const [teams, setTeams] = useState<TeamTier[]>();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isTeamRecentlyRemoved, setIsTeamRecentlyRemoved] =
@@ -45,7 +45,10 @@ export function useMyTeams() {
 
   function removeTeams(tierIds: number[] | undefined) {
     setIsTeamRecentlyRemoved(true);
+    console.log("new teams from removed1", tierIds);
+
     const newTeams = teams?.filter((team) => !tierIds?.includes(team?.id));
+    console.log("new teams from removed", newTeams);
     setTeams(newTeams);
   }
   
@@ -54,7 +57,8 @@ export function useMyTeams() {
     data.contracts[0].mintedTokens.forEach((token: { id: { split: (arg0: string) => [any, any]; }; contractAddress: any; identifier: number; }) => {
       const [contractAddress, tokenId] = token.id.split('-');
       token.contractAddress = contractAddress;
-      token.identifier = parseInt(tokenId, 10); // Convert tokenId to number??
+      //token.identifier = parseInt(tokenId, 10); // Convert tokenId to number??
+      token.identifier =tokenId;
     });
   // TODO ALL IN ONE forEach? Could be more efficient. Bad kmac.
     data.contracts[0].mintedTokens.forEach((token: Token) => {
@@ -62,7 +66,7 @@ export function useMyTeams() {
       token.metadata.identifier = tierId;
       token.metadata.tags = ['Option',token.metadata.description];
     });
-    console.log('this is the cleaned up data ', data);
+
     return data;
   }
 
@@ -71,19 +75,24 @@ export function useMyTeams() {
       request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
         .then((data) => { 
           console.log('this is the subg query response ', data);
-          if(data.contracts[0].mintedTokens != undefined) {
+          // if(data.contracts[0].mintedTokens !== undefined) {
             const formattedData = formatSubgData(data);
             const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
             if (teams?.length === userTeams.length) {
               setIsTeamRecentlyRemoved(false);
             }
-
             !isTeamRecentlyRemoved && setTeams(userTeams);
-          } else {
-            // TODO error handling ??
-            setError({ error: "No mints found in subgraph. Waiting...", isError: true });
-            setIsLoading(true);
-            console.log('subg query response is empty contracts');}
+          //} else {
+            // TODO confirm states are correctly set here
+            //setError({ error: "No mints found in subgraph. Waiting...", isError: true });
+            //setIsLoading(true); // If the game has started we want a spinner here
+            //console.log('subg query response is empty contracts');
+            //setError({ error: "Something went wrong getTeamsAndSetTeams", isError: true });
+            //setIsLoading(false);
+           // !isTeamRecentlyRemoved && setTeams(userTeams);
+
+          // }
+
         })
         .catch((error) => {console.log('this is the error ', error);});
     }
@@ -103,17 +112,21 @@ export function useMyTeams() {
         contracts: any; data: any[] } = await  request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
   
       console.log('fetchMyTeams this is subg query response ', response, response.contracts[0].mintedTokens.length);
-      if(response.contracts[0].mintedTokens.length !== 0 || undefined) {
+    //  if(response.contracts[0].mintedTokens.length !== 0 || !undefined) {
         const formattedData = formatSubgData(response);
+        console.log('fetchMyTeams this is formattedData ', formattedData);
         const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
+        console.log('fetchMyTeams this is userTeams ', userTeams);
         setTeams(userTeams);
         setIsLoading(false);
-      }
+     /*  }
       else {
         console.log('fetchMyTeams response is empty');
-        setError({ error: "No mints found in subgraph. Waiting...", isError: true });
-        setIsLoading(true);
-    }
+        setError({ error: "Something went wrong fetchMyTeams", isError: true });
+        setIsLoading(false);
+        // setError({ error: "No mints found.", isError: true });
+        // setIsLoading(true); // If game has not started we don't want a spinner here
+      } */
     } catch (error) {
       setError({ error: "Something went wrong", isError: true });
       setIsLoading(false);
@@ -134,7 +147,7 @@ export function useMyTeams() {
     fetchMyTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, isConnecting, isDisconnected, graphUrl]);
-  
+
   return {
     teams,
     isLoading,

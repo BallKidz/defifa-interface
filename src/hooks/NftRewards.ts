@@ -48,7 +48,7 @@ async function getRewardTierFromSVG({
   const url = tier.resolvedUri;
   const response = await axios.get(url);
 
-  const ipfsRewardTier: any = response.data;
+  const svgRewardTier: any = response.data;
   const maxSupply = tier.initialQuantity.eq(
     BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)
   )
@@ -56,9 +56,9 @@ async function getRewardTierFromSVG({
     : tier.initialQuantity.toNumber();
   return {
     id: tier.id.toNumber(),
-    description: ipfsRewardTier.description,
-    teamName: ipfsRewardTier.name,
-    teamImage: ipfsRewardTier.image,
+    description: svgRewardTier.description,
+    teamName: svgRewardTier.name,
+    teamImage: svgRewardTier.image,
     maxSupply: maxSupply,
     remainingQuantity: tier.remainingQuantity?.toNumber() ?? maxSupply,
     minted: maxSupply - tier.remainingQuantity?.toNumber(),
