@@ -1,14 +1,13 @@
-import DefifaCreateABI from "@ballkidz/defifa-collection-deployer/out/DefifaDeployer.sol/DefifaDeployer.json";
+import DefifaDelegate from "@ballkidz/defifa-collection-deployer/out/DefifaDelegate.sol/DefifaDelegate.json";
+import DefifaDeployer from "@ballkidz/defifa-collection-deployer/out/DefifaDeployer.sol/DefifaDeployer.json";
+import DefifaGovernor from "@ballkidz/defifa-collection-deployer/out/DefifaGovernor.sol/DefifaGovernor.json";
 import IJBTiered721DelegateStore from "@jbx-protocol/juice-721-delegate/out/IJBTiered721DelegateStore.sol/IJBTiered721DelegateStore.json";
 import JBController from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBController.json";
 import JBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import JBProjects from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBProjects.json";
 import JBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
-import DefifaDelegateABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDelegate.sol/DefifaDelegate.json";
-import DefifaDeployerABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
-import DefifaGovernorABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaGovernor.sol/DefifaGovernor.json";
-import { chain } from "wagmi";
 import { DEFIFA_PROJECT_ID_GOERLI } from "constants/constants";
+import { chain } from "wagmi";
 import { DefifaConfig } from "./types";
 
 export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
@@ -19,10 +18,7 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     address: JBProjects.address,
     interface: JBProjects.abi,
   },
-  JBTiered721DelegateStore: {
-    address: "0xC7E775BbA411Df1D3c5D70Ec4C45f3DF8A85B0d0",
-    interface: IJBTiered721DelegateStore.abi,
-  },
+
   JBController: {
     address: JBController.address,
     interface: JBController.abi,
@@ -35,20 +31,22 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     address: JBETHPaymentTerminal.address,
     interface: JBETHPaymentTerminal.abi,
   },
+  JBTiered721DelegateStore: {
+    address: "0x8dA6B4569f88C0164d77Af5E5BF12E88d4bCd016",
+    interface: IJBTiered721DelegateStore.abi,
+  },
+
   DefifaDelegate: {
-    address: "", // TODO
-    interface: DefifaDelegateABI.abi,
+    address: "0xDBbc2fF20c6136bd3358b2aa435854086dB1bB33",
+    interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
-    interface: DefifaGovernorABI.abi,
-  },
-  DefifaCreate: {
-    address: "0x47f699C71B3dfB25299dE9a22f1ad01774EA91A1",
-    interface: DefifaCreateABI.abi,
+    address: "0xdb885021DfF7bc22c05697aE59c9525352DA526B",
+    interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: "0x47f699C71B3dfB25299dE9a22f1ad01774EA91A1",
-    interface: DefifaDeployerABI.abi,
+    address: "0x2304C37e0727cd4F3e89Be2bc695e3D0f118df1c",
+    interface: DefifaDeployer.abi,
   },
 
   subgraph: "https://api.studio.thegraph.com/proxy/5023/defifa-goerli/v0.0.12b",

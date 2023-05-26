@@ -9,6 +9,7 @@
 .active {
   margin-left: 10px;
   font-size: 14px;
+  white-space: nowrap;
   border: var(--lightGreen);
   border-style: solid;
   border-radius: 50px;
@@ -21,6 +22,7 @@
 .upcoming {
   margin-left: 10px;
   font-size: 14px;
+  white-space: nowrap;
   border: var(--gold);
   border-style: solid;
   border-radius: 50px;
@@ -32,6 +34,7 @@
 .completed {
   margin-left: 10px;
   font-size: 14px;
+  white-space: nowrap;
   border: var(--pink);
   border-style: solid;
   border-radius: 50px;

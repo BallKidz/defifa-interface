@@ -13,8 +13,7 @@ const DeployerDescription = () => {
           </li>
           <li className={styles.listItem}>
             <span className={styles.keywords}>NFT Setup:</span> Customize your
-            game&apos;s NFTs. Set their price, and set a fixed price for all
-            tiers. Add NFT artwork and set aside reserved NFTs for you, the
+            game&apos;s NFTs. Set their price, add NFT artwork and set aside reserved NFTs for you, the
             creator.
           </li>
         </ol>

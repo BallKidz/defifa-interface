@@ -43,8 +43,8 @@ export function useCreateTournament(
     error: prepareContractWriteError,
     isError: isPrepareContractWriteError,
   } = usePrepareContractWrite({
-    addressOrName: chainData.DefifaCreate.address,
-    contractInterface: chainData.DefifaCreate.interface,
+    addressOrName: chainData.DefifaDeployer.address,
+    contractInterface: chainData.DefifaDeployer.interface,
     functionName: "launchGameWith",
     args: [preparedLaunchProjectData],
     chainId: chainData.chainId,
@@ -52,7 +52,8 @@ export function useCreateTournament(
   if (isPrepareContractWriteError) {
     console.error(
       "useCreateTournament::usePrepareContractWriteError::error",
-      prepareContractWriteError
+      prepareContractWriteError,
+      preparedLaunchProjectData
     );
   }
 

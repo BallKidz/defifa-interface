@@ -1,14 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useGameMetadata } from "hooks/read/GameMetadata";
 import CurrentPhase from "../Navbar/Info/CurrentPhase";
 import Treasury from "../Navbar/Info/Treasury";
 import Rules from "../Rules";
 import Title from "../Title";
 import styles from "./Description.module.css";
+import { useChainData } from "hooks/useChainData";
 
 const Description = () => {
+  const { chainData } = useChainData();
+  const { data, isLoading } = useGameMetadata(chainData.projectId);
   return (
     <div className={styles.container}>
-      <Title title="DEFIFA: Top Spotify Artists June 2023" />
+      {!isLoading && data ?  <Title title={data?.name} /> : <>Loading...</>}
+     
       <Treasury />
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>

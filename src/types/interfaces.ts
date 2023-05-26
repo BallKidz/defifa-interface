@@ -1,21 +1,16 @@
 import { BigNumber } from "ethers";
 
-export interface DefifaTier {
+export interface DefifaTierParams {
   name: string;
   price: any;
   reservedRate: number;
   reservedTokenBeneficiary: string;
-  royaltyRate: number;
-  royaltyBeneficiary: string;
   encodedIPFSUri: string;
   shouldUseReservedTokenBeneficiaryAsDefault: boolean;
 }
 
 export type JB721TierParams = {
-  id?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
-  remainingQuantity?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
-
-  contributionFloor: BigNumber; //uint128
+  price: BigNumber; //uint128
   lockedUntil: BigNumber;
   initialQuantity: BigNumber; //uint64
   votingUnits: number;
@@ -23,8 +18,10 @@ export type JB721TierParams = {
   reservedTokenBeneficiary: string;
   encodedIPFSUri: string; // encoded link to the rewardTier on IPFS
   allowManualMint: boolean;
-  shouldUseBeneficiaryAsDefault: boolean;
+  shouldUseReservedTokenBeneficiaryAsDefault: boolean;
   transfersPausable: boolean;
+  useVotingUnits: boolean;
+  category: number;
 };
 
 export interface DefifaLaunchProjectData {
@@ -33,19 +30,19 @@ export interface DefifaLaunchProjectData {
   projectMetadata: JBProjectMetadata;
   contractUri: string;
   baseUri: string;
-  tiers: DefifaTier[];
+  tiers: DefifaTierParams[];
   token: string;
   mintDuration: number;
   refundPeriodDuration: number;
   start: number;
-  end: number;
   splits: any[];
   distributionLimit: number;
   ballkidzFeeProjectTokenAccount: string;
   defaultTokenUriResolver: string;
   votingPeriod: number;
-  terminal: any;
-  store: any;
+  votingStartTime: number;
+  terminal: string; // address
+  store: string; // address
 }
 
 interface JBProjectMetadata {

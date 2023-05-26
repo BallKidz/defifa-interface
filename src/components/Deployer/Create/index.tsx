@@ -3,7 +3,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { faPen, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import bs58 from "bs58";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
@@ -16,7 +15,7 @@ import { useCreateTournament } from "hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
-import { DefifaLaunchProjectData, DefifaTier } from "types/interfaces";
+import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
@@ -35,19 +34,21 @@ const datetimeLocalToUnix = (value: string): number => {
   return Math.floor(new Date(value).getTime() / 1000);
 };
 
+const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
+const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
+const GAME_START_BUFFER_SECONDS = 60 * 5; // 5 minutes
+
 const DeployerCreate = () => {
   const [step, setStep] = useState(1);
   const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
   const [addNftOpen, setAddNftOpen] = useState(false);
 
-  const [tier, setTier] = useState<DefifaTier>({
+  const [tier, setTier] = useState<DefifaTierParams>({
     name: "",
     price: 0.01,
     reservedRate: 0,
     reservedTokenBeneficiary: constants.AddressZero,
-    royaltyRate: 0,
-    royaltyBeneficiary: constants.AddressZero,
     encodedIPFSUri:
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     shouldUseReservedTokenBeneficiaryAsDefault: false,
@@ -56,13 +57,17 @@ const DeployerCreate = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
-    name: "under 30 characters long",
-    rules: "The rules go here. This can be a a few sentences.",
-    mintDuration: 1 * 60 * 60,
-    refundPeriodDuration: 60 * 60,
-    start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
-    end: currentUnixTimestamp + 1 * 60 * 60 + 2 * 60 * 60,
+    name: "",
+    rules: "",
+    mintDuration: DEFAULT_MINT_DURATION_SECONDS,
+    refundPeriodDuration: DEFAULT_REFUND_DURATION_SECONDS,
+    start:
+      currentUnixTimestamp +
+      DEFAULT_MINT_DURATION_SECONDS +
+      DEFAULT_REFUND_DURATION_SECONDS +
+      GAME_START_BUFFER_SECONDS,
     votingPeriod: 0,
+    votingStartTime: 0,
     tiers: [],
     splits: [],
     token: ETH_TOKEN_ADDRESS,
@@ -79,12 +84,12 @@ const DeployerCreate = () => {
     },
     store: JBTiered721DelegateStore.address,
   });
-  const [editedTier, setEditedTier] = useState<DefifaTier | null>(null);
+  const [editedTier, setEditedTier] = useState<DefifaTierParams | null>(null);
   const minDate = unixToDatetimeLocal(currentUnixTimestamp);
   const [inputKey, setInputKey] = useState(0);
 
   const [tierGeneralValues, setTierGeneralValues] =
-    useState<Partial<DefifaTier>>();
+    useState<Partial<DefifaTierParams>>();
 
   const { write: createTournament } = useCreateTournament(formValues);
 
@@ -124,12 +129,11 @@ const DeployerCreate = () => {
     uploadJsons();
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.target;
-    const datetimeLocalFields: Array<keyof DefifaLaunchProjectData> = [
-      "start",
-      "end",
-    ];
+    const datetimeLocalFields: Array<keyof DefifaLaunchProjectData> = ["start"];
 
     let newValue: string | number;
 
@@ -273,8 +277,6 @@ const DeployerCreate = () => {
       price: 0.01, // default price if nothing entered
       reservedRate: 0,
       reservedTokenBeneficiary: constants.AddressZero,
-      royaltyRate: 0,
-      royaltyBeneficiary: constants.AddressZero,
       encodedIPFSUri:
         "0x0000000000000000000000000000000000000000000000000000000000000000",
       shouldUseReservedTokenBeneficiaryAsDefault: false,
@@ -309,7 +311,7 @@ const DeployerCreate = () => {
     setEditedTier(null);
   };
 
-  const editTier = (t: DefifaTier, index: number) => {
+  const editTier = (t: DefifaTierParams, index: number) => {
     setEditedTier(t);
     confirmAlert({
       customUI: ({ onClose }) => {
@@ -358,37 +360,60 @@ const DeployerCreate = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         {step === 1 && (
           <>
-            <div className={styles.formGroup}>
-              <label htmlFor="name" className={styles.label}>
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className={styles.input}
-                value={formValues.name}
-                onChange={handleInputChange}
-                required
-              />
+            <div style={{ marginBottom: "1rem" }}>
+              <div className={styles.formGroup}>
+                <label htmlFor="name" className={styles.label}>
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className={styles.input}
+                  value={formValues.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="rules" className={styles.label}>
+                  Rules
+                </label>
+                <textarea
+                  id="rules"
+                  name="rules"
+                  className={styles.input}
+                  value={formValues.rules}
+                  onChange={handleInputChange}
+                  required
+                  rows={3}
+                  placeholder="Describe the rules of the game in plain English."
+                />
+              </div>
             </div>
+
+            <h3 className={styles.stepTitle}>Game schedule</h3>
             <div className={styles.formGroup}>
-              <label htmlFor="rules" className={styles.label}>
-                Rules
+              <label htmlFor="start" className={styles.label}>
+                Game start time
               </label>
               <input
-                type="text"
-                id="rules"
-                name="rules"
+                type="datetime-local"
+                id="start"
+                name="start"
                 className={styles.input}
-                value={formValues.rules}
+                value={unixToDatetimeLocal(formValues.start)}
                 onChange={handleInputChange}
+                min={minDate}
                 required
               />
+              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+                Must be later than: now + mint duration + refund duration.
+              </span>
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="mintDuration" className={styles.label}>
-                Mint Duration (hours prior to kickoff)
+                Mint duration
               </label>
               <input
                 type="number"
@@ -401,10 +426,13 @@ const DeployerCreate = () => {
                 step={1} // set the step size, e.g., 1 hour increments
                 required
               />
+              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+                Hours prior to the start of the game.
+              </span>
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="refundPeriodDuration" className={styles.label}>
-                Refund duration (final hours before kickoff, optional)
+                Refund duration (optional)
               </label>
               <input
                 type="number"
@@ -417,38 +445,12 @@ const DeployerCreate = () => {
                 step={1} // set the step size, e.g., 1 hour increments
                 required
               />
+              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+                Hours allowed for refunds. Takes place between minting and game
+                time.
+              </span>
             </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="start" className={styles.label}>
-                Start Date (kickoff time &gt; now + mint duration + refund
-                duration)
-              </label>
-              <input
-                type="datetime-local"
-                id="start"
-                name="start"
-                className={styles.input}
-                value={unixToDatetimeLocal(formValues.start)}
-                onChange={handleInputChange}
-                min={minDate}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="end" className={styles.label}>
-                End Date (final whistle)
-              </label>
-              <input
-                type="datetime-local"
-                id="end"
-                name="end"
-                className={styles.input}
-                value={unixToDatetimeLocal(formValues.end)}
-                onChange={handleInputChange}
-                min={minDate}
-                required
-              />
-            </div>
+
             {/* <div className={styles.formGroup}>
               <label htmlFor="defaultTokenUriResolver" className={styles.label}>
                 Token URI
@@ -565,7 +567,7 @@ const DeployerCreate = () => {
 
             {formValues.tiers.length > 0 && (
               <div className={styles.tiersListContainer}>
-                <p>List of your NFTs</p>
+                <p>Your NFTs</p>
                 {formValues.tiers.map((tier, index) => (
                   <div key={index} className={styles.tier}>
                     <div className={styles.tierDetails}>

@@ -20,10 +20,6 @@ type DescriptionDates = {
     date: string;
     phase: number;
   };
-  end: {
-    date: string;
-    phase: number;
-  };
 };
 
 export function useDeployerDates(format: "local" | "utc") {
@@ -32,7 +28,6 @@ export function useDeployerDates(format: "local" | "utc") {
     mintDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
     refundPeriodDuration: { date: "", phase: 0 },
-    end: { date: "", phase: 0 },
   });
 
   useEffect(() => {
@@ -73,13 +68,6 @@ export function useDeployerDates(format: "local" | "utc") {
             ? formatDateToLocal(deployerDuration.start * 1000)
             : formatDateToUTC(deployerDuration.start * 1000),
         phase: 3,
-      },
-      end: {
-        date:
-          format === "local"
-            ? formatDateToLocal(deployerDuration.end * 1000)
-            : formatDateToUTC(deployerDuration.end * 1000),
-        phase: 4,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

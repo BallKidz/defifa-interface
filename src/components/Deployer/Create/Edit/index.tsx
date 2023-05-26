@@ -1,7 +1,7 @@
-import { DefifaTier } from "types/interfaces";
+import { DefifaTierParams } from "types/interfaces";
 
 interface EditTierProps {
-  tier: DefifaTier;
+  tier: DefifaTierParams;
 }
 
 const EditTier = () => {};
