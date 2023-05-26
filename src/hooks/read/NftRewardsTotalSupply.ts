@@ -1,5 +1,5 @@
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useNftRewardsTotalSupply(
   dataSourceAddress: string | undefined

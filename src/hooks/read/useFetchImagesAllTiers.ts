@@ -2,7 +2,7 @@
 // import { forEach } from "lodash";
 // import { useEffect, useState } from "react";
 // import { useNetwork, useProvider } from "wagmi";
-// import { getChainData } from "../../constants/addresses";
+// import { getChainData } from "../../config";
 
 // export function useTiersImages(tiers: any, dataSource: string) {
 //   const provider = useProvider();

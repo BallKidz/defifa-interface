@@ -1,5 +1,4 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import DefifaDeployer from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
 import {
   useAccount,
   useContractWrite,
@@ -7,7 +6,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 import { simulateTransaction } from "../../lib/tenderly";
 
 export function useQueueNextPhase(simulate = false) {
@@ -17,8 +16,8 @@ export function useQueueNextPhase(simulate = false) {
 
   const chainData = getChainData(network?.chain?.id);
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaDeployer,
-    contractInterface: DefifaDeployer.abi,
+    addressOrName: chainData.DefifaDeployer.address,
+    contractInterface: chainData.DefifaDeployer.interface,
     functionName: "queueNextPhaseOf",
     overrides: { gasLimit: 210000 },
     args: [chainData.projectId],

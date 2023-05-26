@@ -1,5 +1,5 @@
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useProposalState(proposalId: number, governor: string) {
   const network = useNetwork();
@@ -8,7 +8,7 @@ export function useProposalState(proposalId: number, governor: string) {
 
   return useContractRead({
     addressOrName: governor,
-    contractInterface: chainData.defifaGovernor.interface,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "state",
     args: [proposalId],
     chainId: chainData.chainId,

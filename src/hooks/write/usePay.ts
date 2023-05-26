@@ -7,7 +7,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 import { simulateTransaction } from "../../lib/tenderly";
 import { toastError } from "../../utils/toast";
 
@@ -37,11 +37,11 @@ export function usePay({
 }: PayParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
+  const { JBETHPaymentTerminal, projectId } = getChainData(chain?.id);
 
   const { config } = usePrepareContractWrite({
-    addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.interface,
+    addressOrName: JBETHPaymentTerminal.address,
+    contractInterface: JBETHPaymentTerminal.interface,
     functionName: "pay",
     overrides: { value: amount },
     onError: (error) => {

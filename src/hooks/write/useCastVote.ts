@@ -6,7 +6,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useCastVote(proposalId: number, governor: string) {
   const network = useNetwork();
@@ -16,7 +16,7 @@ export function useCastVote(proposalId: number, governor: string) {
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor,
-    contractInterface: chainData.defifaGovernor.interface,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "attestToScorecard",
     args: [proposalId],
     chainId: chainData.chainId,

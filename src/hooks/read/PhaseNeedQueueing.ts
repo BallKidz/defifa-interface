@@ -1,17 +1,15 @@
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useNextPhaseNeedsQueueing() {
   const network = useNetwork();
   const chainData = getChainData(network?.chain?.id);
 
-  const { defifaDeployer, defifaDeployerInterface, projectId } = chainData;
-
   return useContractRead({
-    addressOrName: defifaDeployer,
-    contractInterface: defifaDeployerInterface,
+    addressOrName: chainData.DefifaDeployer.address,
+    contractInterface: chainData.DefifaDeployer.interface,
     functionName: "nextPhaseNeedsQueueing",
-    args: projectId,
+    args: chainData.projectId,
     chainId: chainData.chainId,
     onSuccess: (data) => {},
     onError: (error) => {},

@@ -15,7 +15,7 @@ export function useOutstandingNumber() {
     getOutstandingNumberForAllTiers(provider, chainData).then((data) => {
       setOutstandingNumbers(data);
     });
-  }, [provider]);
+  }, [provider, chainData]);
 
   return outstandingNumbers;
 }

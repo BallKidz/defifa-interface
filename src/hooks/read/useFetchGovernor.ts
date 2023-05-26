@@ -1,5 +1,5 @@
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useFetchGovernor(dataSource: string) {
   const network = useNetwork();
@@ -8,7 +8,7 @@ export function useFetchGovernor(dataSource: string) {
 
   return useContractRead({
     addressOrName: dataSource,
-    contractInterface: chainData.DefifaDelegateABI,
+    contractInterface: chainData.DefifaDelegate.interface,
     functionName: "owner",
     chainId: chainData.chainId,
   });

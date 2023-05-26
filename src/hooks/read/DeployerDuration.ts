@@ -1,14 +1,12 @@
-import DefifaDeployer from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useDeployerDuration() {
   const network = useNetwork();
   const chainData = getChainData(network?.chain?.id);
-  const defifaDeployer = chainData.defifaDeployer;
   const { data: deployerDates } = useContractRead({
-    addressOrName: defifaDeployer,
-    contractInterface: DefifaDeployer.abi,
+    addressOrName: chainData.DefifaDeployer.address,
+    contractInterface: chainData.DefifaDeployer.interface,
     functionName: "timesFor",
     args: chainData.projectId,
     chainId: chainData.chainId,
