@@ -3,6 +3,6 @@ export const colors = {
   pink: "#ED017C",
   black: "#000000",
   white: "#FFFFFF",
-  gold: "#fea282",
+  gold: "#FC8370",
   king: "#F0A202",
 };

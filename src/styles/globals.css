@@ -5,9 +5,10 @@
 :root {
   --contentTitle: #c0b3f0;
   --textColor: var(--contentTitle);
-  --bgColor: #13072A;
+  --bgColor: #100623;
+  --footerColor: #0a0317;
   --titleColor: #17e4f1;
-  --gold: #fea282;
+  --gold: #FC8370;
   --brown: #522a1c;
   --blue: #4a3e6e;
   --purple: #c0b3f0;
@@ -23,7 +24,7 @@
 
 html {
   min-height: 100%;
-  background-color: #0E051E;
+  background-color: var(--footerColor);
 }
 
 body {

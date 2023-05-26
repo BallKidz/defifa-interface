@@ -1,6 +1,6 @@
 
 .wrapper {
-  background-color: #0E051E;
+  background-color: var(--footerColor);
   padding: 2rem 0;
 }
 
