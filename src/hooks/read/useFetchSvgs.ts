@@ -1,10 +1,8 @@
-import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "config";
+import { useChainData } from "hooks/useChainData";
+import { useContractRead } from "wagmi";
 
 export function useFetchSvgs(tokenId: string, dataSource: string) {
-  const network = useNetwork();
-
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
 
   return useContractRead({
     addressOrName: dataSource,

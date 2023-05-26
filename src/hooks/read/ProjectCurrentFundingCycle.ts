@@ -1,9 +1,8 @@
-import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "config";
+import { useChainData } from "hooks/useChainData";
+import { useContractRead } from "wagmi";
 
 export function useProjectCurrentFundingCycle() {
-  const network = useNetwork();
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
 
   const { JBController, projectId } = chainData;
 
