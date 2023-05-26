@@ -1,12 +1,11 @@
-import { FC, useEffect, useState } from "react";
-import { useNetwork } from "wagmi";
-import useScorecardTable from "hooks/useScorecardData";
-import { useSubmitScorecards } from "hooks/write/useSubmitScorecards";
-import { convertScoreCardToPercents } from "utils/scorecard";
 import Button from "components/UI/Button";
 import Table from "components/UI/Table";
-import { ballkidsScorecard } from "./constants/ballKidsScorecard";
+import useScorecardTable from "hooks/useScorecardData";
+import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
+import { FC, useEffect, useState } from "react";
+import { convertScoreCardToPercents } from "utils/scorecard";
 import styles from "./Scorecard.module.css";
+import { ballkidsScorecard } from "./constants/ballKidsScorecard";
 
 interface ScoreCard {
   id: number;
@@ -26,7 +25,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
   const [scoreCardWithPercents, setScoreCardWithPercents] = useState<
     ScoreCard[]
   >([]);
-  const { write, isLoading, isSuccess, isError } = useSubmitScorecards(
+  const { write, isLoading, isSuccess, isError } = useSubmitScorecard(
     scoreCardWithPercents,
     props.governor
   );

@@ -1,14 +1,13 @@
-import useScorecardTable from "hooks/useScorecardData";
-import { useSubmitScorecards } from "hooks/write/useSubmitScorecards";
-import { convertScoreCardToPercents } from "utils/scorecard";
 import Button from "components/UI/Button";
 import Table from "components/UI/Table";
+import useScorecardTable from "hooks/useScorecardData";
+import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import { ballkidsScorecard } from "../constants/ballKidsScorecard";
 import styles from "./BallkidsScorecard.module.css";
 
 const BallkidsScorecard = (governor: string) => {
   const { data, columns } = useScorecardTable();
-  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecards(
+  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecard(
     ballkidsScorecard,
     governor
   );

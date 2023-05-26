@@ -15,10 +15,7 @@ export interface DefifaConfig {
   JBSingleTokenPaymentTerminalStore: ContractData;
   JBETHPaymentTerminal: ContractData;
   DefifaDelegate: ContractData;
-  DefifaGovernor: {
-    interface: ContractInterface;
-  };
-  DefifaCreate: ContractData;
+  DefifaGovernor: ContractData;
   DefifaDeployer: ContractData;
 
   subgraph: string;

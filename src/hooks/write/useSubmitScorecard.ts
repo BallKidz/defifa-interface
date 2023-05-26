@@ -13,7 +13,7 @@ interface ScoreCard {
   redemptionWeight: number;
 }
 
-export function useSubmitScorecards(
+export function useSubmitScorecard(
   _tierWeights: ScoreCard[],
   governor: string
 ) {
@@ -24,8 +24,8 @@ export function useSubmitScorecards(
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor,
-    contractInterface: chainData.DefifaDeployer.interface,
-    functionName: "submitScorecards",
+    contractInterface: chainData.DefifaGovernor.interface,
+    functionName: "submitScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,
   });

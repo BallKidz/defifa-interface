@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FC, useState } from "react";
-import { useSubmitScorecards } from "hooks/write/useSubmitScorecards";
+import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import Button from "components/UI/Button";
 import { ScoreCard } from "../types";
 import styles from "./Custom.module.css";
@@ -12,7 +12,7 @@ interface CustomScorecardProps {
 
 const CustomScorecard: FC<CustomScorecardProps> = ({ tiers, governor }) => {
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>([]);
-  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecards(
+  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecard(
     scoreCard,
     governor
   );
