@@ -1,20 +1,18 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useChainData } from "hooks/useChainData";
+import { simulateTransaction } from "lib/tenderly";
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "config";
-import { simulateTransaction } from "lib/tenderly";
 
 export function useQueueNextPhase(simulate = false) {
-  const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
 
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.DefifaDeployer.address,
     contractInterface: chainData.DefifaDeployer.interface,
