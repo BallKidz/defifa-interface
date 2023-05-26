@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useState } from "react";
 import { IpfsImage } from "react-ipfs-image";
-import { useAttestationPower } from "../../hooks/read/AttestationPower";
-import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import { TeamTier } from "../../hooks/useMyTeams";
-import useRedeemTokensOf from "../../hooks/write/useRedeemTokensOf";
-import Button from "../UI/Button";
+import { useAttestationPower } from "hooks/read/AttestationPower";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { TeamTier } from "hooks/useMyTeams";
+import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
+import Button from "components/UI/Button";
 import styles from "./MyTeam.module.css";
 
 const MyTeam: FC<{

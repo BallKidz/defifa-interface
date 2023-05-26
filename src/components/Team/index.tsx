@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { FC, useEffect, useMemo, useState } from "react";
-import Button from "../UI/Button";
+import Button from "components/UI/Button";
 import styles from "./Team.module.css";
 
 interface TeamProps {

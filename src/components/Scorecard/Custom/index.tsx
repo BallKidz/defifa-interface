@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { FC, useState } from "react";
-import { useSubmitScorecards } from "../../../hooks/write/useSubmitScorecards";
-import Button from "../../UI/Button";
+import { useSubmitScorecards } from "hooks/write/useSubmitScorecards";
+import Button from "components/UI/Button";
 import { ScoreCard } from "../types";
 import styles from "./Custom.module.css";
 

@@ -2,18 +2,18 @@
 import { useEffect, useMemo, useState } from "react";
 import ReactCardFlip from "react-card-flip";
 import { useBlockNumber } from "wagmi";
-import { useCountdown } from "../../../hooks/Countdown";
-import { usePaymentTerminalBalance } from "../../../hooks/read/PaymentTerminalBalance";
-import { useProposalDeadline } from "../../../hooks/read/ProposalDeadline";
-import { useProposalState } from "../../../hooks/read/ProposalState";
-import { useProposalVotes } from "../../../hooks/read/ProposalVotes";
-import { useQuorum } from "../../../hooks/read/Quorum";
-import { useApproveScorecard } from "../../../hooks/write/useApproveScorecard";
-import { useCastVote } from "../../../hooks/write/useCastVote";
-import { fromWad } from "../../../utils/format/formatNumber";
-import { buildColumns } from "../../../utils/table/columns";
-import Button from "../../UI/Button";
-import Table from "../../UI/Table";
+import { useCountdown } from "hooks/Countdown";
+import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
+import { useProposalDeadline } from "hooks/read/ProposalDeadline";
+import { useProposalState } from "hooks/read/ProposalState";
+import { useProposalVotes } from "hooks/read/ProposalVotes";
+import { useQuorum } from "hooks/read/Quorum";
+import { useApproveScorecard } from "hooks/write/useApproveScorecard";
+import { useCastVote } from "hooks/write/useCastVote";
+import { fromWad } from "utils/format/formatNumber";
+import { buildColumns } from "utils/table/columns";
+import Button from "components/UI/Button";
+import Table from "components/UI/Table";
 import {
   ScoreCard,
   ScoreCardProposalState,

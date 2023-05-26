@@ -1,11 +1,11 @@
 import { constants } from "ethers";
 import { useContractRead, useNetwork } from "wagmi";
-import { useChainData } from "hooks/useChainData";
+import { getChainData } from "config";
 
 export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
   const network = useNetwork();
 
-  const { chainData } = useChainData();
+  const chainData = getChainData(network?.chain?.id);
 
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
 

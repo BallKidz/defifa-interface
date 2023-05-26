@@ -1,14 +1,15 @@
 import { ethers } from "ethers";
-import { useChainData } from "hooks/useChainData";
 import {
+  chain as chainlist,
   useAccount,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { simulateTransaction } from "../../lib/tenderly";
-import { toastError } from "../../utils/toast";
+import { getChainData } from "config";
+import { simulateTransaction } from "lib/tenderly";
+import { toastError } from "utils/toast";
 
 export interface PayParams {
   amount: string;
@@ -36,9 +37,7 @@ export function usePay({
 }: PayParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const {
-    chainData: { JBETHPaymentTerminal, projectId },
-  } = useChainData();
+  const { JBETHPaymentTerminal, projectId } = getChainData(chain?.id);
 
   const { config } = usePrepareContractWrite({
     addressOrName: JBETHPaymentTerminal.address,

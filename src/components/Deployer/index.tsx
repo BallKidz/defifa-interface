@@ -1,6 +1,6 @@
 import Navbar from "../Navbar";
 import Info from "../Navbar/Info";
-import MainWrapper from "../UI/MainWrapper";
+import MainWrapper from "components/UI/MainWrapper";
 import DeployerCreate from "./Create";
 import DeployerDescription from "./Description";
 

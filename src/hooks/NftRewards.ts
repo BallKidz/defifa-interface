@@ -1,15 +1,10 @@
 // Retreives each NftRewardTier from IPFS given an array of CIDs (IpfsHashes)
 
-import { useQuery, UseQueryResult } from "react-query";
-import {
-  cidFromIpfsUri,
-  decodeEncodedIPFSUri,
-  getIpfsUrl,
-} from "../utils/ipfs";
-
 import axios from "axios";
-import { Result } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
+import { Result } from "ethers/lib/utils";
+import { useQuery, UseQueryResult } from "react-query";
+import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;

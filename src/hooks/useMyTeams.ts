@@ -3,8 +3,8 @@ import { useChainData } from "./useChainData";
 import request, { gql } from "graphql-request";
 import { useEffect, useState } from "react";
 import { useInterval } from "./useInterval";
-import {DEFIFA_PROJECT_ID_GOERLI} from "../constants/constants";
-import { DEFAULT_NFT_MAX_SUPPLY } from "../../src/hooks/NftRewards";
+import {DEFIFA_PROJECT_ID_GOERLI} from "constants/constants";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
 
 const myTeamsQuery = gql`
   query myTeamsQuery($owner: String!, $gameId: String!) {

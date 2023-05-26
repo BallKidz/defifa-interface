@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { useCountdown } from "../../../../hooks/Countdown";
-import { useDeployerDates } from "../../../../hooks/read/DeployerDates";
-import { useDeployerDuration } from "../../../../hooks/read/DeployerDuration";
-import { useProjectCurrentFundingCycle } from "../../../../hooks/read/ProjectCurrentFundingCycle";
+import { useCountdown } from "hooks/Countdown";
+import { useDeployerDates } from "hooks/read/DeployerDates";
+import { useDeployerDuration } from "hooks/read/DeployerDuration";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import {
   formatMillistoMoment,
   formatSecondsToMoment,
-} from "../../../../utils/format/formatDate";
-import Content from "../../../UI/Content";
+} from "utils/format/formatDate";
+import Content from "components/UI/Content";
 import styles from "./CurrentPhase.module.css";
 
 const CurrentPhase = () => {

@@ -6,9 +6,9 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { colors } from "../../../constants/colors";
-import constants from "../../../constants/UI";
-import { useProjectCurrentFundingCycle } from "../../../hooks/read/ProjectCurrentFundingCycle";
+import { colors } from "constants/colors";
+import constants from "constants/UI";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 
 import styles from "./Content.module.css";
 

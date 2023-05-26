@@ -1,4 +1,4 @@
-import { convertPercentsToPoints } from "../../../../utils/scorecard";
+import { convertPercentsToPoints } from "utils/scorecard";
 import { ScoreCard, ScoreCardTableData } from "../../types";
 
 export const getScoreCardTableData = (tiers: any[], proposal: ScoreCard) => {

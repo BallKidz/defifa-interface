@@ -1,12 +1,13 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { constants, utils } from "ethers";
-import { useChainData } from "hooks/useChainData";
+import { BigNumber, constants, utils } from "ethers";
 import {
   useAccount,
   useContractWrite,
+  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
+import { getChainData } from "config";
 import { DefifaLaunchProjectData } from "../../types/interfaces";
 
 const convertTo18Decimals = (value: number) => {
@@ -19,9 +20,10 @@ const convertTo18Decimals = (value: number) => {
 export function useCreateTournament(
   _launchProjectData?: DefifaLaunchProjectData
 ) {
+  const network = useNetwork();
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { chainData } = useChainData();
+  const chainData = getChainData(network?.chain?.id);
 
   const defaultTokenUriResolver =
     _launchProjectData?.defaultTokenUriResolver || constants.AddressZero;

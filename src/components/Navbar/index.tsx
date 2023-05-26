@@ -1,5 +1,5 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
+import useWindowDimensions from "hooks/useWindowDimensions";
 import styles from "./Navbar.module.css";
 
 const Navbar = (props: PropsWithChildren) => {

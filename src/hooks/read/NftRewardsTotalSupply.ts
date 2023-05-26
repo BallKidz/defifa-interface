@@ -1,10 +1,12 @@
-import { useChainData } from "../useChainData";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
+import { getChainData } from "config";
 
 export function useNftRewardsTotalSupply(
   dataSourceAddress: string | undefined
 ) {
-  const { chainData } = useChainData();
+  const network = useNetwork();
+
+  const chainData = getChainData(network?.chain?.id);
 
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
 

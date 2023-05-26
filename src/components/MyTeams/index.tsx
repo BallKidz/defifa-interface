@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import { TeamsContext } from "../../hooks/teamsContext";
-import { TeamTier, useMyTeams } from "../../hooks/useMyTeams";
-import useRedeemTokensOf from "../../hooks/write/useRedeemTokensOf";
-import MyTeam from "../MyTeam/MyTeam";
-import Button from "../UI/Button";
-import Content from "../UI/Content";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { TeamsContext } from "hooks/teamsContext";
+import { TeamTier, useMyTeams } from "hooks/useMyTeams";
+import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
+import MyTeam from "components/MyTeam/MyTeam";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
 import styles from "./index.module.css";
 
 const MyTeams = () => {

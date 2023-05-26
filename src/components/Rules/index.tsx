@@ -1,11 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useDeployerDates } from "hooks/read/DeployerDates";
 import { useGameMetadata } from "hooks/read/GameMetadata";
-import { useDeployerDates } from "../../hooks/read/DeployerDates";
-import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import Content from "../UI/Content";
-import styles from "./index.module.css";
-import { getChainData } from "config";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { useChainData } from "hooks/useChainData";
+import Content from "components/UI/Content";
+import styles from "./index.module.css";
 
 const Rules = () => {
   const { mintDuration, start, refundPeriodDuration, end } =
