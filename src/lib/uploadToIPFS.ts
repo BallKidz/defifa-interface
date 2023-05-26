@@ -1,5 +1,5 @@
 import { create } from "ipfs-http-client";
-
+// TODO: Move this to a .env file and add it to .gitignore
 const projectId = "2NdpbtprhXeb7h0SvsLPnX19Z00";
 const projectSecret = "3477ef4dc95aeb5da2903d62e535d05c";
 const authorization = "Basic " + btoa(projectId + ":" + projectSecret);
