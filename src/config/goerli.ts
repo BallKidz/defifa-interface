@@ -31,22 +31,21 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     address: JBETHPaymentTerminal.address,
     interface: JBETHPaymentTerminal.abi,
   },
-
   JBTiered721DelegateStore: {
-    address: "0xC7E775BbA411Df1D3c5D70Ec4C45f3DF8A85B0d0",
+    address: "0x8dA6B4569f88C0164d77Af5E5BF12E88d4bCd016",
     interface: IJBTiered721DelegateStore.abi,
   },
 
   DefifaDelegate: {
-    address: "0x168FD684Ac6aDa8B022Ddd0a7d75ba12C1fBE874",
+    address: "0xDBbc2fF20c6136bd3358b2aa435854086dB1bB33",
     interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
-    address: "0xa5cdF50f25EBBFf94ac57507Dc24B63af8514DaE",
+    address: "0xdb885021DfF7bc22c05697aE59c9525352DA526B",
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: "0x020fe1ecE9cAeb6bc6243e124d2a617237Ae4675",
+    address: "0x2304C37e0727cd4F3e89Be2bc695e3D0f118df1c",
     interface: DefifaDeployer.abi,
   },
 

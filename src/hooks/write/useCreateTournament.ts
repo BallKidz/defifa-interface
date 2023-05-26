@@ -52,7 +52,8 @@ export function useCreateTournament(
   if (isPrepareContractWriteError) {
     console.error(
       "useCreateTournament::usePrepareContractWriteError::error",
-      prepareContractWriteError
+      prepareContractWriteError,
+      preparedLaunchProjectData
     );
   }
 

@@ -3,7 +3,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { faPen, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import bs58 from "bs58";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
@@ -16,7 +15,7 @@ import { useCreateTournament } from "hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
-import { DefifaLaunchProjectData, DefifaTier } from "types/interfaces";
+import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
@@ -35,19 +34,21 @@ const datetimeLocalToUnix = (value: string): number => {
   return Math.floor(new Date(value).getTime() / 1000);
 };
 
+const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
+const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
+const GAME_START_BUFFER_SECONDS = 60 * 5; // 5 minutes
+
 const DeployerCreate = () => {
   const [step, setStep] = useState(1);
   const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
   const [addNftOpen, setAddNftOpen] = useState(false);
 
-  const [tier, setTier] = useState<DefifaTier>({
+  const [tier, setTier] = useState<DefifaTierParams>({
     name: "",
     price: 0.01,
     reservedRate: 0,
     reservedTokenBeneficiary: constants.AddressZero,
-    royaltyRate: 0,
-    royaltyBeneficiary: constants.AddressZero,
     encodedIPFSUri:
       "0x0000000000000000000000000000000000000000000000000000000000000000",
     shouldUseReservedTokenBeneficiaryAsDefault: false,
@@ -58,9 +59,13 @@ const DeployerCreate = () => {
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
     name: "",
     rules: "",
-    mintDuration: 1 * 60 * 60,
-    refundPeriodDuration: 60 * 60,
-    start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
+    mintDuration: DEFAULT_MINT_DURATION_SECONDS,
+    refundPeriodDuration: DEFAULT_REFUND_DURATION_SECONDS,
+    start:
+      currentUnixTimestamp +
+      DEFAULT_MINT_DURATION_SECONDS +
+      DEFAULT_REFUND_DURATION_SECONDS +
+      GAME_START_BUFFER_SECONDS,
     votingPeriod: 0,
     votingStartTime: 0,
     tiers: [],
@@ -79,12 +84,12 @@ const DeployerCreate = () => {
     },
     store: JBTiered721DelegateStore.address,
   });
-  const [editedTier, setEditedTier] = useState<DefifaTier | null>(null);
+  const [editedTier, setEditedTier] = useState<DefifaTierParams | null>(null);
   const minDate = unixToDatetimeLocal(currentUnixTimestamp);
   const [inputKey, setInputKey] = useState(0);
 
   const [tierGeneralValues, setTierGeneralValues] =
-    useState<Partial<DefifaTier>>();
+    useState<Partial<DefifaTierParams>>();
 
   const { write: createTournament } = useCreateTournament(formValues);
 
@@ -272,8 +277,6 @@ const DeployerCreate = () => {
       price: 0.01, // default price if nothing entered
       reservedRate: 0,
       reservedTokenBeneficiary: constants.AddressZero,
-      royaltyRate: 0,
-      royaltyBeneficiary: constants.AddressZero,
       encodedIPFSUri:
         "0x0000000000000000000000000000000000000000000000000000000000000000",
       shouldUseReservedTokenBeneficiaryAsDefault: false,
@@ -308,7 +311,7 @@ const DeployerCreate = () => {
     setEditedTier(null);
   };
 
-  const editTier = (t: DefifaTier, index: number) => {
+  const editTier = (t: DefifaTierParams, index: number) => {
     setEditedTier(t);
     confirmAlert({
       customUI: ({ onClose }) => {
