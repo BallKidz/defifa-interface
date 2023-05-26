@@ -57,8 +57,8 @@ const DeployerCreate = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
-    name: "",
-    rules: "",
+    name: "Your game name",
+    rules: "Your game rules",
     mintDuration: DEFAULT_MINT_DURATION_SECONDS,
     refundPeriodDuration: DEFAULT_REFUND_DURATION_SECONDS,
     start:
@@ -93,6 +93,7 @@ const DeployerCreate = () => {
 
   const { write: createTournament } = useCreateTournament(formValues);
 
+  // TODO this is totally bugged, needs to be uploaded at deploy time
   useEffect(() => {
     const uploadJsons = async () => {
       // This is the 'collection' name in OS.
@@ -112,6 +113,7 @@ const DeployerCreate = () => {
         "For more info visit" +
         " " +
         contractUri.infoUri;
+
       const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
 
       if (!contractUriCid || !projectMetadataCid) return;
