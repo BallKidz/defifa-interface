@@ -4,7 +4,7 @@ import {
   formatDateToUTC,
   formatSecondsToLocal,
   formatSecondsToUTC,
-} from "../../utils/format/formatDate";
+} from "utils/format/formatDate";
 import { useDeployerDuration } from "./DeployerDuration";
 
 type DescriptionDates = {

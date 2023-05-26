@@ -2,12 +2,12 @@
 // import { forEach } from "lodash";
 // import { useEffect, useState } from "react";
 // import { useNetwork, useProvider } from "wagmi";
-// import { useChainData } from "hooks/useChainData";
+// import { getChainData } from "config";
 
 // export function useTiersImages(tiers: any, dataSource: string) {
 //   const provider = useProvider();
 //   const network = useNetwork();
-//   const { chainData } = useChainData();
+//   const chainData = getChainData(network?.chain?.id);
 
 //   const [tierImages, setTierImages] = useState<JBImagesForAllTiersData[]>([
 //     {

@@ -1,7 +1,7 @@
-import { useNftRewardsTotalSupply } from "../../../../hooks/read/NftRewardsTotalSupply";
-import { usePaymentTerminalBalance } from "../../../../hooks/read/PaymentTerminalBalance";
-import { useProjectCurrentFundingCycle } from "../../../../hooks/read/ProjectCurrentFundingCycle";
-import { fromWad } from "../../../../utils/format/formatNumber";
+import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
+import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { fromWad } from "utils/format/formatNumber";
 import styles from "./Treasury.module.css";
 
 const Treasury = () => {

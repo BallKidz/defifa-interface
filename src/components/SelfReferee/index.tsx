@@ -4,17 +4,17 @@
 import { chunk } from "lodash";
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import useNftRewards from "../../hooks/NftRewards";
-import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
-import { useNextPhaseNeedsQueueing } from "../../hooks/read/PhaseNeedQueueing";
-import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import { useFetchGovernor } from "../../hooks/read/useFetchGovernor";
-import { useMintReservesFor } from "../../hooks/write/useMintReservesFor";
-import { useQueueNextPhase } from "../../hooks/write/useQueueNextPhase";
+import useNftRewards from "hooks/NftRewards";
+import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
+import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { useFetchGovernor } from "hooks/read/useFetchGovernor";
+import { useMintReservesFor } from "hooks/write/useMintReservesFor";
+import { useQueueNextPhase } from "hooks/write/useQueueNextPhase";
 import Attestation from "../Attestation";
 import ScoreCard from "../Scorecard";
-import Button from "../UI/Button";
-import Content from "../UI/Content";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
 import styles from "./SelfReferee.module.css";
 
 const SelfRefree = () => {

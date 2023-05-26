@@ -1,8 +1,9 @@
-import axios from "axios";
-import { useChainData } from "hooks/useChainData";
+import { useContractRead, useNetwork } from "wagmi";
+import { getChainData } from "config";
 import { useQuery } from "react-query";
+import axios from "axios";
 import { getIpfsUrl } from "utils/ipfs";
-import { useContractRead } from "wagmi";
+import { type } from "os";
 
 const METADATA_DOMAIN = 0;
 
@@ -16,7 +17,9 @@ interface JBProjectMetadata {
 }
 
 export function useGameMetadata(projectId: number) {
-  const { chainData } = useChainData();
+  const network = useNetwork();
+
+  const chainData = getChainData(network?.chain?.id);
 
   const { data: metadataCid } = useContractRead({
     addressOrName: chainData.JBProjects.address,

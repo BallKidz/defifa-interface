@@ -1,4 +1,4 @@
-import { DefifaTier } from "../../../../types/interfaces";
+import { DefifaTier } from "types/interfaces";
 
 interface EditTierProps {
   tier: DefifaTier;

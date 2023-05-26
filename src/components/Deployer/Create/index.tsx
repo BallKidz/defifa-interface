@@ -5,20 +5,20 @@ import { faPen, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import bs58 from "bs58";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
+import EthSymbol from "components/UI/EthSymbol/EthSymbol";
+import { ETH_TOKEN_ADDRESS } from "constants/addresses";
+import { colors } from "constants/colors";
 import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
+import { useCreateTournament } from "hooks/write/useCreateTournament";
+import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
-import { ETH_TOKEN_ADDRESS } from "../../../constants/addresses";
-import { colors } from "../../../constants/colors";
-import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
-import { uploadJsonToIpfs, uploadToIPFS } from "../../../lib/uploadToIPFS";
-import { DefifaLaunchProjectData, DefifaTier } from "../../../types/interfaces";
-import { contractUri, projectMetadataUri } from "../../../uri/contractUri";
-import { truncateAddress } from "../../../utils/truncate";
-import Button from "../../UI/Button";
-import Content from "../../UI/Content";
-import EthSymbol from "../../UI/EthSymbol/EthSymbol";
+import { DefifaLaunchProjectData, DefifaTier } from "types/interfaces";
+import { contractUri, projectMetadataUri } from "uri/contractUri";
+import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
 
 const unixToDatetimeLocal = (timestamp: number): string => {

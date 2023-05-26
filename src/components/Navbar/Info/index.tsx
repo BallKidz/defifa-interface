@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Button from "../../UI/Button";
+import Button from "components/UI/Button";
 import { Logo } from "../Logo";
 import Wallet from "../Wallet";
 import styles from "./Info.module.css";

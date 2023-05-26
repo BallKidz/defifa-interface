@@ -1,5 +1,5 @@
 import { HTMLAttributes, useMemo } from "react";
-import { colors } from "../../../constants/colors";
+import { colors } from "constants/colors";
 import styles from "./Button.module.css";
 
 const Button = ({

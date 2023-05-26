@@ -1,8 +1,8 @@
-import useScorecardTable from "../../../hooks/useScorecardData";
-import { useSubmitScorecards } from "../../../hooks/write/useSubmitScorecards";
-import { convertScoreCardToPercents } from "../../../utils/scorecard";
-import Button from "../../UI/Button";
-import Table from "../../UI/Table";
+import useScorecardTable from "hooks/useScorecardData";
+import { useSubmitScorecards } from "hooks/write/useSubmitScorecards";
+import { convertScoreCardToPercents } from "utils/scorecard";
+import Button from "components/UI/Button";
+import Table from "components/UI/Table";
 import { ballkidsScorecard } from "../constants/ballKidsScorecard";
 import styles from "./BallkidsScorecard.module.css";
 

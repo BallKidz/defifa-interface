@@ -5,7 +5,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { simulateTransaction } from "../../lib/tenderly";
+import { simulateTransaction } from "lib/tenderly";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
 

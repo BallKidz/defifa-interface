@@ -3,17 +3,17 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { MINT_PRICE } from "../../constants/constants";
-import useNftRewards from "../../hooks/NftRewards";
-import { useNftRewardTiersOf } from "../../hooks/read/NftRewardsTiers";
-import { useNftRewardsTotalSupply } from "../../hooks/read/NftRewardsTotalSupply";
-import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-import { usePay } from "../../hooks/write/usePay";
+import { MINT_PRICE } from "constants/constants";
+import useNftRewards from "hooks/NftRewards";
+import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
+import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { usePay } from "hooks/write/usePay";
 import Team from "../Team";
-import Button from "../UI/Button";
-import Content from "../UI/Content";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
 import styles from "./Mint.module.css";
-import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
+import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 
 const Mint = () => {
   const { isConnected } = useAccount();

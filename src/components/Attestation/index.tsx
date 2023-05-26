@@ -2,9 +2,9 @@
 /* eslint-disable react/no-unescaped-entities */
 import { isEqual } from "lodash";
 import { useEffect, useState } from "react";
-import { useFetchGovernor } from "../../hooks/read/useFetchGovernor";
-import { useScorecards } from "../../hooks/useScorecards";
-import { convertScoreCardToPercents } from "../../utils/scorecard";
+import { useFetchGovernor } from "hooks/read/useFetchGovernor";
+import { useScorecards } from "hooks/useScorecards";
+import { convertScoreCardToPercents } from "utils/scorecard";
 import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
 import Button from "../UI/Button";
 import styles from "./Attestation.module.css";

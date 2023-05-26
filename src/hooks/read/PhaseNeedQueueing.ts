@@ -1,8 +1,9 @@
-import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
+import { getChainData } from "config";
 
 export function useNextPhaseNeedsQueueing() {
-  const { chainData } = useChainData();
+  const network = useNetwork();
+  const chainData = getChainData(network?.chain?.id);
 
   return useContractRead({
     addressOrName: chainData.DefifaDeployer.address,

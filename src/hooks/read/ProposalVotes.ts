@@ -1,8 +1,10 @@
-import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
+import { getChainData } from "config";
 
 export function useProposalVotes(proposalId: number, governor: string) {
-  const { chainData } = useChainData();
+  const network = useNetwork();
+
+  const chainData = getChainData(network?.chain?.id);
 
   return useContractRead({
     addressOrName: governor,

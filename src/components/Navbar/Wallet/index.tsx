@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Button from "../../UI/Button";
+import Button from "components/UI/Button";
 import styles from "./Wallet.module.css";
 
 const Wallet = () => {
