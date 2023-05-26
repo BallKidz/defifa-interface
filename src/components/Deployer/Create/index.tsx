@@ -42,7 +42,7 @@ const DeployerCreate = () => {
   const [step, setStep] = useState(1);
   const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
-  const [addNftOpen, setAddNftOpen] = useState(false);
+  const [addNftOpen, setAddNftOpen] = useState(true);
 
   const [tier, setTier] = useState<DefifaTierParams>({
     name: "",
@@ -525,7 +525,7 @@ const DeployerCreate = () => {
                     onChange={handleTierChange}
                   />
                 </div>
-                <div className={styles.formGroup}>
+{/*                 <div className={styles.formGroup}>
                   <label htmlFor="encodedIPFSUri" className={styles.label}>
                     Upload file
                   </label>
@@ -557,7 +557,7 @@ const DeployerCreate = () => {
                       />
                     )}
                   </div>
-                </div>
+                </div> */}
 
                 <div style={{ marginTop: "20px" }}>
                   <Button onClick={onAddNFT} disabled={isUploading}>

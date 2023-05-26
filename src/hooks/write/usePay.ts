@@ -10,6 +10,7 @@ import {
 import { useChainData } from "hooks/useChainData";
 import { simulateTransaction } from "lib/tenderly";
 import { toastError } from "utils/toast";
+import { IJB721Delegate_INTERFACE_ID } from "constants/addresses";
 
 export interface PayParams {
   amount: string;
@@ -86,7 +87,6 @@ export function usePay({
 
 function encodePayMetadata(metadata: PayMetadata) {
   const zeroBytes32 = ethers.constants.HashZero;
-  const IJB721Delegate_INTERFACE_ID = "0xace10733";
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes32", "bytes4", "address", "uint16[]"],
     [
