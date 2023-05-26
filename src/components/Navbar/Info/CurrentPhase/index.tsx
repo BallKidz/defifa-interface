@@ -13,7 +13,7 @@ import styles from "./CurrentPhase.module.css";
 const CurrentPhase = () => {
   const { data } = useProjectCurrentFundingCycle();
   const deployerDuration = useDeployerDuration();
-  const { refundPeriodDuration, start, end } = useDeployerDates("local");
+  const { refundPeriodDuration, start } = useDeployerDates("local");
 
   const fundingCycle = data?.fundingCycle.number.toNumber();
   const [countdownDate, setCountdownDate] = useState<Date>();
@@ -53,7 +53,7 @@ const CurrentPhase = () => {
   const dateCollapsibleTitle = useMemo(() => {
     return timeRemaining
       ? `${titleTimeRemaining} ${timeRemaining}`
-      : `${titleTimeRemaining}: ${end.date}`;
+      : `${titleTimeRemaining}: `;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining]);
 
@@ -62,11 +62,7 @@ const CurrentPhase = () => {
       <h1 className={styles.h1}>Current phase</h1>
       <p style={{ fontSize: "16px" }}>{dateCollapsibleTitle}</p>
       {titleTimeRemaining && (
-        <Content
-          title={`Phases`}
-          fontSize="16"
-          color="var(--violet)"
-        >
+        <Content title={`Phases`} fontSize="16" color="var(--violet)">
           <div className={styles.dateInfoContainer}>
             <p>
               Mint ends:{" "}
@@ -83,7 +79,7 @@ const CurrentPhase = () => {
               <span className={styles.infoDates}>{start.date}</span>
             </p>
             <p>
-              Game ends: <span className={styles.infoDates}>{end.date}</span>{" "}
+              {/* Game ends: <span className={styles.infoDates}>{end.date}</span>{" "} */}
             </p>
           </div>
         </Content>

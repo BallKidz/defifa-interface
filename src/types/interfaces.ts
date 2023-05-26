@@ -38,14 +38,14 @@ export interface DefifaLaunchProjectData {
   mintDuration: number;
   refundPeriodDuration: number;
   start: number;
-  end: number;
   splits: any[];
   distributionLimit: number;
   ballkidzFeeProjectTokenAccount: string;
   defaultTokenUriResolver: string;
   votingPeriod: number;
-  terminal: any;
-  store: any;
+  votingStartTime: number;
+  terminal: string; // address
+  store: string; // address
 }
 
 interface JBProjectMetadata {

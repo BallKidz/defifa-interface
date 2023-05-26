@@ -7,7 +7,7 @@ import Content from "components/UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
-  const { mintDuration, start, refundPeriodDuration, end } =
+  const { mintDuration, start, refundPeriodDuration } =
     useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
@@ -30,8 +30,8 @@ const Rules = () => {
         case 3:
           return `${start.date}`;
         default:
-        case 4:
-          return `${end.date}`;
+        // case 4:
+        //   return `${end.date}`;
       }
     }
   };
@@ -119,9 +119,9 @@ const Rules = () => {
           <div className={styles.phaseBox}>
             <h1>
               Phase 4: Final whistle{" "}
-              <span className={pillStyle(end.phase)}>
+              {/* <span className={pillStyle(end.phase)}>
                 {fillPill(end.phase)}
-              </span>
+              </span> */}
             </h1>
             <ul>
               <li>The tournament is self refereed.</li>

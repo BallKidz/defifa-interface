@@ -61,8 +61,8 @@ const DeployerCreate = () => {
     mintDuration: 1 * 60 * 60,
     refundPeriodDuration: 60 * 60,
     start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
-    end: currentUnixTimestamp + 1 * 60 * 60 + 2 * 60 * 60,
     votingPeriod: 0,
+    votingStartTime: 0,
     tiers: [],
     splits: [],
     token: ETH_TOKEN_ADDRESS,
@@ -124,12 +124,11 @@ const DeployerCreate = () => {
     uploadJsons();
   }, []);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.target;
-    const datetimeLocalFields: Array<keyof DefifaLaunchProjectData> = [
-      "start",
-      "end",
-    ];
+    const datetimeLocalFields: Array<keyof DefifaLaunchProjectData> = ["start"];
 
     let newValue: string | number;
 
@@ -358,37 +357,59 @@ const DeployerCreate = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         {step === 1 && (
           <>
-            <div className={styles.formGroup}>
-              <label htmlFor="name" className={styles.label}>
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className={styles.input}
-                value={formValues.name}
-                onChange={handleInputChange}
-                required
-              />
+            <div style={{ marginBottom: "1rem" }}>
+              <div className={styles.formGroup}>
+                <label htmlFor="name" className={styles.label}>
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  className={styles.input}
+                  value={formValues.name}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="rules" className={styles.label}>
+                  Rules
+                </label>
+                <textarea
+                  id="rules"
+                  name="rules"
+                  className={styles.input}
+                  value={formValues.rules}
+                  onChange={handleInputChange}
+                  required
+                  rows={5}
+                />
+              </div>
             </div>
+
+            <h3 className={styles.stepTitle}>Game schedule</h3>
             <div className={styles.formGroup}>
-              <label htmlFor="rules" className={styles.label}>
-                Rules
+              <label htmlFor="start" className={styles.label}>
+                Game start time
               </label>
               <input
-                type="text"
-                id="rules"
-                name="rules"
+                type="datetime-local"
+                id="start"
+                name="start"
                 className={styles.input}
-                value={formValues.rules}
+                value={unixToDatetimeLocal(formValues.start)}
                 onChange={handleInputChange}
+                min={minDate}
                 required
               />
+              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+                Must be later than: now + mint duration + refund duration
+              </span>
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="mintDuration" className={styles.label}>
-                Mint Duration (hours prior to kickoff)
+                Mint duration
               </label>
               <input
                 type="number"
@@ -401,10 +422,13 @@ const DeployerCreate = () => {
                 step={1} // set the step size, e.g., 1 hour increments
                 required
               />
+              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+                Hours prior to the start of the game
+              </span>
             </div>
             <div className={styles.formGroup}>
               <label htmlFor="refundPeriodDuration" className={styles.label}>
-                Refund duration (final hours before kickoff, optional)
+                Refund duration (optional)
               </label>
               <input
                 type="number"
@@ -417,38 +441,12 @@ const DeployerCreate = () => {
                 step={1} // set the step size, e.g., 1 hour increments
                 required
               />
+              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+                Time allowed for refunds. Starts after minting and before the
+                game.
+              </span>
             </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="start" className={styles.label}>
-                Start Date (kickoff time &gt; now + mint duration + refund
-                duration)
-              </label>
-              <input
-                type="datetime-local"
-                id="start"
-                name="start"
-                className={styles.input}
-                value={unixToDatetimeLocal(formValues.start)}
-                onChange={handleInputChange}
-                min={minDate}
-                required
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="end" className={styles.label}>
-                End Date (final whistle)
-              </label>
-              <input
-                type="datetime-local"
-                id="end"
-                name="end"
-                className={styles.input}
-                value={unixToDatetimeLocal(formValues.end)}
-                onChange={handleInputChange}
-                min={minDate}
-                required
-              />
-            </div>
+
             {/* <div className={styles.formGroup}>
               <label htmlFor="defaultTokenUriResolver" className={styles.label}>
                 Token URI
