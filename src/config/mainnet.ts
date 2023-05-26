@@ -32,7 +32,7 @@ export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
     interface: JBSingleTokenPaymentTerminalStore.abi,
   },
   JBETHPaymentTerminal: {
-    address: "0xFA391De95Fcbcd3157268B91d8c7af083E607A5C",
+    address: JBETHPaymentTerminal.address,
     interface: JBETHPaymentTerminal.abi,
   },
   DefifaDelegate: {
