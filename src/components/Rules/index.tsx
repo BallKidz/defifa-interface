@@ -49,39 +49,9 @@ const Rules = () => {
 
   return (
     <Content title="Rules" open={false} fontSize={"16"} color="var(--violet)">
-      <div>{gameMetadata?.description}</div>
       <div className={styles.rulesContainer}>
         <div className={styles.pointSystemWrapper} id="pointsSystem">
-          <h1 className={styles.pointHeader}>
-            {/* <sup className={styles.superScript}>1 </sup>Point system: */}
-          </h1>
-          <p className={styles.pointSystemDescription}>
-            Each game has its own point system which is proposed by the person
-            launching the game. For this game, the point system is as follows:
-          </p>
-          <p className={styles.pointSystemDescription}>
-            Total points:{" "}
-            <span className={styles.pointSystemPoints}>100,000</span>
-          </p>
-          <div className={styles.pointSystemCalculation}>
-            <p>
-              <span className={styles.pointSystemPoints}>50% of pot</span> is
-              split between players who pick the correct most popular artist.
-            </p>
-            <p>
-              <span className={styles.pointSystemPoints}>30% of the pot</span>{" "}
-              is split between players who pick the second most popular artist.
-            </p>
-            <p>
-              <span className={styles.pointSystemPoints}>20% of the pot</span>{" "}
-              is split between players who pick the #3-5 most popular artist.
-            </p>
-          </div>
-          <p className={styles.pointSystemDescription}>
-            The scorecard that is ratified should represent the amount of points
-            by each team divided by the total available 100,000 points. Keep in
-            mind your NFT's winnings are divided up by all holders of that NFT.
-          </p>
+          <div>{gameMetadata?.description}</div>
         </div>
         <div className={styles.phases}>
           <div className={styles.phaseBox}>
