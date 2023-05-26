@@ -7,7 +7,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { ScoreCard } from "../../components/Scorecard/types";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useApproveScorecard(
   _tierWeights: ScoreCard[],
@@ -20,7 +20,7 @@ export function useApproveScorecard(
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor,
-    contractInterface: chainData.defifaGovernor.interface,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "ratifyScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,

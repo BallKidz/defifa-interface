@@ -7,9 +7,10 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { ETH_TOKEN_ADDRESS, getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 import { simulateTransaction } from "../../lib/tenderly";
 import { toastError, toastSuccess } from "../../utils/toast";
+import { ETH_TOKEN_ADDRESS } from "../../constants/addresses";
 
 export interface RedeemParams {
   tokenIds: string[];
@@ -24,10 +25,10 @@ export function useRedeemTokensOf({
 }: RedeemParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
-  const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
+  const { JBETHPaymentTerminal, projectId } = getChainData(chain?.id);
   const { config } = usePrepareContractWrite({
-    addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.interface,
+    addressOrName: JBETHPaymentTerminal.address,
+    contractInterface: JBETHPaymentTerminal.interface,
     functionName: "redeemTokensOf",
     onError: (error) => {
       if (error.message.includes("insufficient funds")) {

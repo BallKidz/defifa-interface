@@ -7,7 +7,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 import { DefifaLaunchProjectData } from "../../types/interfaces";
 
 const convertTo18Decimals = (value: number) => {
@@ -43,8 +43,8 @@ export function useCreateTournament(
     error: prepareContractWriteError,
     isError: isPrepareContractWriteError,
   } = usePrepareContractWrite({
-    addressOrName: chainData.defifaCreate.address,
-    contractInterface: chainData.defifaCreate.interface,
+    addressOrName: chainData.DefifaCreate.address,
+    contractInterface: chainData.DefifaCreate.interface,
     functionName: "launchGameWith",
     args: [preparedLaunchProjectData],
     chainId: chainData.chainId,

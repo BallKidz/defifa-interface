@@ -1,5 +1,5 @@
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useProjectCurrentFundingCycle() {
   const network = useNetwork();
@@ -9,7 +9,7 @@ export function useProjectCurrentFundingCycle() {
 
   return useContractRead({
     addressOrName: JBController.address,
-    contractInterface: JBController.abi,
+    contractInterface: JBController.interface,
     functionName: "currentFundingCycleOf",
     args: projectId,
     chainId: chainData.chainId,

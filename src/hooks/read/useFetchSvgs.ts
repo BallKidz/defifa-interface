@@ -1,5 +1,5 @@
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useFetchSvgs(tokenId: string, dataSource: string) {
   const network = useNetwork();
@@ -8,7 +8,7 @@ export function useFetchSvgs(tokenId: string, dataSource: string) {
 
   return useContractRead({
     addressOrName: dataSource,
-    contractInterface: chainData.DefifaDelegateABI,
+    contractInterface: chainData.DefifaDelegate.interface,
     functionName: "tokenURI",
     args: tokenId ? [tokenId] : null,
     chainId: chainData.chainId,

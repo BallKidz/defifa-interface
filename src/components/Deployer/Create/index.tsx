@@ -8,7 +8,7 @@ import bs58 from "bs58";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import { useNetwork } from "wagmi";
-import { ETH_TOKEN_ADDRESS, getChainData } from "../../../constants/addresses";
+import { getChainData } from "../../../config";
 import { colors } from "../../../constants/colors";
 import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "../../../lib/uploadToIPFS";
@@ -20,6 +20,7 @@ import Content from "../../UI/Content";
 import styles from "./DeployerCreate.module.css";
 import EthSymbol from "../../UI/EthSymbol/EthSymbol";
 import { constants } from "ethers";
+import { ETH_TOKEN_ADDRESS } from "../../../constants/addresses";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -39,7 +40,7 @@ const DeployerCreate = () => {
   const [step, setStep] = useState(1);
   const network = useNetwork();
   const chainData = getChainData(network?.chain?.id);
-  const { ethPaymentTerminal, JBTiered721DelegateStore } = chainData;
+  const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
   const [addNftOpen, setAddNftOpen] = useState(false);
 
   const [tier, setTier] = useState<DefifaTier>({
@@ -69,7 +70,7 @@ const DeployerCreate = () => {
     token: ETH_TOKEN_ADDRESS,
     ballkidzFeeProjectTokenAccount:
       "0x11834239698c7336EF232C00a2A9926d3375DF9D",
-    terminal: ethPaymentTerminal.address,
+    terminal: JBETHPaymentTerminal.address,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
     baseUri: "ipfs://",

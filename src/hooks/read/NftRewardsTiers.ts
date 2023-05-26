@@ -1,6 +1,6 @@
 import { constants } from "ethers";
 import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
   const network = useNetwork();

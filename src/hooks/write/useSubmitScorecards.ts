@@ -6,7 +6,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { getChainData } from "../../config";
 
 interface ScoreCard {
   id: number;
@@ -24,7 +24,7 @@ export function useSubmitScorecards(
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor,
-    contractInterface: chainData.defifaDeployerInterface,
+    contractInterface: chainData.DefifaDeployer.interface,
     functionName: "submitScorecards",
     args: [_tierWeights],
     chainId: chainData.chainId,

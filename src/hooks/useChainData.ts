@@ -1,5 +1,5 @@
 import { useNetwork } from "wagmi";
-import { getChainData } from "../constants/addresses";
+import { getChainData } from "../config";
 
 export function useChainData() {
   const network = useNetwork();
