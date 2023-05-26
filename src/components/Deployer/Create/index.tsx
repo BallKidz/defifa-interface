@@ -5,10 +5,11 @@ import { faPen, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import bs58 from "bs58";
+import { constants } from "ethers";
+import { useChainData } from "hooks/useChainData";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
-import { useNetwork } from "wagmi";
-import { getChainData } from "../../../config";
+import { ETH_TOKEN_ADDRESS } from "../../../constants/addresses";
 import { colors } from "../../../constants/colors";
 import { useCreateTournament } from "../../../hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "../../../lib/uploadToIPFS";
@@ -17,10 +18,8 @@ import { contractUri, projectMetadataUri } from "../../../uri/contractUri";
 import { truncateAddress } from "../../../utils/truncate";
 import Button from "../../UI/Button";
 import Content from "../../UI/Content";
-import styles from "./DeployerCreate.module.css";
 import EthSymbol from "../../UI/EthSymbol/EthSymbol";
-import { constants } from "ethers";
-import { ETH_TOKEN_ADDRESS } from "../../../constants/addresses";
+import styles from "./DeployerCreate.module.css";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -38,8 +37,7 @@ const datetimeLocalToUnix = (value: string): number => {
 
 const DeployerCreate = () => {
   const [step, setStep] = useState(1);
-  const network = useNetwork();
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
   const [addNftOpen, setAddNftOpen] = useState(false);
 
