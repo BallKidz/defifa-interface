@@ -8,11 +8,11 @@ import DefifaDelegateABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/ou
 import DefifaDeployerABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
 import DefifaGovernorABI from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaGovernor.sol/DefifaGovernor.json";
 import { chain } from "wagmi";
-import { DEFIFA_PROJECT_ID_GOERLI } from "../constants/constants";
+import { DEFIFA_PROJECT_ID_MAINNET } from "../constants/constants";
 import { DefifaConfig } from "./types";
 
 export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
-  projectId: DEFIFA_PROJECT_ID_GOERLI,
+  projectId: DEFIFA_PROJECT_ID_MAINNET,
   chainId: chain.mainnet.id,
 
   JBProjects: {
