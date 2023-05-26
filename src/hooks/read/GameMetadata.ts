@@ -1,18 +1,44 @@
 import { useContractRead, useNetwork } from "wagmi";
 import { getChainData } from "../../config";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { getIpfsUrl } from "utils/ipfs";
+import { type } from "os";
 
-export function useGameMetadata() {
+const METADATA_DOMAIN = 0;
+
+interface JBProjectMetadata {
+  description: string;
+  external_link: string;
+  fee_recipient: string;
+  image: string;
+  name: string;
+  seller_fee_basis_points: number;
+}
+
+export function useGameMetadata(projectId: number) {
   const network = useNetwork();
 
   const chainData = getChainData(network?.chain?.id);
-  const address = chainData.JBProjects.address // type error to do
-  console.log("address", address)
-  const gameId = chainData.projectId
-  return useContractRead({
-    addressOrName: address, //0x21263a042aFE4bAE34F08Bb318056C181bD96D3b
+
+  const { data: metadataCid } = useContractRead({
+    addressOrName: chainData.JBProjects.address,
     contractInterface: chainData.JBProjects.interface,
     functionName: "metadataContentOf",
-    args: [gameId,0],
+    args: [projectId, METADATA_DOMAIN],
     chainId: chainData.chainId,
   });
+
+  return useQuery(
+    ["metadata", metadataCid],
+    async () => {
+      if (!metadataCid || typeof metadataCid !== "string") return;
+
+      const res = await axios.get<JBProjectMetadata>(getIpfsUrl(metadataCid));
+      return res.data;
+    },
+    {
+      enabled: !!metadataCid,
+    }
+  );
 }

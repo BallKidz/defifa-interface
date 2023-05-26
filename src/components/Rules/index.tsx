@@ -1,20 +1,22 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useGameMetadata } from "hooks/read/GameMetadata";
 import { useDeployerDates } from "../../hooks/read/DeployerDates";
 import { useProjectCurrentFundingCycle } from "../../hooks/read/ProjectCurrentFundingCycle";
-// import { useGameMetadata } from "../../hooks/read/GameMetadata";
-import { formatDateToUTC } from "../../utils/format/formatDate";
 import Content from "../UI/Content";
 import styles from "./index.module.css";
-
+import { getChainData } from "config";
+import { useChainData } from "hooks/useChainData";
 
 const Rules = () => {
   const { mintDuration, start, refundPeriodDuration, end } =
     useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
-  //const { data: gameMetadata } = useGameMetadata(); //uugh need gameId here
-  
-  //console.log("gameMetadata Rules", gameMetadata)
+  const {
+    chainData: { projectId },
+  } = useChainData();
+  const { data: gameMetadata } = useGameMetadata(projectId);
+
   const fillPill = (phase: number) => {
     if (currentFcNumber === phase) {
       return "Active";
@@ -46,45 +48,10 @@ const Rules = () => {
   };
 
   return (
-    <Content
-      title="Rules"
-      open={false}
-      fontSize={"16"}
-      color="var(--violet)"
-    >
+    <Content title="Rules" open={false} fontSize={"16"} color="var(--violet)">
       <div className={styles.rulesContainer}>
-      <div className={styles.pointSystemWrapper} id="pointsSystem">
-          <h1 className={styles.pointHeader}>
-            {/* <sup className={styles.superScript}>1 </sup>Point system: */}
-          </h1>
-          <p className={styles.pointSystemDescription}>
-            Each game has its own point system which is proposed by the person launching the game.
-            For this game, the point system is as follows:
-          </p>
-          <p className={styles.pointSystemDescription}>
-            Total points:{" "}
-            <span className={styles.pointSystemPoints}>100,000</span>
-          </p>
-          <div className={styles.pointSystemCalculation}>
-            <p>
-            <span className={styles.pointSystemPoints}>
-            50% of pot</span> is split between players who pick the correct most popular artist.
-            </p>
-            <p>
-            <span className={styles.pointSystemPoints}>
-            30% of the pot</span> is split between players who pick the second most popular artist.
-            </p>
-            <p>
-            <span className={styles.pointSystemPoints}>
-            20% of the pot</span> is split between players who pick the #3-5 most popular artist.
-            </p>
-          </div>
-          <p className={styles.pointSystemDescription}>
-            The scorecard that is ratified should represent the amount of
-            points by each team divided by the total available
-            100,000 points. Keep in mind your NFT's winnings are divided
-            up by all holders of that NFT.
-          </p>
+        <div className={styles.pointSystemWrapper} id="pointsSystem">
+          <div>{gameMetadata?.description}</div>
         </div>
         <div className={styles.phases}>
           <div className={styles.phaseBox}>
@@ -95,12 +62,12 @@ const Rules = () => {
               </span>
             </h1>
             <ul>
-              <li>
-                There are 8 NFTs competing in this tournament.
-              </li>
+              <li>There are 8 NFTs competing in this tournament.</li>
               <li>Minting NFTs increases the game’s pot.</li>
               <li>The NFTs are a claim on this pot.</li>
-              <li>You can get a full refund anytime before the tournament starts.</li>
+              <li>
+                You can get a full refund anytime before the tournament starts.
+              </li>
             </ul>
           </div>
           <div className={styles.phaseBox}>
@@ -130,8 +97,7 @@ const Rules = () => {
             </h1>
             <ul>
               <li>
-                The pot is locked and refunds permanently end before the
-                tipoff.
+                The pot is locked and refunds permanently end before the tipoff.
                 <a href="#pointsSystem">
                   {/* <sup className={styles.superScript}>3</sup> */}
                 </a>
@@ -161,29 +127,30 @@ const Rules = () => {
             <ul>
               <li>The tournament is self refereed.</li>
               <li>
-                A final scorecard is uploaded on-chain that says how the tournament's
-                pot should be shared.
+                A final scorecard is uploaded on-chain that says how the
+                tournament's pot should be shared.
               </li>
               <li>
-                50% of NFT holders attest to the correct scorecard to ratify it. 
-                Each NFT type has 1 vote, divided between all holders of that NFT type.
+                50% of NFT holders attest to the correct scorecard to ratify it.
+                Each NFT type has 1 vote, divided between all holders of that
+                NFT type.
               </li>
               <li>
-                Burn your NFTs to reclaim ETH from the game at any time
-                after a scorecard has been ratified. Or, keep and trade them
-                forever – their value will remain backed by the pot.
+                Burn your NFTs to reclaim ETH from the game at any time after a
+                scorecard has been ratified. Or, keep and trade them forever –
+                their value will remain backed by the pot.
               </li>
             </ul>
           </div>
         </div>
         <br />
-      
+
         <div className={styles.disclaimerContainer} id="disclaimerContainer">
           <p className={styles.disclaimer}>
             <sup className={styles.superScript}>2</sup> The outcome is subject
             to the ratified scorecard during Phase 4.
           </p>
-         {/*  <p className={styles.disclaimer}>
+          {/*  <p className={styles.disclaimer}>
             <sup className={styles.superScript}>3</sup> After kickoff, 1 of
             every 10 NFTs minted for each team will be reserved for the Defifa
             Ballkidz who developed this game.
