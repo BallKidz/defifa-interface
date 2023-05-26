@@ -56,8 +56,8 @@ const DeployerCreate = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
-    name: "under 30 characters long",
-    rules: "The rules go here. This can be a a few sentences.",
+    name: "",
+    rules: "",
     mintDuration: 1 * 60 * 60,
     refundPeriodDuration: 60 * 60,
     start: currentUnixTimestamp + 1 * 60 * 60 + 1 * 60 * 60,
@@ -383,7 +383,8 @@ const DeployerCreate = () => {
                   value={formValues.rules}
                   onChange={handleInputChange}
                   required
-                  rows={5}
+                  rows={3}
+                  placeholder="Describe the rules of the game in plain English."
                 />
               </div>
             </div>
@@ -404,7 +405,7 @@ const DeployerCreate = () => {
                 required
               />
               <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
-                Must be later than: now + mint duration + refund duration
+                Must be later than: now + mint duration + refund duration.
               </span>
             </div>
             <div className={styles.formGroup}>
@@ -423,7 +424,7 @@ const DeployerCreate = () => {
                 required
               />
               <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
-                Hours prior to the start of the game
+                Hours prior to the start of the game.
               </span>
             </div>
             <div className={styles.formGroup}>
@@ -442,8 +443,8 @@ const DeployerCreate = () => {
                 required
               />
               <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
-                Time allowed for refunds. Starts after minting and before the
-                game.
+                Hours allowed for refunds. Takes place between minting and game
+                time.
               </span>
             </div>
 
@@ -563,7 +564,7 @@ const DeployerCreate = () => {
 
             {formValues.tiers.length > 0 && (
               <div className={styles.tiersListContainer}>
-                <p>List of your NFTs</p>
+                <p>Your NFTs</p>
                 {formValues.tiers.map((tier, index) => (
                   <div key={index} className={styles.tier}>
                     <div className={styles.tierDetails}>
