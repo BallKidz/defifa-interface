@@ -1,9 +1,8 @@
-import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../config";
+import { useContractRead } from "wagmi";
+import { useChainData } from "../useChainData";
 
 export function useDeployerDuration() {
-  const network = useNetwork();
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
   const { data: deployerDates } = useContractRead({
     addressOrName: chainData.DefifaDeployer.address,
     contractInterface: chainData.DefifaDeployer.interface,
