@@ -1,9 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
+import Content from "components/UI/Content";
+import { useGameContext } from "contexts/GameContext";
 import { useDeployerDates } from "hooks/read/DeployerDates";
 import { useGameMetadata } from "hooks/read/GameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
-import { useChainData } from "hooks/useChainData";
-import Content from "components/UI/Content";
 import styles from "./index.module.css";
 
 const Rules = () => {
@@ -11,10 +11,8 @@ const Rules = () => {
     useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
-  const {
-    chainData: { projectId },
-  } = useChainData();
-  const { data: gameMetadata } = useGameMetadata(projectId);
+  const { gameId } = useGameContext();
+  const { data: gameMetadata } = useGameMetadata(gameId);
 
   const fillPill = (phase: number) => {
     if (currentFcNumber === phase) {

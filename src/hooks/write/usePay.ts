@@ -1,16 +1,16 @@
+import { IJB721Delegate_INTERFACE_ID } from "constants/addresses";
+import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
+import { useChainData } from "hooks/useChainData";
+import { simulateTransaction } from "lib/tenderly";
+import { toastError } from "utils/toast";
 import {
-  chain as chainlist,
   useAccount,
   useContractWrite,
   useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { useChainData } from "hooks/useChainData";
-import { simulateTransaction } from "lib/tenderly";
-import { toastError } from "utils/toast";
-import { IJB721Delegate_INTERFACE_ID } from "constants/addresses";
 
 export interface PayParams {
   amount: string;
@@ -38,8 +38,10 @@ export function usePay({
 }: PayParams) {
   const { chain } = useNetwork();
   const { address } = useAccount();
+  const { gameId } = useGameContext();
+
   const {
-    chainData: { JBETHPaymentTerminal, projectId },
+    chainData: { JBETHPaymentTerminal },
   } = useChainData();
 
   const { config } = usePrepareContractWrite({
@@ -53,7 +55,7 @@ export function usePay({
       }
     },
     args: [
-      projectId,
+      gameId,
       amount,
       token,
       address,

@@ -11,7 +11,7 @@ import { chain } from "wagmi";
 import { DefifaConfig } from "./types";
 
 export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
-  projectId: DEFIFA_PROJECT_ID_GOERLI,
+  homepageProjectId: DEFIFA_PROJECT_ID_GOERLI,
   chainId: chain.goerli.id,
 
   JBProjects: {

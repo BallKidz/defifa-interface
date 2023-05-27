@@ -1,19 +1,15 @@
+import { GameDashboard } from "components/GameDashboard";
+import GameContextProvider from "contexts/GameContext/GameContextProvider";
+import { useChainData } from "hooks/useChainData";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Description from "../components/Description";
 import Footer from "../components/Footer";
-import Mint from "../components/Mint";
-import MyTeams from "../components/MyTeams";
-import Navbar from "../components/Navbar";
-import Info from "../components/Navbar/Info";
-import Divider from "../components/UI/Divider";
-import styles from "../styles/Home.module.css";
-import SelfRefree from "../components/SelfReferee";
 
 const Home: NextPage = () => {
+  const { chainData } = useChainData();
   return (
     <>
       <Head>
@@ -42,22 +38,10 @@ const Home: NextPage = () => {
         pauseOnHover
         theme="dark"
       />
-      <Navbar>
-        <Info withCreateButton />
-      </Navbar>
 
-      <main className={styles.container}>
-        <Description />
-
-        <Divider />
-        <Mint />
-
-        <Divider />
-        <MyTeams />
-
-        <Divider />
-        <SelfRefree /> 
-      </main>
+      <GameContextProvider gameId={chainData.homepageProjectId}>
+        <GameDashboard />
+      </GameContextProvider>
 
       <Footer />
     </>

@@ -14,7 +14,7 @@ import { DefifaConfig } from "./types";
  * !!! WARNING this file is completely out of date for NBA defifa edition !!!
  */
 export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
-  projectId: DEFIFA_PROJECT_ID_MAINNET,
+  homepageProjectId: DEFIFA_PROJECT_ID_MAINNET,
   chainId: chain.mainnet.id,
 
   JBProjects: {
