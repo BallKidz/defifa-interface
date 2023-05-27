@@ -19,6 +19,9 @@ import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -399,16 +402,23 @@ const DeployerCreate = () => {
               <label htmlFor="start" className={styles.label}>
                 Game start time
               </label>
-              <input
-                type="datetime-local"
+              <DatePicker
                 id="start"
                 name="start"
                 className={styles.input}
-                value={unixToDatetimeLocal(formValues.start)}
-                onChange={handleInputChange}
-                min={minDate}
+                selected={new Date(formValues.start * 1000)}
+                showTimeInput
+                dateFormat="MM/dd/yyyy h:mm aa"
+                onChange={(date) => {
+                  if (!date) return;
+                  setFormValues((prevFormValues) => ({
+                    ...prevFormValues,
+                    start: date.getTime() / 1000 ?? 0,
+                  }));
+                }}
                 required
               />
+
               <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
                 Must be later than: now + mint duration + refund duration.
               </span>
@@ -525,7 +535,7 @@ const DeployerCreate = () => {
                     onChange={handleTierChange}
                   />
                 </div>
-{/*                 <div className={styles.formGroup}>
+                {/*                 <div className={styles.formGroup}>
                   <label htmlFor="encodedIPFSUri" className={styles.label}>
                     Upload file
                   </label>
