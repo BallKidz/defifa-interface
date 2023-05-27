@@ -3,12 +3,12 @@ import { useChainData } from "./useChainData";
 import request, { gql } from "graphql-request";
 import { useEffect, useState } from "react";
 import { useInterval } from "./useInterval";
-import {DEFIFA_PROJECT_ID_GOERLI} from "constants/constants";
+import { DEFIFA_PROJECT_ID_GOERLI } from "constants/constants";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
 
 const myTeamsQuery = gql`
   query myTeamsQuery($owner: String!, $gameId: String!) {
-    contracts(where: {gameId: $gameId}) {  
+    contracts(where: { gameId: $gameId }) {
       mintedTokens(where: { owner: $owner }) {
         id
         number
@@ -51,20 +51,28 @@ export function useMyTeams() {
     console.log("new teams from removed", newTeams);
     setTeams(newTeams);
   }
-  
-  function formatSubgData(data:any) {
-   // TODO: This is a bit of a hack. We might want to look to add this in sol token svg resolver then the subgraph should return the correct data.
-    data.contracts[0].mintedTokens.forEach((token: { id: { split: (arg0: string) => [any, any]; }; contractAddress: any; identifier: number; }) => {
-      const [contractAddress, tokenId] = token.id.split('-');
-      token.contractAddress = contractAddress;
-      //token.identifier = parseInt(tokenId, 10); // Convert tokenId to number??
-      token.identifier =tokenId;
-    });
-  // TODO ALL IN ONE forEach? Could be more efficient. Bad kmac.
+
+  function formatSubgData(data: any) {
+    // TODO: This is a bit of a hack. We might want to look to add this in sol token svg resolver then the subgraph should return the correct data.
+    data.contracts[0].mintedTokens.forEach(
+      (token: {
+        id: { split: (arg0: string) => [any, any] };
+        contractAddress: any;
+        identifier: number;
+      }) => {
+        const [contractAddress, tokenId] = token.id.split("-");
+        token.contractAddress = contractAddress;
+        //token.identifier = parseInt(tokenId, 10); // Convert tokenId to number??
+        token.identifier = tokenId;
+      }
+    );
+    // TODO ALL IN ONE forEach? Could be more efficient. Bad kmac.
     data.contracts[0].mintedTokens.forEach((token: Token) => {
-      const tierId: number = Math.floor(token.identifier/DEFAULT_NFT_MAX_SUPPLY);
+      const tierId: number = Math.floor(
+        token.identifier / DEFAULT_NFT_MAX_SUPPLY
+      );
       token.metadata.identifier = tierId;
-      token.metadata.tags = ['Option',token.metadata.description];
+      token.metadata.tags = ["Option", token.metadata.description];
     });
 
     return data;
@@ -72,29 +80,35 @@ export function useMyTeams() {
 
   function getTeamsAndSetTeams() {
     if (address && graphUrl) {
-      request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
-        .then((data) => { 
-          console.log('this is the subg query response ', data);
+      request(graphUrl, myTeamsQuery, {
+        owner: address.toLowerCase(),
+        gameId: DEFIFA_PROJECT_ID_GOERLI.toString(),
+      })
+        .then((data) => {
+          console.log("this is the subg query response ", data);
           // if(data.contracts[0].mintedTokens !== undefined) {
-            const formattedData = formatSubgData(data);
-            const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
-            if (teams?.length === userTeams.length) {
-              setIsTeamRecentlyRemoved(false);
-            }
-            !isTeamRecentlyRemoved && setTeams(userTeams);
+          const formattedData = formatSubgData(data);
+          const userTeams = getTeamTiersFromToken(
+            formattedData.contracts[0].mintedTokens
+          ); // just one gameId in query
+          if (teams?.length === userTeams.length) {
+            setIsTeamRecentlyRemoved(false);
+          }
+          !isTeamRecentlyRemoved && setTeams(userTeams);
           //} else {
-            // TODO confirm states are correctly set here
-            //setError({ error: "No mints found in subgraph. Waiting...", isError: true });
-            //setIsLoading(true); // If the game has started we want a spinner here
-            //console.log('subg query response is empty contracts');
-            //setError({ error: "Something went wrong getTeamsAndSetTeams", isError: true });
-            //setIsLoading(false);
-           // !isTeamRecentlyRemoved && setTeams(userTeams);
+          // TODO confirm states are correctly set here
+          //setError({ error: "No mints found in subgraph. Waiting...", isError: true });
+          //setIsLoading(true); // If the game has started we want a spinner here
+          //console.log('subg query response is empty contracts');
+          //setError({ error: "Something went wrong getTeamsAndSetTeams", isError: true });
+          //setIsLoading(false);
+          // !isTeamRecentlyRemoved && setTeams(userTeams);
 
           // }
-
         })
-        .catch((error) => {console.log('this is the error ', error);});
+        .catch((error) => {
+          console.log("this is the error ", error);
+        });
     }
   }
 
@@ -108,18 +122,29 @@ export function useMyTeams() {
 
     try {
       setIsLoading(true);
-      const response:{
-        contracts: any; data: any[] } = await  request(graphUrl, myTeamsQuery, { owner: address.toLowerCase(), gameId: DEFIFA_PROJECT_ID_GOERLI.toString() })
-  
-      console.log('fetchMyTeams this is subg query response ', response, response.contracts[0].mintedTokens.length);
-    //  if(response.contracts[0].mintedTokens.length !== 0 || !undefined) {
-        const formattedData = formatSubgData(response);
-        console.log('fetchMyTeams this is formattedData ', formattedData);
-        const userTeams = getTeamTiersFromToken(formattedData.contracts[0].mintedTokens); // just one gameId in query
-        console.log('fetchMyTeams this is userTeams ', userTeams);
-        setTeams(userTeams);
-        setIsLoading(false);
-     /*  }
+      const response: {
+        contracts: any;
+        data: any[];
+      } = await request(graphUrl, myTeamsQuery, {
+        owner: address.toLowerCase(),
+        gameId: DEFIFA_PROJECT_ID_GOERLI.toString(),
+      });
+
+      console.log(
+        "fetchMyTeams this is subg query response ",
+        response,
+        response.contracts[0].mintedTokens.length
+      );
+      //  if(response.contracts[0].mintedTokens.length !== 0 || !undefined) {
+      const formattedData = formatSubgData(response);
+      console.log("fetchMyTeams this is formattedData ", formattedData);
+      const userTeams = getTeamTiersFromToken(
+        formattedData.contracts[0].mintedTokens
+      ); // just one gameId in query
+      console.log("fetchMyTeams this is userTeams ", userTeams);
+      setTeams(userTeams);
+      setIsLoading(false);
+      /*  }
       else {
         console.log('fetchMyTeams response is empty');
         setError({ error: "Something went wrong fetchMyTeams", isError: true });
@@ -129,8 +154,9 @@ export function useMyTeams() {
       } */
     } catch (error) {
       setError({ error: "Something went wrong", isError: true });
+      console.error("subgraph::myTeams", error);
       setIsLoading(false);
-    } 
+    }
   };
   useEffect(() => {
     if (isConnecting) {
