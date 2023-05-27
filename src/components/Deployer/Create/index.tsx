@@ -9,7 +9,7 @@ import Content from "components/UI/Content";
 import EthSymbol from "components/UI/EthSymbol/EthSymbol";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { colors } from "constants/colors";
-import { constants } from "ethers";
+import { BigNumber, constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useCreateTournament } from "hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
@@ -94,7 +94,13 @@ const DeployerCreate = () => {
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTierParams>>();
 
-  const { write: createTournament } = useCreateTournament(formValues);
+  const {
+    write: createTournament,
+    isLoading,
+    isSuccess,
+    isError,
+    transactionData,
+  } = useCreateTournament(formValues);
 
   // TODO this is totally bugged, needs to be uploaded at deploy time
   useEffect(() => {
@@ -356,6 +362,22 @@ const DeployerCreate = () => {
       overlayClassName: styles.overlayModal,
     });
   };
+
+  if (isLoading) {
+    return <span>Launching your game...</span>;
+  }
+
+  if (isSuccess && transactionData) {
+    console.log(transactionData);
+    const gameId = BigNumber.from(transactionData.logs[1].topics[3]).toNumber();
+
+    return (
+      <div>
+        <p>Let the games begin!</p>
+        <p>Your game ID: {gameId}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
