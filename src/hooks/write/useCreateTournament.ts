@@ -65,6 +65,7 @@ export function useCreateTournament(
     isSuccess,
     isError: isWaitForTransactionError,
     error: waitForTransactionError,
+    data: transactionData,
   } = useWaitForTransaction({ hash: data?.hash });
   if (isWaitForTransactionError) {
     console.error(
@@ -86,6 +87,7 @@ export function useCreateTournament(
 
   return {
     data,
+    transactionData,
     write: handleWrite,
     isLoading,
     isSuccess,
