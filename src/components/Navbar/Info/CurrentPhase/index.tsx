@@ -21,11 +21,16 @@ const CurrentPhase = () => {
   const [titleTimeRemaining, setTitleTimeRemaining] = useState<string>("");
 
   useEffect(() => {
-    if (!fundingCycle || !deployerDuration) return;
+    if (!deployerDuration) return;
 
     const { refundPeriodDuration, start } = deployerDuration;
 
     switch (fundingCycle) {
+      // TODO can get upcoming FC and get its start time
+      case 0:
+        setCountdownDate(new Date());
+        setTitleTimeRemaining(`Game starting soon`);
+        break;
       case 1:
         setCountdownDate(
           formatSecondsToMoment(refundPeriodDuration, start).toDate()
@@ -40,12 +45,9 @@ const CurrentPhase = () => {
         setCountdownDate(new Date());
         setTitleTimeRemaining(`Game ends`);
         break;
-      case 4:
+      default:
         setCountdownDate(new Date());
         setTitleTimeRemaining(`Game over`);
-        break;
-      default:
-        setTitleTimeRemaining("");
         break;
     }
   }, [fundingCycle, deployerDuration]);
@@ -53,7 +55,7 @@ const CurrentPhase = () => {
   const dateCollapsibleTitle = useMemo(() => {
     return timeRemaining
       ? `${titleTimeRemaining} ${timeRemaining}`
-      : `${titleTimeRemaining}: `;
+      : `${titleTimeRemaining}`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining]);
 

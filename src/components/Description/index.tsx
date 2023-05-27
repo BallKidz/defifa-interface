@@ -17,19 +17,19 @@ const Description = () => {
 
       <Treasury />
       <div className={styles.gameplayContainer}>
-        <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>
+        <h1 className={styles.gameplayHeader}>How to play:</h1>
         <ol>
           <li>
-            <span style={{ color: "white" }}>Play: </span>Mint NFTs to load the
-            pot.
+            <span style={{ color: "white" }}>Play: </span>Mint NFTs with ETH.
+            Your ETH is added to the total pot.
           </li>
           <li>
             <span style={{ color: "white" }}>Manage: </span>The pot backs the
             value of the winning NFTs.
           </li>
           <li>
-            <span style={{ color: "white" }}>Referee: </span>NFT holders
-            themselves determing the winners.
+            <span style={{ color: "white" }}>Referee: </span>NFT holders attest
+            to the game's result.
           </li>
         </ol>
       </div>
