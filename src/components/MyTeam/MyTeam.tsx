@@ -71,7 +71,7 @@ const MyTeam: FC<{
           onClick={() => {
             write?.();
           }}
-          // disabled={!canRedeem || isRedeemLoading || disableRedeem}
+          disabled={!canRedeem || isRedeemLoading || disableRedeem}
         >
           {isRedeemLoading ? (
             // eslint-disable-next-line @next/next/no-img-element

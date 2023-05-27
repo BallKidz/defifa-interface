@@ -26,7 +26,6 @@ export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
     interface: JBController.abi,
   },
   JBSingleTokenPaymentTerminalStore: {
-    address: JBSingleTokenPaymentTerminalStore.address,
     interface: JBSingleTokenPaymentTerminalStore.abi,
   },
   JBETHPaymentTerminal: {
