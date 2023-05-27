@@ -6,12 +6,12 @@ import JBController from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JB
 import JBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
 import JBProjects from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBProjects.json";
 import JBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
-import { DEFIFA_PROJECT_ID_GOERLI } from "constants/constants";
+import { DEFIFA_HOMEPAGE_PROJECT_ID_GOERLI } from "constants/constants";
 import { chain } from "wagmi";
 import { DefifaConfig } from "./types";
 
 export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
-  homepageProjectId: DEFIFA_PROJECT_ID_GOERLI,
+  homepageProjectId: DEFIFA_HOMEPAGE_PROJECT_ID_GOERLI,
   chainId: chain.goerli.id,
 
   JBProjects: {
