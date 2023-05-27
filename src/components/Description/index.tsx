@@ -1,19 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useGameContext } from "contexts/GameContext";
 import { useGameMetadata } from "hooks/read/GameMetadata";
 import CurrentPhase from "../Navbar/Info/CurrentPhase";
 import Treasury from "../Navbar/Info/Treasury";
 import Rules from "../Rules";
 import Title from "../Title";
 import styles from "./Description.module.css";
-import { useChainData } from "hooks/useChainData";
 
 const Description = () => {
-  const { chainData } = useChainData();
-  const { data, isLoading } = useGameMetadata(chainData.projectId);
+  const { gameId } = useGameContext();
+  const { data, isLoading } = useGameMetadata(gameId);
+
   return (
     <div className={styles.container}>
-      {!isLoading && data ?  <Title title={data?.name} /> : <>Loading...</>}
-     
+      {!isLoading && data ? <Title title={data?.name} /> : <>Loading...</>}
+
       <Treasury />
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>Onchain gameplay:</h1>

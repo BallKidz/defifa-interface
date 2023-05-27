@@ -22,6 +22,7 @@ import styles from "./DeployerCreate.module.css";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import Link from "next/link";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -372,9 +373,11 @@ const DeployerCreate = () => {
     const gameId = BigNumber.from(transactionData.logs[1].topics[3]).toNumber();
 
     return (
-      <div>
+      <div style={{ textAlign: "center" }}>
         <p>Let the games begin!</p>
-        <p>Your game ID: {gameId}</p>
+        <Link href={`/game/${gameId}`}>
+          <Button>Go to game</Button>
+        </Link>
       </div>
     );
   }

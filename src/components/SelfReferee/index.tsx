@@ -17,7 +17,7 @@ import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import styles from "./SelfReferee.module.css";
 
-const SelfRefree = () => {
+const SelfReferee = () => {
   const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
 
@@ -136,4 +136,4 @@ const SelfRefree = () => {
   );
 };
 
-export default SelfRefree;
+export default SelfReferee;

@@ -1,4 +1,5 @@
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
+import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { simulateTransaction } from "lib/tenderly";
@@ -25,8 +26,10 @@ export function useRedeemTokensOf({
   const { chain } = useNetwork();
   const { address } = useAccount();
   const {
-    chainData: { JBETHPaymentTerminal, projectId },
+    chainData: { JBETHPaymentTerminal },
   } = useChainData();
+  const { gameId } = useGameContext();
+
   const { config } = usePrepareContractWrite({
     addressOrName: JBETHPaymentTerminal.address,
     contractInterface: JBETHPaymentTerminal.interface,
@@ -38,7 +41,7 @@ export function useRedeemTokensOf({
     },
     args: [
       address, //user _holder address
-      projectId,
+      gameId,
       "0", //_tokenCount
       ETH_TOKEN_ADDRESS,
       "0", //_minReturnedTokens

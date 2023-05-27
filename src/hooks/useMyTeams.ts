@@ -3,8 +3,8 @@ import { useChainData } from "./useChainData";
 import request, { gql } from "graphql-request";
 import { useEffect, useState } from "react";
 import { useInterval } from "./useInterval";
-import { DEFIFA_PROJECT_ID_GOERLI } from "constants/constants";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
+import { useGameContext } from "contexts/GameContext";
 
 const myTeamsQuery = gql`
   query myTeamsQuery($owner: String!, $gameId: String!) {
@@ -30,6 +30,7 @@ export function useMyTeams() {
   const { address, isConnecting, isDisconnected } = useAccount();
   const graphUrl = chainData.subgraph;
   const [teams, setTeams] = useState<TeamTier[]>();
+  const { gameId } = useGameContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isTeamRecentlyRemoved, setIsTeamRecentlyRemoved] =
@@ -54,7 +55,7 @@ export function useMyTeams() {
 
   function formatSubgData(data: any) {
     // TODO: This is a bit of a hack. We might want to look to add this in sol token svg resolver then the subgraph should return the correct data.
-    data.contracts[0].mintedTokens.forEach(
+    data.contracts[0]?.mintedTokens?.forEach(
       (token: {
         id: { split: (arg0: string) => [any, any] };
         contractAddress: any;
@@ -67,7 +68,7 @@ export function useMyTeams() {
       }
     );
     // TODO ALL IN ONE forEach? Could be more efficient. Bad kmac.
-    data.contracts[0].mintedTokens.forEach((token: Token) => {
+    data.contracts[0]?.mintedTokens?.forEach((token: Token) => {
       const tierId: number = Math.floor(
         token.identifier / DEFAULT_NFT_MAX_SUPPLY
       );
@@ -82,14 +83,14 @@ export function useMyTeams() {
     if (address && graphUrl) {
       request(graphUrl, myTeamsQuery, {
         owner: address.toLowerCase(),
-        gameId: DEFIFA_PROJECT_ID_GOERLI.toString(),
+        gameId: gameId.toString(),
       })
         .then((data) => {
           console.log("this is the subg query response ", data);
           // if(data.contracts[0].mintedTokens !== undefined) {
           const formattedData = formatSubgData(data);
           const userTeams = getTeamTiersFromToken(
-            formattedData.contracts[0].mintedTokens
+            formattedData.contracts[0]?.mintedTokens
           ); // just one gameId in query
           if (teams?.length === userTeams.length) {
             setIsTeamRecentlyRemoved(false);
@@ -117,7 +118,7 @@ export function useMyTeams() {
     if (!address) return;
     const variables = {
       owner: address?.toLowerCase(),
-      gameId: DEFIFA_PROJECT_ID_GOERLI.toString(),
+      gameId: gameId.toString(),
     };
 
     try {
@@ -127,19 +128,19 @@ export function useMyTeams() {
         data: any[];
       } = await request(graphUrl, myTeamsQuery, {
         owner: address.toLowerCase(),
-        gameId: DEFIFA_PROJECT_ID_GOERLI.toString(),
+        gameId: gameId.toString(),
       });
 
       console.log(
         "fetchMyTeams this is subg query response ",
         response,
-        response.contracts[0].mintedTokens.length
+        response.contracts[0]?.mintedTokens.length
       );
       //  if(response.contracts[0].mintedTokens.length !== 0 || !undefined) {
       const formattedData = formatSubgData(response);
       console.log("fetchMyTeams this is formattedData ", formattedData);
       const userTeams = getTeamTiersFromToken(
-        formattedData.contracts[0].mintedTokens
+        formattedData.contracts[0]?.mintedTokens
       ); // just one gameId in query
       console.log("fetchMyTeams this is userTeams ", userTeams);
       setTeams(userTeams);
@@ -202,9 +203,9 @@ export interface Token {
   };
 }
 
-function getTeamTiersFromToken(token: Token[]) {
+function getTeamTiersFromToken(token: Token[] | undefined) {
   let userTiers = new Map<number, TeamTier>();
-  token.forEach((t) => {
+  token?.forEach((t) => {
     if (userTiers.has(t.metadata.identifier)) {
       const teamTier = userTiers.get(t.metadata.identifier);
       teamTier!.quantity++;
