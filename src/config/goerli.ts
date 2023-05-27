@@ -24,7 +24,6 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     interface: JBController.abi,
   },
   JBSingleTokenPaymentTerminalStore: {
-    address: JBSingleTokenPaymentTerminalStore.address,
     interface: JBSingleTokenPaymentTerminalStore.abi,
   },
   JBETHPaymentTerminal: {

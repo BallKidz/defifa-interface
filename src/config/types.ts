@@ -12,7 +12,9 @@ export interface DefifaConfig {
   JBProjects: ContractData;
   JBTiered721DelegateStore: ContractData;
   JBController: ContractData;
-  JBSingleTokenPaymentTerminalStore: ContractData;
+  JBSingleTokenPaymentTerminalStore: {
+    interface: ContractInterface;
+  };
   JBETHPaymentTerminal: ContractData;
   DefifaDelegate: ContractData;
   DefifaGovernor: ContractData;
