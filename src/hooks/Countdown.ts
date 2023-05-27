@@ -17,6 +17,7 @@ export function useCountdown(targetDate: Date | undefined) {
         let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         let hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
         let minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+        let seconds = Math.floor((timeDifference / 1000) % 60);
 
         if (days > 1) {
           setTimeRemaining(`${days} days`);
@@ -32,6 +33,9 @@ export function useCountdown(targetDate: Date | undefined) {
 
             if (minutes > 0) {
               timeRemainingString += `${minutes}m`;
+            }
+            if (seconds > 0) {
+              timeRemainingString += ` ${seconds}s`;
             }
           }
 

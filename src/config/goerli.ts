@@ -3,7 +3,7 @@ import DefifaDeployer from "@ballkidz/defifa-collection-deployer/out/DefifaDeplo
 import DefifaGovernor from "@ballkidz/defifa-collection-deployer/out/DefifaGovernor.sol/DefifaGovernor.json";
 import IJBTiered721DelegateStore from "@jbx-protocol/juice-721-delegate/out/IJBTiered721DelegateStore.sol/IJBTiered721DelegateStore.json";
 import JBController from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBController3_1.json";
-import JBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal.json";
+import JBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBETHPaymentTerminal3_1.json";
 import JBProjects from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBProjects.json";
 import JBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/goerli/JBSingleTokenPaymentTerminalStore.json";
 import { DEFIFA_HOMEPAGE_PROJECT_ID_GOERLI } from "constants/constants";
@@ -49,8 +49,7 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     interface: DefifaDeployer.abi,
   },
 
-  subgraph:
-    "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
+  subgraph: "https://api.studio.thegraph.com/query/5023/defifa-goerli/v0.0.13",
   governorSubgraph:
-    "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
+    "https://api.studio.thegraph.com/query/5023/defifa-goerli/v0.0.13",
 };

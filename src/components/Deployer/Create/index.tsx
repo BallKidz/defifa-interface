@@ -38,6 +38,9 @@ const datetimeLocalToUnix = (value: string): number => {
   return Math.floor(new Date(value).getTime() / 1000);
 };
 
+// const DEFAULT_MINT_DURATION_SECONDS = 60 * 5; // 5 mins
+// const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60 * 72; // 72 hour
+// const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
 const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
 const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
 const GAME_START_BUFFER_SECONDS = 60 * 5; // 5 minutes
@@ -460,7 +463,7 @@ const DeployerCreate = () => {
                 value={formValues.mintDuration / 60 / 60} // convert seconds to hours for display
                 onChange={handleInputChange}
                 min={0} // set the minimum value allowed
-                step={1} // set the step size, e.g., 1 hour increments
+                step="0.01" // set the step size, e.g., 1 hour increments
                 required
               />
               <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
@@ -479,7 +482,7 @@ const DeployerCreate = () => {
                 value={formValues.refundPeriodDuration / 60 / 60} // convert seconds to hours for display: ;
                 onChange={handleInputChange}
                 min={0} // set the minimum value allowed
-                step={1} // set the step size, e.g., 1 hour increments
+                step="0.01" // set the step size, e.g., 1 hour increments
                 required
               />
               <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
