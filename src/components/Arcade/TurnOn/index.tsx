@@ -6,36 +6,23 @@ import styles from "./TurnOn.module.css";
 
 const AllGames = () => {
   const { isError, isLoading, games, error } = useAllGames();
-  let game
-  // TODO: Fix types, add more game stats remove console.log
-  if (!isLoading) {
-    console.log("AllGames games ", games)    
-  }
-  
+  // TODO: Fix table headings, add more game stats  
   return (
     <AllGamesContext.Provider value={games}>
       <Content title="Arcade" open={true} socials={false}>
         {isError && <div className={styles.error}>{error}</div>}
         {isLoading && <div className={styles.loading}>Loading...</div>}
          <div className={styles.teams}>
-         <table className={styles.table}>
-          <tbody>
-         <tr>
-            <th>Game ID</th>
-            <th>Description</th>
-          </tr>
          {games &&
            games
-           .sort((a, b) => a[0] - b[0]) // Sort the games array by game.id
+           .sort((a, b) => a.gameId - b.gameId) // Sort the games array by game.id
             .reverse() // Reverse the order of the games array
              .map((game) => (
                <Game
                  game={game}
-                 key={game[0]}
+                 key={game.gameId}
                />
              ))}
-          </tbody>
-          </table>
          {games?.length === 0 && <div>No games found.</div>}
        </div>
       </Content>

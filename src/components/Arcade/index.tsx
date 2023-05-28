@@ -10,7 +10,7 @@ const ArcadeWrapper = () => {
       <Navbar>
         <Info withCreateButton />
       </Navbar>
-      <h1>Play Money Games</h1>
+      <h1>Play Money Games With Friends</h1>
       <ArcadeDescription />
       <ArcadeLoad />
     </MainWrapper>

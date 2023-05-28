@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 // TODO: Hardcode to start at project 800 as that was time of last deployer update
 const allGamesQuery = gql`
   query myTeamsQuery {
-      contracts(where: {gameId_gt: "800"}) {
+      contracts {
+        name
         gameId
         tokenUriResolver
         mintedTokens {
@@ -36,17 +37,8 @@ export function useAllGames() {
       setIsLoading(true);
       const response: {
         contracts: any;
-        data: any[];
-      } = await request(graphUrl, allGamesQuery, {
-        gameId: "800",
-      });
-      const formattedData = response.contracts.map((contract: { gameId: any; name: any; tokenUriResolver: any; }) => [
-        contract.gameId,
-        contract.name || "Need metadata adjustments", // Set default value if `name` is null
-        contract.tokenUriResolver
-      
-      ]);
-      setGames(formattedData);
+      } = await request(graphUrl, allGamesQuery);
+      setGames(response.contracts);
       setIsLoading(false);
     } catch (error) {
       setError({ error: "Something went wrong", isError: true });
@@ -79,7 +71,6 @@ export function useAllGames() {
 }
 
 export interface Games {
-  id: number;
+  gameId: number;
   name: string;
 }
-
