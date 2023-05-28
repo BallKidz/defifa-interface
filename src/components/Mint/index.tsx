@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { BigNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { MINT_PRICE } from "constants/constants";
@@ -32,6 +32,7 @@ const Mint = () => {
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
   const [selectAll, setSelectAll] = useState<boolean>(false);
+  const [referee, setReferee] = useState<string>("0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1");
 
   const mostMintedRewardTiers = rewardTiers
     ?.slice()
@@ -45,7 +46,7 @@ const Mint = () => {
     preferClaimedTokens: true,
     memo: `Minted on defifa.net ${imgMemo}`,
     metadata: {
-      _votingDelegate: "0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1", //?? who's is this?
+      _votingDelegate: referee,//"0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1", //?? who's is this?
       tierIdsToMint: tierIds,
     },
   });
@@ -104,6 +105,23 @@ const Mint = () => {
     setSelectAll(false);
   };
 
+  const onRefereeDelegate = (e: any) => {
+    const delegate = e.target.value;
+    console.log("delegate ", delegate);
+    
+    function isValidAddress(delegate: string) {
+      return ethers.utils.isAddress(delegate);
+    }
+    
+    if (isValidAddress(delegate)) {
+      setReferee(delegate);
+    } else {
+      setReferee(delegate);
+    }
+
+  };
+  
+
   return (
     <>
       <Content title="Play" open={true}>
@@ -122,9 +140,8 @@ const Mint = () => {
             <div className={styles.subtitle}>
               Mints: <span>{totalSupply?.toNumber()}</span>
             </div>
-
             {currentFcNumber === 1 && (
-              <div className={styles.buttonWrapper}>
+              <><div className={styles.buttonWrapper}>
                 <Button
                   disabled={isLoading || !tierIds.length ? true : false}
                   onClick={() => {
@@ -133,20 +150,34 @@ const Mint = () => {
                     } else {
                       write?.();
                     }
-                  }}
+                  } }
                 >
                   {isLoading ? (
                     <img
                       style={{ marginTop: "5px" }}
                       src="/assets/defifa_spinner.gif"
                       alt="spinner"
-                      width={35}
-                    />
+                      width={35} />
                   ) : (
                     <span>Mint {tierIds.length ? tierIds.length : ""}</span>
                   )}
                 </Button>
               </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="delegate" className={styles.label}>
+                  Delegate Referee
+                </label>
+                <span>
+                  <input
+                    type="string"
+                    id="delegate"
+                    className={styles.input}
+                    value={referee}
+                    name="delegate"
+                    onChange={(e) => onRefereeDelegate(e)} />
+                </span>
+              </div>
+              </>
             )}
           </div>
           {currentFcNumber === 1 && (

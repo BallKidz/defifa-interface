@@ -10,13 +10,8 @@ import styles from "./index.module.css";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error, removeTeams } = useMyTeams();
-  console.log("MyTeams stil loading ", isLoading)
-  if (!isLoading) {
-    console.log("MyTeams teams ", teams)
-  }
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
-  console.log("fundingCycle MyTeams", data)
   
   const {
     write,
@@ -103,6 +98,5 @@ function getTokenIdsFromTeams(teams?: TeamTier[]) {
       tokenIds.push(tokenId); 
     });
   });
-  console.log("getTokenIdsFromTeams", tokenIds)
   return tokenIds;
 }

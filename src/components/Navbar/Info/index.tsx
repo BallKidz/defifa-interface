@@ -22,7 +22,13 @@ const Info = ({ withCreateButton }: { withCreateButton?: boolean }) => {
               <Button color="var(--gold)">Create game</Button>
             </div>
           </Link>
-        ) : null}
+        ) : (
+          <Link href="/arcade">
+            <div>
+              <Button color="var(--gold)">Visit arcade</Button>
+            </div>
+          </Link>
+        )}
 
         <Wallet />
       </div>
