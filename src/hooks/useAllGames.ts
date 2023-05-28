@@ -7,6 +7,7 @@ const allGamesQuery = gql`
   query myTeamsQuery {
       contracts {
         name
+        address
         gameId
         tokenUriResolver
         mintedTokens {
@@ -73,4 +74,5 @@ export function useAllGames() {
 export interface Games {
   gameId: number;
   name: string;
+  address: string;
 }

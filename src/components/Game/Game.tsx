@@ -5,7 +5,7 @@ import styles from "./Game.module.css";
 import Link from "next/link";
 
 const Game: FC<{game: Games;}> = ({ game }) => {
-  const { gameId, name } = game;
+  const { gameId, name, address } = game;
   return (
     <div className={styles.container}>
       <table className={styles.table}>
@@ -17,6 +17,9 @@ const Game: FC<{game: Games;}> = ({ game }) => {
             </td>
             <td>
               <h3>{name !== null ? name : 'No name set in metadata'}</h3>
+            </td>
+            <td>
+              <h3>{address}</h3>
             </td>
           </tr>
         </tbody>
