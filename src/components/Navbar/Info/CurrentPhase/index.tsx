@@ -9,6 +9,7 @@ import {
 } from "utils/format/formatDate";
 import Content from "components/UI/Content";
 import styles from "./CurrentPhase.module.css";
+import { QueueNextPhaseButton } from "./QueueNextPhaseButton";
 
 const CurrentPhase = () => {
   const { data } = useProjectCurrentFundingCycle();
@@ -61,8 +62,12 @@ const CurrentPhase = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.h1}>Current phase:</h1>
+      <h1 className={styles.h1}>Current phase</h1>
       <p style={{ fontSize: "16px" }}>{dateCollapsibleTitle}</p>
+
+      <div>
+        <QueueNextPhaseButton />
+      </div>
       {titleTimeRemaining && (
         <Content title={`Phases`} fontSize="16" color="var(--violet)">
           <div className={styles.dateInfoContainer}>

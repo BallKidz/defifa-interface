@@ -86,29 +86,6 @@ const SelfReferee = () => {
                 Each game phase must also be queued by someone in the public in
                 a timely manner.
               </p>
-              <Button
-                onClick={() => {
-                  write?.();
-                }}
-                size="big"
-                disabled={
-                  false || nextPhaseNeedsQueueingLoading || !needsQueueing
-                }
-              >
-                {isLoading || nextPhaseNeedsQueueingLoading ? (
-                  <Image
-                    style={{ marginTop: "5px" }}
-                    src="/assets/defifa_spinner.gif"
-                    alt="spinner"
-                    width={35}
-                    height={35}
-                  />
-                ) : needsQueueing ? (
-                  <span> Queue phase {fundingCycle + 1}</span>
-                ) : (
-                  <span> Phase {fundingCycle + 1} Already Queued</span>
-                )}
-              </Button>
             </TabPanel>
             <TabPanel>
               <p>Mint reserved tokens for all tiers.</p>
@@ -116,7 +93,6 @@ const SelfReferee = () => {
                 onClick={() => {
                   mintReserves?.();
                 }}
-                size="big"
                 disabled={
                   mintReservesLoading ||
                   mintReservesSuccess ||
