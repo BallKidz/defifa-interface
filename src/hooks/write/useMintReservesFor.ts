@@ -22,7 +22,6 @@ export function useMintReservesFor(
     contractInterface: dataSourceAddress,
     functionName: "mintReservesFor((uint256,uint256)[])",
     args: [outStanding],
-    overrides: chainData?.chainId == 5 ? { gasLimit: 21000000 } : {},
     chainId: chainData.chainId,
   });
 

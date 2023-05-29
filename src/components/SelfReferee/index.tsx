@@ -5,26 +5,24 @@ import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { useFetchGovernor } from "hooks/read/useFetchGovernor";
 import { useMintReservesFor } from "hooks/write/useMintReservesFor";
-import { useQueueNextPhase } from "hooks/write/useQueueNextPhase";
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Attestation from "../Attestation";
 import ScoreCard from "../Scorecard";
 import styles from "./SelfReferee.module.css";
+import { useGameContext } from "contexts/GameContext";
+import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 
 const SelfReferee = () => {
-  const { write, isLoading, isSuccess, isError } = useQueueNextPhase();
   const { data } = useProjectCurrentFundingCycle();
 
-  const fundingCycle = data?.fundingCycle.number.toNumber();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: governor } = useFetchGovernor(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const [selectedTab, setSelectedTab] = useState(0);
-
+  const { currentPhase } = useGameContext();
   const {
     write: mintReserves,
     isLoading: mintReservesLoading,
@@ -32,6 +30,8 @@ const SelfReferee = () => {
     isError: mintReservesError,
     disabled: mintReservesDisabled,
   } = useMintReservesFor(false, data?.metadata.dataSource);
+
+  const [selectedTab, setSelectedTab] = useState(0);
 
   const handleTabClick = (index: number) => {
     setSelectedTab(index);
@@ -85,8 +85,7 @@ const SelfReferee = () => {
                   mintReservesLoading ||
                   mintReservesSuccess ||
                   mintReservesDisabled ||
-                  fundingCycle == 1 ||
-                  fundingCycle === 2
+                  currentPhase !== DefifaGamePhase.SCORING
                 }
               >
                 Mint Reserves
