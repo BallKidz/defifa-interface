@@ -1,28 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
+import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import Button from "components/UI/Button";
+import { useGameContext } from "contexts/GameContext";
 import { useAttestationPower } from "hooks/read/AttestationPower";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { TeamTier } from "hooks/useMyTeams";
 import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
 import { FC, useState } from "react";
 import styles from "./MyTeam.module.css";
+import { useRefundsAvailable } from "./useRefundsAvailable";
 
 const MyTeam: FC<{
   team: TeamTier;
   onRedeemSuccess: () => void;
   disableRedeem: boolean;
 }> = ({ team, onRedeemSuccess, disableRedeem }) => {
+  const { currentPhase } = useGameContext();
   const { id, image, name, quantity } = team;
-  console.log("MyTeam team", id, quantity);
-  console.log("MyTeam team", team.tokenIds);
+
   const [quantityToRedeem, setQuantityToRedeem] = useState<string[]>(
     team.tokenIds
   );
-  const { data } = useProjectCurrentFundingCycle();
-  const fundingCycle = data?.fundingCycle.number.toNumber();
   const attestationPower = useAttestationPower(id, quantity);
-  const canRedeem =
-    fundingCycle === 1 || fundingCycle === 2 || fundingCycle === 4;
+  const canRedeem = useRefundsAvailable();
+
+  const buttonText =
+    currentPhase === DefifaGamePhase.NO_CONTEST ||
+    currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE
+      ? "Redeem"
+      : "Refund";
 
   const {
     write,
@@ -55,12 +60,8 @@ const MyTeam: FC<{
         <p>Quantity : {quantityToRedeem.length}</p>
         {quantity > 1 && (
           <>
-            <Button size="extraSmall" onClick={increaseQuantity}>
-              +
-            </Button>
-            <Button size="extraSmall" onClick={decreaseQuantity}>
-              -
-            </Button>
+            <Button onClick={increaseQuantity}>+</Button>
+            <Button onClick={decreaseQuantity}>-</Button>
           </>
         )}
       </div>
@@ -82,22 +83,12 @@ const MyTeam: FC<{
               width={35}
             />
           ) : (
-            <span>{getRedeemButtonText(fundingCycle)}</span>
+            <span>{buttonText}</span>
           )}
         </Button>
       )}
     </div>
   );
 };
-
-function getRedeemButtonText(fundingCycle?: number) {
-  if (fundingCycle === 1 || fundingCycle === 2) {
-    return "Refund";
-  } else if (fundingCycle === 4) {
-    return "Redeem";
-  } else {
-    return "Refund";
-  }
-}
 
 export default MyTeam;

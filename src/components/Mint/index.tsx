@@ -14,6 +14,7 @@ import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import styles from "./Mint.module.css";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
+import { Input } from "components/UI/Input";
 
 const Mint = () => {
   const { isConnected } = useAccount();
@@ -32,7 +33,9 @@ const Mint = () => {
   const [tierIds, setTierIds] = useState<number[]>([]);
   const [imgMemo, setImgMemo] = useState<string>("");
   const [selectAll, setSelectAll] = useState<boolean>(false);
-  const [referee, setReferee] = useState<string>("0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1");
+  const [referee, setReferee] = useState<string>(
+    "0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1"
+  );
 
   const mostMintedRewardTiers = rewardTiers
     ?.slice()
@@ -46,7 +49,7 @@ const Mint = () => {
     preferClaimedTokens: true,
     memo: `Minted on defifa.net ${imgMemo}`,
     metadata: {
-      _votingDelegate: referee,//"0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1", //?? who's is this?
+      _votingDelegate: referee, //"0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1", //?? who's is this?
       tierIdsToMint: tierIds,
     },
   });
@@ -108,19 +111,17 @@ const Mint = () => {
   const onRefereeDelegate = (e: any) => {
     const delegate = e.target.value;
     console.log("delegate ", delegate);
-    
+
     function isValidAddress(delegate: string) {
       return ethers.utils.isAddress(delegate);
     }
-    
+
     if (isValidAddress(delegate)) {
       setReferee(delegate);
     } else {
       setReferee(delegate);
     }
-
   };
-  
 
   return (
     <>
@@ -141,42 +142,44 @@ const Mint = () => {
               Mints: <span>{totalSupply?.toNumber()}</span>
             </div>
             {currentFcNumber === 1 && (
-              <><div className={styles.buttonWrapper}>
-                <Button
-                  disabled={isLoading || !tierIds.length ? true : false}
-                  onClick={() => {
-                    if (!isConnected) {
-                      openConnectModal!();
-                    } else {
-                      write?.();
-                    }
-                  } }
-                >
-                  {isLoading ? (
-                    <img
-                      style={{ marginTop: "5px" }}
-                      src="/assets/defifa_spinner.gif"
-                      alt="spinner"
-                      width={35} />
-                  ) : (
-                    <span>Mint {tierIds.length ? tierIds.length : ""}</span>
-                  )}
-                </Button>
-              </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="delegate" className={styles.label}>
-                  Delegate Referee
-                </label>
-                <span>
-                  <input
-                    type="string"
-                    id="delegate"
-                    className={styles.input}
-                    value={referee}
-                    name="delegate"
-                    onChange={(e) => onRefereeDelegate(e)} />
-                </span>
-              </div>
+              <>
+                <div className={styles.buttonWrapper}>
+                  <Button
+                    disabled={isLoading || !tierIds.length ? true : false}
+                    onClick={() => {
+                      if (!isConnected) {
+                        openConnectModal!();
+                      } else {
+                        write?.();
+                      }
+                    }}
+                  >
+                    {isLoading ? (
+                      <img
+                        style={{ marginTop: "5px" }}
+                        src="/assets/defifa_spinner.gif"
+                        alt="spinner"
+                        width={35}
+                      />
+                    ) : (
+                      <span>Mint {tierIds.length ? tierIds.length : ""}</span>
+                    )}
+                  </Button>
+                </div>
+                <div className={styles.formGroup}>
+                  <label htmlFor="delegate" className={styles.label}>
+                    Delegate Referee
+                  </label>
+                  <span>
+                    <Input
+                      type="text"
+                      id="delegate"
+                      value={referee}
+                      name="delegate"
+                      onChange={(e) => onRefereeDelegate(e)}
+                    />
+                  </span>
+                </div>
               </>
             )}
           </div>

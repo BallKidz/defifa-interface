@@ -1,4 +1,5 @@
 import Button from "components/UI/Button";
+import { Input } from "components/UI/Input";
 import Table from "components/UI/Table";
 import useScorecardTable from "hooks/useScorecardData";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
@@ -98,26 +99,26 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
         </p>
       </div>
       <div className={styles.scoreCardOptions}>
-        <p
+        <Button
+          variant="secondary"
           onClick={() => setScoreCardOption(1)}
           style={{
             borderBottom:
               scoreCardOption === 1 ? "1px solid var(--gold)" : "none",
-            color: scoreCardOption === 1 ? "var(--gold)" : "inherit",
           }}
         >
           Option 1: Defifa Ballkidz scorecard
-        </p>
-        <p
+        </Button>
+        <Button
+          variant="secondary"
           onClick={() => setScoreCardOption(2)}
           style={{
             borderBottom:
               scoreCardOption === 2 ? "1px solid var(--gold)" : "none",
-            color: scoreCardOption === 2 ? "var(--gold)" : "inherit",
           }}
         >
           Option 2: Fill your own scorecard
-        </p>
+        </Button>
       </div>
 
       <div className={styles.scoreCardOptionsContainer}>
@@ -128,8 +129,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
             <div className={styles.tiersContainer}>
               {props.tiers?.map((t: any) => (
                 <div key={t.id}>
-                  <input
-                    className={styles.input}
+                  <Input
                     value={
                       scoreCard.find((score) => score.id === t.id)
                         ? scoreCard.find((score) => score.id === t.id)
@@ -151,7 +151,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
         </div>
       </div>
       <div className={styles.scoreCardButtonContainer}>
-        <Button  onClick={submitScoreCard} disabled={isLoading}>
+        <Button onClick={submitScoreCard} disabled={isLoading}>
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -165,7 +165,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           )}
         </Button>
         {scoreCardOption === 2 && (
-          <Button  onClick={() => setScoreCard([])}>
+          <Button variant="secondary" onClick={() => setScoreCard([])}>
             Clear all
           </Button>
         )}

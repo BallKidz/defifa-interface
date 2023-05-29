@@ -16,7 +16,7 @@ export interface DefifaLaunchProjectData {
   tiers: DefifaTierParams[];
   token: string;
   mintDuration: number;
-  refundPeriodDuration: number;
+  refundDuration: number;
   start: number;
   splits: any[];
   distributionLimit: number;

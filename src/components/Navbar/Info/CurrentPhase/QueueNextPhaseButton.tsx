@@ -1,3 +1,4 @@
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import Button from "components/UI/Button";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
@@ -5,26 +6,26 @@ import { useQueueNextPhase } from "hooks/write/useQueueNextPhase";
 
 export function QueueNextPhaseButton() {
   const { write, isLoading } = useQueueNextPhase();
-  const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
-    useNextPhaseNeedsQueueing();
-  const { data } = useProjectCurrentFundingCycle();
-
-  const fundingCycle = data?.fundingCycle.number.toNumber();
-  let needsQueueing = queueData! as unknown as boolean;
+  const {
+    data: nextPhaseNeedsQueing,
+    isLoading: nextPhaseNeedsQueueingLoading,
+  } = useNextPhaseNeedsQueueing();
 
   return (
     <Button
       onClick={() => {
         write?.();
       }}
-      disabled={false || nextPhaseNeedsQueueingLoading || !needsQueueing}
+      disabled={false || nextPhaseNeedsQueueingLoading || !nextPhaseNeedsQueing}
     >
       {isLoading || nextPhaseNeedsQueueingLoading ? (
         <span>...</span>
-      ) : needsQueueing ? (
-        <span> Queue phase {fundingCycle + 1}</span>
+      ) : nextPhaseNeedsQueing ? (
+        <span>Queue next phase</span>
       ) : (
-        <span> Phase {fundingCycle + 1} Already Queued</span>
+        <span className="flex gap-1 items-center">
+          Next phase queued <CheckCircleIcon className="h-4 w-4" />
+        </span>
       )}
     </Button>
   );

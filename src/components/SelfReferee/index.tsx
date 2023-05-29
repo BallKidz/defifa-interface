@@ -2,12 +2,10 @@ import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import useNftRewards from "hooks/NftRewards";
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
-import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { useFetchGovernor } from "hooks/read/useFetchGovernor";
 import { useMintReservesFor } from "hooks/write/useMintReservesFor";
 import { useQueueNextPhase } from "hooks/write/useQueueNextPhase";
-import Image from "next/image";
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
@@ -27,8 +25,6 @@ const SelfReferee = () => {
   );
   const [selectedTab, setSelectedTab] = useState(0);
 
-  const { data: queueData, isLoading: nextPhaseNeedsQueueingLoading } =
-    useNextPhaseNeedsQueueing();
   const {
     write: mintReserves,
     isLoading: mintReservesLoading,
@@ -36,7 +32,6 @@ const SelfReferee = () => {
     isError: mintReservesError,
     disabled: mintReservesDisabled,
   } = useMintReservesFor(false, data?.metadata.dataSource);
-  let needsQueueing = queueData! as unknown as boolean;
 
   const handleTabClick = (index: number) => {
     setSelectedTab(index);

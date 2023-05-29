@@ -1,18 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
+import MyTeam from "components/MyTeam/MyTeam";
+import { useRefundsAvailable } from "components/MyTeam/useRefundsAvailable";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { TeamsContext } from "hooks/teamsContext";
 import { TeamTier, useMyTeams } from "hooks/useMyTeams";
 import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
-import MyTeam from "components/MyTeam/MyTeam";
-import Button from "components/UI/Button";
-import Content from "components/UI/Content";
 import styles from "./index.module.css";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error, removeTeams } = useMyTeams();
   const { data } = useProjectCurrentFundingCycle();
   const fundingCycle = data?.fundingCycle.number.toNumber();
-  
+
   const {
     write,
     isLoading: isRedeemLoading,
@@ -22,9 +23,8 @@ const MyTeams = () => {
     tokenIds: getTokenIdsFromTeams(teams),
     onSuccess: () => removeTeams(teams?.map((t) => t.id)),
   });
-  const canRedeem =
-    fundingCycle === 1 || fundingCycle === 2 || fundingCycle === 4;
-    
+  const canRedeem = useRefundsAvailable();
+
   return (
     <TeamsContext.Provider value={teams}>
       <Content title="Manage" open={true} socials={false}>
@@ -46,11 +46,7 @@ const MyTeams = () => {
           <>
             {teams && teams.length > 1 && canRedeem ? (
               <div className={styles.buttonContainer}>
-                <Button
-                  
-                  onClick={() => write?.()}
-                  disabled={isRedeemLoading}
-                >
+                <Button onClick={() => write?.()} disabled={isRedeemLoading}>
                   {isRedeemLoading ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -95,7 +91,7 @@ function getTokenIdsFromTeams(teams?: TeamTier[]) {
   const tokenIds: string[] = [];
   teams?.forEach((team) => {
     team.tokenIds.forEach((tokenId) => {
-      tokenIds.push(tokenId); 
+      tokenIds.push(tokenId);
     });
   });
   return tokenIds;

@@ -16,7 +16,7 @@ type DescriptionDates = {
     date: string;
     phase: number;
   };
-  refundPeriodDuration: {
+  refundDuration: {
     date: string;
     phase: number;
   };
@@ -27,7 +27,7 @@ export function useDeployerDates(format: "local" | "utc") {
   const [dates, setDates] = useState<DescriptionDates>({
     mintDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
-    refundPeriodDuration: { date: "", phase: 0 },
+    refundDuration: { date: "", phase: 0 },
   });
 
   useEffect(() => {
@@ -39,25 +39,25 @@ export function useDeployerDates(format: "local" | "utc") {
           format === "local"
             ? formatSecondsToLocal(
                 deployerDuration.mintDuration +
-                  deployerDuration.refundPeriodDuration,
+                  deployerDuration.refundDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
                 deployerDuration.mintDuration +
-                  deployerDuration.refundPeriodDuration,
+                  deployerDuration.refundDuration,
                 deployerDuration.start
               ),
         phase: 1,
       },
-      refundPeriodDuration: {
+      refundDuration: {
         date:
           format === "local"
             ? formatSecondsToLocal(
-                deployerDuration.refundPeriodDuration,
+                deployerDuration.refundDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
-                deployerDuration.refundPeriodDuration,
+                deployerDuration.refundDuration,
                 deployerDuration.start
               ),
         phase: 2,

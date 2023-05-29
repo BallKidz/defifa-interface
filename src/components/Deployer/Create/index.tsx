@@ -62,7 +62,7 @@ const DeployerCreate = () => {
     name: "Your game name",
     rules: "Your game rules",
     mintDuration: DEFAULT_MINT_DURATION_SECONDS,
-    refundPeriodDuration: DEFAULT_REFUND_DURATION_SECONDS,
+    refundDuration: DEFAULT_REFUND_DURATION_SECONDS,
     start:
       currentUnixTimestamp +
       DEFAULT_MINT_DURATION_SECONDS +
@@ -147,7 +147,7 @@ const DeployerCreate = () => {
 
     let newValue: string | number;
 
-    if (name === "mintDuration" || name === "refundPeriodDuration") {
+    if (name === "mintDuration" || name === "refundDuration") {
       // Convert the input value (in hours) to seconds.
       newValue = parseFloat(value) * 60 * 60;
     } else if (
@@ -464,15 +464,15 @@ const DeployerCreate = () => {
             <div className={styles.formGroup}>
               <label
                 className="text-sm leading-6 mb-1"
-                htmlFor="refundPeriodDuration"
+                htmlFor="refundDuration"
               >
                 Refund duration (optional)
               </label>
               <Input
                 type="number"
-                id="refundPeriodDuration"
-                name="refundPeriodDuration"
-                value={formValues.refundPeriodDuration / 60 / 60} // convert seconds to hours for display: ;
+                id="refundDuration"
+                name="refundDuration"
+                value={formValues.refundDuration / 60 / 60} // convert seconds to hours for display: ;
                 onChange={handleInputChange}
                 min={0} // set the minimum value allowed
                 step="0.01" // set the step size, e.g., 1 hour increments

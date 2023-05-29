@@ -7,7 +7,7 @@ import styles from "./index.module.css";
 import CurrentPhase from "components/Navbar/Info/CurrentPhase";
 
 const Rules = () => {
-  const { mintDuration, start, refundPeriodDuration } =
+  const { mintDuration, start, refundDuration } =
     useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
@@ -24,7 +24,7 @@ const Rules = () => {
         case 1:
           return `${mintDuration.date}`;
         case 2:
-          return `${refundPeriodDuration.date}`;
+          return `${refundDuration.date}`;
         case 3:
           return `${start.date}`;
         default:
@@ -53,28 +53,25 @@ const Rules = () => {
 
       <div className="flex flex-col gap-4 mt-5">
         <div>
-          Phase 1: Opening ceremony (Mint start)
+          Phase 1: Minting
           <span className={pillStyle(mintDuration.phase)}>
             {fillPill(mintDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 2: Refund deadline (Mint ends)
-          <span className={pillStyle(refundPeriodDuration.phase)}>
-            {fillPill(refundPeriodDuration.phase)}
+          Phase 2: Delay (mints closed, refunds open)
+          <span className={pillStyle(refundDuration.phase)}>
+            {fillPill(refundDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 3: Tip-off
+          Phase 3: Game time
           <span className={pillStyle(start.phase)}>
             {fillPill(start.phase)}
           </span>
         </div>
         <div>
-          Phase 4: Final whistle{" "}
-          {/* <span className={pillStyle(end.phase)}>
-                {fillPill(end.phase)}
-              </span> */}
+          Phase 4: Scorecard submission
         </div>
       </div>
     </div>
