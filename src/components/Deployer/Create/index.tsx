@@ -1,5 +1,4 @@
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import bs58 from "bs58";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
@@ -635,14 +634,11 @@ const DeployerCreate = () => {
                     </div>
 
                     <div className={styles.tierIcons}>
-                      <span>
-                        <FontAwesomeIcon
-                          onClick={() => editTier(tier, index)}
-                          icon={faPen}
-                        />
+                      <span role="button" onClick={() => editTier(tier, index)}>
+                        <PencilSquareIcon className="h-5 w-5" />
                       </span>
-                      <span onClick={() => onRemoveTier(index)}>
-                        <FontAwesomeIcon icon={faTrash} />
+                      <span role="button" onClick={() => onRemoveTier(index)}>
+                        <TrashIcon className="h-5 w-5" />
                       </span>
                     </div>
                   </div>

@@ -1,15 +1,13 @@
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { colors } from "constants/colors";
+import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import React, {
   PropsWithChildren,
   ReactElement,
   useMemo,
   useState,
 } from "react";
-import { colors } from "constants/colors";
-import constants from "constants/UI";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import styles from "./Content.module.css";
 
 const Content: React.FC<
@@ -68,12 +66,7 @@ const Content: React.FC<
             }
           >
             <div> {contentTitle}</div>
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              size="sm"
-              color={constants.contentTitleColor}
-              className={styles.chevronDown}
-            />
+            <ChevronDownIcon className="h-5 w-5" />
 
             {fundingCycle &&
             fundingCycle !== 1 &&
