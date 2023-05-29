@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import Content from "components/UI/Content";
 import { useGameContext } from "contexts/GameContext";
 import { useDeployerDates } from "hooks/read/DeployerDates";
 import { useGameMetadata } from "hooks/read/GameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import styles from "./index.module.css";
+import CurrentPhase from "components/Navbar/Info/CurrentPhase";
 
 const Rules = () => {
   const { mintDuration, start, refundPeriodDuration } =
@@ -45,118 +45,39 @@ const Rules = () => {
   };
 
   return (
-    <Content title="Rules" open={false} fontSize={"16"} color="var(--violet)">
-      <div className={styles.rulesContainer}>
-        <div className={styles.pointSystemWrapper} id="pointsSystem">
-          <div>{gameMetadata?.description}</div>
+    <div className={styles.rulesContainer}>
+      <h2 className="text-xl mb-2">Rules</h2>
+      <p>{gameMetadata?.description}</p>
+
+      <CurrentPhase />
+
+      <div className="flex flex-col gap-4 mt-5">
+        <div>
+          Phase 1: Opening ceremony (Mint start)
+          <span className={pillStyle(mintDuration.phase)}>
+            {fillPill(mintDuration.phase)}
+          </span>
         </div>
-        <div className={styles.phases}>
-          <div className={styles.phaseBox}>
-            <h1>
-              Phase 1: Opening ceremony (Mint start)
-              <span className={pillStyle(mintDuration.phase)}>
-                {fillPill(mintDuration.phase)}
-              </span>
-            </h1>
-            <ul>
-              <li>There are 8 NFTs competing in this game.</li>
-              <li>Minting NFTs increases the game’s pot.</li>
-              <li>The NFTs are a claim on this pot.</li>
-              <li>
-                You can get a full refund anytime before the game starts.
-              </li>
-            </ul>
-          </div>
-          <div className={styles.phaseBox}>
-            <h1>
-              Phase 2: Refund deadline (Mint ends)
-              <span className={pillStyle(refundPeriodDuration.phase)}>
-                {fillPill(refundPeriodDuration.phase)}
-              </span>
-            </h1>
-            <ul>
-              <li>
-                NFTs are no longer being minted, but refunds are still
-                permitted.
-              </li>
-              <li>
-                The refund deadline coincides with the start of the first
-                tip-off.
-              </li>
-            </ul>
-          </div>
-          <div className={styles.phaseBox}>
-            <h1>
-              Phase 3: Tip-off
-              <span className={pillStyle(start.phase)}>
-                {fillPill(start.phase)}
-              </span>
-            </h1>
-            <ul>
-              <li>
-                The pot is locked and refunds permanently end before the tipoff.
-                <a href="#pointsSystem">
-                  {/* <sup className={styles.superScript}>3</sup> */}
-                </a>
-              </li>
-              <li>
-                Holders of each NFT may benefit from the outcome of the game.
-                <a href="#pointsSystem">
-                  <sup className={styles.superScript}>1</sup>
-                </a>
-              </li>
-              <li>
-                The eventual value of these NFTs recalibrates depending on a
-                self-refereed scorecard.
-                <a href="#pointsSystem">
-                  <sup className={styles.superScript}>2</sup>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className={styles.phaseBox}>
-            <h1>
-              Phase 4: Final whistle{" "}
-              {/* <span className={pillStyle(end.phase)}>
+        <div>
+          Phase 2: Refund deadline (Mint ends)
+          <span className={pillStyle(refundPeriodDuration.phase)}>
+            {fillPill(refundPeriodDuration.phase)}
+          </span>
+        </div>
+        <div>
+          Phase 3: Tip-off
+          <span className={pillStyle(start.phase)}>
+            {fillPill(start.phase)}
+          </span>
+        </div>
+        <div>
+          Phase 4: Final whistle{" "}
+          {/* <span className={pillStyle(end.phase)}>
                 {fillPill(end.phase)}
               </span> */}
-            </h1>
-            <ul>
-              <li>The game is self refereed.</li>
-              <li>
-                A final scorecard is uploaded on-chain that says how the
-                game's pot should be shared.
-              </li>
-              <li>
-                50% of NFT holders attest to the correct scorecard to ratify it.
-                Each NFT type has 1 vote, divided between all holders of that
-                NFT type.
-              </li>
-              <li>
-                Burn your NFTs to reclaim ETH from the game at any time after a
-                scorecard has been ratified. Or, keep and trade them forever –
-                their value will remain backed by the pot.
-              </li>
-            </ul>
-          </div>
         </div>
-        <br />
-
-        <div className={styles.disclaimerContainer} id="disclaimerContainer">
-          <p className={styles.disclaimer}>
-            <sup className={styles.superScript}>2</sup> The outcome is subject
-            to the ratified scorecard during Phase 4.
-          </p>
-          {/*  <p className={styles.disclaimer}>
-            <sup className={styles.superScript}>3</sup> After kickoff, 1 of
-            every 10 NFTs minted for each team will be reserved for the Defifa
-            Ballkidz who developed this game.
-          </p> */}
-        </div>
-
-        <br />
       </div>
-    </Content>
+    </div>
   );
 };
 

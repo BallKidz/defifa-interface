@@ -20,9 +20,9 @@ const Description = () => {
 
       <Treasury />
 
-      <div className={styles.gameplayContainer}>
-        <h1 className={styles.gameplayHeader}>How to play:</h1>
-        <ol>
+      <div className="my-5">
+        <h1 className="text-xl mb-3">How to play:</h1>
+        <ol className="flex flex-col gap-2">
           <li>
             <span style={{ color: "white" }}>Play: </span>Mint NFTs with ETH.
             Your ETH is added to the total pot.
@@ -37,8 +37,8 @@ const Description = () => {
           </li>
         </ol>
       </div>
+
       <Rules />
-      <CurrentPhase />
     </div>
   );
 };
