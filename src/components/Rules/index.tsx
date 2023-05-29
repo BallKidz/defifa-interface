@@ -59,11 +59,11 @@ const Rules = () => {
               </span>
             </h1>
             <ul>
-              <li>There are 8 NFTs competing in this tournament.</li>
+              <li>There are 8 NFTs competing in this game.</li>
               <li>Minting NFTs increases the game’s pot.</li>
               <li>The NFTs are a claim on this pot.</li>
               <li>
-                You can get a full refund anytime before the tournament starts.
+                You can get a full refund anytime before the game starts.
               </li>
             </ul>
           </div>
@@ -122,10 +122,10 @@ const Rules = () => {
               </span> */}
             </h1>
             <ul>
-              <li>The tournament is self refereed.</li>
+              <li>The game is self refereed.</li>
               <li>
                 A final scorecard is uploaded on-chain that says how the
-                tournament's pot should be shared.
+                game's pot should be shared.
               </li>
               <li>
                 50% of NFT holders attest to the correct scorecard to ratify it.

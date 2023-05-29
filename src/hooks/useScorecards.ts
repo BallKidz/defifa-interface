@@ -1,8 +1,7 @@
+import { ethers } from "ethers";
 import request, { gql } from "graphql-request";
 import { useEffect, useState } from "react";
 import { useChainData } from "./useChainData";
-import { ethers } from "ethers";
-import { useInterval } from "./useInterval";
 
 const proposalsQuery = gql`
   query proposalsQuery {
@@ -55,17 +54,15 @@ export function useScorecards() {
   }, [chainData]);
 
   function getScoreCardsAndSetScoreCards() {
-    if (graphUrl) {
-      request(graphUrl, proposalsQuery)
-        .then((data) => {
-          const scoreCards = getScoreCardsFromProposals(data.proposals);
-          setScoreCards(scoreCards);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          setError(true);
-        });
-    }
+    request(graphUrl, proposalsQuery)
+      .then((data) => {
+        const scoreCards = getScoreCardsFromProposals(data.proposals);
+        setScoreCards(scoreCards);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setError(true);
+      });
   }
 
   function getScoreCardsFromProposals(proposals: any) {

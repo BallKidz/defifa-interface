@@ -2,36 +2,31 @@ import Link from "next/link";
 import Button from "components/UI/Button";
 import { Logo } from "../Logo";
 import Wallet from "../Wallet";
-import styles from "./Info.module.css";
 import Socials from "./Socials";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
-const Info = ({ withCreateButton }: { withCreateButton?: boolean }) => {
+const Info = () => {
   return (
-    <div className={styles.container}>
-      <Link href="/">
-        <a>
-          <Logo src="/assets/defifa.svg" />
-        </a>
-      </Link>
-      <Socials />
+    <div className="flex justify-between w-full items-center">
+      <div className="flex gap-8 items-center">
+        <Link href="/">
+          <a>
+            <Logo src="/assets/defifa.svg" />
+          </a>
+        </Link>
+        <Link href="/arcade">
+          <a className="text-sm hover:underline">Arcade</a>
+        </Link>
+        <Socials />
 
-      <div className={styles.buttonContainer} style={{ marginLeft: "auto" }}>
-        {withCreateButton ? (
-          <Link href="/create">
-            <div>
-              <Button color="var(--gold)">Create game</Button>
-            </div>
-          </Link>
-        ) : (
-          <Link href="/arcade">
-            <div>
-              <Button color="var(--gold)">Visit arcade</Button>
-            </div>
-          </Link>
-        )}
-
-        <Wallet />
+        <Link href="/create">
+          <a className="text-sm flex gap-2 items-center font-medium hover:underline">
+            Create game <ArrowRightIcon className="h-4 w-4" />
+          </a>
+        </Link>
       </div>
+
+      <Wallet />
     </div>
   );
 };

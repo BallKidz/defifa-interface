@@ -4,7 +4,6 @@ import { useGameMetadata } from "hooks/read/GameMetadata";
 import CurrentPhase from "../Navbar/Info/CurrentPhase";
 import Treasury from "../Navbar/Info/Treasury";
 import Rules from "../Rules";
-import Title from "../Title";
 import styles from "./Description.module.css";
 
 const Description = () => {
@@ -12,10 +11,15 @@ const Description = () => {
   const { data, isLoading } = useGameMetadata(gameId);
 
   return (
-    <div className={styles.container}>
-      {!isLoading && data ? <Title title={data?.name} /> : <>Loading...</>}
+    <div>
+      {!isLoading && data ? (
+        <h1 className="text-3xl mb-8">{data?.name}</h1>
+      ) : (
+        <>Loading...</>
+      )}
 
       <Treasury />
+
       <div className={styles.gameplayContainer}>
         <h1 className={styles.gameplayHeader}>How to play:</h1>
         <ol>

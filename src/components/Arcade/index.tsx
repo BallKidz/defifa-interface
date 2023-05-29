@@ -8,7 +8,7 @@ const ArcadeWrapper = () => {
   return (
     <MainWrapper>
       <Navbar>
-        <Info withCreateButton />
+        <Info />
       </Navbar>
       <h1>Play Money Games With Friends</h1>
       <ArcadeDescription />

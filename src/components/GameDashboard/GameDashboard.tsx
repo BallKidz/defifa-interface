@@ -5,27 +5,25 @@ import Navbar from "components/Navbar";
 import Info from "components/Navbar/Info";
 import SelfReferee from "components/SelfReferee";
 import Divider from "components/UI/Divider";
-import styles from "../../styles/Home.module.css";
+import MainWrapper from "components/UI/MainWrapper";
 
 export function GameDashboard() {
   return (
-    <>
+    <MainWrapper>
       <Navbar>
-        <Info withCreateButton />
+        <Info />
       </Navbar>
 
-      <main className={styles.container}>
-        <Description />
+      <Description />
 
-        <Divider />
-        <Mint />
+      <Divider />
+      <Mint />
 
-        <Divider />
-        <MyTeams />
+      <Divider />
+      <MyTeams />
 
-        <Divider />
-        <SelfReferee />
-      </main>
-    </>
+      <Divider />
+      <SelfReferee />
+    </MainWrapper>
   );
 }

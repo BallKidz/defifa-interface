@@ -19,6 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@graphprotocol/graph-ts": "^0.29.0",
+    "@heroicons/react": "^2.0.18",
     "@jbx-protocol/juice-721-delegate": "6.0.3",
     "@jbx-protocol/juice-contracts-v3": "3.1.2",
     "@metamask/eth-sig-util": "^5.0.2",
@@ -44,10 +45,13 @@
     "react-tabs": "^6.0.0",
     "react-toastify": "^9.1.1",
     "reactjs-popup": "^2.0.5",
+    "sass": "^1.62.1",
+    "tailwind-merge": "^1.12.0",
     "use-google-sheets": "^2.0.0",
     "wagmi": "^0.6.7"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
     "@types/bs58": "^4.0.1",
     "@types/lodash": "^4.14.188",
     "@types/node": "18.7.19",
@@ -56,8 +60,10 @@
     "@types/react-dom": "18.0.6",
     "@types/react-slick": "^0.23.10",
     "@types/react-table": "^7.7.14",
+    "autoprefixer": "^10.4.14",
     "eslint": "8.24.0",
     "eslint-config-next": "12.3.1",
+    "tailwindcss": "^3.3.2",
     "ts-prune": "^0.10.3",
     "typescript": "4.8.3"
   }

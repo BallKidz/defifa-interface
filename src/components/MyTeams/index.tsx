@@ -47,7 +47,7 @@ const MyTeams = () => {
             {teams && teams.length > 1 && canRedeem ? (
               <div className={styles.buttonContainer}>
                 <Button
-                  size="medium"
+                  
                   onClick={() => write?.()}
                   disabled={isRedeemLoading}
                 >

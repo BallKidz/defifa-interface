@@ -17,7 +17,7 @@ const BallkidsScorecard = (governor: string) => {
       <h3>Defifa Ballkids Scorecard</h3>
       <Table columns={columns} data={data} />
       <div className={styles.buttonContainer}>
-        <Button size="medium" onClick={() => write?.()} disabled={isLoading}>
+        <Button  onClick={() => write?.()} disabled={isLoading}>
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

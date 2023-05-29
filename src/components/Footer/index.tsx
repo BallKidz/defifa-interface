@@ -24,7 +24,7 @@ const Footer = () => {
         <ul>
           <li>
             <Link href="https://wc2022.defifa.net" passHref>
-              <a target="_blank">Past tournaments</a>
+              <a target="_blank">Past games</a>
             </Link>
           </li>
           <li>

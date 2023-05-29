@@ -151,7 +151,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
         </div>
       </div>
       <div className={styles.scoreCardButtonContainer}>
-        <Button size="medium" onClick={submitScoreCard} disabled={isLoading}>
+        <Button  onClick={submitScoreCard} disabled={isLoading}>
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -165,7 +165,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
           )}
         </Button>
         {scoreCardOption === 2 && (
-          <Button size="medium" onClick={() => setScoreCard([])}>
+          <Button  onClick={() => setScoreCard([])}>
             Clear all
           </Button>
         )}

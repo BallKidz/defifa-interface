@@ -1,28 +1,24 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable react-hooks/exhaustive-deps */
-import { faPen, faRemove, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import bs58 from "bs58";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import EthSymbol from "components/UI/EthSymbol/EthSymbol";
+import { Input } from "components/UI/Input";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
-import { colors } from "constants/colors";
 import { BigNumber, constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useCreateTournament } from "hooks/write/useCreateTournament";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
-import Link from "next/link";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -333,13 +329,12 @@ const DeployerCreate = () => {
         return (
           <div className={styles.addNftContainer}>
             <div className={styles.formGroup}>
-              <label htmlFor="name" className={styles.label}>
+              <label className="text-sm leading-6 mb-1" htmlFor="name">
                 Name
               </label>
-              <input
+              <Input
                 type="string"
                 id="tierName"
-                className={styles.input}
                 value={t?.name}
                 name="name"
                 onChange={(e) => setEditedTier({ ...t, name: e.target.value })}
@@ -347,10 +342,10 @@ const DeployerCreate = () => {
               />
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="file" className={styles.label}>
+              <label className="text-sm leading-6 mb-1" htmlFor="file">
                 Upload NFT
               </label>
-              <input
+              <Input
                 type="file"
                 onChange={handleTierChange}
                 name="encodedIPFSUri"
@@ -386,54 +381,52 @@ const DeployerCreate = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.stepTitle}>
-        {step}. {step === 1 ? "Game Setup" : "NFT Setup"}
+    <div className="mb-24">
+      <h2 className="text-lg mb-3">
+        {step === 1 ? "Game details" : "Game NFTs"}
       </h2>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         {step === 1 && (
           <>
-            <div style={{ marginBottom: "1rem" }}>
+            <div className="mb-12">
               <div className={styles.formGroup}>
-                <label htmlFor="name" className={styles.label}>
+                <label className="text-sm leading-6 mb-1" htmlFor="name">
                   Name
                 </label>
-                <input
+                <Input
                   type="text"
                   id="name"
                   name="name"
-                  className={styles.input}
                   value={formValues.name}
                   onChange={handleInputChange}
                   required
                 />
               </div>
               <div className={styles.formGroup}>
-                <label htmlFor="rules" className={styles.label}>
+                <label className="text-sm leading-6 mb-1" htmlFor="rules">
                   Rules
                 </label>
-                <textarea
+                <Input
+                  type="text"
                   id="rules"
                   name="rules"
-                  className={styles.input}
                   value={formValues.rules}
                   onChange={handleInputChange}
                   required
-                  rows={3}
                   placeholder="Describe the rules of the game in plain English."
                 />
               </div>
             </div>
 
-            <h3 className={styles.stepTitle}>Game schedule</h3>
+            <h3 className="text-lg mb-3">Game schedule</h3>
             <div className={styles.formGroup}>
-              <label htmlFor="start" className={styles.label}>
+              <label className="text-sm leading-6 mb-1" htmlFor="start">
                 Game start time
               </label>
               <DatePicker
                 id="start"
                 name="start"
-                className={styles.input}
+                className="block w-full rounded-sm border-0 py-1.5 text-white bg-slate-950 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 selected={new Date(formValues.start * 1000)}
                 showTimeInput
                 dateFormat="MM/dd/yyyy h:mm aa"
@@ -447,59 +440,59 @@ const DeployerCreate = () => {
                 required
               />
 
-              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+              <span className="text-xs text-gray-400 mt-1">
                 Must be later than: now + mint duration + refund duration.
               </span>
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="mintDuration" className={styles.label}>
+              <label className="text-sm leading-6 mb-1" htmlFor="mintDuration">
                 Mint duration
               </label>
-              <input
+              <Input
                 type="number"
                 id="mintDuration"
                 name="mintDuration"
-                className={styles.input}
                 value={formValues.mintDuration / 60 / 60} // convert seconds to hours for display
                 onChange={handleInputChange}
                 min={0} // set the minimum value allowed
                 step="0.01" // set the step size, e.g., 1 hour increments
                 required
               />
-              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+              <span className="text-xs text-gray-400 mt-1">
                 Hours prior to the start of the game.
               </span>
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="refundPeriodDuration" className={styles.label}>
+              <label
+                className="text-sm leading-6 mb-1"
+                htmlFor="refundPeriodDuration"
+              >
                 Refund duration (optional)
               </label>
-              <input
+              <Input
                 type="number"
                 id="refundPeriodDuration"
                 name="refundPeriodDuration"
-                className={styles.input}
                 value={formValues.refundPeriodDuration / 60 / 60} // convert seconds to hours for display: ;
                 onChange={handleInputChange}
                 min={0} // set the minimum value allowed
                 step="0.01" // set the step size, e.g., 1 hour increments
                 required
               />
-              <span style={{ fontSize: ".875rem", marginTop: "0.25rem" }}>
+              <span className="text-xs text-gray-400 mt-1">
                 Hours allowed for refunds. Takes place between minting and game
                 time.
               </span>
             </div>
 
             {/* <div className={styles.formGroup}>
-              <label htmlFor="defaultTokenUriResolver" className={styles.label}>
+              <label className="text-sm leading-6 mb-1" htmlFor="defaultTokenUriResolver">
                 Token URI
               </label>
               <input
                 type="string"
                 id="defaultTokenUriResolver"
                 name="defaultTokenUriResolver"
-                className={styles.input}
                 value={formValues.defaultTokenUriResolver}
                 onChange={handleInputChange}
               />
@@ -509,62 +502,64 @@ const DeployerCreate = () => {
         {step === 2 && (
           <>
             <div className={styles.formGroup}>
-              <label htmlFor="price" className={styles.label}>
+              <label className="text-sm leading-6 mb-1" htmlFor="price">
                 NFT price (ETH)
               </label>
-              <input
+              <Input
                 type="number"
                 id="price"
                 name="price"
-                className={styles.input}
                 value={tierGeneralValues?.price}
                 onChange={handleTierGeneralValues}
               />
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="reservedRate" className={styles.label}>
-                Reserved rate (Reserve 1 NFT for every X minted NFTs)
+              <label className="text-sm leading-6 mb-1" htmlFor="reservedRate">
+                Reserved rate (optional)
               </label>
-              <input
+              <Input
                 type="number"
                 id="reservedRate"
                 name="reservedRate"
-                className={styles.input}
                 value={tierGeneralValues?.reservedRate}
                 onChange={handleTierGeneralValues}
               />
+              <span className="text-xs mt-1 text-gray-400">
+                For example: reserve 1 NFT for every X minted NFTs
+              </span>
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="reservedRate" className={styles.label}>
-                Reserved rate beneficiary address (ETH address that will receive
-                the reserved rate allocation)
+              <label className="text-sm leading-6 mb-1" htmlFor="reservedRate">
+                Reserved rate beneficiary address allocation
               </label>
-              <input
-                type="string"
+              <Input
+                type="text"
                 id="reservedTokenBeneficiary"
                 name="reservedTokenBeneficiary"
-                className={styles.input}
                 value={tierGeneralValues?.reservedTokenBeneficiary}
                 onChange={handleTierGeneralValues}
               />
+              <span className="text-xs mt-1 text-gray-400">
+                ETH address that will receive the reserved NFTs
+              </span>
             </div>
-            <Content title="Add NFT" createIcon open={addNftOpen}>
-              <div className={styles.addNftContainer}>
-                <div className={styles.formGroup}>
-                  <label htmlFor="name" className={styles.label}>
-                    Name
-                  </label>
-                  <input
-                    type="string"
-                    id="tierName"
-                    className={styles.input}
-                    value={tier?.name}
-                    name="name"
-                    onChange={handleTierChange}
-                  />
-                </div>
-                {/*                 <div className={styles.formGroup}>
-                  <label htmlFor="encodedIPFSUri" className={styles.label}>
+            <div className="border border-gray-800">
+              <Content title="Add NFT" createIcon open={addNftOpen}>
+                <div className="p-5">
+                  <div className={styles.formGroup}>
+                    <label className="text-sm leading-6 mb-1" htmlFor="name">
+                      Name
+                    </label>
+                    <Input
+                      type="text"
+                      id="tierName"
+                      value={tier?.name}
+                      name="name"
+                      onChange={handleTierChange}
+                    />
+                  </div>
+                  {/*                 <div className={styles.formGroup}>
+                  <label className="text-sm leading-6 mb-1" htmlFor="encodedIPFSUri">
                     Upload file
                   </label>
                   <input
@@ -597,13 +592,14 @@ const DeployerCreate = () => {
                   </div>
                 </div> */}
 
-                <div style={{ marginTop: "20px" }}>
-                  <Button onClick={onAddNFT} disabled={isUploading}>
-                    Add NFT
-                  </Button>
+                  <div style={{ marginTop: "20px" }}>
+                    <Button onClick={onAddNFT} disabled={isUploading}>
+                      Add NFT
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </Content>
+              </Content>
+            </div>
 
             {formValues.tiers.length > 0 && (
               <div className={styles.tiersListContainer}>
@@ -643,11 +639,10 @@ const DeployerCreate = () => {
                         <FontAwesomeIcon
                           onClick={() => editTier(tier, index)}
                           icon={faPen}
-                          color="var(--gold)"
                         />
                       </span>
                       <span onClick={() => onRemoveTier(index)}>
-                        <FontAwesomeIcon icon={faTrash} color="var(--gold)" />
+                        <FontAwesomeIcon icon={faTrash} />
                       </span>
                     </div>
                   </div>
@@ -658,12 +653,8 @@ const DeployerCreate = () => {
         )}
 
         <div className={styles.buttonContainer}>
-          <Button
-            type="submit"
-            size={step === 2 ? "big" : "medium"}
-            color={step === 2 ? "var(--gold)" : colors.purple}
-          >
-            {step === 1 ? "Next" : "Create game"}
+          <Button type="submit">
+            {step === 1 ? "Next: NFTs" : "Create game"}
           </Button>
           {step === 2 && (
             <span

@@ -72,7 +72,7 @@ const CustomScorecard: FC<CustomScorecardProps> = ({ tiers, governor }) => {
         ))}
       </div>
       <div className={styles.buttonContainer}>
-        <Button size="medium" onClick={() => write?.()} disabled={isLoading}>
+        <Button  onClick={() => write?.()} disabled={isLoading}>
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

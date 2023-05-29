@@ -1,9 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
-//nextjs Functional component
-
-import { chunk } from "lodash";
-import { useState } from "react";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
 import useNftRewards from "hooks/NftRewards";
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
@@ -11,10 +7,12 @@ import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingC
 import { useFetchGovernor } from "hooks/read/useFetchGovernor";
 import { useMintReservesFor } from "hooks/write/useMintReservesFor";
 import { useQueueNextPhase } from "hooks/write/useQueueNextPhase";
+import Image from "next/image";
+import { useState } from "react";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 import Attestation from "../Attestation";
 import ScoreCard from "../Scorecard";
-import Button from "components/UI/Button";
-import Content from "components/UI/Content";
 import styles from "./SelfReferee.module.css";
 
 const SelfReferee = () => {
@@ -98,11 +96,12 @@ const SelfReferee = () => {
                 }
               >
                 {isLoading || nextPhaseNeedsQueueingLoading ? (
-                  <img
+                  <Image
                     style={{ marginTop: "5px" }}
                     src="/assets/defifa_spinner.gif"
                     alt="spinner"
                     width={35}
+                    height={35}
                   />
                 ) : needsQueueing ? (
                   <span> Queue phase {fundingCycle + 1}</span>

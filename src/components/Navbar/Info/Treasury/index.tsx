@@ -2,7 +2,6 @@ import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
 import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { fromWad } from "utils/format/formatNumber";
-import styles from "./Treasury.module.css";
 
 const Treasury = () => {
   const { data } = useProjectCurrentFundingCycle();
@@ -13,12 +12,15 @@ const Treasury = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <h1>
-        {fromWad(treasuryAmount)} ETH in pot 
-          {" "}
-          from {totalSupply?.toNumber()} mints
-      </h1>
+    <div className="flex gap-x-10 rounded-lg">
+      <div className="flex flex-col">
+        <span className="text-sm">Pot size</span>
+        <span className="text-xl">{fromWad(treasuryAmount)} ETH</span>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-sm">Mints</span>
+        <span className="text-xl">{totalSupply?.toNumber()} NFTs</span>
+      </div>
     </div>
   );
 };

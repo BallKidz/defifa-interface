@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "reactjs-popup/dist/index.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { infuraProvider } from "wagmi/providers/infura";
-import "../styles/globals.css";
+import "styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(

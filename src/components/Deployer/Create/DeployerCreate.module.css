@@ -1,17 +1,4 @@
-.container {
-  margin: 0 auto;
-  padding: 2rem;
-}
 
-.stepTitle {
-  margin-bottom: 1rem;
-  color: var(--gold);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-}
 
 .formGroup {
   display: flex;
@@ -21,18 +8,6 @@
 
 .label {
   margin-bottom: 0.5rem;
-}
-
-.input {
-  padding: 0.5rem;
-  border: 1px solid var(--violet);
-  background: transparent;
-  color: var(--contentTitle);
-  color-scheme: dark;
-}
-
-.fileInput {
-  padding: 0.5rem;
 }
 
 .buttonContainer {
