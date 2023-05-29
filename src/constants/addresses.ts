@@ -1,3 +1,3 @@
 export const ETH_TOKEN_ADDRESS = "0x000000000000000000000000000000000000eeee";
-export const IJB721Delegate_INTERFACE_ID = "0x36595ad4";
+export const IJB721Delegate_INTERFACE_ID = "0x3cf93032"; // 0x3cf93032
 export const IJB721Delegate_V3_2_INTERFACE_ID = "0xfbb38e03";

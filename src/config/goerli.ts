@@ -36,19 +36,20 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
   },
 
   DefifaDelegate: {
-    address: "0xDBbc2fF20c6136bd3358b2aa435854086dB1bB33",
+    address: "0x49120F21d94f1c76744cec46775D4C0306C04722",
     interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
-    address: "0xdb885021DfF7bc22c05697aE59c9525352DA526B",
+    address: "0x43973556E7105b7Bf35e84F53162aB731a4c756E",
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: "0x2304C37e0727cd4F3e89Be2bc695e3D0f118df1c",
+    address: "0x17cABd6BC8679954476961c73b88f5888F8FF708",
     interface: DefifaDeployer.abi,
   },
 
-  subgraph: "https://api.studio.thegraph.com/query/5023/defifa-goerli/v0.0.13",
+  subgraph:
+    "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
   governorSubgraph:
-    "https://api.studio.thegraph.com/query/5023/defifa-goerli/v0.0.13",
+    "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
 };

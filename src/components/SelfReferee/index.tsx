@@ -60,7 +60,6 @@ const SelfReferee = () => {
               <Tab selectedClassName={styles.tabSelected}>
                 Scorecard submission
               </Tab>
-              <Tab selectedClassName={styles.tabSelected}>Queue phase</Tab>
               <Tab selectedClassName={styles.tabSelected}>Mint reserves</Tab>
             </TabList>
             <TabPanel>
@@ -75,12 +74,6 @@ const SelfReferee = () => {
                 tiers={rewardTiers as []}
                 governor={governor?.toString() ?? ""}
               />
-            </TabPanel>
-            <TabPanel>
-              <p>
-                Each game phase must also be queued by someone in the public in
-                a timely manner.
-              </p>
             </TabPanel>
             <TabPanel>
               <p>Mint reserved tokens for all tiers.</p>
