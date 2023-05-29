@@ -1,4 +1,7 @@
-import { IJB721Delegate_V3_2_INTERFACE_ID } from "constants/addresses";
+import {
+  IJB721Delegate_INTERFACE_ID,
+  IJB721Delegate_V3_2_INTERFACE_ID,
+} from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { constants, ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
@@ -77,7 +80,7 @@ export function useRedeemTokensOf({
 function encodeRedeemMetadata(tokenIds: string[]) {
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes4", "uint256[]"],
-    [constants.HashZero, IJB721Delegate_V3_2_INTERFACE_ID, tokenIds]
+    [constants.HashZero, IJB721Delegate_INTERFACE_ID, tokenIds]
   );
 }
 

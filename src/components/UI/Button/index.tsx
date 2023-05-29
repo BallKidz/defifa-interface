@@ -1,11 +1,12 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, HTMLAttributes } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { twJoin } from "tailwind-merge";
 
 const PRIMARY_BUTTON_CLASS = "bg-violet-600 hover:bg-violet-500 text-white";
+const PRIMARY_BUTTON_DISABLED_CLASS =
+  "bg-gray-700 text-white cursor-not-allowed";
+
 const SECONDARY_BUTTON_CLASS =
   "bg-slate-950 border border-solid border-violet-500 hover:bg-violet-950 text-white";
-
-const PRIMARY_BUTTON_DISABLED_CLASS = "bg-gray-700 text-white cursor-not-allowed";
 
 const Button = ({
   children,
