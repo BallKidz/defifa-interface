@@ -47,7 +47,7 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     address: "0x17cABd6BC8679954476961c73b88f5888F8FF708",
     interface: DefifaDeployer.abi,
   },
-
+// TODO: https://api.studio.thegraph.com/query/5023/defifa-goerli/v0.0.14
   subgraph:
     "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
   governorSubgraph:

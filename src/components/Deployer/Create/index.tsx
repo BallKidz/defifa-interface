@@ -45,6 +45,7 @@ const DeployerCreate = () => {
   const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
   const [addNftOpen, setAddNftOpen] = useState(true);
+  const [iPFSNeedsHashing, setIPFSNeedsHashing] = useState(false);
 
   const [tier, setTier] = useState<DefifaTierParams>({
     name: "",
@@ -102,42 +103,45 @@ const DeployerCreate = () => {
   } = useCreateTournament(formValues);
 
   // TODO this is totally bugged, needs to be uploaded at deploy time
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const uploadJsons = async (formValuesIn: DefifaLaunchProjectData) => {
+    // This is the 'collection' name in OS.
+    contractUri.name = formValuesIn.name;
+    // This is the 'collection' description in OS can be long. Use as rules.
+    contractUri.description =
+    formValuesIn.rules +
+      " " +
+      "For more info visit" +
+      " " +
+      contractUri.infoUri;
+    const contractUriCid = await uploadJsonToIpfs(contractUri);
+    projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
+    projectMetadataUri.description =
+    formValuesIn.rules +
+      " " +
+      "For more info visit" +
+      " " +
+      contractUri.infoUri;
+
+    const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
+    
+    if (!contractUriCid || !projectMetadataCid) return;
+
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      contractUri: `ipfs://${contractUriCid}`,
+      projectMetadata: {
+        content: projectMetadataCid,
+        domain: 0,
+      },
+    }));
+  };
+
   useEffect(() => {
-    const uploadJsons = async () => {
-      // This is the 'collection' name in OS.
-      contractUri.name = formValues.name;
-      // This is the 'collection' description in OS can be long. Use as rules.
-      contractUri.description =
-        formValues.rules +
-        " " +
-        "For more info visit" +
-        " " +
-        contractUri.infoUri;
-      const contractUriCid = await uploadJsonToIpfs(contractUri);
-      projectMetadataUri.name = formValues.name; // This should be a tier name on OS (??)
-      projectMetadataUri.description =
-        formValues.rules +
-        " " +
-        "For more info visit" +
-        " " +
-        contractUri.infoUri;
-
-      const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
-
-      if (!contractUriCid || !projectMetadataCid) return;
-
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        contractUri: `ipfs://${contractUriCid}`,
-        projectMetadata: {
-          content: projectMetadataCid,
-          domain: 0,
-        },
-      }));
-    };
-
-    uploadJsons();
-  }, []);
+      if(iPFSNeedsHashing){
+        uploadJsons(formValues);
+      }
+  }, [formValues, iPFSNeedsHashing]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -186,7 +190,7 @@ const DeployerCreate = () => {
             ? parseFloat(value)
             : value,
       }));
-    }
+    };
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -208,6 +212,8 @@ const DeployerCreate = () => {
     if (step === 1) {
       setStep(2);
     } else {
+      console.log("handleSubmit");
+      setIPFSNeedsHashing(true); // TODO: handle failed create transaction?!
       createTournament();
     }
   };
