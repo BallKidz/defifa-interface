@@ -2,7 +2,7 @@ import { chain } from "wagmi";
 import { DEFIFA_CONFIG_GOERLI } from "./goerli";
 import { DEFIFA_CONFIG_MAINNET } from "./mainnet";
 
-export const mainnet = true;
+const mainnet = true;
 
 export function getChainData(chainId?: number) {
   if (chainId === chain.mainnet.id) {

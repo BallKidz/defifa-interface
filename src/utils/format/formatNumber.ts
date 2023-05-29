@@ -1,7 +1,7 @@
 import { BigNumberish } from "ethers";
 import { formatUnits, parseUnits } from "ethers/lib/utils";
 
-export const WAD_DECIMALS = 18;
+const WAD_DECIMALS = 18;
 
 export const parseWad = (value?: BigNumberish) =>
   parseUnits(value?.toString() || "0", WAD_DECIMALS);

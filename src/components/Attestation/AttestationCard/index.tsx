@@ -147,7 +147,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
         <div className={styles.scoreCardExpand}>
           <Button size="medium" onClick={handleClick}>
             <div className={styles.buttonContent}>
-              <img src="/icons/flip-icon.png" alt="Flip" width={27} />
+              <img src="/assets/icons/flip-icon.png" alt="Flip" width={27} />
               View proposal
             </div>
           </Button>
@@ -219,7 +219,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
         <div className={styles.scoreCardExpand}>
           <Button size="medium" onClick={handleClick}>
             <div className={styles.buttonContent}>
-              <img src="/icons/flip-icon.png" alt="Flip" width={27} />
+              <img src="/assets/icons/flip-icon.png" alt="Flip" width={27} />
               View scorecard
             </div>
           </Button>

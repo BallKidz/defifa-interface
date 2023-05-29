@@ -90,7 +90,7 @@ const MyTeam: FC<{
   );
 };
 
-export function getRedeemButtonText(fundingCycle?: number) {
+function getRedeemButtonText(fundingCycle?: number) {
   if (fundingCycle === 1 || fundingCycle === 2) {
     return "Refund";
   } else if (fundingCycle === 4) {

@@ -15,19 +15,19 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
   chainId: chain.goerli.id,
 
   JBProjects: {
-    address: JBProjects.address,
+    address: JBProjects.address as `0x${string}`,
     interface: JBProjects.abi,
   },
 
   JBController: {
-    address: JBController.address,
+    address: JBController.address as `0x${string}`,
     interface: JBController.abi,
   },
   JBSingleTokenPaymentTerminalStore: {
     interface: JBSingleTokenPaymentTerminalStore.abi,
   },
   JBETHPaymentTerminal: {
-    address: JBETHPaymentTerminal.address,
+    address: JBETHPaymentTerminal.address as `0x${string}`,
     interface: JBETHPaymentTerminal.abi,
   },
   JBTiered721DelegateStore: {

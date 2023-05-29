@@ -1,7 +1,6 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
-import { simulateTransaction } from "lib/tenderly";
 import {
   useAccount,
   useContractWrite,
@@ -27,14 +26,6 @@ export function useQueueNextPhase(simulate = false) {
     },
   });
 
-  const simulateQueueNextPhase = () => {
-    simulateTransaction({
-      chainId: chainData.chainId,
-      populatedTx: config.request,
-      userAddress: address,
-    });
-  };
-
   const { data, write, error, isError } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
@@ -45,11 +36,7 @@ export function useQueueNextPhase(simulate = false) {
       if (!isConnected) {
         openConnectModal!();
       }
-      if (simulate) {
-        simulateQueueNextPhase();
-      } else {
-        write?.();
-      }
+      write?.();
     },
     isLoading,
     isSuccess,

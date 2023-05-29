@@ -1,7 +1,7 @@
 import { ContractInterface } from "ethers";
 
-export interface ContractData {
-  address: string;
+interface ContractData {
+  address: `0x${string}`;
   interface: ContractInterface;
 }
 

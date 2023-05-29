@@ -48,7 +48,3 @@ export const formatDateToLocal = (
 
   return local;
 };
-
-export const formatDateHoursFromNow = (dateMillis?: number) => {
-  return moment(dateMillis).endOf("day").fromNow();
-};

@@ -5,7 +5,6 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { simulateTransaction } from "lib/tenderly";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
 
@@ -27,14 +26,6 @@ export function useMintReservesFor(
     chainId: chainData.chainId,
   });
 
-  const simulateOutStanding = () => {
-    simulateTransaction({
-      chainId: chainData.chainId,
-      populatedTx: config.request,
-      userAddress: address,
-    });
-  };
-
   const filteredOutstanding = outStanding.filter((item) => {
     return item.count > 0;
   });
@@ -49,11 +40,7 @@ export function useMintReservesFor(
       if (!isConnected) {
         openConnectModal!();
       } else {
-        if (simulate) {
-          simulateOutStanding();
-        } else {
-          write?.();
-        }
+        write?.();
       }
     },
     isLoading,

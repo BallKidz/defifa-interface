@@ -2,7 +2,6 @@ import { IJB721Delegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { simulateTransaction } from "lib/tenderly";
 import { toastError } from "utils/toast";
 import {
   useAccount,
@@ -66,20 +65,13 @@ export function usePay({
     ],
   });
 
-  const simulatePay = () =>
-    simulateTransaction({
-      chainId: chain?.id,
-      populatedTx: config.request,
-      userAddress: address,
-    });
-
   const { data, write, error, isError } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
   return {
     data,
-    write: simulate ? simulatePay : write,
+    write,
     isLoading,
     isSuccess,
     error,

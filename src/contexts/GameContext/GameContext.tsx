@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-export type GameContextType = {
+type GameContextType = {
   gameId: number;
 };
 

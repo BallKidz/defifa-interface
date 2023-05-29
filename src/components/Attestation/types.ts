@@ -10,7 +10,7 @@ export interface ScoreCard {
   isEqual?: boolean;
 }
 
-export interface AttestationCardProps {
+interface AttestationCardProps {
   proposal: ScoreCard;
   tiers: any[];
 }
