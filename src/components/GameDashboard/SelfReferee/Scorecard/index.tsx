@@ -7,7 +7,7 @@ import { FC, useEffect, useState } from "react";
 import { convertScoreCardToPercents } from "utils/scorecard";
 import styles from "./Scorecard.module.css";
 import { ballkidsScorecard } from "./constants/ballKidsScorecard";
-import { useScoringOpen } from "components/MyTeam/useScoringOpen";
+import { useScoringOpen } from "components/GameDashboard/MyTeams/MyTeam/useScoringOpen";
 
 interface ScoreCard {
   id: number;

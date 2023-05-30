@@ -1,10 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import { Games } from "hooks/useAllGames";
+import Link from "next/link";
 import { FC } from "react";
 import styles from "./Game.module.css";
-import Link from "next/link";
 
-const Game: FC<{game: Games;}> = ({ game }) => {
+const Game: FC<{ game: Games }> = ({ game }) => {
   const { gameId, name, address } = game;
   return (
     <div className={styles.container}>
@@ -16,7 +15,7 @@ const Game: FC<{game: Games;}> = ({ game }) => {
               <Link href={`/game/${gameId}`}>{gameId}</Link>
             </td>
             <td>
-              <h3>{name !== null ? name : 'No name set in metadata'}</h3>
+              <h3>{name !== null ? name : "No name set in metadata"}</h3>
             </td>
             <td>
               <h3>{address}</h3>
@@ -26,7 +25,6 @@ const Game: FC<{game: Games;}> = ({ game }) => {
       </table>
     </div>
   );
-}
-
+};
 
 export default Game;

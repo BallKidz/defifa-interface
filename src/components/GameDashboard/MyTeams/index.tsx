@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import MyTeam from "components/MyTeam/MyTeam";
-import { useRefundsOpen } from "components/MyTeam/useRefundsOpen";
+import MyTeam from "components/GameDashboard/MyTeams/MyTeam/MyTeam";
+import { useRefundsOpen } from "components/GameDashboard/MyTeams/MyTeam/useRefundsOpen";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";

@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useGameContext } from "contexts/GameContext";
 import { useGameMetadata } from "hooks/read/GameMetadata";
-import CurrentPhase from "../Navbar/Info/CurrentPhase";
-import Treasury from "../Navbar/Info/Treasury";
+import CurrentPhase from "../../Navbar/Info/CurrentPhase";
+import Treasury from "../../Navbar/Info/Treasury";
 import Rules from "../Rules";
 import styles from "./Description.module.css";
 

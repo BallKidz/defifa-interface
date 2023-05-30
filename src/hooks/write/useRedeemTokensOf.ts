@@ -1,4 +1,4 @@
-import { useRefundsOpen } from "components/MyTeam/useRefundsOpen";
+import { useRefundsOpen } from "components/GameDashboard/MyTeams/MyTeam/useRefundsOpen";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { constants, ethers } from "ethers";

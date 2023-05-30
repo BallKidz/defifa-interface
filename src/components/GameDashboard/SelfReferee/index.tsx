@@ -1,4 +1,4 @@
-import { useScoringOpen } from "components/MyTeam/useScoringOpen";
+import { useScoringOpen } from "components/GameDashboard/MyTeams/MyTeam/useScoringOpen";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import useNftRewards from "hooks/NftRewards";
@@ -9,8 +9,8 @@ import { useMintReservesFor } from "hooks/write/useMintReservesFor";
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import Attestation from "../Attestation";
-import ScoreCard from "../Scorecard";
+import Attestation from "./Attestation";
+import ScoreCard from "./Scorecard";
 import styles from "./SelfReferee.module.css";
 
 const SelfReferee = () => {

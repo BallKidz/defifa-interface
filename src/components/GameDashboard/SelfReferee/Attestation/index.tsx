@@ -6,11 +6,11 @@ import { isEqual } from "lodash";
 import { useEffect, useState } from "react";
 import { convertScoreCardToPercents } from "utils/scorecard";
 import { ballkidsScorecard } from "../Scorecard/constants/ballKidsScorecard";
-import Button from "../UI/Button";
+import Button from "../../../UI/Button";
 import styles from "./Attestation.module.css";
 import AttestationCard from "./AttestationCard";
 import { ScoreCard } from "./types";
-import { useScoringOpen } from "components/MyTeam/useScoringOpen";
+import { useScoringOpen } from "components/GameDashboard/MyTeams/MyTeam/useScoringOpen";
 
 interface AttestationProps {
   tiers: any[];

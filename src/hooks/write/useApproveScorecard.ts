@@ -6,7 +6,7 @@ import {
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { ScoreCard } from "../../components/Scorecard/types";
+import { ScoreCard } from "../../components/GameDashboard/SelfReferee/Scorecard/types";
 
 export function useApproveScorecard(
   _tierWeights: ScoreCard[],

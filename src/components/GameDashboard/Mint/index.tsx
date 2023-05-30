@@ -13,7 +13,7 @@ import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingC
 import { usePay } from "hooks/write/usePay";
 import { useState } from "react";
 import { useAccount } from "wagmi";
-import Team from "../Team";
+import Team from "../../Team";
 import styles from "./Mint.module.css";
 
 function isValidAddress(delegate: string) {
