@@ -46,6 +46,7 @@
   outline: inherit;
   color: white;
   text-decoration: underline;
+  margin-right: 5px;
 }
 
 /* Media query for mobile */
