@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ["DM Mono", "ui-monospace", "SFMono-Regular"],
+        mono: ["Capsules", "ui-monospace", "SFMono-Regular"],
       },
       colors: {
         gold: "#FC8370",

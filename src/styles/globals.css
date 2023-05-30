@@ -1,5 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
+/* eslint-disable */
 
+@font-face {
+	font-family: 'Capsules';
+	src: url('/assets/fonts/Capsules.woff2') format('woff2');
+	font-weight: 100 700;
+}
+@font-face {
+    font-family: 'Capsules';
+    src: url('/assets/fonts/Capsules.woff2') format('woff2') tech('variations');
+    font-weight: 100 700;
+}
+
+  
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

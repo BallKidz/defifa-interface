@@ -47,7 +47,7 @@ const Home: NextPage = () => {
           <h1 className="text-5xl md:text-7xl text-center font-medium tracking-tight mb-8">
             Money Games for Anything
           </h1>
-          <div className="text-center max-w-xl mx-auto mb-24">
+          <div className="text-center max-w-2xl mx-auto mb-24 text-lg">
             <p>Defifa is an on-chain gaming and governance experiment.</p>
             <p> Make your picks, load the pot and win.</p>
           </div>
