@@ -1,48 +1,61 @@
 import Link from "next/link";
-import styles from "./Footer.module.css";
+
+const LINK_CLASS = "text-neutral-400 hover:text-neutral-100";
 
 const Footer = () => {
-  const openDefifaDisclaimer = () => {
-    window.open("/disclaimer/disclaimer.pdf", "_blank");
-  };
   return (
-    <footer className={styles.wrapper}>
-      <div className={styles.container}>
-        <div>
-          <p>
+    <footer className="w-full bg-neutral-900 text-sm pt-16 pb-24 px-5 border-t border-neutral-700 text-neutral-100">
+      <div className="md:grid flex flex-col md:grid-cols-5 max-w-5xl mx-auto gap-10">
+        <div className="col-span-2">
+          <p className="mb-5">
             Defifa is an art market and governance experiment.{" "}
             <strong>
               It is not intended as a platform for sports gambling{" "}
             </strong>{" "}
             nor do we endorse such use.{" "}
-            <a onClick={openDefifaDisclaimer}>Review Defifa disclaimer</a>
+            <a
+              className="underline hover:text-neutral-300"
+              href="/disclaimer/disclaimer.pdf"
+              target="_blank"
+            >
+              Review Defifa disclaimer
+            </a>
+            .
           </p>
 
-          <p>Build with Juicebox. Secured by Ethereum</p>
+          <p>Built with Juicebox. Secured by Ethereum</p>
         </div>
 
-        <ul>
+        <ul className="flex flex-col gap-2">
           <li>
             <Link href="https://wc2022.defifa.net" passHref>
-              <a target="_blank">Past games</a>
+              <a className={LINK_CLASS} target="_blank">
+                Past games
+              </a>
             </Link>
           </li>
           <li>
             <Link href="https://www.juicebox.money/v2/p/464" passHref>
-              <a target="_blank">Juicebox</a>
+              <a className={LINK_CLASS} target="_blank">
+                Juicebox
+              </a>
             </Link>
           </li>
           <li>
             <Link href="https://github.com/ballkidz" passHref>
-              <a target="_blank">Code</a>
+              <a className={LINK_CLASS} target="_blank">
+                Code
+              </a>
             </Link>
           </li>
         </ul>
 
-        <ul>
+        <ul className="flex flex-col gap-2">
           <li>
             <Link href="https://discord.gg/hrZnvs65Nh" passHref>
-              <a target="_blank">Discord</a>
+              <a className={LINK_CLASS} target="_blank">
+                Discord
+              </a>
             </Link>
           </li>
           <li>
@@ -50,12 +63,16 @@ const Footer = () => {
               href="https://opensea.io/collection/defifa-american-football-playoffs-2023"
               passHref
             >
-              <a target="_blank">OpenSea</a>
+              <a className={LINK_CLASS} target="_blank">
+                OpenSea
+              </a>
             </Link>
           </li>
           <li>
             <Link href="https://twitter.com/Defifa420" passHref>
-              <a target="_blank">Twitter</a>
+              <a className={LINK_CLASS} target="_blank">
+                Twitter
+              </a>
             </Link>
           </li>
         </ul>
