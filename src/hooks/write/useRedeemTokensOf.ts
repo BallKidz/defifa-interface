@@ -1,4 +1,4 @@
-import { useRefundsAvailable } from "components/MyTeam/useRefundsAvailable";
+import { useRefundsOpen } from "components/MyTeam/useRefundsOpen";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { constants, ethers } from "ethers";
@@ -27,7 +27,7 @@ export function useRedeemTokensOf({
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
   const { gameId } = useGameContext();
-  const canRedeem = useRefundsAvailable();
+  const canRedeem = useRefundsOpen();
 
   const args = [
     address, //user _holder address

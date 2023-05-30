@@ -181,7 +181,7 @@ const Mint = () => {
 
           <div
             style={{ pointerEvents: currentFcNumber === 1 ? "auto" : "none" }}
-            className={styles.mostMintContainer}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
             {mostMintedRewardTiers?.map((t: any) => (
               <Team

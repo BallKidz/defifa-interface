@@ -7,7 +7,7 @@ import { TeamTier } from "hooks/useMyTeams";
 import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
 import { FC, useState } from "react";
 import styles from "./MyTeam.module.css";
-import { useRefundsAvailable } from "./useRefundsAvailable";
+import { useRefundsOpen } from "./useRefundsOpen";
 
 const MyTeam: FC<{
   team: TeamTier;
@@ -21,7 +21,7 @@ const MyTeam: FC<{
     team.tokenIds
   );
   const attestationPower = useAttestationPower(id, quantity);
-  const canRedeem = useRefundsAvailable();
+  const canRedeem = useRefundsOpen();
 
   const buttonText =
     currentPhase === DefifaGamePhase.NO_CONTEST ||

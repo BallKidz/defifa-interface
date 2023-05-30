@@ -7,6 +7,7 @@ import { FC, useEffect, useState } from "react";
 import { convertScoreCardToPercents } from "utils/scorecard";
 import styles from "./Scorecard.module.css";
 import { ballkidsScorecard } from "./constants/ballKidsScorecard";
+import { useScoringOpen } from "components/MyTeam/useScoringOpen";
 
 interface ScoreCard {
   id: number;
@@ -30,6 +31,8 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
     scoreCardWithPercents,
     props.governor
   );
+
+  const scoringOpen = useScoringOpen();
 
   useEffect(() => {
     switch (scoreCardOption) {
@@ -151,7 +154,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
         </div>
       </div>
       <div className={styles.scoreCardButtonContainer}>
-        <Button onClick={submitScoreCard} disabled={isLoading}>
+        <Button onClick={submitScoreCard} disabled={isLoading || !scoringOpen}>
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -161,7 +164,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
               width={35}
             />
           ) : (
-            "Submit"
+            "Submit scorecard"
           )}
         </Button>
         {scoreCardOption === 2 && (

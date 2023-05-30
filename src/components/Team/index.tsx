@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useMemo, useState } from "react";
 import Button from "components/UI/Button";
-import styles from "./Team.module.css";
+import Image from "next/image";
+import { FC, useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface TeamProps {
   id: number;
@@ -53,13 +54,6 @@ const Team: FC<TeamProps> = ({
   const reaminingSupplyPerc =
     minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
 
-  const checkStampOpacity = useMemo<number>(() => {
-    if (selected) {
-      return 1;
-    }
-    return 0;
-  }, [selected]);
-
   const onAddTierIds = () => {
     setTierIds([...tierIds, id]);
     onAddMultiple?.(id);
@@ -79,39 +73,31 @@ const Team: FC<TeamProps> = ({
   };
 
   return (
-    <div className={styles.parent}>
-      <div className={styles.container}>
-        <div
-          className={styles.imageContainer}
-          onClick={() => onTeamClicked(id)}
-        >
-          <img
-            src={img}
-            style={{ opacity: selected ? 0.8 : 1 }}
-            crossOrigin="anonymous"
-            alt="Team"
-            className={styles.teamImg}
-          />
-          <img
-            style={{ opacity: checkStampOpacity }}
-            className={styles.teamChecked}
-            src="/assets/team_selected.png"
-            alt="Check"
-          />
-        </div>
+    <div
+      className={twMerge(
+        "flex flex-col gap-1 border border-gray-800 rounded-md hover:-translate-y-0.5 transition-transform duration-200 max-w-[500px] mx-auto",
+        selected ? "border-violet-500" : ""
+      )}
+    >
+      <div
+        className="cursor-pointer rounded-md overflow-hidden shadow-md"
+        role="button"
+        onClick={() => onTeamClicked(id)}
+      >
+        <Image
+          src={img}
+          crossOrigin="anonymous"
+          alt="Team"
+          width={500}
+          height={500}
+        />
+      </div>
 
-        <div
-          className={styles.dataContainer}
-          style={{
-            display: "flex",
-            gap: "15px",
-            alignItems: "center",
-            height: "35px",
-          }}
-        >
-          <h3>{name}</h3>
+      <div className="p-3">
+        <div className="flex justify-between items-center">
+          <span className="w-full">{name}</span>
           {selected ? (
-            <div className={styles.quantityContainer}>
+            <div className="flex gap-2 items-center">
               <p>{tierIds.length}</p>
               <Button onClick={onAddTierIds}>+</Button>
               <Button onClick={onRemoveTierIds}>-</Button>

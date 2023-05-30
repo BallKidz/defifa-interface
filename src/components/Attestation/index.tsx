@@ -10,6 +10,7 @@ import Button from "../UI/Button";
 import styles from "./Attestation.module.css";
 import AttestationCard from "./AttestationCard";
 import { ScoreCard } from "./types";
+import { useScoringOpen } from "components/MyTeam/useScoringOpen";
 
 interface AttestationProps {
   tiers: any[];
@@ -23,6 +24,7 @@ const Attestation: React.FC<AttestationProps> = (props) => {
   const [scoreCardAttestations, setScoreCardAttestations] = useState<
     ScoreCard[]
   >([]);
+  const scoringOpen = useScoringOpen();
 
   useEffect(() => {
     if (!scoreCards) return;
@@ -87,7 +89,10 @@ const Attestation: React.FC<AttestationProps> = (props) => {
           <div className={styles.zeroProposals}>
             <p>No scorecards.</p>
             <p>
-              <Button onClick={props.onScoreCardSubmission}>
+              <Button
+                onClick={props.onScoreCardSubmission}
+                disabled={!scoringOpen}
+              >
                 Submit a scorecard
               </Button>
             </p>

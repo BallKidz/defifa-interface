@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import MyTeam from "components/MyTeam/MyTeam";
-import { useRefundsAvailable } from "components/MyTeam/useRefundsAvailable";
+import { useRefundsOpen } from "components/MyTeam/useRefundsOpen";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
@@ -23,7 +23,7 @@ const MyTeams = () => {
     tokenIds: getTokenIdsFromTeams(teams),
     onSuccess: () => removeTeams(teams?.map((t) => t.id)),
   });
-  const canRedeem = useRefundsAvailable();
+  const canRedeem = useRefundsOpen();
 
   return (
     <TeamsContext.Provider value={teams}>

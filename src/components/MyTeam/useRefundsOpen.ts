@@ -1,7 +1,7 @@
 import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 
-export function useRefundsAvailable(): boolean {
+export function useRefundsOpen(): boolean {
   const {
     currentPhase,
     loading: { currentPhaseLoading },

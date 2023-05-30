@@ -1,3 +1,4 @@
+import { useScoringOpen } from "components/MyTeam/useScoringOpen";
 import Button from "components/UI/Button";
 import Content from "components/UI/Content";
 import useNftRewards from "hooks/NftRewards";
@@ -11,8 +12,6 @@ import "react-tabs/style/react-tabs.css";
 import Attestation from "../Attestation";
 import ScoreCard from "../Scorecard";
 import styles from "./SelfReferee.module.css";
-import { useGameContext } from "contexts/GameContext";
-import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 
 const SelfReferee = () => {
   const { data } = useProjectCurrentFundingCycle();
@@ -22,7 +21,7 @@ const SelfReferee = () => {
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );
-  const { currentPhase } = useGameContext();
+  const scoringOpen = useScoringOpen();
   const {
     write: mintReserves,
     isLoading: mintReservesLoading,
@@ -85,7 +84,7 @@ const SelfReferee = () => {
                   mintReservesLoading ||
                   mintReservesSuccess ||
                   mintReservesDisabled ||
-                  currentPhase !== DefifaGamePhase.SCORING
+                  scoringOpen
                 }
               >
                 Mint Reserves

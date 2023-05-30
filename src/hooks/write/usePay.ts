@@ -1,3 +1,4 @@
+import { useMintingOpen } from "components/MyTeam/useMintingOpen";
 import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
@@ -41,6 +42,7 @@ export function usePay({
   const {
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
+  const mintingOpen = useMintingOpen();
 
   const args = [
     gameId,
@@ -56,16 +58,13 @@ export function usePay({
   const hasTokenIds =
     metadata.tierIdsToMint && metadata.tierIdsToMint.length > 0;
 
-  const { config, i } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     addressOrName: JBETHPaymentTerminal.address,
     contractInterface: JBETHPaymentTerminal.interface,
     functionName: "pay",
     overrides: { value: amount },
     args,
-    enabled:
-      hasTokenIds &&
-      !currentPhaseLoading &&
-      currentPhase === DefifaGamePhase.MINT,
+    enabled: hasTokenIds && mintingOpen,
   });
 
   const { data, write, isError, error } = useContractWrite(config);
