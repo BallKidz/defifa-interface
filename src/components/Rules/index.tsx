@@ -1,14 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
+import CurrentPhase from "components/Navbar/Info/CurrentPhase";
 import { useGameContext } from "contexts/GameContext";
 import { useDeployerDates } from "hooks/read/DeployerDates";
 import { useGameMetadata } from "hooks/read/GameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import styles from "./index.module.css";
-import CurrentPhase from "components/Navbar/Info/CurrentPhase";
 
 const Rules = () => {
-  const { mintDuration, start, refundDuration } =
-    useDeployerDates("local");
+  const { mintDuration, start, refundDuration } = useDeployerDates("local");
   const { data: currentFc } = useProjectCurrentFundingCycle();
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
   const { gameId } = useGameContext();
@@ -53,26 +52,24 @@ const Rules = () => {
 
       <div className="flex flex-col gap-4 mt-5">
         <div>
-          Phase 1: Minting
+          Phase 1: Minting (mints open, refunds open)
           <span className={pillStyle(mintDuration.phase)}>
             {fillPill(mintDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 2: Delay (mints closed, refunds open)
+          Phase 2: Delay (mints closed)
           <span className={pillStyle(refundDuration.phase)}>
             {fillPill(refundDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 3: Game time
+          Phase 3: Game time (refunds closed)
           <span className={pillStyle(start.phase)}>
             {fillPill(start.phase)}
           </span>
         </div>
-        <div>
-          Phase 4: Scorecard submission
-        </div>
+        <div>Phase 4: Scorecard submission</div>
       </div>
     </div>
   );
