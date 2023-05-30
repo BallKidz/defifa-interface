@@ -1,8 +1,9 @@
+import { useRefundsAvailable } from "components/MyTeam/useRefundsAvailable";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { constants, ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { toastError, toastSuccess } from "utils/toast";
+import { toastSuccess } from "utils/toast";
 import {
   useAccount,
   useContractWrite,
@@ -26,6 +27,7 @@ export function useRedeemTokensOf({
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
   const { gameId } = useGameContext();
+  const canRedeem = useRefundsAvailable();
 
   const args = [
     address, //user _holder address
@@ -44,19 +46,13 @@ export function useRedeemTokensOf({
     addressOrName: JBETHPaymentTerminal.address,
     contractInterface: JBETHPaymentTerminal.interface,
     functionName: "redeemTokensOf",
-    onError: (error) => {
-      console.error("redeemTokensOf::prepare error", error, args);
-      if (error.message.includes("insufficient funds")) {
-        toastError("Insufficient funds");
-      }
-    },
     args,
-    enabled: hasTokenIds,
+    enabled: hasTokenIds && canRedeem,
   });
 
-  const { data, write, error, isError } = useContractWrite(config);
+  const { data, write, isError, error } = useContractWrite(config);
   if (isError) {
-    console.log("useRedeemTokensOf error", error);
+    console.error("useRedeemTokensOf::useContractWrite::error", error);
   }
 
   const { isLoading, isSuccess } = useWaitForTransaction({

@@ -38,33 +38,40 @@ export function usePay({
     currentPhase,
     loading: { currentPhaseLoading },
   } = useGameContext();
-
   const {
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
 
-  const { config, isError, error } = usePrepareContractWrite({
+  const args = [
+    gameId,
+    amount,
+    token,
+    address,
+    minReturnedTokens,
+    preferClaimedTokens,
+    memo,
+    encodePayMetadata(metadata),
+  ];
+
+  const hasTokenIds =
+    metadata.tierIdsToMint && metadata.tierIdsToMint.length > 0;
+
+  const { config, i } = usePrepareContractWrite({
     addressOrName: JBETHPaymentTerminal.address,
     contractInterface: JBETHPaymentTerminal.interface,
     functionName: "pay",
     overrides: { value: amount },
-    args: [
-      gameId,
-      amount,
-      token,
-      address,
-      minReturnedTokens,
-      preferClaimedTokens,
-      memo,
-      encodePayMetadata(metadata),
-    ],
-    enabled: !currentPhaseLoading && currentPhase === DefifaGamePhase.MINT,
+    args,
+    enabled:
+      hasTokenIds &&
+      !currentPhaseLoading &&
+      currentPhase === DefifaGamePhase.MINT,
   });
-  if (isError && error) {
+
+  const { data, write, isError, error } = useContractWrite(config);
+  if (isError) {
     console.error("usePay::usePrepareContractWrite::error", error);
   }
-
-  const { data, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 

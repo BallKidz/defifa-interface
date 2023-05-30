@@ -2,12 +2,16 @@ import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentG
 import { useGameContext } from "contexts/GameContext";
 
 export function useRefundsAvailable(): boolean {
-  const { currentPhase } = useGameContext();
+  const {
+    currentPhase,
+    loading: { currentPhaseLoading },
+  } = useGameContext();
 
   return (
-    currentPhase === DefifaGamePhase.MINT ||
-    currentPhase === DefifaGamePhase.REFUND ||
-    currentPhase === DefifaGamePhase.NO_CONTEST ||
-    currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE
+    !currentPhaseLoading &&
+    (currentPhase === DefifaGamePhase.MINT ||
+      currentPhase === DefifaGamePhase.REFUND ||
+      currentPhase === DefifaGamePhase.NO_CONTEST ||
+      currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE)
   );
 }
