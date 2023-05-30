@@ -7,7 +7,7 @@ import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 const Info = () => {
   return (
-    <div className="flex justify-between w-full items-center">
+    <div className="flex flex-col md:flex-row justify-between w-full items-center">
       <div className="flex gap-8 items-center">
         <Link href="/">
           <a>
