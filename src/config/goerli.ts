@@ -37,28 +37,19 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     address: addressFor(
       "JBTiered721DelegateStore",
       Juice721DelegateDeployment as ForgeDeploy
-    ) as `0x${string}`,
+    )!,
     interface: IJBTiered721DelegateStore.abi,
   },
   DefifaDelegate: {
-    address: addressFor(
-      "DefifaDelegate",
-      DefifaDeployment as ForgeDeploy
-    ) as `0x${string}`,
+    address: addressFor("DefifaDelegate", DefifaDeployment as ForgeDeploy)!,
     interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
-    address: addressFor(
-      "DefifaGovernor",
-      DefifaDeployment as ForgeDeploy
-    ) as `0x${string}`,
+    address: addressFor("DefifaGovernor", DefifaDeployment as ForgeDeploy)!,
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: addressFor(
-      "DefifaDeployer",
-      DefifaDeployment as ForgeDeploy
-    ) as `0x${string}`,
+    address: addressFor("DefifaDeployer", DefifaDeployment as ForgeDeploy)!,
     interface: DefifaDeployer.abi,
   },
   subgraph:
