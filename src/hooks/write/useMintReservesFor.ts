@@ -7,6 +7,8 @@ import {
 } from "wagmi";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
+import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
+import { useGameContext } from "contexts/GameContext";
 
 export function useMintReservesFor(
   simulate = false,
@@ -16,13 +18,18 @@ export function useMintReservesFor(
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
   const outStanding = useOutstandingNumber();
+  const {
+    currentPhase,
+    loading: { currentPhaseLoading },
+  } = useGameContext();
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: dataSourceAddress,
-    contractInterface: dataSourceAddress,
+    contractInterface: chainData.DefifaDelegate.interface,
     functionName: "mintReservesFor((uint256,uint256)[])",
     args: [outStanding],
     chainId: chainData.chainId,
+    enabled: !currentPhaseLoading && currentPhase === DefifaGamePhase.SCORING,
   });
 
   const filteredOutstanding = outStanding.filter((item) => {

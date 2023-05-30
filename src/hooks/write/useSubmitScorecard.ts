@@ -7,13 +7,13 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-interface ScoreCard {
+interface DefifaTierRedemptionWeight {
   id: number;
   redemptionWeight: number;
 }
 
 export function useSubmitScorecard(
-  _tierWeights: ScoreCard[],
+  _tierWeights: DefifaTierRedemptionWeight[],
   governor: string
 ) {
   const { isConnected } = useAccount();

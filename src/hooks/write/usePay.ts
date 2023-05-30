@@ -1,12 +1,11 @@
+import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { toastError } from "utils/toast";
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
@@ -18,7 +17,6 @@ export interface PayParams {
   preferClaimedTokens: boolean;
   memo: string;
   metadata: PayMetadata;
-  simulate?: boolean;
 }
 
 export interface PayMetadata {
@@ -33,26 +31,23 @@ export function usePay({
   preferClaimedTokens,
   memo,
   metadata,
-  simulate = false,
 }: PayParams) {
-  const { chain } = useNetwork();
   const { address } = useAccount();
-  const { gameId } = useGameContext();
+  const {
+    gameId,
+    currentPhase,
+    loading: { currentPhaseLoading },
+  } = useGameContext();
 
   const {
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
 
-  const { config } = usePrepareContractWrite({
+  const { config, isError, error } = usePrepareContractWrite({
     addressOrName: JBETHPaymentTerminal.address,
     contractInterface: JBETHPaymentTerminal.interface,
     functionName: "pay",
     overrides: { value: amount },
-    onError: (error) => {
-      if (error.message.includes("insufficient funds")) {
-        toastError("Insufficient funds");
-      }
-    },
     args: [
       gameId,
       amount,
@@ -63,9 +58,13 @@ export function usePay({
       memo,
       encodePayMetadata(metadata),
     ],
+    enabled: !currentPhaseLoading && currentPhase === DefifaGamePhase.MINT,
   });
+  if (isError && error) {
+    console.error("usePay::usePrepareContractWrite::error", error);
+  }
 
-  const { data, write, error, isError } = useContractWrite(config);
+  const { data, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
 

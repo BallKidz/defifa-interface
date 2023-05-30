@@ -4,6 +4,7 @@ import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import Button from "components/UI/Button";
 import { ScoreCard } from "../types";
 import styles from "./Custom.module.css";
+import { Input } from "components/UI/Input";
 
 interface CustomScorecardProps {
   tiers: any[];
@@ -52,7 +53,7 @@ const CustomScorecard: FC<CustomScorecardProps> = ({ tiers, governor }) => {
       <div className={styles.tiersContainer}>
         {tiers?.map((t: any) => (
           <div key={t.id}>
-            <input
+            <Input
               className={styles.input}
               value={
                 scoreCard.find((score) => score.id === t.id)

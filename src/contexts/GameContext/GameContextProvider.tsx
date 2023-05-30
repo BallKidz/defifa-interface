@@ -8,10 +8,17 @@ export default function GameContextProvider({
 }: PropsWithChildren<{
   gameId: number;
 }>) {
-  const { data: currentPhase } = useCurrentGamePhase(gameId);
+  const { data: currentPhase, isLoading: currentPhaseLoading } =
+    useCurrentGamePhase(gameId);
 
   return (
-    <GameContext.Provider value={{ gameId, currentPhase }}>
+    <GameContext.Provider
+      value={{
+        gameId,
+        currentPhase,
+        loading: { currentPhaseLoading },
+      }}
+    >
       {children}
     </GameContext.Provider>
   );

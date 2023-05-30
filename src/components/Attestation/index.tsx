@@ -85,10 +85,10 @@ const Attestation: React.FC<AttestationProps> = (props) => {
         </p>
         {!isLoading && scoreCardAttestations.length === 0 ? (
           <div className={styles.zeroProposals}>
-            <p>It appears that the scorecard has not been submitted yet!</p>
+            <p>No scorecards.</p>
             <p>
               <Button onClick={props.onScoreCardSubmission}>
-                Submit scorecard
+                Submit a scorecard
               </Button>
             </p>
           </div>

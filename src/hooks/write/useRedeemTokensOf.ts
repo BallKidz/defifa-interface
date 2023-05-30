@@ -38,6 +38,8 @@ export function useRedeemTokensOf({
     encodeRedeemMetadata(tokenIds),
   ];
 
+  const hasTokenIds = tokenIds && tokenIds.length > 0;
+
   const { config } = usePrepareContractWrite({
     addressOrName: JBETHPaymentTerminal.address,
     contractInterface: JBETHPaymentTerminal.interface,
@@ -49,6 +51,7 @@ export function useRedeemTokensOf({
       }
     },
     args,
+    enabled: hasTokenIds,
   });
 
   const { data, write, error, isError } = useContractWrite(config);
