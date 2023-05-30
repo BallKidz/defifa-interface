@@ -1,20 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { BigNumber, ethers } from "ethers";
-import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import Button from "components/UI/Button";
+import Content from "components/UI/Content";
+import { Input } from "components/UI/Input";
+import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { MINT_PRICE } from "constants/constants";
+import { BigNumber, ethers } from "ethers";
 import useNftRewards from "hooks/NftRewards";
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { usePay } from "hooks/write/usePay";
+import { useState } from "react";
+import { useAccount } from "wagmi";
 import Team from "../Team";
-import Button from "components/UI/Button";
-import Content from "components/UI/Content";
 import styles from "./Mint.module.css";
-import { ETH_TOKEN_ADDRESS } from "constants/addresses";
-import { Input } from "components/UI/Input";
+
+function isValidAddress(delegate: string) {
+  return ethers.utils.isAddress(delegate);
+}
 
 const Mint = () => {
   const { isConnected } = useAccount();
@@ -54,27 +58,6 @@ const Mint = () => {
     },
   });
 
-  useEffect(() => {
-    if (isSuccess || isError) {
-      setTierIds([]);
-      setImgMemo("");
-    }
-  }, [isError, isSuccess]);
-
-  /*    useEffect(() => {
-     if (!tierIds.length) return;
-     let newImgMemo = "";
-     for (let i = 0; i < tierIds.length; i++) {
-       const imgStr = rewardTiers?.find(
-         (tier) => tier.id === tierIds[i]
-       ).teamImage;
-       newImgMemo = newImgMemo.concat(newImgMemo.length == 0 ? "" : " ", imgStr);
-     }
-     setImgMemo(newImgMemo);
-
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-   }, [tierIds]); */
-
   const onTeamSelected = (id: number) => {
     if (tierIds.includes(id)) {
       const filtered = tierIds.filter((i) => i !== id);
@@ -111,10 +94,6 @@ const Mint = () => {
   const onRefereeDelegate = (e: any) => {
     const delegate = e.target.value;
     console.log("delegate ", delegate);
-
-    function isValidAddress(delegate: string) {
-      return ethers.utils.isAddress(delegate);
-    }
 
     if (isValidAddress(delegate)) {
       setReferee(delegate);
