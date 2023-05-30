@@ -113,12 +113,8 @@ const Team: FC<TeamProps> = ({
           {selected ? (
             <div className={styles.quantityContainer}>
               <p>{tierIds.length}</p>
-              <Button size="extraSmall" onClick={onAddTierIds}>
-                +
-              </Button>
-              <Button onClick={onRemoveTierIds} size="extraSmall">
-                -
-              </Button>
+              <Button onClick={onAddTierIds}>+</Button>
+              <Button onClick={onRemoveTierIds}>-</Button>
             </div>
           ) : null}
         </div>

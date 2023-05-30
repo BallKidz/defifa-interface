@@ -12,6 +12,7 @@ export function useNextPhaseNeedsQueueing() {
     functionName: "nextPhaseNeedsQueueing",
     args: gameId,
     chainId: chainData.chainId,
+    watch: true,
     onSuccess: (data) => {},
     onError: (error) => {},
   });

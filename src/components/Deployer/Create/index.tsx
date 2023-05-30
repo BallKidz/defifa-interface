@@ -109,7 +109,7 @@ const DeployerCreate = () => {
     contractUri.name = formValuesIn.name;
     // This is the 'collection' description in OS can be long. Use as rules.
     contractUri.description =
-    formValuesIn.rules +
+      formValuesIn.rules +
       " " +
       "For more info visit" +
       " " +
@@ -117,14 +117,14 @@ const DeployerCreate = () => {
     const contractUriCid = await uploadJsonToIpfs(contractUri);
     projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
     projectMetadataUri.description =
-    formValuesIn.rules +
+      formValuesIn.rules +
       " " +
       "For more info visit" +
       " " +
       contractUri.infoUri;
 
     const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
-    
+
     if (!contractUriCid || !projectMetadataCid) return;
 
     setFormValues((prevValues) => ({
@@ -138,9 +138,9 @@ const DeployerCreate = () => {
   };
 
   useEffect(() => {
-      if(iPFSNeedsHashing){
-        uploadJsons(formValues);
-      }
+    if (iPFSNeedsHashing) {
+      uploadJsons(formValues);
+    }
   }, [formValues, iPFSNeedsHashing]);
 
   const handleInputChange = (
@@ -190,7 +190,7 @@ const DeployerCreate = () => {
             ? parseFloat(value)
             : value,
       }));
-    };
+    }
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -338,7 +338,7 @@ const DeployerCreate = () => {
                 Name
               </label>
               <Input
-                type="string"
+                type="text"
                 id="tierName"
                 value={t?.name}
                 name="name"
@@ -495,7 +495,7 @@ const DeployerCreate = () => {
                 Token URI
               </label>
               <input
-                type="string"
+                type="text"
                 id="defaultTokenUriResolver"
                 name="defaultTokenUriResolver"
                 value={formValues.defaultTokenUriResolver}

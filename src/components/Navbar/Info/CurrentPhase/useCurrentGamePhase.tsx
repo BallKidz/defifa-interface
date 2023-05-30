@@ -19,6 +19,7 @@ export function useCurrentGamePhase(gameId: number) {
     functionName: "currentGamePhaseOf",
     args: gameId,
     chainId: chainData.chainId,
+    watch: true,
   });
 
   return {

@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
-    "@ballkidz/defifa-collection-deployer": "1.0.19",
+    "@ballkidz/defifa-collection-deployer": "1.0.20",
     "@heroicons/react": "^2.0.18",
     "@jbx-protocol/juice-721-delegate": "6.0.3",
     "@jbx-protocol/juice-contracts-v3": "3.1.2",
@@ -20,6 +20,7 @@
     "axios": "^1.1.3",
     "bs58": "^4.0.1",
     "ethers": "^5.7.1",
+    "forge-run-parser": "^1.0.2",
     "google-spreadsheet": "^3.3.0",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",
