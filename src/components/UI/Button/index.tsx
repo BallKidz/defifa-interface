@@ -6,7 +6,7 @@ const PRIMARY_BUTTON_DISABLED_CLASS =
   "bg-gray-700 text-white cursor-not-allowed";
 
 const SECONDARY_BUTTON_CLASS =
-  "bg-slate-950 border border-solid border-violet-400 hover:bg-slate-900 text-violet-400";
+  "bg-violet-1100 border border-solid border-violet-400 hover:bg-violet-1000 text-violet-400";
 
 const Button = ({
   children,

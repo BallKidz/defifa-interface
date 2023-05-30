@@ -36,14 +36,9 @@ const Wallet = () => {
               }
 
               return (
-                <div style={{ display: "flex", gap: 12 }}>
-                  <Button onClick={openAccountModal} variant="secondary">
-                    {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
-                  </Button>
-                </div>
+                <Button onClick={openAccountModal} variant="secondary">
+                  {account.ensName ?? account.displayName}
+                </Button>
               );
             })()}
           </div>

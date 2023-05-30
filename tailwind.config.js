@@ -7,7 +7,10 @@ module.exports = {
         mono: ["Capsules", "ui-monospace", "SFMono-Regular"],
       },
       colors: {
-        gold: "#FC8370",
+        violet: {
+          1000: "#1B093B",
+          1100: "#121013",
+        },
       },
     },
   },
