@@ -6,6 +6,7 @@ import { RefundActions } from "./RefundActions";
 import { useMintSelection } from "./useMintSelection";
 import { useMyPicks } from "./useMyPicks";
 import Container from "components/UI/Container";
+import Button from "components/UI/Button";
 
 export function RefundPicksContent() {
   const { data: picks, isLoading: picksLoading } = useMyPicks();
@@ -52,6 +53,14 @@ export function RefundPicksContent() {
     return (
       <Container>
         <div>...</div>
+      </Container>
+    );
+  }
+
+  if (mintedTokens.length === 0) {
+    return (
+      <Container>
+        <div>You haven&apos;t minted yet.</div>
       </Container>
     );
   }

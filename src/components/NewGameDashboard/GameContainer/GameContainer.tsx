@@ -16,9 +16,9 @@ function TabButton({
     <button
       className={twJoin(
         active
-          ? "bg-gray-800 text-gray-50"
-          : "text-gray-300 hover:text-gray-50",
-        "rounded-md px-4 py-2 text-sm font-medium capitalize"
+          ? "underline"
+          : "text-gray-400 hover:text-gray-200",
+        "rounded-md px-4 py-2 font-medium capitalize"
       )}
       {...props}
     >
@@ -41,7 +41,7 @@ export function GameContainer() {
 
   return (
     <div>
-      <ul className="flex justify-center gap-6 mt-8 mb-8 border-y border-gray-900 py-4">
+      <ul className="flex justify-center py-4">
         {TABS.map((tab) => {
           return (
             <li key={tab}>

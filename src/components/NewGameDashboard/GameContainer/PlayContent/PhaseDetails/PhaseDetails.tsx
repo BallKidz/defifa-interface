@@ -2,6 +2,7 @@ import { QueueNextPhaseButton } from "components/Navbar/Info/CurrentPhase/QueueN
 import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/Countdown";
+import { twJoin } from "tailwind-merge";
 
 const phaseText = (phase: DefifaGamePhase) => {
   switch (phase) {
@@ -31,20 +32,41 @@ export function PhaseDetails() {
   const start = currentFundingCycle?.fundingCycle?.start?.toNumber() ?? 0;
   const duration = currentFundingCycle?.fundingCycle?.duration?.toNumber() ?? 0;
   const end = start + duration;
+  const timeElapsed = Date.now() / 1000 - start;
 
-  const { timeRemaining } = useCountdown(new Date(end * 1000));
+  const { timeRemaining: timeRemainingText } = useCountdown(
+    new Date(end * 1000)
+  );
+  const percentElapsed = (timeElapsed / duration) * 100;
 
   return (
-    <div className="bg-neutral-800 rounded-lg p-5  flex justify-between">
-      <div className="flex flex-col gap-2">
-        <div className="text-2xl uppercase">{currentPhaseText}</div>
-        <div>{timeRemaining} left</div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div>
-          Next: <span className="uppercase">{nextPhaseText}</span>
+    <div>
+      <div className="flex justify-between mb-3">
+        <div className="flex flex-col gap-2">
+          <div className="text-2xl uppercase">{currentPhaseText}</div>
+          <div>{timeRemainingText} left</div>
         </div>
-        <QueueNextPhaseButton />
+        <div className="flex flex-col gap-2">
+          <div>
+            Next: <span className="uppercase">{nextPhaseText}</span>
+          </div>
+          <QueueNextPhaseButton />
+        </div>
+      </div>
+      <div className="w-full rounded-full bg-gray-800 transition-colors">
+        <div
+          className={twJoin(
+            "rounded-full h-2",
+            percentElapsed > 80
+              ? "bg-red-700"
+              : percentElapsed > 50
+              ? "bg-orange-500"
+              : "bg-blue-800"
+          )}
+          style={{
+            width: `${percentElapsed}%`,
+          }}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,6 @@
 import { useGameContext } from "contexts/GameContext";
-import { useGameMetadata } from "hooks/read/GameMetadata";
 import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
 import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { PropsWithChildren } from "react";
 import { fromWad } from "utils/format/formatNumber";
 
@@ -40,7 +38,6 @@ function GameStats() {
 
 export function Header() {
   const {
-    gameId,
     metadata,
     loading: { metadataLoading },
   } = useGameContext();
@@ -49,7 +46,7 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-4xl text-center mb-6">{metadata?.name}</h1>
+      <h1 className="text-4xl text-center mb-4">{metadata?.name ?? 'Unknown game'}</h1>
       <GameStats />
     </header>
   );

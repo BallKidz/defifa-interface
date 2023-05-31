@@ -3,7 +3,7 @@ import Info from "./Info";
 
 const Navbar = (props: PropsWithChildren) => {
   return (
-    <nav className="flex justify-between items-center w-full px-3 mb-10 my-5">
+    <nav className="flex justify-between items-center w-full mb-8 my-5">
       <Info />
     </nav>
   );

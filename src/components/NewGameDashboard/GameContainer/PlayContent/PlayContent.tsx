@@ -28,8 +28,8 @@ export function PlayContent() {
   const CurrentContent = PHASE_CONTENT[currentPhase];
 
   return (
-    <div>
-      <Container className="mb-6">
+    <div className="">
+      <Container className="mb-6 border border-gray-800 py-5 px-6 rounded-xl">
         <PhaseDetails />
       </Container>
       <CurrentContent />
