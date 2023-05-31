@@ -1,19 +1,26 @@
 import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
+import { JBFundingCycle, JBFundingCycleMetadata } from "types/interfaces";
 import { useContractRead } from "wagmi";
 
-export function useProjectCurrentFundingCycle() {
+export function useProjectCurrentFundingCycle(projectId: number) {
   const { chainData } = useChainData();
   const { JBController } = chainData;
-  const { gameId } = useGameContext();
 
-  return useContractRead({
+  const res = useContractRead({
     addressOrName: JBController.address,
     contractInterface: JBController.interface,
     functionName: "currentFundingCycleOf",
-    args: gameId,
+    args: projectId,
     chainId: chainData.chainId,
-    onSuccess: (data) => {},
-    onError: (error) => {},
+    watch: true,
   });
+
+  return {
+    ...res,
+    data: res.data as unknown as {
+      fundingCycle: JBFundingCycle;
+      metadata: JBFundingCycleMetadata;
+    },
+  };
 }

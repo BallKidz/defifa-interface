@@ -11,7 +11,7 @@ interface TeamProps {
   minted: number;
   supply: number;
   isVersus?: boolean;
-  selectAll: boolean;
+  selectAll?: boolean;
   txState?: boolean;
   onClick?: (id: number) => void;
   onAddMultiple?: (id: number) => void;
