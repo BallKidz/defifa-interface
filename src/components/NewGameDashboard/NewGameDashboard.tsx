@@ -5,12 +5,15 @@ import { Header } from "./Header";
 
 export function NewGameDashboard() {
   return (
-    <Container>
-      <Navbar />
-
-      <Header />
+    <>
+      <Container>
+        <Navbar />
+      </Container>
+      <Container>
+        <Header />
+      </Container>
 
       <GameContainer />
-    </Container>
+    </>
   );
 }

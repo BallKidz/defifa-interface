@@ -1,5 +1,16 @@
 import Team from "components/Team";
 import { useGameContext } from "contexts/GameContext";
+import { ActionContainer } from "../ActionContainer/ActionContainer";
+import Button from "components/UI/Button";
+
+export function MintActions() {
+  return (
+    <div className="flex justify-between">
+      <div>asd</div>
+      <Button>Mint</Button>
+    </div>
+  );
+}
 
 export function MintPhaseContent() {
   const {
@@ -7,7 +18,7 @@ export function MintPhaseContent() {
   } = useGameContext();
 
   return (
-    <div>
+    <ActionContainer renderActions={MintActions}>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {tiers?.map((t: any) => (
           <Team
@@ -20,6 +31,6 @@ export function MintPhaseContent() {
           />
         ))}
       </div>
-    </div>
+    </ActionContainer>
   );
 }
