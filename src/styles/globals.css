@@ -11,6 +11,10 @@
     font-weight: 100 700;
 }
 
+:root {
+    --toastify-font-family: 'Capsules', sans-serif;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

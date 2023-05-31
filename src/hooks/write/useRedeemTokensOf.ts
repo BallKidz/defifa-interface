@@ -54,7 +54,7 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
     hash: data?.hash,
     onSuccess: () => {
       onSuccess?.();
-      toastSuccess("Refund successfull");
+      toastSuccess("Refund successful");
     },
   });
 
