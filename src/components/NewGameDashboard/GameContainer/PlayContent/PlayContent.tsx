@@ -12,10 +12,8 @@ const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.MINT]: MintPhaseContent,
   [DefifaGamePhase.REFUND]: RefundPhaseContent,
   [DefifaGamePhase.SCORING]: ScoringPhaseContent,
-  [DefifaGamePhase.NO_CONTEST]: () => <span>no contest</span>,
-  [DefifaGamePhase.NO_CONTEST_INEVITABLE]: () => (
-    <span>no contest inevitable</span>
-  ),
+  [DefifaGamePhase.NO_CONTEST]: RefundPhaseContent,
+  [DefifaGamePhase.NO_CONTEST_INEVITABLE]: RefundPhaseContent,
 };
 
 export function PlayContent() {
