@@ -37,9 +37,13 @@ export function MintActions({
     },
   });
 
+  const picksText = totalSelected === 1 ? "pick" : "picks";
+
   return (
     <div className="flex justify-between items-center">
-      <div>{totalSelected} picks</div>
+      <div>
+        {totalSelected} {picksText}
+      </div>
 
       <div>{cost} ETH</div>
 
