@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { Games } from "./useAllGames";
+import { Game } from "./useAllGames";
 
-export const AllGamesContext = createContext<Games[]| undefined>([]);
+export const AllGamesContext = createContext<Game[] | undefined>([]);

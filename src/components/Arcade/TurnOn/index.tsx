@@ -4,16 +4,16 @@ import { useAllGames } from "hooks/useAllGames";
 import styles from "./TurnOn.module.css";
 
 const AllGames = () => {
-  const { isError, isLoading, games, error } = useAllGames();
+  const { isError, isLoading, data: games } = useAllGames();
   // TODO: Fix table headings, add more game stats
 
   if (!isError && !isLoading && (!games || games.length === 0)) {
     return <div>No games found.</div>;
   }
-  
+
   return (
     <AllGamesContext.Provider value={games}>
-      {isError && <div className={styles.error}>{error}</div>}
+      {isError && <div className={styles.error}>Failed to load games.</div>}
       {isLoading && <div className="text-center">Loading...</div>}
       {!isLoading && !isError && (
         <table className="mx-auto">

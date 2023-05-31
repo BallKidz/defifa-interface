@@ -1,15 +1,17 @@
 import { useAllDuration } from "hooks/read/AllDurations";
 import { useGameName } from "hooks/read/GameName";
 import { useAllPaymentTerminalBalances } from "hooks/read/AllPaymentTerminalBalances";
-import { Games } from "hooks/useAllGames";
+import { Game } from "hooks/useAllGames";
 import { add } from "lodash";
 import Link from "next/link";
 import { FC } from "react";
-import { DefifaGamePhase, useCurrentGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
+import {
+  DefifaGamePhase,
+  useCurrentGamePhase,
+} from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { fromWad4 } from "utils/format/formatNumber";
 
-
-export const GameRow: FC<{ game: Games }> = ({ game }) => {
+export const GameRow: FC<{ game: Game }> = ({ game }) => {
   const { gameId, name, address } = game;
   const dataSourceName = useGameName(address);
   const duration = useAllDuration(gameId);
@@ -19,7 +21,7 @@ export const GameRow: FC<{ game: Games }> = ({ game }) => {
   console.log("treasuryAmount", treasuryAmount);
   // const currentDate = new Date(); // Get the current date and time
   const { data: currentPhase } = useCurrentGamePhase(gameId);
-  const isMintPhase = currentPhase === DefifaGamePhase.MINT
+  const isMintPhase = currentPhase === DefifaGamePhase.MINT;
   const getPhaseText = (): string => {
     switch (currentPhase) {
       case DefifaGamePhase.COUNTDOWN:
@@ -39,13 +41,10 @@ export const GameRow: FC<{ game: Games }> = ({ game }) => {
     }
   };
 
-
   return (
     <Link href={`/game/${gameId}`}>
       <tr className="text-sm cursor-pointer">
-        <td className="whitespace-nowrap py-4 pl-4 pr-3">
-          {gameId}
-        </td>
+        <td className="whitespace-nowrap py-4 pl-4 pr-3">{gameId}</td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
           <span>{name !== null ? name : dataSourceName}</span>
         </td>
@@ -61,10 +60,8 @@ export const GameRow: FC<{ game: Games }> = ({ game }) => {
           )}
         </td>
 
-
-
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <span>{fromWad4(treasuryAmount)} Ξ</span>
+          <span>{fromWad4(treasuryAmount)} Ξ</span>
         </td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
           {getPhaseText() === "No Contest Inevitable" ? (
@@ -83,8 +80,6 @@ export const GameRow: FC<{ game: Games }> = ({ game }) => {
             <span>{getPhaseText()}</span>
           )}
         </td>
-
-
       </tr>
     </Link>
   );
