@@ -64,7 +64,7 @@ export const GameRow: FC<{ game: Games }> = ({ game }) => {
 
 
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <span>{fromWad4(treasuryAmount)} ETH</span>
+        <span>{fromWad4(treasuryAmount)} Ξ</span>
         </td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
           {getPhaseText() === "No Contest Inevitable" ? (
