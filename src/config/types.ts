@@ -7,7 +7,6 @@ interface ContractData {
 
 export interface DefifaConfig {
   chainId: number;
-  homepageProjectId: number;
 
   JBProjects: ContractData;
   JBTiered721DelegateStore: ContractData;

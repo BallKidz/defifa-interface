@@ -6,7 +6,6 @@ import JBController from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/J
 import JBETHPaymentTerminal from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBETHPaymentTerminal.json";
 import JBProjects from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBProjects.json";
 import JBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json";
-import { DEFIFA_HOMEPAGE_PROJECT_ID_MAINNET } from "constants/constants";
 import { chain } from "wagmi";
 import { DefifaConfig } from "./types";
 
@@ -14,7 +13,6 @@ import { DefifaConfig } from "./types";
  * !!! WARNING this file is completely out of date for NBA defifa edition !!!
  */
 export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
-  homepageProjectId: DEFIFA_HOMEPAGE_PROJECT_ID_MAINNET,
   chainId: chain.mainnet.id,
 
   JBProjects: {
