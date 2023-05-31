@@ -51,8 +51,7 @@ const Team: FC<TeamProps> = ({
     setSelected(selectAll);
   }, [selectAll]);
 
-  const reaminingSupplyPerc =
-    minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
+  const supplyPortion = minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
 
   const onAddTierIds = () => {
     setTierIds([...tierIds, id]);
@@ -75,7 +74,7 @@ const Team: FC<TeamProps> = ({
   return (
     <div
       className={twMerge(
-        "flex flex-col gap-1 border border-gray-800 rounded-md hover:-translate-y-0.5 transition-transform duration-200 max-w-[500px] mx-auto",
+        "relative border border-gray-800 rounded-md hover:-translate-y-0.5 transition-transform duration-200 max-w-[500px] mx-auto",
         selected ? "border-violet-500" : ""
       )}
     >
@@ -93,21 +92,18 @@ const Team: FC<TeamProps> = ({
         />
       </div>
 
-      <div className="p-3">
-        <div className="flex justify-between items-center">
-          <span className="w-full">{name}</span>
-          {selected ? (
-            <div className="flex gap-2 items-center">
-              <p>{tierIds.length}</p>
-              <Button onClick={onAddTierIds}>+</Button>
-              <Button onClick={onRemoveTierIds}>-</Button>
-            </div>
-          ) : null}
-        </div>
+      <div className="p-3 bottom-14 right-0 absolute">
+        {selected ? (
+          <div className="flex gap-2 items-center">
+            <p>{tierIds.length}</p>
+            <Button onClick={onAddTierIds}>+</Button>
+            <Button onClick={onRemoveTierIds}>-</Button>
+          </div>
+        ) : null}
+      </div>
 
-        <p>
-          Mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
-        </p>
+      <div className="p-3">
+        {minted} minted <span>({supplyPortion}% of total)</span>
       </div>
     </div>
   );
