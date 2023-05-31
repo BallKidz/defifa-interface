@@ -8,7 +8,7 @@ export function RefundActions({
 }) {
   const totalSelected = tokenIdsToRedeem?.length ?? 0;
 
-  const { write } = useRedeemTokensOf({
+  const { write, isLoading } = useRedeemTokensOf({
     tokenIds: tokenIdsToRedeem,
   });
 
@@ -20,7 +20,7 @@ export function RefundActions({
         {totalSelected} {picksText} to refund
       </div>
 
-      <Button size="lg" onClick={() => write?.()}>
+      <Button loading={isLoading} size="lg" onClick={() => write?.()}>
         Refund
       </Button>
     </div>

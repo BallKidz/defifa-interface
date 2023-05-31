@@ -13,15 +13,10 @@ import {
 
 export interface RedeemParams {
   tokenIds: string[];
-  simulate?: boolean;
   onSuccess?: () => void;
 }
 
-export function useRedeemTokensOf({
-  tokenIds,
-  simulate = false,
-  onSuccess,
-}: RedeemParams) {
+export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
   const { address } = useAccount();
   const {
     chainData: { JBETHPaymentTerminal },
@@ -58,8 +53,8 @@ export function useRedeemTokensOf({
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: () => {
-      onSuccess && onSuccess();
-      toastSuccess("Transaction successful");
+      onSuccess?.();
+      toastSuccess("Refund successfull");
     },
   });
 

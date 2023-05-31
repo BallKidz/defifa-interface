@@ -15,13 +15,11 @@ export function QueueNextPhaseButton() {
       onClick={() => {
         write?.();
       }}
-      disabled={false || nextPhaseNeedsQueueingLoading || !nextPhaseNeedsQueing}
       size="sm"
       variant="secondary"
+      loading={isLoading || nextPhaseNeedsQueueingLoading}
     >
-      {isLoading || nextPhaseNeedsQueueingLoading ? (
-        <span>...</span>
-      ) : nextPhaseNeedsQueing ? (
+      {nextPhaseNeedsQueing ? (
         <span>Queue next phase</span>
       ) : (
         <span className="flex gap-1 items-center">

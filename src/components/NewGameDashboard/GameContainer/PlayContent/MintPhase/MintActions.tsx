@@ -4,6 +4,7 @@ import { MINT_PRICE } from "constants/constants";
 import { formatUnits, parseEther } from "ethers/lib/utils";
 import { usePay } from "hooks/write/usePay";
 import { TierSelection } from "./useMintSelection";
+import { useAccount } from "wagmi";
 
 export function MintActions({
   selectedTiers,
@@ -47,7 +48,7 @@ export function MintActions({
 
       <div>{cost} ETH</div>
 
-      <Button size="lg" onClick={() => write?.()}>
+      <Button loading={isLoading} size="lg" onClick={() => write?.()}>
         Mint now
       </Button>
     </div>

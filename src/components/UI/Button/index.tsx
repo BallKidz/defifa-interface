@@ -14,10 +14,12 @@ const Button = ({
   children,
   variant = "primary",
   size = "md",
+  loading = false,
   ...props
 }: {
   children: any;
   variant?: "primary" | "secondary";
+  loading?: boolean;
   size?: "sm" | "md" | "lg";
 } & DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -41,8 +43,9 @@ const Button = ({
           : "px-3 py-2"
       )}
       {...props}
+      disabled={loading || props.disabled}
     >
-      {children}
+      {loading ? "..." : children}
     </button>
   );
 };

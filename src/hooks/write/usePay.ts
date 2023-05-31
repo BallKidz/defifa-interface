@@ -4,6 +4,7 @@ import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
+import { toastSuccess } from "utils/toast";
 import {
   useAccount,
   useContractWrite,
@@ -72,7 +73,12 @@ export function usePay({
     console.error("usePay::usePrepareContractWrite::error", error);
   }
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      toastSuccess("Mint complete");
+    },
+  });
 
   return {
     data,
