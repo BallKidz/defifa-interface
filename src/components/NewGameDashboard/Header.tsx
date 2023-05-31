@@ -19,6 +19,8 @@ function GameStats() {
     currentFundingCycle?.metadata.dataSource
   );
 
+  const mintText = totalSupply?.toNumber() === 1 ? "mint" : "mints";
+
   return (
     <div className="flex justify-center gap-4">
       <Pill>
@@ -30,7 +32,7 @@ function GameStats() {
       </Pill> */}
 
       <Pill>
-        <span className="font-bold">{totalSupply?.toNumber()}</span> mints
+        <span className="font-bold">{totalSupply?.toNumber()}</span> {mintText}
       </Pill>
     </div>
   );
@@ -46,7 +48,9 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-4xl text-center mb-4">{metadata?.name ?? 'Unknown game'}</h1>
+      <h1 className="text-4xl text-center mb-4">
+        {metadata?.name ?? "Unknown game"}
+      </h1>
       <GameStats />
     </header>
   );
