@@ -10,11 +10,16 @@ export function MintPhaseContent() {
   const {
     nfts: { tiers },
   } = useGameContext();
-  const { incrementTierSelection, decrementTierSelection, selectedTiers } =
-    useMintSelection();
+  const {
+    incrementTierSelection,
+    decrementTierSelection,
+    selectedTiers,
+    totalSelected,
+  } = useMintSelection();
 
   return (
     <ActionContainer
+      shouldRenderActions={totalSelected > 0}
       renderActions={() => <MintActions selectedTiers={selectedTiers} />}
     >
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
