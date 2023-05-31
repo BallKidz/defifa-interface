@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import Button from "components/UI/Button";
+import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useGameContext } from "contexts/GameContext";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
@@ -52,8 +52,18 @@ export function MintCard({
         {isSelected ? (
           <div className="flex gap-2 items-center">
             <p>{selectedCount}</p>
-            <Button onClick={onIncrement}>+</Button>
-            <Button onClick={onDecrement}>-</Button>
+            <button
+              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 bg-violet-600 hover:bg-violet-500 text-gray-50"
+              onClick={onIncrement}
+            >
+              <PlusIcon className="h-4 w-4" />
+            </button>
+            <button
+              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 bg-violet-600 hover:bg-violet-500 text-gray-50"
+              onClick={onDecrement}
+            >
+              <MinusIcon className="h-4 w-4" />
+            </button>
           </div>
         ) : null}
       </div>

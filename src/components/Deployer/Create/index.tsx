@@ -18,6 +18,8 @@ import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
+import { MINT_PRICE } from "constants/constants";
+import { formatUnits } from "ethers/lib/utils";
 
 const unixToDatetimeLocal = (timestamp: number): string => {
   const date = new Date(timestamp * 1000);
@@ -49,7 +51,7 @@ const DeployerCreate = () => {
 
   const [tier, setTier] = useState<DefifaTierParams>({
     name: "",
-    price: 0.01,
+    price: formatUnits(MINT_PRICE),
     reservedRate: 0,
     reservedTokenBeneficiary: constants.AddressZero,
     encodedIPFSUri:
@@ -290,7 +292,7 @@ const DeployerCreate = () => {
 
     setTier({
       name: "",
-      price: 0.01, // default price if nothing entered
+      price: formatUnits(MINT_PRICE), // default price if nothing entered
       reservedRate: 0,
       reservedTokenBeneficiary: constants.AddressZero,
       encodedIPFSUri:
@@ -431,7 +433,7 @@ const DeployerCreate = () => {
               <DatePicker
                 id="start"
                 name="start"
-                className="block w-full rounded-sm border-0 py-1.5 text-white bg-slate-950 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-sm border-0 py-1.5 text-gray-50 bg-slate-950 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 selected={new Date(formValues.start * 1000)}
                 showTimeInput
                 dateFormat="MM/dd/yyyy h:mm aa"

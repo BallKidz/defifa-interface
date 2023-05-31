@@ -16,6 +16,7 @@ import { useAccount } from "wagmi";
 import Team from "../../Team";
 import styles from "./Mint.module.css";
 import { useGameContext } from "contexts/GameContext";
+import { formatUnits } from "ethers/lib/utils";
 
 function isValidAddress(delegate: string) {
   return ethers.utils.isAddress(delegate);
@@ -116,7 +117,7 @@ const Mint = () => {
             }}
           >
             <div className={styles.subtitle}>
-              Price: <span>0.01 ETH / NFT</span>
+              Price: <span>{formatUnits(MINT_PRICE)} ETH / NFT</span>
             </div>
 
             <div className={styles.subtitle}>
