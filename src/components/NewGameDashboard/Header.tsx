@@ -48,7 +48,7 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-4xl text-center mb-4">
+      <h1 className="text-5xl text-center mb-5">
         {metadata?.name ?? "Unknown game"}
       </h1>
       <GameStats />
