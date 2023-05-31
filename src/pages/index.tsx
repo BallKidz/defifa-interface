@@ -1,12 +1,8 @@
 import AllGames from "components/Arcade/TurnOn";
 import Navbar from "components/Navbar";
-import Info from "components/Navbar/Info";
 import Container from "components/UI/Container";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Script from "next/script";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Footer from "../components/Footer";
 
 const Home: NextPage = () => {
@@ -21,19 +17,6 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
 
       <Container className="mb-12">
         <Navbar />

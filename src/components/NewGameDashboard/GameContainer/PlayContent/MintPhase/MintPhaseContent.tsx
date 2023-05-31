@@ -1,14 +1,8 @@
-import Button from "components/UI/Button";
-import { useGameContext } from "contexts/GameContext";
-import { ActionContainer } from "../../ActionContainer/ActionContainer";
-import { MintCard } from "./MintCard";
-import { useState } from "react";
-import { useMintSelection } from "./useMintSelection";
-import { MintActions } from "./MintActions";
 import Container from "components/UI/Container";
-import { MintPicksContent } from "./MintPicks";
-import { RefundPicksContent } from "./RefundPicks";
+import { useState } from "react";
 import { twJoin } from "tailwind-merge";
+import { MintPicksContent } from "./MintPicks";
+import { RefundPicksContent } from "./RefundPicksContent";
 
 export function MintPhaseContent() {
   const [selectedTab, setSelectedTab] = useState<"mint" | "refund">("mint");

@@ -1,7 +1,7 @@
 import Container from "components/UI/Container";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
-import { RefundPicksContent } from "../MintPhase/RefundPicks";
+import { RefundPicksContent } from "../MintPhase/RefundPicksContent";
 
 export function RefundPhaseContent() {
   const [selectedTab, setSelectedTab] = useState<"refund">("refund");

@@ -1,3 +1,4 @@
+import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
@@ -5,8 +6,6 @@ import { MintCard } from "./MintCard";
 import { RefundActions } from "./RefundActions";
 import { useMintSelection } from "./useMintSelection";
 import { useMyPicks } from "./useMyPicks";
-import Container from "components/UI/Container";
-import Button from "components/UI/Button";
 
 export function RefundPicksContent() {
   const { data: picks, isLoading: picksLoading } = useMyPicks();
@@ -32,7 +31,7 @@ export function RefundPicksContent() {
     {}
   );
 
-  const pickedNfts = nfts.tiers.filter((nft: any) =>
+  const pickedNfts = nfts.tiers?.filter((nft: any) =>
     Object.keys(pickCounts).includes(nft.id.toString())
   );
 
