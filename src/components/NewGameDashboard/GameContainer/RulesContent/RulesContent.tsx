@@ -1,3 +1,10 @@
+import { useGameContext } from "contexts/GameContext";
+
 export function RulesContent() {
-  return <div>rules</div>;
+  const { metadata } = useGameContext();
+  return (
+    <div>
+      <p>{metadata?.description}</p>
+    </div>
+  );
 }
