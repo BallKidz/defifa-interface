@@ -40,7 +40,7 @@ export function GameContainer() {
 
   return (
     <div>
-      <ul className="flex justify-center gap-6 mt-8">
+      <ul className="flex justify-center gap-6 mt-8 mb-8 border-y border-gray-900 py-4">
         {TABS.map((tab) => {
           return (
             <li key={tab}>

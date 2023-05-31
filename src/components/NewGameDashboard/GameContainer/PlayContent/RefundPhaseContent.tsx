@@ -1,4 +1,3 @@
 export function RefundPhaseContent() {
-    return <div>refund</div>;
-  }
-  
+  return <div>refund</div>;
+}
