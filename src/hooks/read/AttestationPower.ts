@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { DEFAULT_NFT_MAX_SUPPLY } from "../NftRewards";
 import { useNftRewardTiersOf } from "./NftRewardsTiers";
 import { useProjectCurrentFundingCycle } from "./ProjectCurrentFundingCycle";
+import { useGameContext } from "contexts/GameContext";
 
 export function useAttestationPower(id: number, mintsHeldFromTier: number) {
-  const { data } = useProjectCurrentFundingCycle();
+  const { gameId } = useGameContext();
+  const { data } = useProjectCurrentFundingCycle(gameId);
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const [attestationPower, setAttestationPower] = useState<string>("");
 

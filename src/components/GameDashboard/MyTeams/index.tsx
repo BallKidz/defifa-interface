@@ -8,10 +8,12 @@ import { TeamsContext } from "hooks/teamsContext";
 import { TeamTier, useMyTeams } from "hooks/useMyTeams";
 import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
 import styles from "./index.module.css";
+import { useGameContext } from "contexts/GameContext";
 
 const MyTeams = () => {
   const { isError, isLoading, teams, error, removeTeams } = useMyTeams();
-  const { data } = useProjectCurrentFundingCycle();
+  const { gameId } = useGameContext();
+  const { data } = useProjectCurrentFundingCycle(gameId);
   const fundingCycle = data?.fundingCycle.number.toNumber();
 
   const {

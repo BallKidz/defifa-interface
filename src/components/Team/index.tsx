@@ -48,7 +48,7 @@ const Team: FC<TeamProps> = ({
   }, [txState]);
 
   useEffect(() => {
-    setSelected(selectAll);
+    setSelected(selectAll ?? false);
   }, [selectAll]);
 
   const supplyPortion = minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
@@ -75,7 +75,7 @@ const Team: FC<TeamProps> = ({
     <div
       className={twMerge(
         "relative border border-gray-800 rounded-md hover:-translate-y-0.5 transition-transform duration-200 max-w-[500px] mx-auto",
-        selected ? "border-violet-500" : ""
+        selected ? "border-violet-500 shadow-glow" : ""
       )}
     >
       <div

@@ -1,10 +1,12 @@
+import { useGameContext } from "contexts/GameContext";
 import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
 import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { fromWad } from "utils/format/formatNumber";
 
 const Treasury = () => {
-  const { data } = useProjectCurrentFundingCycle();
+  const { gameId } = useGameContext();
+  const { data } = useProjectCurrentFundingCycle(gameId);
 
   const { data: treasuryAmount } = usePaymentTerminalBalance();
   const { data: totalSupply } = useNftRewardsTotalSupply(

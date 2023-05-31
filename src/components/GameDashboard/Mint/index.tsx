@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useAccount } from "wagmi";
 import Team from "../../Team";
 import styles from "./Mint.module.css";
+import { useGameContext } from "contexts/GameContext";
 
 function isValidAddress(delegate: string) {
   return ethers.utils.isAddress(delegate);
@@ -23,7 +24,8 @@ function isValidAddress(delegate: string) {
 const Mint = () => {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { data } = useProjectCurrentFundingCycle();
+  const { gameId } = useGameContext();
+  const { data } = useProjectCurrentFundingCycle(gameId);
   const currentFcNumber = data?.fundingCycle.number.toNumber();
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(

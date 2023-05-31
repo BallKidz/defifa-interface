@@ -12,9 +12,11 @@ import "react-tabs/style/react-tabs.css";
 import Attestation from "./Attestation";
 import ScoreCard from "./Scorecard";
 import styles from "./SelfReferee.module.css";
+import { useGameContext } from "contexts/GameContext";
 
 const SelfReferee = () => {
-  const { data } = useProjectCurrentFundingCycle();
+  const { gameId } = useGameContext();
+  const { data } = useProjectCurrentFundingCycle(gameId);
 
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
   const { data: governor } = useFetchGovernor(data?.metadata.dataSource);

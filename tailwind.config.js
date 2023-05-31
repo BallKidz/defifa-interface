@@ -12,6 +12,9 @@ module.exports = {
           1100: "#121013",
         },
       },
+      boxShadow: {
+        glow: "0 10px 15px -3px rgb(46 16 101/0.5), 0 4px 6px -4px rgb(46 16 101/0.5);",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

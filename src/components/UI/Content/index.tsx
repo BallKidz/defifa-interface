@@ -1,5 +1,4 @@
 import { colors } from "constants/colors";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import React, {
   PropsWithChildren,
   ReactElement,
@@ -29,8 +28,6 @@ const Content: React.FC<
   const [displayContent, setDisplayContent] = useState<boolean>(
     props?.open ?? false
   );
-  const { data } = useProjectCurrentFundingCycle();
-  const fundingCycle = data?.fundingCycle.number.toNumber();
 
   const contentTitle = useMemo<ReactElement>(() => {
     return (
@@ -67,12 +64,6 @@ const Content: React.FC<
           >
             <div> {contentTitle}</div>
             <ChevronDownIcon className="h-5 w-5" />
-
-            {fundingCycle &&
-            fundingCycle !== 1 &&
-            props.title === "Mint teams" ? (
-              <span className={styles.completed}>Completed</span>
-            ) : null}
           </div>
         </label>
         <div className={styles.content}>{props.children}</div>

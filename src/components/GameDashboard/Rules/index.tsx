@@ -8,9 +8,9 @@ import styles from "./index.module.css";
 
 const Rules = () => {
   const { mintDuration, start, refundDuration } = useDeployerDates("local");
-  const { data: currentFc } = useProjectCurrentFundingCycle();
-  const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
   const { gameId } = useGameContext();
+  const { data: currentFc } = useProjectCurrentFundingCycle(gameId);
+  const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
   const { data: gameMetadata } = useGameMetadata(gameId);
 
   const fillPill = (phase: number) => {
