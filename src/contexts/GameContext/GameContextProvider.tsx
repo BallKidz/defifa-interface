@@ -5,6 +5,7 @@ import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingC
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import useNftRewards from "hooks/NftRewards";
 import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
+import { useGameMetadata } from "hooks/read/GameMetadata";
 
 export default function GameContextProvider({
   gameId,
@@ -16,21 +17,21 @@ export default function GameContextProvider({
     useCurrentGamePhase(gameId);
   const { data: currentFundingCycle, isLoading: currentFundingCycleLoading } =
     useProjectCurrentFundingCycle(gameId);
-
+  const { data: metadata, isLoading: metadataLoading } =
+    useGameMetadata(gameId);
   const { data: totalSupply } = useNftRewardsTotalSupply(
     currentFundingCycle?.metadata.dataSource
   );
   const { data: tiersOf } = useNftRewardTiersOf(
     currentFundingCycle?.metadata.dataSource
   );
-  const { data: tiers, isLoading: nftRewardTiersLoading } = useNftRewards(
-    tiersOf ?? []
-  );
+  const { data: tiers, isLoading: tiersLoading } = useNftRewards(tiersOf ?? []);
 
   return (
     <GameContext.Provider
       value={{
         gameId,
+        metadata,
         currentPhase,
         currentFundingCycle,
         nfts: {
@@ -38,9 +39,10 @@ export default function GameContextProvider({
           totalSupply,
         },
         loading: {
+          metadataLoading,
           currentPhaseLoading,
           nfts: {
-            tiers: nftRewardTiersLoading,
+            tiers: tiersLoading,
           },
           currentFundingCycleLoading,
         },

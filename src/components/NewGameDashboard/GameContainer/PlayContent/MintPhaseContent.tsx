@@ -1,9 +1,5 @@
 import Team from "components/Team";
 import { useGameContext } from "contexts/GameContext";
-import useNftRewards from "hooks/NftRewards";
-import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
-import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 
 export function MintPhaseContent() {
   const {

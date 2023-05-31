@@ -1,10 +1,15 @@
 import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { BigNumber } from "ethers";
 import { createContext, useContext } from "react";
-import { JBFundingCycle, JBFundingCycleMetadata } from "types/interfaces";
+import {
+  JBFundingCycle,
+  JBFundingCycleMetadata,
+  JBProjectMetadata,
+} from "types/interfaces";
 
 type GameContextType = {
   gameId: number;
+  metadata: JBProjectMetadata | undefined;
   currentPhase: DefifaGamePhase;
   currentFundingCycle:
     | {
@@ -17,6 +22,7 @@ type GameContextType = {
     totalSupply: BigNumber | undefined;
   };
   loading: {
+    metadataLoading: boolean;
     currentPhaseLoading: boolean;
     currentFundingCycleLoading: boolean;
     nfts: {
@@ -27,6 +33,7 @@ type GameContextType = {
 
 export const GameContext = createContext<GameContextType>({
   gameId: 1,
+  metadata: undefined,
   currentPhase: DefifaGamePhase.COUNTDOWN,
   currentFundingCycle: undefined,
   nfts: {
@@ -34,6 +41,7 @@ export const GameContext = createContext<GameContextType>({
     totalSupply: undefined,
   },
   loading: {
+    metadataLoading: true,
     currentPhaseLoading: true,
     currentFundingCycleLoading: true,
     nfts: {

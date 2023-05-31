@@ -15,10 +15,10 @@ function Pill({ children }: PropsWithChildren<{}>) {
 }
 
 function GameStats() {
-  const { data } = useProjectCurrentFundingCycle();
+  const { currentFundingCycle } = useGameContext();
   const { data: treasuryAmount } = usePaymentTerminalBalance();
   const { data: totalSupply } = useNftRewardsTotalSupply(
-    data?.metadata.dataSource
+    currentFundingCycle?.metadata.dataSource
   );
 
   return (
@@ -39,14 +39,17 @@ function GameStats() {
 }
 
 export function Header() {
-  const { gameId } = useGameContext();
-  const { data: gameMetadata, isLoading } = useGameMetadata(gameId);
+  const {
+    gameId,
+    metadata,
+    loading: { metadataLoading },
+  } = useGameContext();
 
-  if (isLoading) return <div className="text-center">...</div>;
+  if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
     <header>
-      <h1 className="text-4xl text-center mb-6">{gameMetadata?.name}</h1>
+      <h1 className="text-4xl text-center mb-6">{metadata?.name}</h1>
       <GameStats />
     </header>
   );

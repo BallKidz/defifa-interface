@@ -7,14 +7,15 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
 
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
 
-  const hasDataSource =
-    dataSourceAddress && dataSourceAddress !== constants.AddressZero;
+  const hasDataSource = Boolean(
+    dataSourceAddress && dataSourceAddress !== constants.AddressZero
+  );
 
   return useContractRead({
     addressOrName: JBTiered721DelegateStore?.address ?? "",
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "tiersOf",
-    enabled: !!hasDataSource,
+    enabled: hasDataSource,
     args: hasDataSource ? [dataSourceAddress, [], true, 0, 32] : null,
     chainId: chainData.chainId,
   });

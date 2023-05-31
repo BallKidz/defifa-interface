@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
@@ -8,6 +8,9 @@ export function useNftRewardsTotalSupply(
   const { chainData } = useChainData();
 
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
+  const hasDataSource = Boolean(
+    dataSourceAddress && dataSourceAddress !== constants.AddressZero
+  );
 
   const res = useContractRead({
     addressOrName: JBTiered721DelegateStore?.address ?? "",
@@ -16,6 +19,7 @@ export function useNftRewardsTotalSupply(
     args: dataSourceAddress,
     watch: true,
     chainId: chainData.chainId,
+    enabled: hasDataSource,
   });
 
   return {

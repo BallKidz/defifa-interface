@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { PlayContent } from "./PlayContent/PlayContent";
+import { RulesContent } from "./RulesContent/RulesContent";
 
 type GameTab = "play" | "rules" | "teams" | "leaderboard";
 
@@ -26,10 +27,10 @@ function TabButton({
   );
 }
 
-const TABS: GameTab[] = ["play", "rules", "teams", "leaderboard"];
-const TAB_CONTENT = {
+const TABS: GameTab[] = ["play", "rules"];
+const TAB_CONTENT: { [k in GameTab]?: () => JSX.Element } = {
   play: PlayContent,
-  rules: () => <span>Rules</span>,
+  rules: RulesContent,
   teams: () => <span>teams</span>,
   leaderboard: () => <span>leaderboard</span>,
 };
@@ -55,7 +56,7 @@ export function GameContainer() {
         })}
       </ul>
 
-      {<ActiveContent />}
+      {ActiveContent && <ActiveContent />}
     </div>
   );
 }

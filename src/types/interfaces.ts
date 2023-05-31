@@ -1,5 +1,10 @@
 import { BigNumber } from "ethers";
 
+interface JBProjectMetadataParams {
+  content: string;
+  domain: number; // 0
+}
+
 export interface DefifaTierParams {
   name: string;
   price: any;
@@ -12,7 +17,7 @@ export interface DefifaTierParams {
 export interface DefifaLaunchProjectData {
   name: string;
   rules: string;
-  projectMetadata: JBProjectMetadata;
+  projectMetadata: JBProjectMetadataParams;
   contractUri: string;
   baseUri: string;
   tiers: DefifaTierParams[];
@@ -30,9 +35,13 @@ export interface DefifaLaunchProjectData {
   store: string; // address
 }
 
-interface JBProjectMetadata {
-  content: string;
-  domain: number; // 0
+export interface JBProjectMetadata {
+  description: string;
+  external_link: string;
+  fee_recipient: string;
+  image: string;
+  name: string;
+  seller_fee_basis_points: number;
 }
 
 export type JBFundingCycle = {
