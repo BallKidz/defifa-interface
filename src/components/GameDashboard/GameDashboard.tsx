@@ -5,14 +5,12 @@ import Navbar from "components/Navbar";
 import Info from "components/Navbar/Info";
 import SelfReferee from "components/GameDashboard/SelfReferee";
 import Divider from "components/UI/Divider";
-import MainWrapper from "components/UI/MainWrapper";
+import Container from "components/UI/Container";
 
 export function GameDashboard() {
   return (
-    <MainWrapper>
-      <Navbar>
-        <Info />
-      </Navbar>
+    <Container>
+      <Navbar />
 
       <Description />
 
@@ -24,6 +22,6 @@ export function GameDashboard() {
 
       <Divider />
       <SelfReferee />
-    </MainWrapper>
+    </Container>
   );
 }

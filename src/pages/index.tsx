@@ -1,7 +1,7 @@
 import AllGames from "components/Arcade/TurnOn";
 import Navbar from "components/Navbar";
 import Info from "components/Navbar/Info";
-import MainWrapper from "components/UI/MainWrapper";
+import Container from "components/UI/Container";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Script from "next/script";
@@ -21,11 +21,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Script
-        src="https://cdn.usefathom.com/script.js"
-        data-site="WIPQWWMN"
-        defer
-      />
+
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -39,13 +35,12 @@ const Home: NextPage = () => {
         theme="dark"
       />
 
-      <MainWrapper>
-        <Navbar>
-          <Info></Info>
-        </Navbar>
+      <Container>
+        <Navbar />
+
         <main className="pt-8">
           <h1 className="text-5xl md:text-7xl text-center font-medium tracking-tight mb-8">
-            Money Games for Anything
+            Money Games with Friends
           </h1>
           <div className="text-center max-w-2xl mx-auto mb-24 text-lg">
             <p>Defifa is an on-chain gaming and governance experiment.</p>
@@ -56,7 +51,7 @@ const Home: NextPage = () => {
             <AllGames />
           </div>
         </main>
-      </MainWrapper>
+      </Container>
 
       <Footer />
     </>
