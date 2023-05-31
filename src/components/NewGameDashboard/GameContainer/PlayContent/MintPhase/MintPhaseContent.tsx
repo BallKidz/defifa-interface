@@ -5,35 +5,47 @@ import { MintCard } from "./MintCard";
 import { useState } from "react";
 import { useMintSelection } from "./useMintSelection";
 import { MintActions } from "./MintActions";
+import Container from "components/UI/Container";
+import { MintPicksContent } from "./MintPicks";
+import { RefundPicksContent } from "./RefundPicks";
+import { twJoin } from "tailwind-merge";
 
 export function MintPhaseContent() {
-  const {
-    nfts: { tiers },
-  } = useGameContext();
-  const {
-    incrementTierSelection,
-    decrementTierSelection,
-    selectedTiers,
-    totalSelected,
-  } = useMintSelection();
+  const [selectedTab, setSelectedTab] = useState<"mint" | "refund">("mint");
 
   return (
-    <ActionContainer
-      shouldRenderActions={totalSelected > 0}
-      renderActions={() => <MintActions selectedTiers={selectedTiers} />}
-    >
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {tiers?.map((t: any) => (
-          <MintCard
-            key={t.id}
-            imageSrc={t.teamImage}
-            mintedCount={t.minted}
-            selectedCount={selectedTiers?.[t.id]?.count ?? 0}
-            onIncrement={() => incrementTierSelection(t.id)}
-            onDecrement={() => decrementTierSelection(t.id)}
-          />
-        ))}
-      </div>
-    </ActionContainer>
+    <div>
+      <Container>
+        <ul className="flex gap-8 mb-6 text-lg">
+          <li>
+            <a
+              className={twJoin(
+                selectedTab === "mint"
+                  ? "underline font-medium text-gray-50"
+                  : "text-gray-400",
+                "cursor-pointer hover:text-gray-300"
+              )}
+              onClick={() => setSelectedTab("mint")}
+            >
+              Mint
+            </a>
+          </li>
+          <li>
+            <a
+              className={twJoin(
+                selectedTab === "refund"
+                  ? "underline font-medium text-gray-50"
+                  : "text-gray-400",
+                "cursor-pointer hover:text-gray-300"
+              )}
+              onClick={() => setSelectedTab("refund")}
+            >
+              My picks
+            </a>
+          </li>
+        </ul>
+      </Container>
+      {selectedTab === "mint" ? <MintPicksContent /> : <RefundPicksContent />}
+    </div>
   );
 }
