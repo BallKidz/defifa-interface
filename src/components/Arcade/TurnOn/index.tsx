@@ -10,13 +10,23 @@ const AllGames = () => {
   if (!isError && !isLoading && (!games || games.length === 0)) {
     return <div>No games found.</div>;
   }
-
+  
   return (
     <AllGamesContext.Provider value={games}>
       {isError && <div className={styles.error}>{error}</div>}
       {isLoading && <div className="text-center">Loading...</div>}
       {!isLoading && !isError && (
         <table className="mx-auto">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phase</th>
+              <th>Pool Size</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
           <tbody>
             {games
               ?.sort((a, b) => a.gameId - b.gameId) // Sort the games array by game.id

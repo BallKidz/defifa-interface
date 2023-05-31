@@ -6,7 +6,7 @@ export function useGameName(dataSource: string) {
 
   const { data: gameName } = useContractRead({
     addressOrName: dataSource,
-    contractInterface: chainData.DefifaDeployer.interface,
+    contractInterface: chainData.DefifaDelegate.interface,
     functionName: "name",
     chainId: chainData.chainId,
   });
