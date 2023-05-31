@@ -35,12 +35,12 @@ const datetimeLocalToUnix = (value: string): number => {
   return Math.floor(new Date(value).getTime() / 1000);
 };
 
-// const DEFAULT_MINT_DURATION_SECONDS = 60 * 5; // 5 mins
-// const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60 * 72; // 72 hour
-// const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
-const DEFAULT_MINT_DURATION_SECONDS = 60 * 60 * 72; // 1 hour
+const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
 const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
-const GAME_START_BUFFER_SECONDS = 60 * 5; // 5 minutes
+const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
+// const DEFAULT_MINT_DURATION_SECONDS = 60 * 60 * 72; // 1 hour
+// const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
+// const GAME_START_BUFFER_SECONDS = 60 * 5; // 5 minutes
 
 const DeployerCreate = () => {
   const [step, setStep] = useState(1);

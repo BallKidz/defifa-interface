@@ -5,7 +5,7 @@ import {
   formatSecondsToLocal,
   formatSecondsToUTC,
 } from "utils/format/formatDate";
-import { useDeployerDuration } from "./DeployerDuration";
+import { useGameTimes } from "./GameTimes";
 
 type DescriptionDates = {
   mintDuration: {
@@ -23,7 +23,7 @@ type DescriptionDates = {
 };
 
 export function useDeployerDates(format: "local" | "utc") {
-  const deployerDuration = useDeployerDuration();
+  const { data: deployerDuration } = useGameTimes();
   const [dates, setDates] = useState<DescriptionDates>({
     mintDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
@@ -38,13 +38,11 @@ export function useDeployerDates(format: "local" | "utc") {
         date:
           format === "local"
             ? formatSecondsToLocal(
-                deployerDuration.mintDuration +
-                  deployerDuration.refundDuration,
+                deployerDuration.mintDuration + deployerDuration.refundDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
-                deployerDuration.mintDuration +
-                  deployerDuration.refundDuration,
+                deployerDuration.mintDuration + deployerDuration.refundDuration,
                 deployerDuration.start
               ),
         phase: 1,

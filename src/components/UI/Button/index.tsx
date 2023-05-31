@@ -7,6 +7,8 @@ const PRIMARY_BUTTON_DISABLED_CLASS =
 
 const SECONDARY_BUTTON_CLASS =
   "bg-violet-1100 border border-solid border-violet-400 hover:bg-violet-1000 text-violet-400";
+const SECONDARY_BUTTON_DISABLED_CLASS =
+  "bg-violet-1100 text-gray-400 cursor-not-allowed border border-solid border-gray-600";
 
 const Button = ({
   children,
@@ -29,9 +31,11 @@ const Button = ({
           ? props.disabled
             ? PRIMARY_BUTTON_DISABLED_CLASS
             : PRIMARY_BUTTON_CLASS
+          : props.disabled
+          ? SECONDARY_BUTTON_DISABLED_CLASS
           : SECONDARY_BUTTON_CLASS,
         size === "sm"
-          ? "px-2.5 py-1.5"
+          ? "px-3 py-1.5"
           : size === "lg"
           ? "px-7 py-2.5 text-md"
           : "px-3 py-2"

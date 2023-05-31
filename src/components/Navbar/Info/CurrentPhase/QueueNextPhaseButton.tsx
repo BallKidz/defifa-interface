@@ -1,7 +1,6 @@
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { useQueueNextPhase } from "hooks/write/useQueueNextPhase";
 
 export function QueueNextPhaseButton() {
@@ -17,6 +16,8 @@ export function QueueNextPhaseButton() {
         write?.();
       }}
       disabled={false || nextPhaseNeedsQueueingLoading || !nextPhaseNeedsQueing}
+      size="sm"
+      variant="secondary"
     >
       {isLoading || nextPhaseNeedsQueueingLoading ? (
         <span>...</span>

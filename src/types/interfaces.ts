@@ -83,3 +83,9 @@ export type JBFundingCycleMetadata = {
   preferClaimedTokenOverride?: boolean;
   metadata?: BigNumber;
 };
+
+export interface DefifaTimeData {
+  mintDuration: number;
+  refundDuration: number;
+  start: number;
+}

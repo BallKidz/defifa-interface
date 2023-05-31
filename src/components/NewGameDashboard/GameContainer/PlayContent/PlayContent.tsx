@@ -3,6 +3,8 @@ import { useGameContext } from "contexts/GameContext";
 import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
 import { RefundPhaseContent } from "./RefundPhaseContent";
 import { CountdownPhaseContent } from "./CountdownPhaseContent";
+import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
+import Container from "components/UI/Container";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
@@ -27,6 +29,9 @@ export function PlayContent() {
 
   return (
     <div>
+      <Container className="mb-6">
+        <PhaseDetails />
+      </Container>
       <CurrentContent />
     </div>
   );
