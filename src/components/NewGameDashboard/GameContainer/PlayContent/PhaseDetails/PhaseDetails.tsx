@@ -41,33 +41,42 @@ export function PhaseDetails() {
 
   return (
     <div>
-      <div className="flex justify-between mb-3">
+      <div className="flex justify-between">
         <div className="flex flex-col gap-2">
           <div className="text-2xl uppercase">{currentPhaseText}</div>
-          <div>{timeRemainingText} left</div>
+          {currentPhase === DefifaGamePhase.MINT ||
+          currentPhase === DefifaGamePhase.REFUND ? (
+            <div>{timeRemainingText} left</div>
+          ) : null}
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 items-end">
           <div>
             Next: <span className="uppercase">{nextPhaseText}</span>
           </div>
-          <QueueNextPhaseButton />
+          <div>
+            <QueueNextPhaseButton />
+          </div>
         </div>
       </div>
-      <div className="w-full rounded-full bg-gray-800 transition-colors">
-        <div
-          className={twJoin(
-            "rounded-full h-2",
-            percentElapsed > 80
-              ? "bg-red-700"
-              : percentElapsed > 50
-              ? "bg-orange-500"
-              : "bg-blue-800"
-          )}
-          style={{
-            width: `${percentElapsed}%`,
-          }}
-        />
-      </div>
+
+      {currentPhase === DefifaGamePhase.MINT ||
+      currentPhase === DefifaGamePhase.REFUND ? (
+        <div className="w-full rounded-full bg-gray-800 transition-all mt-3">
+          <div
+            className={twJoin(
+              "rounded-full h-2",
+              percentElapsed > 80
+                ? "bg-red-700"
+                : percentElapsed > 50
+                ? "bg-orange-500"
+                : "bg-blue-800"
+            )}
+            style={{
+              width: `${percentElapsed}%`,
+            }}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }
