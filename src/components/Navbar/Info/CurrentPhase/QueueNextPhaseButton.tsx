@@ -18,6 +18,7 @@ export function QueueNextPhaseButton() {
       size="sm"
       variant="secondary"
       loading={isLoading || nextPhaseNeedsQueueingLoading}
+      disabled={!nextPhaseNeedsQueing}
     >
       {nextPhaseNeedsQueing ? (
         <span>Queue next phase</span>
