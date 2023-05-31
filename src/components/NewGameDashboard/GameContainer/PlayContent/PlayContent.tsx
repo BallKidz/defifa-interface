@@ -1,6 +1,6 @@
 import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
-import { MintPhaseContent } from "./MintPhaseContent";
+import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
 import { RefundPhaseContent } from "./RefundPhaseContent";
 import { CountdownPhaseContent } from "./CountdownPhaseContent";
 

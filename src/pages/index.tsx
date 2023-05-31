@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         theme="dark"
       />
 
-      <Container>
+      <Container className="mb-12">
         <Navbar />
 
         <main className="pt-8">

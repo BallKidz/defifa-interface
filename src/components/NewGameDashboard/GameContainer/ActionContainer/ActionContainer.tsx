@@ -9,8 +9,8 @@ export function ActionContainer({
 }) {
   return (
     <div className="relative">
-      <Container>{children}</Container>
-      <div className="sticky bottom-0 left-0 right-0 h-20 bg-violet-1100 shadow-lg border-t border-gray-50">
+      <Container className="mb-12">{children}</Container>
+      <div className="sticky bottom-0 left-0 right-0 h-20 bg-violet-1100 shadow-md border-t border-gray-700 flex items-center w-full">
         <Container>{renderActions()}</Container>
       </div>
     </div>

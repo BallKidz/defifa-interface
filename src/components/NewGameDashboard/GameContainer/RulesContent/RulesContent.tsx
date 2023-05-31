@@ -1,10 +1,11 @@
+import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
 
 export function RulesContent() {
   const { metadata } = useGameContext();
   return (
-    <div>
+    <Container>
       <p>{metadata?.description}</p>
-    </div>
+    </Container>
   );
 }
