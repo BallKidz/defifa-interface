@@ -1,9 +1,4 @@
 import Button from "components/UI/Button";
-import { ETH_TOKEN_ADDRESS } from "constants/addresses";
-import { MINT_PRICE } from "constants/constants";
-import { formatUnits, parseEther } from "ethers/lib/utils";
-import { usePay } from "hooks/write/usePay";
-import { TierSelection } from "./useMintSelection";
 import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
 
 export function RefundActions({

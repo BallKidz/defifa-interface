@@ -5,9 +5,10 @@ import { MintCard } from "./MintCard";
 import { RefundActions } from "./RefundActions";
 import { useMintSelection } from "./useMintSelection";
 import { useMyPicks } from "./useMyPicks";
+import Container from "components/UI/Container";
 
 export function RefundPicksContent() {
-  const { data: picks } = useMyPicks();
+  const { data: picks, isLoading: picksLoading } = useMyPicks();
   const { nfts } = useGameContext();
 
   const {
@@ -47,6 +48,14 @@ export function RefundPicksContent() {
     []
   );
 
+  if (picksLoading) {
+    return (
+      <Container>
+        <div>...</div>
+      </Container>
+    );
+  }
+
   return (
     <ActionContainer
       renderActions={
@@ -55,7 +64,7 @@ export function RefundPicksContent() {
           : undefined
       }
     >
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
         {pickedNfts?.map((t: any) => (
           <MintCard
             key={t.id}
