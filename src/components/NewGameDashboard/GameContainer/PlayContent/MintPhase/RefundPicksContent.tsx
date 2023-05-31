@@ -6,8 +6,10 @@ import { MintCard } from "./MintCard";
 import { RefundActions } from "./RefundActions";
 import { useMintSelection } from "./useMintSelection";
 import { useMyPicks } from "./useMyPicks";
+import { useAccount } from "wagmi";
 
 export function RefundPicksContent() {
+  const { isConnected } = useAccount();
   const { data: picks, isLoading: picksLoading } = useMyPicks();
   const { nfts } = useGameContext();
 
@@ -47,6 +49,14 @@ export function RefundPicksContent() {
     },
     []
   );
+
+  if (!isConnected) {
+    return (
+      <Container>
+        <div>Connect your wallet to see your picks.</div>
+      </Container>
+    );
+  }
 
   if (picksLoading) {
     return (

@@ -23,7 +23,7 @@ const Footer = () => {
             .
           </p>
 
-          <p>Built with Juicebox. Secured by Ethereum</p>
+          <p>Built with Juicebox. Secured by Ethereum.</p>
         </div>
 
         <ul className="flex flex-col gap-2">
