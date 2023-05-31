@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       <Container className="mb-12">
         <Navbar />
 
-        <main className="pt-8">
+        <main className="pt-16">
           <h1 className="text-5xl md:text-7xl text-center font-medium tracking-tight mb-8">
             Money Games with Friends
           </h1>
