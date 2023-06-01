@@ -27,29 +27,29 @@ export default function GameContextProvider({
   const { data: tiers, isLoading: tiersLoading } = useNftRewards(tiersOf ?? []);
   const { data: governor } = useGovernorForDelegate(dataSource);
 
+  const context = {
+    gameId,
+    metadata,
+    currentPhase,
+    currentFundingCycle,
+    governor,
+    nfts: {
+      tiers,
+      totalSupply,
+    },
+    loading: {
+      metadataLoading,
+      currentPhaseLoading,
+      nfts: {
+        tiersLoading: tiersLoading || tiersOfLoading,
+      },
+      currentFundingCycleLoading,
+    },
+  };
+
+  console.log("game context", context);
+
   return (
-    <GameContext.Provider
-      value={{
-        gameId,
-        metadata,
-        currentPhase,
-        currentFundingCycle,
-        governor,
-        nfts: {
-          tiers,
-          totalSupply,
-        },
-        loading: {
-          metadataLoading,
-          currentPhaseLoading,
-          nfts: {
-            tiersLoading: tiersLoading || tiersOfLoading,
-          },
-          currentFundingCycleLoading,
-        },
-      }}
-    >
-      {children}
-    </GameContext.Provider>
+    <GameContext.Provider value={context}>{children}</GameContext.Provider>
   );
 }
