@@ -22,7 +22,19 @@ interface TransferEvent {
 function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   return (
     <div className="flex justify-between">
-      <span>Redeem</span>
+      <div>
+        <div className="mb-2">Redeem</div>
+        <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
+          <Image
+            className=""
+            src={transferEvent.token.metadata.image}
+            crossOrigin="anonymous"
+            alt="Team"
+            width={100}
+            height={100}
+          />
+        </div>
+      </div>
       <div>{transferEvent.from.id}</div>
     </div>
   );
@@ -67,7 +79,7 @@ export function ActivityContent() {
 
   return (
     <Container>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 max-w-3xl mx-auto mt-8">
         {transfers?.map((transferEvent: TransferEvent) => (
           <ActivityItem
             key={transferEvent.transactionHash}
