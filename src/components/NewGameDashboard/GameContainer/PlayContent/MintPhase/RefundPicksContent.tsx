@@ -77,7 +77,7 @@ export function RefundPicksContent() {
   return (
     <ActionContainer
       renderActions={
-        !totalSelected
+        totalSelected
           ? () => <RefundActions tokenIdsToRedeem={tokenIdsToRedeem} />
           : undefined
       }
