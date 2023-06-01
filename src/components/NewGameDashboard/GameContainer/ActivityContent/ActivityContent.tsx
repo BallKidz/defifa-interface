@@ -86,7 +86,7 @@ export function ActivityContent() {
   }
 
   return (
-    <Container>
+    <Container className="mb-12">
       <div className="flex flex-col gap-8 max-w-3xl mx-auto mt-8">
         {transfers?.map((transferEvent: TransferEvent) => (
           <ActivityItem

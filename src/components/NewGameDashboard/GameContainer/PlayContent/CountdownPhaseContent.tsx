@@ -1,7 +1,23 @@
+import { useCountdown } from "hooks/Countdown";
+import { useGameTimes } from "hooks/read/GameTimes";
+
 export function CountdownPhaseContent() {
+  const { data } = useGameTimes();
+  const mintStart = new Date(
+    (data?.start - data?.mintDuration - data?.refundDuration) * 1000
+  );
+
+  const { timeRemaining } = useCountdown(mintStart);
+
+  if (!data) return <>...</>;
+
   return (
     <div className="flex justify-center">
-      <span>Game starting soon...</span>
+      {timeRemaining ? (
+        <span>Game starting in {timeRemaining}...</span>
+      ) : (
+        <span>Game starting, waiting for next block...</span>
+      )}
     </div>
   );
 }

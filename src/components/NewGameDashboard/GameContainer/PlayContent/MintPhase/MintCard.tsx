@@ -10,12 +10,14 @@ export function MintCard({
   onDecrement,
   selectedCount,
   mintedCount,
+  disabled,
 }: {
   imageSrc: string;
   onIncrement?: () => void;
   onDecrement?: () => void;
   selectedCount: number;
   mintedCount: number;
+  disabled?: boolean;
 }) {
   const {
     nfts: { totalSupply },
@@ -34,10 +36,11 @@ export function MintCard({
         isSelected ? "border-violet-800 shadow-glow" : ""
       )}
     >
-      <div
-        className="cursor-pointer rounded-md overflow-hidden shadow-md"
+      <button
+        className="rounded-md overflow-hidden shadow-md"
         role="button"
         onClick={onIncrement}
+        disabled={disabled}
       >
         <Image
           src={imageSrc}
@@ -46,7 +49,7 @@ export function MintCard({
           width={500}
           height={500}
         />
-      </div>
+      </button>
 
       <div className="p-3 bottom-14 right-0 absolute">
         {isSelected ? (

@@ -8,7 +8,7 @@ import { useMintSelection } from "./useMintSelection";
 import { useMyPicks } from "./useMyPicks";
 import { useAccount } from "wagmi";
 
-export function RefundPicksContent() {
+export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
   const { data: picks, isLoading: picksLoading } = useMyPicks();
   const { nfts } = useGameContext();
@@ -77,7 +77,7 @@ export function RefundPicksContent() {
   return (
     <ActionContainer
       renderActions={
-        totalSelected
+        totalSelected && !disabled
           ? () => <RefundActions tokenIdsToRedeem={tokenIdsToRedeem} />
           : undefined
       }
@@ -91,6 +91,7 @@ export function RefundPicksContent() {
             selectedCount={selectedTiers?.[t.id]?.count ?? 0}
             onIncrement={() => incrementTierSelection(t.id)}
             onDecrement={() => decrementTierSelection(t.id)}
+            disabled={disabled}
           />
         ))}
       </div>
