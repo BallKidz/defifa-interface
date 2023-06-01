@@ -73,9 +73,17 @@ function ActivityItem({ transferEvent }: { transferEvent: TransferEvent }) {
 }
 
 export function ActivityContent() {
-  const { data: activity } = useGameActivity();
+  const { data: activity, isLoading } = useGameActivity();
 
   const transfers = activity?.transfers;
+
+  if (isLoading) {
+    return <Container className="text-center">...</Container>;
+  }
+
+  if (!transfers || transfers.length === 0) {
+    return <Container className="text-center">No activity yet.</Container>;
+  }
 
   return (
     <Container>

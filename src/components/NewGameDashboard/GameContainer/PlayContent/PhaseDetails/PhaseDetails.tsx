@@ -24,7 +24,11 @@ const phaseText = (phase: DefifaGamePhase) => {
 };
 
 export function PhaseDetails() {
-  const { currentPhase, currentFundingCycle } = useGameContext();
+  const {
+    currentPhase,
+    currentFundingCycle,
+    loading: { currentFundingCycleLoading },
+  } = useGameContext();
 
   const currentPhaseText = phaseText(currentPhase);
   const nextPhaseText = phaseText(currentPhase + 1);
@@ -45,7 +49,9 @@ export function PhaseDetails() {
         <div className="flex flex-col gap-2">
           <div className="text-2xl uppercase">{currentPhaseText}</div>
           {currentPhase === DefifaGamePhase.MINT ||
-          currentPhase === DefifaGamePhase.REFUND ? (
+          (currentPhase === DefifaGamePhase.REFUND &&
+            !currentFundingCycleLoading &&
+            timeRemainingText) ? (
             <div>{timeRemainingText} left</div>
           ) : null}
         </div>
