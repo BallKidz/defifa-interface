@@ -16,9 +16,13 @@ function GameStats() {
     nfts: { totalSupply },
   } = useGameContext();
   const { gameId } = useGameContext();
-  const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
+  const { data: treasuryAmount, isLoading: isTerminalLoading } =
+    usePaymentTerminalBalance(gameId);
 
   const mintText = totalSupply?.toNumber() === 1 ? "mint" : "mints";
+
+  if (isTerminalLoading || !totalSupply)
+    return <div className="text-center">...</div>;
 
   return (
     <div className="flex justify-center gap-4">
@@ -47,9 +51,7 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-5xl text-center mb-5">
-        {metadata?.name ?? "Unknown game"}
-      </h1>
+      <h1 className="text-5xl text-center mb-5">{metadata?.name}</h1>
       <GameStats />
     </header>
   );

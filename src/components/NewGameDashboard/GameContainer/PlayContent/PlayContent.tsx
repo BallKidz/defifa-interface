@@ -22,12 +22,14 @@ export function PlayContent() {
     loading: { currentPhaseLoading },
   } = useGameContext();
 
-  if (currentPhaseLoading) return <div>...</div>;
+  if (currentPhaseLoading) {
+    return <Container className="text-center">...</Container>;
+  }
 
   const CurrentContent = PHASE_CONTENT[currentPhase];
 
   return (
-    <div className="">
+    <div>
       <Container className="mb-6 border border-gray-800 py-5 px-6 rounded-xl">
         <PhaseDetails />
       </Container>
