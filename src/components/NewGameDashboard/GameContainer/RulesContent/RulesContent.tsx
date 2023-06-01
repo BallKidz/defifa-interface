@@ -8,6 +8,7 @@ import styles from "./index.module.css";
 import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
+import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 
 export function RulesContent() {
   const { metadata } = useGameContext();
@@ -23,6 +24,9 @@ export function RulesContent() {
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
   const tokenBeneficiary = useDefaultTokenBeneficiary(currentFc.metadata.dataSource);
   console.log('Default beneficiary ',tokenBeneficiary);
+  const { data: nftRewardTiers } = useNftRewardTiersOf(currentFc.metadata.dataSource);
+  console.log('NFT reward tiers ',nftRewardTiers); // Use this for tier beneficiaries
+
   const { data: gameMetadata } = useGameMetadata(gameId);
   console.log('Game metadata ',gameMetadata);
   const fillPill = (phase: number) => {
@@ -57,7 +61,7 @@ export function RulesContent() {
   return (
     <Container>
       <p>{metadata?.description}</p>
-      <div className="flex flex-col gap-4 mt-5">
+      <div className={styles.container}>
         <div>
           Phase 1: Minting (mints open, refunds open)
           <span className={pillStyle(mintDuration.phase)}>
@@ -79,22 +83,29 @@ export function RulesContent() {
         <div>
           Phase 4: Scorecard submission. Anyone may submit a scorecard. Scorecards must be ratified by a majority of the Players.
         </div>
-        <div>
-          No Contest: This occurs when nobody queues the next game phase. Players may redeemed or keep their playing cards.
-        </div>
-        <div>
-          Mint fees: {metadata?.seller_fee_basis_points}% is collected from Players on each playing card minted.
-        </div>
-        <div>
-        {/* TODO: test with RR and Benef. Create flow borking atm */}
-          Beneficiaries: {tokenBeneficiary.data === "0x0000000000000000000000000000000000000000"
-          ? 'No playing cards are being allocated to a default beneficiary in this game.'
-          : `See contract ${currentFc.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
       </div>
       <div>
-          Winners: Claim prize anytime after a scorecard has been ratified. Redeeming a player card will burn it and transfer you its share of the pot.
+        <div className={styles.container}>         
+          <p>
+            Winners: Claim prize anytime after a scorecard has been ratified. Redeeming a player card will burn it and transfer you its share of the pot.
+          </p>
+          <p>
+            No Contest: This occurs when nobody queues the next game phase. Players may redeemed or keep their playing cards.
+          </p>
+        </div>
       </div>
-      </div>  
+        <div className={styles.container}>
+          <p>
+            Mint fees: {metadata?.seller_fee_basis_points}% is collected from Players on each playing card minted.
+          </p>
+        {/* TODO: test with RR and Benef. Create flow borking atm */}
+          <p>
+            Beneficiaries: {tokenBeneficiary.data === "0x0000000000000000000000000000000000000000"
+            ? 'No playing cards are being allocated to a default beneficiary in this game.'
+            : `See contract ${currentFc.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
+          </p>  
+        </div>
+       
     </Container>
   );
 }

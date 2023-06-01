@@ -18,12 +18,12 @@ const Socials = () => {
           Discord
         </a>
       </Link>
-
-      <Link href={warcastIntent} passHref>
+    EXPERIMENTAL GAMES - USE ON GOERLI - REPORT BUGS
+     {/*  <Link href={warcastIntent} passHref>
         <a className="text-sm hover:underline" target="_blank">
           Farcaster
         </a>
-      </Link>
+      </Link> */}
     </div>
   );
 };

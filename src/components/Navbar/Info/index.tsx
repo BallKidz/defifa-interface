@@ -14,16 +14,16 @@ const Info = () => {
             <Logo src="/assets/defifa.svg" />
           </a>
         </Link>
-        <Link href="/arcade">
+{/*         <Link href="/arcade">
           <a className="text-sm hover:underline">Arcade</a>
-        </Link>
+        </Link> */}
         <Socials />
 
-        <Link href="/create">
+{/*         <Link href="/create">
           <a className="text-sm flex gap-2 items-center font-medium hover:underline">
             Create game <ArrowRightIcon className="h-4 w-4" />
           </a>
-        </Link>
+        </Link> */}
       </div>
 
       <Wallet />
