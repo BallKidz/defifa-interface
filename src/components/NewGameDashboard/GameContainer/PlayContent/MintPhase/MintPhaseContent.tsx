@@ -1,7 +1,7 @@
 import Container from "components/UI/Container";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
-import { MintPicksContent } from "./MintPicks";
+import { MintPicksContent } from "./MintPicksContent";
 import { RefundPicksContent } from "./RefundPicksContent";
 
 export function MintPhaseContent() {

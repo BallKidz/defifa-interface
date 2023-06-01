@@ -90,3 +90,8 @@ export interface DefifaTimeData {
   refundDuration: number;
   start: number;
 }
+
+export interface DefifaTierRedemptionWeight {
+  id: number;
+  redemptionWeight: number;
+}
