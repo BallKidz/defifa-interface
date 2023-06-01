@@ -9,7 +9,7 @@ export function RefundActions({
   const totalSelected = tokenIdsToRedeem?.length ?? 0;
 
   const { write, isLoading } = useRedeemTokensOf({
-    tokenIds: tokenIdsToRedeem,
+    tokenIds: ["1000000001"],
   });
 
   const picksText = totalSelected === 1 ? "pick" : "picks";
