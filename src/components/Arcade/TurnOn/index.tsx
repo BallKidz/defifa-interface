@@ -1,4 +1,4 @@
-import { GameRow } from "components/Arcade/Game/Game";
+import { GameRow } from "components/Arcade/GameRow";
 import { AllGamesContext } from "hooks/gamesContext";
 import { useAllGames } from "hooks/useAllGames";
 import styles from "./TurnOn.module.css";
@@ -18,12 +18,12 @@ const AllGames = () => {
       {!isLoading && !isError && (
         <table className="mx-auto">
           <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Phase</th>
-              <th>Pool Size</th>
-              <th>Actions</th>
+            <tr className="font-normal">
+              <th className="font-normal text-sm py-3">ID</th>
+              <th className="font-normal text-sm py-3">Name</th>
+              <th className="font-normal text-sm py-3">Phase</th>
+              <th className="font-normal text-sm py-3">Pool Size</th>
+              <th className="font-normal text-sm py-3">Actions</th>
             </tr>
           </thead>
 

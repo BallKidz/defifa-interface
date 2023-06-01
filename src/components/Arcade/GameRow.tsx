@@ -1,14 +1,13 @@
-import { useAllDuration } from "hooks/read/AllDurations";
-import { useGameName } from "hooks/read/GameName";
-import { useAllPaymentTerminalBalances } from "hooks/read/AllPaymentTerminalBalances";
-import { Game } from "hooks/useAllGames";
-import { add } from "lodash";
-import Link from "next/link";
-import { FC } from "react";
 import {
   DefifaGamePhase,
   useCurrentGamePhase,
 } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
+import { useAllDuration } from "hooks/read/AllDurations";
+import { useAllPaymentTerminalBalances } from "hooks/read/AllPaymentTerminalBalances";
+import { useGameName } from "hooks/read/GameName";
+import { Game } from "hooks/useAllGames";
+import Link from "next/link";
+import { FC } from "react";
 import { fromWad4 } from "utils/format/formatNumber";
 
 export const GameRow: FC<{ game: Game }> = ({ game }) => {
@@ -43,7 +42,7 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
 
   return (
     <Link href={`/game/${gameId}`}>
-      <tr className="text-sm cursor-pointer">
+      <tr className="text-sm cursor-pointer hover:font-semibold">
         <td className="whitespace-nowrap py-4 pl-4 pr-3">{gameId}</td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
           <span>{name !== null ? name : dataSourceName}</span>
