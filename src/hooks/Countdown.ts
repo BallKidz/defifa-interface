@@ -22,9 +22,9 @@ export function useCountdown(targetDate: Date | undefined) {
         if (days > 1) {
           setTimeRemaining(`${days} days`);
         } else {
-          const timeRemainingString = `${hours > 10 ? hours : `0${hours}`}:${
-            minutes > 10 ? minutes : `0${minutes}`
-          }:${seconds > 10 ? seconds : `0${seconds}`}`;
+          const timeRemainingString = `${hours >= 10 ? hours : `0${hours}`}:${
+            minutes >= 10 ? minutes : `0${minutes}`
+          }:${seconds >= 10 ? seconds : `0${seconds}`}`;
 
           setTimeRemaining(timeRemainingString);
         }

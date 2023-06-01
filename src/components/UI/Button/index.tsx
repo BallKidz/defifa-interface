@@ -10,6 +10,9 @@ const SECONDARY_BUTTON_CLASS =
 const SECONDARY_BUTTON_DISABLED_CLASS =
   "bg-violet-1100 text-gray-400 cursor-not-allowed border border-solid border-gray-600";
 
+const TERTIARY_BUTTON_CLASS =
+  "bg-violet-1100 hover:bg-violet-1000 text-violet-400 underline";
+
 const Button = ({
   children,
   variant = "primary",
@@ -18,7 +21,7 @@ const Button = ({
   ...props
 }: {
   children: any;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "tertiary";
   loading?: boolean;
   size?: "sm" | "md" | "lg";
 } & DetailedHTMLProps<
@@ -33,9 +36,11 @@ const Button = ({
           ? props.disabled
             ? PRIMARY_BUTTON_DISABLED_CLASS
             : PRIMARY_BUTTON_CLASS
-          : props.disabled
-          ? SECONDARY_BUTTON_DISABLED_CLASS
-          : SECONDARY_BUTTON_CLASS,
+          : variant === "secondary"
+          ? props.disabled
+            ? SECONDARY_BUTTON_DISABLED_CLASS
+            : SECONDARY_BUTTON_CLASS
+          : TERTIARY_BUTTON_CLASS,
         size === "sm"
           ? "px-3 py-1.5"
           : size === "lg"

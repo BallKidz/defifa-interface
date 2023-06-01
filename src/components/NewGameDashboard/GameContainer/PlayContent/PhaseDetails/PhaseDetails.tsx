@@ -1,7 +1,9 @@
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { QueueNextPhaseButton } from "components/Navbar/Info/CurrentPhase/QueueNextPhaseButton";
 import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/Countdown";
+import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { twJoin } from "tailwind-merge";
 
 const phaseText = (phase: DefifaGamePhase) => {
@@ -29,6 +31,10 @@ export function PhaseDetails() {
     currentFundingCycle,
     loading: { currentFundingCycleLoading },
   } = useGameContext();
+  const {
+    data: nextPhaseNeedsQueueing,
+    isLoading: nextPhaseNeedsQueueingLoading,
+  } = useNextPhaseNeedsQueueing();
 
   const currentPhaseText = phaseText(currentPhase);
   const nextPhaseText =
@@ -47,25 +53,32 @@ export function PhaseDetails() {
   const percentElapsed = (timeElapsed / duration) * 100;
 
   return (
-    <div>
-      <div className="flex justify-between gap-4">
-        <div className="flex flex-col gap-2">
+    <div className="border border-gray-800 py-5 px-6 rounded-xl">
+      <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
+        <div className="flex flex-col text-center md:text-left gap-1">
+          <div>Phase {currentPhase}</div>
           <div className="text-2xl uppercase">{currentPhaseText}</div>
+        </div>
+
+        <div>
           {currentPhase === DefifaGamePhase.MINT ||
           (currentPhase === DefifaGamePhase.REFUND &&
             !currentFundingCycleLoading &&
             timeRemainingText) ? (
-            <div>{timeRemainingText}</div>
+            <div className="text-4xl">{timeRemainingText}</div>
           ) : null}
         </div>
 
         {nextPhaseText ? (
-          <div className="flex flex-col gap-2 items-end text-right">
-            <div>
-              Next: <span className="uppercase">{nextPhaseText}</span>
+          <div className="flex flex-col gap-1 md:items-end md:text-right text-center">
+            <div className="flex gap-2 items-center">
+              Next: <span className="uppercase">{nextPhaseText}</span>{" "}
+              {!nextPhaseNeedsQueueing ? (
+                <CheckCircleIcon className="h-4 w-4" />
+              ) : null}
             </div>
             <div>
-              <QueueNextPhaseButton />
+              {nextPhaseNeedsQueueing ? <QueueNextPhaseButton /> : null}
             </div>
           </div>
         ) : null}

@@ -34,9 +34,7 @@ export function PlayContent() {
         {currentPhase === DefifaGamePhase.MINT ||
         currentPhase === DefifaGamePhase.REFUND ||
         currentPhase === DefifaGamePhase.SCORING ? (
-          <div className="border border-gray-800 py-5 px-6 rounded-xl">
-            <PhaseDetails />
-          </div>
+          <PhaseDetails />
         ) : null}
         {currentPhase === DefifaGamePhase.NO_CONTEST ||
         currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
