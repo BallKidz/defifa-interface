@@ -30,8 +30,10 @@ export function PlayContent() {
 
   return (
     <div>
-      <Container className="mb-6 border border-gray-800 py-5 px-6 rounded-xl">
-        <PhaseDetails />
+      <Container className="mb-6">
+        <div className="border border-gray-800 py-5 px-6 rounded-xl">
+          <PhaseDetails />
+        </div>
       </Container>
       <CurrentContent />
     </div>

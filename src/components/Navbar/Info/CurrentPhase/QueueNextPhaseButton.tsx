@@ -24,7 +24,7 @@ export function QueueNextPhaseButton() {
         <span>Queue next phase</span>
       ) : (
         <span className="flex gap-1 items-center">
-          Next phase queued <CheckCircleIcon className="h-4 w-4" />
+          Next queued <CheckCircleIcon className="h-4 w-4" />
         </span>
       )}
     </Button>

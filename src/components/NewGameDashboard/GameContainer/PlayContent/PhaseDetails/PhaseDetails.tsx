@@ -41,7 +41,7 @@ export function PhaseDetails() {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-4">
         <div className="flex flex-col gap-2">
           <div className="text-2xl uppercase">{currentPhaseText}</div>
           {currentPhase === DefifaGamePhase.MINT ||
@@ -49,7 +49,7 @@ export function PhaseDetails() {
             <div>{timeRemainingText} left</div>
           ) : null}
         </div>
-        <div className="flex flex-col gap-2 items-end">
+        <div className="flex flex-col gap-2 items-end text-right">
           <div>
             Next: <span className="uppercase">{nextPhaseText}</span>
           </div>
