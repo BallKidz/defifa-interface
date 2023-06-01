@@ -31,7 +31,10 @@ export function PhaseDetails() {
   } = useGameContext();
 
   const currentPhaseText = phaseText(currentPhase);
-  const nextPhaseText = phaseText(currentPhase + 1);
+  const nextPhaseText =
+    currentPhase <= DefifaGamePhase.NO_CONTEST_INEVITABLE
+      ? phaseText(currentPhase + 1)
+      : null;
 
   const start = currentFundingCycle?.fundingCycle?.start?.toNumber() ?? 0;
   const duration = currentFundingCycle?.fundingCycle?.duration?.toNumber() ?? 0;
@@ -55,14 +58,17 @@ export function PhaseDetails() {
             <div>{timeRemainingText} left</div>
           ) : null}
         </div>
-        <div className="flex flex-col gap-2 items-end text-right">
-          <div>
-            Next: <span className="uppercase">{nextPhaseText}</span>
+
+        {nextPhaseText ? (
+          <div className="flex flex-col gap-2 items-end text-right">
+            <div>
+              Next: <span className="uppercase">{nextPhaseText}</span>
+            </div>
+            <div>
+              <QueueNextPhaseButton />
+            </div>
           </div>
-          <div>
-            <QueueNextPhaseButton />
-          </div>
-        </div>
+        ) : null}
       </div>
 
       {currentPhase === DefifaGamePhase.MINT ||
