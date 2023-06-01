@@ -55,7 +55,7 @@ export function PhaseDetails() {
           (currentPhase === DefifaGamePhase.REFUND &&
             !currentFundingCycleLoading &&
             timeRemainingText) ? (
-            <div>{timeRemainingText} left</div>
+            <div>{timeRemainingText}</div>
           ) : null}
         </div>
 
