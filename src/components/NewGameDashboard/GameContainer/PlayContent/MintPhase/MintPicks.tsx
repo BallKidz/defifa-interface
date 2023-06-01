@@ -7,6 +7,10 @@ import { useMintSelection } from "./useMintSelection";
 export function MintPicksContent() {
   const {
     nfts: { tiers },
+    loading: {
+      currentFundingCycleLoading,
+      nfts: { tiersLoading },
+    },
   } = useGameContext();
   const {
     incrementTierSelection,
@@ -24,16 +28,20 @@ export function MintPicksContent() {
       }
     >
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-        {tiers?.map((t: any) => (
-          <MintCard
-            key={t.id}
-            imageSrc={t.teamImage}
-            mintedCount={t.minted}
-            selectedCount={selectedTiers?.[t.id]?.count ?? 0}
-            onIncrement={() => incrementTierSelection(t.id)}
-            onDecrement={() => decrementTierSelection(t.id)}
-          />
-        ))}
+        {tiersLoading || currentFundingCycleLoading ? (
+          <span>...</span>
+        ) : (
+          tiers?.map((t: any) => (
+            <MintCard
+              key={t.id}
+              imageSrc={t.teamImage}
+              mintedCount={t.minted}
+              selectedCount={selectedTiers?.[t.id]?.count ?? 0}
+              onIncrement={() => incrementTierSelection(t.id)}
+              onDecrement={() => decrementTierSelection(t.id)}
+            />
+          ))
+        )}
       </div>
     </ActionContainer>
   );

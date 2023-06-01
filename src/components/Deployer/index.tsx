@@ -8,7 +8,6 @@ const DeployerWrapper = () => {
     <Container>
       <Navbar />
 
-      <h1 className="text-2xl mb-8 mt-8">Create your Game</h1>
       <DeployerCreate />
     </Container>
   );

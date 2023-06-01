@@ -26,7 +26,7 @@ type GameContextType = {
     currentPhaseLoading: boolean;
     currentFundingCycleLoading: boolean;
     nfts: {
-      tiers: boolean;
+      tiersLoading: boolean;
     };
   };
 };
@@ -45,7 +45,7 @@ export const GameContext = createContext<GameContextType>({
     currentPhaseLoading: true,
     currentFundingCycleLoading: true,
     nfts: {
-      tiers: true,
+      tiersLoading: true,
     },
   },
 });

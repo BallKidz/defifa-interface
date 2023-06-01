@@ -78,6 +78,7 @@ const DeployerCreate = () => {
     token: ETH_TOKEN_ADDRESS,
     ballkidzFeeProjectTokenAccount:
       "0x11834239698c7336EF232C00a2A9926d3375DF9D",
+    defaultVotingDelegate: constants.AddressZero,
     terminal: JBETHPaymentTerminal.address,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
@@ -370,7 +371,7 @@ const DeployerCreate = () => {
   };
 
   if (isLoading) {
-    return <span>Launching your game...</span>;
+    return <div className="text-center">Launching your game...</div>;
   }
 
   if (isSuccess && transactionData) {
@@ -378,17 +379,22 @@ const DeployerCreate = () => {
     const gameId = BigNumber.from(transactionData.logs[1].topics[3]).toNumber();
 
     return (
-      <div style={{ textAlign: "center" }}>
-        <p>Let the games begin!</p>
+      <div className="text-center">
+        <p className="text-4xl mb-4">Let the games begin!</p>
         <Link href={`/game/${gameId}`}>
-          <Button>Go to game</Button>
+          <div>
+            <Button size="lg">Go to game</Button>
+          </div>
         </Link>
+        <div className="text-xs mt-3">Game #{gameId}</div>
       </div>
     );
   }
 
   return (
     <div className="mb-24">
+      <h1 className="text-2xl mb-8 mt-8">Create your Game</h1>
+
       <h2 className="text-lg mb-3">
         {step === 1 ? "Game details" : "Game NFTs"}
       </h2>

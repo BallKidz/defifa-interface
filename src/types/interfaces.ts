@@ -33,6 +33,7 @@ export interface DefifaLaunchProjectData {
   votingStartTime: number;
   terminal: string; // address
   store: string; // address
+  defaultVotingDelegate: string;
 }
 
 export interface JBProjectMetadata {

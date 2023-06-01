@@ -22,7 +22,7 @@ export default function GameContextProvider({
   const { data: totalSupply } = useNftRewardsTotalSupply(
     currentFundingCycle?.metadata.dataSource
   );
-  const { data: tiersOf } = useNftRewardTiersOf(
+  const { data: tiersOf, isLoading: tiersOfLoading } = useNftRewardTiersOf(
     currentFundingCycle?.metadata.dataSource
   );
   const { data: tiers, isLoading: tiersLoading } = useNftRewards(tiersOf ?? []);
@@ -42,7 +42,7 @@ export default function GameContextProvider({
           metadataLoading,
           currentPhaseLoading,
           nfts: {
-            tiers: tiersLoading,
+            tiersLoading: tiersLoading || tiersOfLoading,
           },
           currentFundingCycleLoading,
         },

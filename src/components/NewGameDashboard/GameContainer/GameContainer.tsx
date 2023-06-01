@@ -2,8 +2,9 @@ import { ButtonHTMLAttributes, DetailedHTMLProps, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { PlayContent } from "./PlayContent/PlayContent";
 import { RulesContent } from "./RulesContent/RulesContent";
+import { ActivityContent } from "./ActivityContent/ActivityContent";
 
-type GameTab = "play" | "rules" | "teams" | "leaderboard";
+type GameTab = "play" | "rules" | "activity";
 
 function TabButton({
   active,
@@ -15,9 +16,7 @@ function TabButton({
   return (
     <button
       className={twJoin(
-        active
-          ? "underline"
-          : "text-gray-400 hover:text-gray-200",
+        active ? "underline" : "text-gray-400 hover:text-gray-200",
         "rounded-md px-4 py-2 font-medium capitalize"
       )}
       {...props}
@@ -31,8 +30,7 @@ const TABS: GameTab[] = ["play", "rules"];
 const TAB_CONTENT: { [k in GameTab]?: () => JSX.Element } = {
   play: PlayContent,
   rules: RulesContent,
-  teams: () => <span>teams</span>,
-  leaderboard: () => <span>leaderboard</span>,
+  activity: ActivityContent,
 };
 
 export function GameContainer() {

@@ -4,10 +4,11 @@ import { useChainData } from "hooks/useChainData";
 import { useQuery } from "react-query";
 import { useAccount } from "wagmi";
 
+// BROKEN TODO
 const query = gql`
-  query myTeamsQuery($owner: String!, $gameId: String!) {
+  query gameActivityQuery($gameId: String!) {
     contracts(where: { gameId: $gameId }) {
-      mintedTokens(where: { owner: $owner }) {
+      mintedTokens {
         id
         number
         metadata {
@@ -23,23 +24,21 @@ const query = gql`
   }
 `;
 
-export function useMyPicks() {
+export function useGameActivity() {
   const {
     chainData: { subgraph },
   } = useChainData();
-  const { address } = useAccount();
   const { gameId } = useGameContext();
 
   return useQuery(
-    ["picks", address, gameId],
+    ["gameActivity", gameId],
     () => {
       return request(subgraph, query, {
-        owner: address?.toLowerCase(),
         gameId: gameId.toString(),
       });
     },
     {
-      enabled: !!address,
+      enabled: !!gameId,
     }
   );
 }
