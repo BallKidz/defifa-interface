@@ -27,13 +27,16 @@ export function CustomScorecardContent() {
     setScorecardMap(newScorecardMap);
   }
 
-  const scorecard: DefifaTierRedemptionWeight[] = tiers?.map((t: any) => {
-    const scorePercentage = scorecardMap[t.id];
-    return {
-      id: t.id,
-      redemptionWeight: (scorePercentage / 100) * ONE_BILLION ?? 0,
-    };
-  });
+  const scorecard: DefifaTierRedemptionWeight[] =
+    tiers?.map((t: any) => {
+      const scorePercentage = scorecardMap[t.id];
+      return {
+        id: t.id,
+        redemptionWeight: scorePercentage
+          ? (scorePercentage / 100) * ONE_BILLION
+          : 0,
+      };
+    }) ?? [];
 
   return (
     <ActionContainer

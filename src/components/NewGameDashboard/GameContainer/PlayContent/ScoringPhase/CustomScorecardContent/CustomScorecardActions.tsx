@@ -1,6 +1,7 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
 import { ONE_BILLION } from "hooks/NftRewards";
+import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import { DefifaTierRedemptionWeight } from "types/interfaces";
 
 export function CustomScorecardActions({
@@ -8,12 +9,14 @@ export function CustomScorecardActions({
 }: {
   scorecard: DefifaTierRedemptionWeight[];
 }) {
+  const { write, isLoading } = useSubmitScorecard(scorecard);
+
   const totalScore =
     scorecard?.reduce((acc, curr) => acc + curr.redemptionWeight, 0) ?? 0;
 
-  console.log(scorecard);
-
-  const totalScorePercentage = (totalScore / ONE_BILLION) * 100;
+  const totalScorePercentage = totalScore
+    ? (totalScore / ONE_BILLION) * 100
+    : 0;
 
   return (
     <div className="flex justify-between items-center">
@@ -26,7 +29,13 @@ export function CustomScorecardActions({
       {totalScorePercentage > 100 ? (
         <span className="text-red-500">Can&apos;t allocate more than 100%</span>
       ) : null}
-      <Button disabled={totalScorePercentage !== 100}>Submit scorecard</Button>
+      <Button
+        onClick={() => write?.()}
+        loading={isLoading}
+        disabled={totalScorePercentage !== 100}
+      >
+        Submit scorecard
+      </Button>
     </div>
   );
 }

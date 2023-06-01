@@ -38,6 +38,12 @@ export function PlayContent() {
             <PhaseDetails />
           </div>
         ) : null}
+        {currentPhase === DefifaGamePhase.NO_CONTEST ||
+        currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
+          <div className="text-center text-orange-500 uppercase text-2xl">
+            No contest
+          </div>
+        ) : null}
       </Container>
       <CurrentContent />
     </div>

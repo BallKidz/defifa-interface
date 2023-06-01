@@ -28,8 +28,7 @@ const ScoreCard: FC<ScoreCardProps> = (props) => {
     ScoreCard[]
   >([]);
   const { write, isLoading, isSuccess, isError } = useSubmitScorecard(
-    scoreCardWithPercents,
-    props.governor
+    scoreCardWithPercents
   );
 
   const scoringOpen = useScoringOpen();

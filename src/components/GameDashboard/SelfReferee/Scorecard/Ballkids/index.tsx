@@ -7,17 +7,15 @@ import styles from "./BallkidsScorecard.module.css";
 
 const BallkidsScorecard = (governor: string) => {
   const { data, columns } = useScorecardTable();
-  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecard(
-    ballkidsScorecard,
-    governor
-  );
+  const { write, isLoading, isSuccess, isError, error } =
+    useSubmitScorecard(ballkidsScorecard);
 
   return (
     <div className={styles.container}>
       <h3>Defifa Ballkids Scorecard</h3>
       <Table columns={columns} data={data} />
       <div className={styles.buttonContainer}>
-        <Button  onClick={() => write?.()} disabled={isLoading}>
+        <Button onClick={() => write?.()} disabled={isLoading}>
           {isLoading ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

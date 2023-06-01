@@ -13,10 +13,8 @@ interface CustomScorecardProps {
 
 const CustomScorecard: FC<CustomScorecardProps> = ({ tiers, governor }) => {
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>([]);
-  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecard(
-    scoreCard,
-    governor
-  );
+  const { write, isLoading, isSuccess, isError, error } =
+    useSubmitScorecard(scoreCard);
 
   const onTierScoreChange = (redemptionWeight: number, id: number) => {
     // Check if an object with the same id already exists in the scoreCard array
