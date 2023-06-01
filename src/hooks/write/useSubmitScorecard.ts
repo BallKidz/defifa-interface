@@ -6,15 +6,19 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-export function useSubmitScorecard(_tierWeights: DefifaTierRedemptionWeight[]) {
+export function useSubmitScorecard(
+  _tierWeights: DefifaTierRedemptionWeight[],
+  governorAddress: string | undefined
+) {
   const { chainData } = useChainData();
+
   const { config } = usePrepareContractWrite({
-    addressOrName: chainData.DefifaGovernor.address,
+    addressOrName: governorAddress ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
     functionName: "submitScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,
-    enabled: _tierWeights && _tierWeights.length > 0,
+    enabled: Boolean(_tierWeights && _tierWeights.length > 0 && governorAddress),
   });
 
   const { data, write, error, isError } = useContractWrite(config);

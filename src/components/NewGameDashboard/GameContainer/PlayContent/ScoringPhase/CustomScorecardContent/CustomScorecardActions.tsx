@@ -1,5 +1,6 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
+import { useGameContext } from "contexts/GameContext";
 import { ONE_BILLION } from "hooks/NftRewards";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import { DefifaTierRedemptionWeight } from "types/interfaces";
@@ -9,7 +10,8 @@ export function CustomScorecardActions({
 }: {
   scorecard: DefifaTierRedemptionWeight[];
 }) {
-  const { write, isLoading } = useSubmitScorecard(scorecard);
+  const { governor } = useGameContext();
+  const { write, isLoading } = useSubmitScorecard(scorecard, governor);
 
   const totalScore =
     scorecard?.reduce((acc, curr) => acc + curr.redemptionWeight, 0) ?? 0;

@@ -11,6 +11,7 @@ type GameContextType = {
   gameId: number;
   metadata: JBProjectMetadata | undefined;
   currentPhase: DefifaGamePhase;
+  governor: string | undefined;
   currentFundingCycle:
     | {
         fundingCycle: JBFundingCycle;
@@ -36,6 +37,7 @@ export const GameContext = createContext<GameContextType>({
   metadata: undefined,
   currentPhase: DefifaGamePhase.COUNTDOWN,
   currentFundingCycle: undefined,
+  governor: undefined,
   nfts: {
     tiers: undefined,
     totalSupply: undefined,

@@ -5,6 +5,7 @@ import Button from "components/UI/Button";
 import { ScoreCard } from "../types";
 import styles from "./Custom.module.css";
 import { Input } from "components/UI/Input";
+import { useGameContext } from "contexts/GameContext";
 
 interface CustomScorecardProps {
   tiers: any[];
@@ -13,8 +14,10 @@ interface CustomScorecardProps {
 
 const CustomScorecard: FC<CustomScorecardProps> = ({ tiers, governor }) => {
   const [scoreCard, setScoreCard] = useState<ScoreCard[]>([]);
-  const { write, isLoading, isSuccess, isError, error } =
-    useSubmitScorecard(scoreCard);
+  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecard(
+    scoreCard,
+    governor
+  );
 
   const onTierScoreChange = (redemptionWeight: number, id: number) => {
     // Check if an object with the same id already exists in the scoreCard array

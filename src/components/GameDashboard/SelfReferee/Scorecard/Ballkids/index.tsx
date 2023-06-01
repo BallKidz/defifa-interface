@@ -7,8 +7,10 @@ import styles from "./BallkidsScorecard.module.css";
 
 const BallkidsScorecard = (governor: string) => {
   const { data, columns } = useScorecardTable();
-  const { write, isLoading, isSuccess, isError, error } =
-    useSubmitScorecard(ballkidsScorecard);
+  const { write, isLoading, isSuccess, isError, error } = useSubmitScorecard(
+    ballkidsScorecard,
+    governor
+  );
 
   return (
     <div className={styles.container}>

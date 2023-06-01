@@ -4,7 +4,7 @@ import Content from "components/UI/Content";
 import useNftRewards from "hooks/NftRewards";
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
-import { useFetchGovernor } from "hooks/read/useFetchGovernor";
+import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
 import { useMintReservesFor } from "hooks/write/useMintReservesFor";
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
@@ -19,7 +19,7 @@ const SelfReferee = () => {
   const { data } = useProjectCurrentFundingCycle(gameId);
 
   const { data: tiers } = useNftRewardTiersOf(data?.metadata.dataSource);
-  const { data: governor } = useFetchGovernor(data?.metadata.dataSource);
+  const { data: governor } = useGovernorForDelegate(data?.metadata.dataSource);
   const { data: rewardTiers, isLoading: nftRewardTiersLoading } = useNftRewards(
     tiers ?? []
   );

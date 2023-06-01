@@ -90,7 +90,7 @@ export function ActivityContent() {
       <div className="flex flex-col gap-8 max-w-3xl mx-auto mt-8">
         {transfers?.map((transferEvent: TransferEvent) => (
           <ActivityItem
-            key={transferEvent.transactionHash}
+            key={transferEvent.transactionHash + transferEvent.token.number}
             transferEvent={transferEvent}
           />
         ))}

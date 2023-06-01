@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-unescaped-entities */
-import { useFetchGovernor } from "hooks/read/useFetchGovernor";
+import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
 import { useScorecards } from "hooks/useScorecards";
 import { isEqual } from "lodash";
 import { useEffect, useState } from "react";
@@ -19,8 +19,9 @@ interface AttestationProps {
 }
 
 const Attestation: React.FC<AttestationProps> = (props) => {
-  const { scoreCards, isLoading } = useScorecards();
-  const { data: governor } = useFetchGovernor(props.dataSource);
+  const { data: governor } = useGovernorForDelegate(props.dataSource);
+  const { data: scoreCards, isLoading } = useScorecards(governor);
+
   const [scoreCardAttestations, setScoreCardAttestations] = useState<
     ScoreCard[]
   >([]);
@@ -29,17 +30,12 @@ const Attestation: React.FC<AttestationProps> = (props) => {
   useEffect(() => {
     if (!scoreCards) return;
 
-    const mappedScoreCards = scoreCards.map(
-      (scoreCard: { id: any[]; proposalId: any }) => {
-        return {
-          proposalId: scoreCard.proposalId,
-          tierWeights: scoreCard.id.map((id) => ({
-            id: id[0].toNumber(),
-            redemptionWeight: id[1].toNumber(),
-          })),
-        };
-      }
-    );
+    const mappedScoreCards = scoreCards.map((scoreCard) => {
+      return {
+        proposalId: scoreCard.proposalId,
+        tierWeights: scoreCard.scorecards,
+      };
+    });
 
     const mappedBallkidsScoreCard =
       convertScoreCardToPercents(ballkidsScorecard);
