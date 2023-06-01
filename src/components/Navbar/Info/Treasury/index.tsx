@@ -7,8 +7,7 @@ import { fromWad } from "utils/format/formatNumber";
 const Treasury = () => {
   const { gameId } = useGameContext();
   const { data } = useProjectCurrentFundingCycle(gameId);
-
-  const { data: treasuryAmount } = usePaymentTerminalBalance();
+  const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
   const { data: totalSupply } = useNftRewardsTotalSupply(
     data?.metadata.dataSource
   );

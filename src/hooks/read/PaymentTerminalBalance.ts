@@ -1,11 +1,9 @@
-import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
-export function usePaymentTerminalBalance() {
+export function usePaymentTerminalBalance(gameId: number) {
   const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBSingleTokenPaymentTerminalStore } = chainData;
-  const { gameId } = useGameContext();
 
   // get the eth terminal's store
   const { data: storeAddress } = useContractRead({

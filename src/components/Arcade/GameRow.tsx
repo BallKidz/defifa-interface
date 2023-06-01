@@ -3,8 +3,8 @@ import {
   useCurrentGamePhase,
 } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { useAllDuration } from "hooks/read/AllDurations";
-import { useAllPaymentTerminalBalances } from "hooks/read/AllPaymentTerminalBalances";
 import { useGameName } from "hooks/read/GameName";
+import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
 import { Game } from "hooks/useAllGames";
 import Link from "next/link";
 import { FC } from "react";
@@ -15,9 +15,8 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
   const dataSourceName = useGameName(address);
   const duration = useAllDuration(gameId);
   const date = new Date(duration?.start * 1000 + duration?.[1]);
-  const { data: treasuryAmount } = useAllPaymentTerminalBalances(gameId);
-  console.log("date", date);
-  console.log("treasuryAmount", treasuryAmount);
+  const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
+
   // const currentDate = new Date(); // Get the current date and time
   const { data: currentPhase } = useCurrentGamePhase(gameId);
   const isMintPhase = currentPhase === DefifaGamePhase.MINT;

@@ -25,6 +25,7 @@ import {
   getScoreCardTableData,
   updateRedemptionAndShare,
 } from "./utils";
+import { useGameContext } from "contexts/GameContext";
 
 interface AttestationCardProps {
   governor: string;
@@ -37,7 +38,8 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
   governor,
   tiers,
 }) => {
-  const { data: treasuryAmount } = usePaymentTerminalBalance();
+  const { gameId } = useGameContext();
+  const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
 
   const { data: proposalDeadline } = useProposalDeadline(
     proposal.scoreCard.proposalId,
@@ -145,7 +147,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
     <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
       <div className={styles.container} key="front">
         <div className={styles.scoreCardExpand}>
-          <Button  onClick={handleClick}>
+          <Button onClick={handleClick}>
             <div className={styles.buttonContent}>
               <img src="/assets/icons/flip-icon.png" alt="Flip" width={27} />
               View proposal
@@ -217,7 +219,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
       </div>
       <div key="back" className={styles.container}>
         <div className={styles.scoreCardExpand}>
-          <Button  onClick={handleClick}>
+          <Button onClick={handleClick}>
             <div className={styles.buttonContent}>
               <img src="/assets/icons/flip-icon.png" alt="Flip" width={27} />
               View scorecard

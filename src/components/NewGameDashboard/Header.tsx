@@ -1,5 +1,4 @@
 import { useGameContext } from "contexts/GameContext";
-import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
 import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
 import { PropsWithChildren } from "react";
 import { fromWad } from "utils/format/formatNumber";
@@ -13,11 +12,11 @@ function Pill({ children }: PropsWithChildren<{}>) {
 }
 
 function GameStats() {
-  const { currentFundingCycle } = useGameContext();
-  const { data: treasuryAmount } = usePaymentTerminalBalance();
-  const { data: totalSupply } = useNftRewardsTotalSupply(
-    currentFundingCycle?.metadata.dataSource
-  );
+  const {
+    nfts: { totalSupply },
+  } = useGameContext();
+  const { gameId } = useGameContext();
+  const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
 
   const mintText = totalSupply?.toNumber() === 1 ? "mint" : "mints";
 
