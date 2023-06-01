@@ -7,17 +7,18 @@ import { useAccount } from "wagmi";
 // BROKEN TODO
 const query = gql`
   query gameActivityQuery($gameId: String!) {
-    contracts(where: { gameId: $gameId }) {
-      mintedTokens {
+    transfers(where: { token_: { gameId: $gameId } }) {
+      transactionHash
+      from {
         id
+      }
+      to {
+        id
+      }
+      token {
         number
         metadata {
-          description
-          id
-          identifier
           image
-          name
-          tags
         }
       }
     }

@@ -26,7 +26,7 @@ function TabButton({
   );
 }
 
-const TABS: GameTab[] = ["play", "rules"];
+const TABS: GameTab[] = ["play", "rules", "activity"];
 const TAB_CONTENT: { [k in GameTab]?: () => JSX.Element } = {
   play: PlayContent,
   rules: RulesContent,
