@@ -63,7 +63,9 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-5xl text-center mb-5 [text-shadow:_0_5px_30px_rgb(250_250_250_/_20%)]">{metadata?.name}</h1>
+      <h1 className="text-5xl text-center mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)]">
+        {metadata?.name}
+      </h1>
       <GameStats />
     </header>
   );
