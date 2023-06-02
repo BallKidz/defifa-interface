@@ -1,14 +1,24 @@
+import { ScoreCardProposalState } from "components/GameDashboard/SelfReferee/Attestation/types";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
-export function useProposalState(proposalId: number, governor: string) {
+export function useProposalState(
+  proposalId: number,
+  governorAddress: string | undefined
+) {
   const { chainData } = useChainData();
 
-  return useContractRead({
-    addressOrName: governor,
+  const res = useContractRead({
+    addressOrName: governorAddress ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
     functionName: "state",
     args: [proposalId],
     chainId: chainData.chainId,
+    enabled: !!governorAddress,
   });
+
+  return {
+    ...res,
+    data: res.data as unknown as ScoreCardProposalState,
+  };
 }

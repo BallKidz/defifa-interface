@@ -1,13 +1,12 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useChainData } from "hooks/useChainData";
+import { DefifaTierRedemptionWeight } from "types/interfaces";
 import {
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { ScoreCard } from "../../components/GameDashboard/SelfReferee/Scorecard/types";
-import { DefifaTierRedemptionWeight } from "types/interfaces";
 
 export function useApproveScorecard(
   _tierWeights: DefifaTierRedemptionWeight[],

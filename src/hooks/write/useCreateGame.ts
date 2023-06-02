@@ -16,7 +16,7 @@ const convertTo18Decimals = (value: number) => {
   return fixedValue.toString();
 };
 
-export function useCreateTournament(
+export function useCreateGame(
   _launchProjectData?: DefifaLaunchProjectData
 ) {
   const { isConnected } = useAccount();
@@ -49,7 +49,7 @@ export function useCreateTournament(
   });
   if (isPrepareContractWriteError) {
     console.error(
-      "useCreateTournament::usePrepareContractWriteError::error",
+      "useCreateGame::usePrepareContractWriteError::error",
       prepareContractWriteError,
       preparedLaunchProjectData
     );
@@ -57,7 +57,7 @@ export function useCreateTournament(
 
   const { data, write, error, isError } = useContractWrite(config);
   if (isError) {
-    console.error("useCreateTournament::useContractWrite::error", error);
+    console.error("useCreateGame::useContractWrite::error", error);
   }
 
   const {
@@ -69,7 +69,7 @@ export function useCreateTournament(
   } = useWaitForTransaction({ hash: data?.hash });
   if (isWaitForTransactionError) {
     console.error(
-      "useCreateTournament::useWaitForTransaction::error",
+      "useCreateGame::useWaitForTransaction::error",
       waitForTransactionError
     );
   }
@@ -78,9 +78,9 @@ export function useCreateTournament(
     if (!isConnected) {
       openConnectModal!();
     } else {
-      console.log("useCreateTournament::payload", preparedLaunchProjectData);
-      console.log("useCreateTournament::Contract call:", config);
-      console.log("useCreateTournament::Contract call data:", data);
+      console.log("useCreateGame::payload", preparedLaunchProjectData);
+      console.log("useCreateGame::Contract call:", config);
+      console.log("useCreateGame::Contract call data:", data);
       write?.();
     }
   };

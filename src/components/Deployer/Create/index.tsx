@@ -7,7 +7,7 @@ import { Input } from "components/UI/Input";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { BigNumber, constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { useCreateTournament } from "hooks/write/useCreateTournament";
+import { useCreateGame } from "hooks/write/useCreateGame";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -103,7 +103,7 @@ const DeployerCreate = () => {
     isSuccess,
     isError,
     transactionData,
-  } = useCreateTournament(formValues);
+  } = useCreateGame(formValues);
 
   // TODO this is totally bugged, needs to be uploaded at deploy time
   // eslint-disable-next-line react-hooks/exhaustive-deps

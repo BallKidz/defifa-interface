@@ -18,5 +18,6 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
     enabled: hasDataSource,
     args: hasDataSource ? [dataSourceAddress, [], true, 0, 32] : null,
     chainId: chainData.chainId,
+    watch: true,
   });
 }

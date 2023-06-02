@@ -1,10 +1,13 @@
+import { ScoreCardProposalState } from "components/GameDashboard/SelfReferee/Attestation/types";
 import { ActionContainer } from "components/NewGameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
 import { ONE_BILLION } from "hooks/NftRewards";
+import { useProposalState } from "hooks/read/ProposalState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useQuorum } from "hooks/read/Quorum";
+import { useAccountVotes } from "hooks/read/useGetVotes";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useApproveScorecard } from "hooks/write/useApproveScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
@@ -31,6 +34,11 @@ export function ScorecardRow({
     scorecard.redemptionTierWeights,
     governor
   );
+  const { data: proposalState } = useProposalState(
+    scorecard.proposalId,
+    governor
+  );
+
   const { data: quorum } = useQuorum(scorecard.proposalId, governor);
   const quourumReached = proposalVotes?.forVotes
     ? quorum?.lte(proposalVotes.forVotes)
@@ -41,7 +49,7 @@ export function ScorecardRow({
   return (
     <div className="mb-5">
       <span onClick={onClick} role="button" className="hover:font-bold">
-        {scorecard.proposalId.toString()}
+        Proposal: {scorecard.proposalId.toString()}
       </span>
 
       <div>
@@ -56,7 +64,7 @@ export function ScorecardRow({
       <div className="flex gap-3 items-center">
         {proposalVotes?.forVotes.toString()} attestations (
         {votesRemaining?.toNumber()} more needed)
-        {quourumReached ? (
+        {quourumReached && proposalState === ScoreCardProposalState.Active ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
@@ -91,20 +99,10 @@ export function ScorecardsContent() {
   const [selectedScorecard, setSelectedScorecard] = useState<Scorecard>();
   const { governor } = useGameContext();
   const { data: scorecards, isLoading } = useScorecards(governor);
-
+  const { data: votes } = useAccountVotes(governor);
+  console.log(votes);
   if (isLoading) {
     return <Container>...</Container>;
-  }
-
-  if (!scorecards || scorecards.length === 0) {
-    return (
-      <Container>
-        No scorecards submitted yet.{" "}
-        <div className="text-xs">
-          (or, some scorecards haven&apos;t been indexed yet)
-        </div>
-      </Container>
-    );
   }
 
   return (
@@ -115,13 +113,24 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      {scorecards?.map((scorecard) => (
-        <ScorecardRow
-          key={scorecard.proposalId.toString()}
-          scorecard={scorecard}
-          onClick={() => setSelectedScorecard(scorecard)}
-        />
-      ))}
+      <div className="mb-7">{votes?.toString()} votes available.</div>
+
+      {!scorecards || scorecards.length === 0 ? (
+        <Container>
+          No scorecards submitted yet.{" "}
+          <div className="text-xs">
+            (or, some scorecards haven&apos;t been indexed yet)
+          </div>
+        </Container>
+      ) : (
+        scorecards?.map((scorecard) => (
+          <ScorecardRow
+            key={scorecard.proposalId.toString()}
+            scorecard={scorecard}
+            onClick={() => setSelectedScorecard(scorecard)}
+          />
+        ))
+      )}
     </ActionContainer>
   );
 }
