@@ -5,6 +5,7 @@ import { formatUnits, parseEther } from "ethers/lib/utils";
 import { usePay } from "hooks/write/usePay";
 import { TierSelection } from "./useMintSelection";
 import { useAccount } from "wagmi";
+import { constants } from "ethers";
 
 export function MintActions({
   selectedTiers,
@@ -33,7 +34,7 @@ export function MintActions({
     preferClaimedTokens: true,
     memo: `Minted on defifa.net`,
     metadata: {
-      _votingDelegate: "0xa13d49fCbf79EAF6A0a58cBDD3361422DB4eAfF1", // TODO add input field somewhere
+      _votingDelegate: constants.AddressZero,
       tierIdsToMint,
     },
   });

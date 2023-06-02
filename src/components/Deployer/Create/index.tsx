@@ -78,7 +78,7 @@ const DeployerCreate = () => {
     token: ETH_TOKEN_ADDRESS,
     ballkidzFeeProjectTokenAccount:
       "0x11834239698c7336EF232C00a2A9926d3375DF9D",
-    defaultVotingDelegate: constants.AddressZero,
+    defaultVotingDelegate: "0x11834239698c7336EF232C00a2A9926d3375DF9D",
     terminal: JBETHPaymentTerminal.address,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
