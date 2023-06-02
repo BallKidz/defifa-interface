@@ -10,7 +10,7 @@ export function CountdownPhaseContent() {
 
   const { timeRemaining } = useCountdown(mintStart);
 
-  if (!data || !isLoading)
+  if (!data || isLoading)
     return <Container className="text-center">...</Container>;
 
   return (

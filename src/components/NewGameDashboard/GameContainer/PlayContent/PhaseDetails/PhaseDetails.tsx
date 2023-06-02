@@ -50,7 +50,7 @@ export function PhaseDetails() {
   const { timeRemaining: timeRemainingText } = useCountdown(
     new Date(end * 1000)
   );
-  const percentElapsed = (timeElapsed / duration) * 100;
+  const percentElapsed = Math.min((timeElapsed / duration) * 100, 100);
 
   return (
     <div className="border border-gray-800 py-5 px-6 rounded-xl">

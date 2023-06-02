@@ -21,7 +21,6 @@ export function PlayContent() {
     currentPhase,
     loading: { currentPhaseLoading },
   } = useGameContext();
-
   if (currentPhaseLoading) {
     return <Container className="text-center">...</Container>;
   }
