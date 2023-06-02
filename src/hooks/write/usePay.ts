@@ -1,5 +1,4 @@
 import { useMintingOpen } from "components/GameDashboard/MyTeams/MyTeam/useMintingOpen";
-import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";

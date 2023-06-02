@@ -6,14 +6,16 @@ import { constants } from "ethers";
 import { formatUnits, parseEther } from "ethers/lib/utils";
 import { usePay } from "hooks/write/usePay";
 import { TierSelection } from "./useMintSelection";
+import { useAccount } from "wagmi";
+import { useState } from "react";
 
 export function MintActions({
   selectedTiers,
 }: {
   selectedTiers: TierSelection | undefined;
 }) {
-  const { isOpen, setIsOpen } = useModal();
-
+  const [claimVotes, setClaimVotes] = useState(false);
+  const { address } = useAccount();
   const totalSelected = Object.values(selectedTiers ?? {}).reduce(
     (acc, curr) => acc + curr.count,
     0
@@ -36,7 +38,9 @@ export function MintActions({
     preferClaimedTokens: true,
     memo: `Minted on defifa.net`,
     metadata: {
-      _votingDelegate: constants.AddressZero,
+      _votingDelegate: claimVotes
+        ? address ?? constants.AddressZero
+        : constants.AddressZero,
       tierIdsToMint,
     },
   });
@@ -51,11 +55,19 @@ export function MintActions({
 
       <div>{cost} ETH</div>
 
+      <div className="flex gap-2 items-center">
+        <input
+          type="checkbox"
+          name="claimVotes"
+          id="claimVotes"
+          onChange={(e) => setClaimVotes(e.target.checked)}
+        />
+        <label htmlFor="claimVotes">Claim votes</label>
+      </div>
+
       <Button loading={isLoading} size="lg" onClick={() => write?.()}>
         Mint now
       </Button>
-
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}></Modal>
     </div>
   );
 }

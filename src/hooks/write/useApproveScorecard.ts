@@ -7,21 +7,23 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { ScoreCard } from "../../components/GameDashboard/SelfReferee/Scorecard/types";
+import { DefifaTierRedemptionWeight } from "types/interfaces";
 
 export function useApproveScorecard(
-  _tierWeights: ScoreCard[],
-  governor: string
+  _tierWeights: DefifaTierRedemptionWeight[],
+  governor: string | undefined
 ) {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: governor,
+    addressOrName: governor ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
     functionName: "ratifyScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,
+    enabled: !!governor,
   });
 
   const { data, write, error, isError } = useContractWrite(config);

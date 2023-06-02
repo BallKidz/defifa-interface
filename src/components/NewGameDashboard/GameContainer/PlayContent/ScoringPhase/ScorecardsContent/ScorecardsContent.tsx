@@ -3,7 +3,10 @@ import Button from "components/UI/Button";
 import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
 import { ONE_BILLION } from "hooks/NftRewards";
+import { useProposalVotes } from "hooks/read/ProposalVotes";
+import { useQuorum } from "hooks/read/Quorum";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
+import { useApproveScorecard } from "hooks/write/useApproveScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useState } from "react";
 
@@ -18,9 +21,28 @@ export function ScorecardRow({
   scorecard: Scorecard;
   onClick?: () => void;
 }) {
+  const { governor } = useGameContext();
+
+  const { data: proposalVotes } = useProposalVotes(
+    scorecard.proposalId,
+    governor
+  );
+  const { write, isLoading } = useApproveScorecard(
+    scorecard.redemptionTierWeights,
+    governor
+  );
+  const { data: quorum } = useQuorum(scorecard.proposalId, governor);
+  const quourumReached = proposalVotes?.forVotes
+    ? quorum?.lte(proposalVotes.forVotes)
+    : false;
+
+  const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
+
   return (
-    <div onClick={onClick} role="button" className="mb-5">
-      {scorecard.proposalId.toString()}
+    <div className="mb-5">
+      <span onClick={onClick} role="button" className="hover:font-bold">
+        {scorecard.proposalId.toString()}
+      </span>
 
       <div>
         {scorecard.redemptionTierWeights.map((weight) => (
@@ -29,6 +51,16 @@ export function ScorecardRow({
             {redemptionRateToPercentage(weight.redemptionWeight).toString()}%
           </div>
         ))}
+      </div>
+
+      <div className="flex gap-3 items-center">
+        {proposalVotes?.forVotes.toString()} attestations (
+        {votesRemaining?.toNumber()} more needed)
+        {quourumReached ? (
+          <Button size="sm" loading={isLoading} onClick={() => write?.()}>
+            Ratify scorecard
+          </Button>
+        ) : null}
       </div>
     </div>
   );

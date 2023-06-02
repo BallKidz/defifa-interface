@@ -44,7 +44,7 @@ const Button = ({
             : SECONDARY_BUTTON_CLASS
           : TERTIARY_BUTTON_CLASS,
         size === "sm"
-          ? "px-3 py-1.5"
+          ? "px-3 py-1"
           : size === "lg"
           ? "px-7 py-2.5 text-md"
           : "px-3 py-2"
