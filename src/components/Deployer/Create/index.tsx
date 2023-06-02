@@ -36,7 +36,7 @@ const datetimeLocalToUnix = (value: string): number => {
 };
 
 const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
-const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
+const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60 * 0.5; // 1 hour
 const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
 // const DEFAULT_MINT_DURATION_SECONDS = 60 * 60 * 72; // 1 hour
 // const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
@@ -62,8 +62,9 @@ const DeployerCreate = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [imageUri, setImageUri] = useState<any>();
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
-    name: "Your game name",
-    rules: "Your game rules",
+    name: "NBA Finals 2023: GAME 1",
+    rules:
+      "Heat vs Nuggets Game 1. Mint which team you think will win. If you're right, you'll get a share of total pot.",
     mintDuration: DEFAULT_MINT_DURATION_SECONDS,
     refundDuration: DEFAULT_REFUND_DURATION_SECONDS,
     start:
