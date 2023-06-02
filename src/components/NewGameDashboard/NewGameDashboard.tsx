@@ -11,7 +11,7 @@ export function NewGameDashboard() {
   return (
     <>
       <Head>
-        {name ? <title>{name} | Defifa</title> : <title> Defifa</title>}
+        <title>{name} | Defifa</title>
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
