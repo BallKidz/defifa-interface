@@ -70,6 +70,9 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
     return (
       <Container>
         <div>You haven&apos;t minted yet.</div>
+        <div className="text-xs">
+          (or, your mints haven&apos;t been indexed yet)
+        </div>
       </Container>
     );
   }
