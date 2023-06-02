@@ -9,7 +9,7 @@ import { useProposalState } from "hooks/read/ProposalState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useQuorum } from "hooks/read/Quorum";
 import { useApproveScorecard } from "hooks/write/useApproveScorecard";
-import { useCastVote } from "hooks/write/useCastVote";
+import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { fromWad } from "utils/format/formatNumber";
 import { buildColumns } from "utils/table/columns";
 import Button from "components/UI/Button";
@@ -57,7 +57,7 @@ const AttestationCard: React.FC<AttestationCardProps> = ({
     write: attestToScorecard,
     isLoading,
     isError,
-  } = useCastVote(proposal.scoreCard.proposalId, governor);
+  } = useAttestToScorecard(proposal.scoreCard.proposalId, governor);
   const { data: proposalState } = useProposalState(
     proposal.scoreCard.proposalId,
     governor

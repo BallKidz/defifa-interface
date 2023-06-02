@@ -85,7 +85,7 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
           : undefined
       }
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
         {pickedNfts?.map((t: any) => (
           <MintCard
             key={t.id}
