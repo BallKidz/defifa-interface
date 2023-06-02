@@ -18,6 +18,16 @@ const Socials = () => {
           Discord
         </a>
       </Link>
+      <Link href="https://www.juicebox.money/v2/p/464" passHref>
+        <a className="text-sm hover:underline" target="_blank">
+          Juicebox
+        </a>
+      </Link>
+      <Link href="https://github.com/BallKidz" passHref>
+        <a className="text-sm hover:underline" target="_blank">
+          Code
+        </a>
+      </Link>
       {/* <Link href={warcastIntent} passHref>
         <a className="text-sm hover:underline" target="_blank">
           Farcaster
