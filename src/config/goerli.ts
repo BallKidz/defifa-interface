@@ -52,8 +52,6 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
   },
   subgraph:
     "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
-  governorSubgraph:
-    "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
 };
 
 console.info("goerli chain data::", DEFIFA_CONFIG_GOERLI);

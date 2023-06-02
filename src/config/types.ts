@@ -20,5 +20,4 @@ export interface DefifaConfig {
   DefifaDeployer: ContractData;
 
   subgraph: string;
-  governorSubgraph: string;
 }

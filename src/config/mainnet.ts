@@ -50,5 +50,4 @@ export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
   },
 
   subgraph: "",
-  governorSubgraph: "",
 };

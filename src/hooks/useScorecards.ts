@@ -65,7 +65,7 @@ function getScoreCardsFromProposals(proposals: any): {
 
 export function useScorecards(governorAddress: string | undefined) {
   const { chainData } = useChainData();
-  const graphUrl = chainData.governorSubgraph;
+  const graphUrl = chainData.subgraph;
 
   return useQuery(
     ["scorecards", governorAddress],
