@@ -16,7 +16,7 @@ import { infuraProvider } from "wagmi/providers/infura";
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(
     [chain.goerli],
-    [infuraProvider({ apiKey: "738d1c1d7076486184d5d99e244873c6" })]
+    [infuraProvider({ apiKey: "0f1ad790aeba4625b4d967858d7c33d0" })]
   );
 
   const { connectors } = getDefaultWallets({
