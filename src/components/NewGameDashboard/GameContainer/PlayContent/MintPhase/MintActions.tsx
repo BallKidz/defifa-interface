@@ -1,17 +1,19 @@
 import Button from "components/UI/Button";
+import { Modal, useModal } from "components/UI/Modal/Modal";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { MINT_PRICE } from "constants/constants";
+import { constants } from "ethers";
 import { formatUnits, parseEther } from "ethers/lib/utils";
 import { usePay } from "hooks/write/usePay";
 import { TierSelection } from "./useMintSelection";
-import { useAccount } from "wagmi";
-import { constants } from "ethers";
 
 export function MintActions({
   selectedTiers,
 }: {
   selectedTiers: TierSelection | undefined;
 }) {
+  const { isOpen, setIsOpen } = useModal();
+
   const totalSelected = Object.values(selectedTiers ?? {}).reduce(
     (acc, curr) => acc + curr.count,
     0
@@ -52,6 +54,8 @@ export function MintActions({
       <Button loading={isLoading} size="lg" onClick={() => write?.()}>
         Mint now
       </Button>
+
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}></Modal>
     </div>
   );
 }
