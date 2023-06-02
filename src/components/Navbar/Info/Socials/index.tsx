@@ -18,8 +18,7 @@ const Socials = () => {
           Discord
         </a>
       </Link>
-    EXPERIMENTAL GAMES - USE ON GOERLI - REPORT BUGS
-     {/*  <Link href={warcastIntent} passHref>
+      {/* <Link href={warcastIntent} passHref>
         <a className="text-sm hover:underline" target="_blank">
           Farcaster
         </a>
