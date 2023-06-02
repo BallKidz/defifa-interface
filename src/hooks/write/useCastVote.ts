@@ -1,22 +1,20 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useChainData } from "hooks/useChainData";
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
 
-export function useCastVote(proposalId: number) {
-  const network = useNetwork();
+export function useCastVote(proposalId: number, governor: string) {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaGovernor.address,
-    contractInterface: chainData.defifaGovernor.interface,
+    addressOrName: governor,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "attestToScorecard",
     args: [proposalId],
     chainId: chainData.chainId,

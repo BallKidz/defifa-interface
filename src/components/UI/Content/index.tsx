@@ -1,15 +1,12 @@
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { colors } from "constants/colors";
 import React, {
   PropsWithChildren,
   ReactElement,
   useMemo,
   useState,
 } from "react";
-import { colors } from "../../../constants/colors";
-import constants from "../../../constants/UI";
-import { useProjectCurrentFundingCycle } from "../../../hooks/read/ProjectCurrentFundingCycle";
 
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import styles from "./Content.module.css";
 
 const Content: React.FC<
@@ -18,6 +15,7 @@ const Content: React.FC<
     color?: string;
     title?: string;
     socials?: boolean;
+    createIcon?: boolean;
     fontSize?: string;
     rightSection?: {
       enabled: boolean;
@@ -30,8 +28,6 @@ const Content: React.FC<
   const [displayContent, setDisplayContent] = useState<boolean>(
     props?.open ?? false
   );
-  const { data } = useProjectCurrentFundingCycle();
-  const fundingCycle = data?.fundingCycle.number.toNumber();
 
   const contentTitle = useMemo<ReactElement>(() => {
     return (
@@ -59,19 +55,15 @@ const Content: React.FC<
           onChange={(e) => setDisplayContent(e.target.checked)}
         />
         <label htmlFor={props.title} className={styles.accordianLabel}>
-          <div className={styles.contentHeader}>
+          <div
+            className={
+              props.createIcon
+                ? styles.createContentHeader
+                : styles.contentHeader
+            }
+          >
             <div> {contentTitle}</div>
-            <FontAwesomeIcon
-              icon={faChevronDown}
-              size="sm"
-              color={constants.contentTitleColor}
-              className={styles.chevronDown}
-            />
-            {fundingCycle &&
-            fundingCycle !== 1 &&
-            props.title === "Mint teams" ? (
-              <span className={styles.completed}>Completed</span>
-            ) : null}
+            <ChevronDownIcon className="h-5 w-5" />
           </div>
         </label>
         <div className={styles.content}>{props.children}</div>

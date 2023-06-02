@@ -1,23 +1,24 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useChainData } from "hooks/useChainData";
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { ScoreCard } from "../../components/Scorecard/types";
-import { getChainData } from "../../constants/addresses";
+import { ScoreCard } from "../../components/GameDashboard/SelfReferee/Scorecard/types";
 
-export function useApproveScorecard(_tierWeights: ScoreCard[]) {
-  const network = useNetwork();
+export function useApproveScorecard(
+  _tierWeights: ScoreCard[],
+  governor: string
+) {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
 
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaGovernor.address,
-    contractInterface: chainData.defifaGovernor.interface,
+    addressOrName: governor,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "ratifyScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,

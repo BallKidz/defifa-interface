@@ -1,0 +1,174 @@
+.phases {
+  display: grid;
+  grid-template-columns: 40% 50%;
+  gap: 100px;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.active {
+  margin-left: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+  border: var(--lightGreen);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--lightGreen);
+  background: var(--green);
+  animation: active 1s infinite;
+}
+
+.upcoming {
+  margin-left: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+  border: var(--gold);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--gold);
+  background: var(--brown);
+}
+
+.completed {
+  margin-left: 10px;
+  font-size: 14px;
+  white-space: nowrap;
+  border: var(--pink);
+  border-style: solid;
+  border-radius: 50px;
+  padding: 2px 9px;
+  color: var(--pink);
+  background: #14050d;
+}
+
+@keyframes active {
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.phaseBox {
+  display: block;
+}
+
+.phaseBox ul {
+  padding: 0;
+  list-style-position: inside;
+}
+
+.phaseBox li {
+  margin: 15px 0;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.phaseBox h1 {
+  color: var(--gold);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.phaseBox p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.superScript {
+  font-size: 10px;
+}
+
+.disclaimer {
+  font-weight: 500;
+  font-size: 16px !important;
+}
+
+.pointSystemWrapper {
+  display: grid;
+  grid-template-columns: 70%;
+  margin-bottom: 30px;
+}
+
+.pointSystemWrapper p {
+  font-size: 16px !important;
+}
+
+.pointHeader {
+  color: var(--gold);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.pointSystemDescription,
+.pointSystemCalculation {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--contentTitle);
+}
+
+.pointSystemCalculation {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pointSystemCalculation p {
+  margin: 0;
+}
+
+.pointSystemPoints {
+  color: white;
+}
+
+.pointsHeader {
+  color: var(--gold);
+  font-size: 18px;
+}
+
+/* Media query for mobile */
+@media only screen and (max-width: 768px) {
+  .phases {
+    grid-template-columns: 100%;
+  }
+  .phaseBox {
+    display: block;
+  }
+  .phaseBox h1 {
+    font-size: 18px;
+  }
+  .phaseBox li {
+    font-size: 15px;
+  }
+  .disclaimer {
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+/* Media query for tablet */
+@media only screen and (min-width: 758px) and (max-width: 1024px) {
+  .phases {
+    grid-template-columns: 100%;
+    gap: 100px;
+  }
+  .phaseBox {
+    display: block;
+  }
+  .phaseBox h1 {
+    font-size: 20px;
+  }
+  .phaseBox li {
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .disclaimer {
+    font-size: 15px;
+    font-weight: 500;
+  }
+}

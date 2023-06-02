@@ -1,46 +1,38 @@
 import Link from "next/link";
-import styles from "./Socials.module.css";
 
 const Socials = () => {
-  return (
-    <div className={styles.container}>
-      <p>
-        <Link href="https://discord.gg/hrZnvs65Nh" passHref>
-          <a target="_blank">Discord</a>
-        </Link>
-      </p>
-      <p>
-        <Link
-          href="https://opensea.io/collection/defifa-american-football-playoffs-2023"
-          passHref
-        >
-          <a target="_blank">OpenSea</a>
-        </Link>
-      </p>
-      <p>
-        <Link href="https://www.juicebox.money/v2/p/396" passHref>
-          <a target="_blank">Juicebox</a>
-        </Link>
-      </p>
-      <p>
-        <Link
-          href="https://github.com/jbx-protocol/juice-defifa-nfl-playoff-edition"
-          passHref
-        >
-          <a target="_blank">Code</a>
-        </Link>
-      </p>
+  let warcastIntent = "https://warpcast.com";
 
-      <p>
-        <Link href="https://twitter.com/Defifa420" passHref>
-          <a target="_blank">Twitter</a>
-        </Link>
-      </p>
-      <p>
-        <Link href="https://wc2022.defifa.net" passHref>
-          <a target="_blank">Past tournaments</a>
-        </Link>
-      </p>
+  if (typeof window !== "undefined") {
+    const gameLink = window.location.href;
+    // warcastIntent = "https://warpcast.com?intent=" + gameLink; // TODO: FC intents on the way soon??
+    warcastIntent = "https://warpcast.com";
+  } else {
+    warcastIntent = "https://warpcast.com";
+  }
+
+  return (
+    <div className="flex gap-8">
+      <Link href="https://discord.gg/hrZnvs65Nh" passHref>
+        <a className="text-sm hover:underline" target="_blank">
+          Discord
+        </a>
+      </Link>
+      <Link href="https://www.juicebox.money/v2/p/464" passHref>
+        <a className="text-sm hover:underline" target="_blank">
+          Juicebox
+        </a>
+      </Link>
+      <Link href="https://github.com/BallKidz" passHref>
+        <a className="text-sm hover:underline" target="_blank">
+          Code
+        </a>
+      </Link>
+      {/* <Link href={warcastIntent} passHref>
+        <a className="text-sm hover:underline" target="_blank">
+          Farcaster
+        </a>
+      </Link> */}
     </div>
   );
 };

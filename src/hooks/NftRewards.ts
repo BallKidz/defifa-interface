@@ -1,15 +1,10 @@
 // Retreives each NftRewardTier from IPFS given an array of CIDs (IpfsHashes)
 
-import { useQuery, UseQueryResult } from "react-query";
-import {
-  cidFromIpfsUri,
-  decodeEncodedIPFSUri,
-  getIpfsUrl,
-} from "../utils/ipfs";
-
 import axios from "axios";
-import { Result } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
+import { Result } from "ethers/lib/utils";
+import { useQuery, UseQueryResult } from "react-query";
+import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
@@ -21,12 +16,6 @@ async function getRewardTierFromIPFS({
   tier: Result;
   index: number;
 }): Promise<any> {
-  const decodedIPFSURI = decodeEncodedIPFSUri(tier.encodedIPFSUri);
-
-  const url = getIpfsUrl(decodedIPFSURI);
-  const response = await axios.get(url);
-
-  const ipfsRewardTier: any = response.data;
   const maxSupply = tier.initialQuantity.eq(
     BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)
   )
@@ -34,10 +23,37 @@ async function getRewardTierFromIPFS({
     : tier.initialQuantity.toNumber();
 
   return {
-    id: ipfsRewardTier.identifier,
-    description: ipfsRewardTier.description,
-    teamName: ipfsRewardTier.attributes[0].value,
-    teamImage: getIpfsUrl(cidFromIpfsUri(ipfsRewardTier.image)),
+    id: tier.id.toNumber(),
+    description: "needs a description",
+    teamName: "needs a name",
+    teamImage: getIpfsUrl(cidFromIpfsUri(tier.resolvedUri)),
+    maxSupply: maxSupply,
+    remainingQuantity: tier.remainingQuantity?.toNumber() ?? maxSupply,
+    minted: maxSupply - tier.remainingQuantity?.toNumber(),
+  };
+}
+
+async function getRewardTierFromSVG({
+  tier,
+  index,
+}: {
+  tier: Result;
+  index: number;
+}): Promise<any> {
+  const url = tier.resolvedUri;
+  const response = await axios.get(url);
+
+  const svgRewardTier: any = response.data;
+  const maxSupply = tier.initialQuantity.eq(
+    BigNumber.from(DEFAULT_NFT_MAX_SUPPLY)
+  )
+    ? DEFAULT_NFT_MAX_SUPPLY
+    : tier.initialQuantity.toNumber();
+  return {
+    id: tier.id.toNumber(),
+    description: svgRewardTier.description,
+    teamName: svgRewardTier.name,
+    teamImage: svgRewardTier.image,
     maxSupply: maxSupply,
     remainingQuantity: tier.remainingQuantity?.toNumber() ?? maxSupply,
     minted: maxSupply - tier.remainingQuantity?.toNumber(),
@@ -50,16 +66,26 @@ export default function useNftRewards(tiers: Result): UseQueryResult<Result> {
     "nft-rewards",
     async () => {
       if (!tiers?.length) {
-        return;
+        return null;
       }
 
       return await Promise.all(
-        tiers.map((tier, index) =>
-          getRewardTierFromIPFS({
-            tier,
-            index,
-          })
-        )
+        tiers.map((tier, index) => {
+          if (
+            tier.encodedIPFSUri ===
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ) {
+            return getRewardTierFromSVG({
+              tier,
+              index,
+            });
+          } else {
+            return getRewardTierFromIPFS({
+              tier,
+              index,
+            });
+          }
+        })
       );
     },
     { enabled: Boolean(tiers?.length) }

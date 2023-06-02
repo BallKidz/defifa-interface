@@ -1,40 +1,30 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import DefifaDeployer from "@jbx-protocol/juice-defifa-nfl-playoff-edition/out/DefifaDeployer.sol/DefifaDeployer.json";
+import { useGameContext } from "contexts/GameContext";
+import { useChainData } from "hooks/useChainData";
 import {
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
-import { simulateTransaction } from "../../lib/tenderly";
 
 export function useQueueNextPhase(simulate = false) {
-  const network = useNetwork();
   const { address, connector, isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const { gameId } = useGameContext();
+  const { chainData } = useChainData();
 
-  const chainData = getChainData(network?.chain?.id);
   const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.defifaDeployer,
-    contractInterface: DefifaDeployer.abi,
+    addressOrName: chainData.DefifaDeployer.address,
+    contractInterface: chainData.DefifaDeployer.interface,
     functionName: "queueNextPhaseOf",
     overrides: { gasLimit: 210000 },
-    args: [chainData.projectId],
+    args: [gameId],
     chainId: chainData.chainId,
     onError: (error) => {
       console.error(error);
     },
   });
-
-  const simulateQueueNextPhase = () => {
-    simulateTransaction({
-      chainId: chainData.chainId,
-      populatedTx: config.request,
-      userAddress: address,
-    });
-  };
 
   const { data, write, error, isError } = useContractWrite(config);
 
@@ -46,11 +36,7 @@ export function useQueueNextPhase(simulate = false) {
       if (!isConnected) {
         openConnectModal!();
       }
-      if (simulate) {
-        simulateQueueNextPhase();
-      } else {
-        write?.();
-      }
+      write?.();
     },
     isLoading,
     isSuccess,

@@ -1,22 +1,97 @@
 import { BigNumber } from "ethers";
 
-export type JB721TierParams = {
-  id?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
-  remainingQuantity?: BigNumber; //undefined for outgoing tier (in launch or adjustTiers tx)
+interface JBProjectMetadataParams {
+  content: string;
+  domain: number; // 0
+}
 
-  contributionFloor: BigNumber; //uint128
-  lockedUntil: BigNumber;
-  initialQuantity: BigNumber; //uint64
-  votingUnits: number;
+export interface DefifaTierParams {
+  name: string;
+  price: any;
   reservedRate: number;
   reservedTokenBeneficiary: string;
-  encodedIPFSUri: string; // encoded link to the rewardTier on IPFS
-  allowManualMint: boolean;
-  shouldUseBeneficiaryAsDefault: boolean;
-  transfersPausable: boolean;
+  encodedIPFSUri: string;
+  shouldUseReservedTokenBeneficiaryAsDefault: boolean;
+}
+
+export interface DefifaLaunchProjectData {
+  name: string;
+  rules: string;
+  projectMetadata: JBProjectMetadataParams;
+  contractUri: string;
+  baseUri: string;
+  tiers: DefifaTierParams[];
+  token: string;
+  mintDuration: number;
+  refundDuration: number;
+  start: number;
+  splits: any[];
+  distributionLimit: number;
+  ballkidzFeeProjectTokenAccount: string;
+  defaultTokenUriResolver: string;
+  votingPeriod: number;
+  votingStartTime: number;
+  terminal: string; // address
+  store: string; // address
+  defaultVotingDelegate: string;
+}
+
+export interface JBProjectMetadata {
+  description: string;
+  external_link: string;
+  fee_recipient: string;
+  image: string;
+  name: string;
+  seller_fee_basis_points: number;
+}
+
+export type JBFundingCycle = {
+  duration: BigNumber;
+  weight: BigNumber;
+  discountRate: BigNumber;
+  ballot: string; // hex, contract address
+  number: BigNumber;
+  configuration: BigNumber;
+  basedOn: BigNumber;
+  start: BigNumber;
+  metadata: BigNumber; // encoded FundingCycleMetadata
 };
 
-export type Chain = {
-  id: number;
-  name: string;
+export type JBFundingCycleMetadataGlobal = {
+  allowSetController: boolean;
+  allowSetTerminals: boolean;
+  pauseTransfers: boolean;
 };
+
+export type JBFundingCycleMetadata = {
+  version?: number;
+  global: JBFundingCycleMetadataGlobal;
+  reservedRate: BigNumber;
+  redemptionRate: BigNumber;
+  ballotRedemptionRate: BigNumber;
+  pausePay: boolean;
+  pauseDistributions: boolean;
+  pauseRedeem: boolean;
+  pauseBurn: boolean;
+  allowMinting: boolean;
+  allowTerminalMigration: boolean;
+  allowControllerMigration: boolean;
+  holdFees: boolean;
+  useTotalOverflowForRedemptions: boolean;
+  useDataSourceForPay: boolean; // undefined for outgoing NFT args
+  useDataSourceForRedeem: boolean;
+  dataSource: string; // hex, contract address. undefined for outgoing NFT args
+  preferClaimedTokenOverride?: boolean;
+  metadata?: BigNumber;
+};
+
+export interface DefifaTimeData {
+  mintDuration: number;
+  refundDuration: number;
+  start: number;
+}
+
+export interface DefifaTierRedemptionWeight {
+  id: number;
+  redemptionWeight: number;
+}

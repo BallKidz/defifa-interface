@@ -8,7 +8,7 @@ export function CurrentScore(): Array<{ [key: string]: any }> {
     process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_SHEETS_ID ??
     "1iFaGzj6pW_dsbDtIBi34irMx0fiIERfTQg4TdUz1zUQ";
   const sheetName =
-    process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_SHEETS_NAME ?? "Sheet1";
+    process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_SHEETS_NAME ?? "Sheet6";
 
   const { data, loading, error } = useGoogleSheets({
     apiKey,

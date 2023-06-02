@@ -1,15 +1,16 @@
+import { useMintingOpen } from "components/GameDashboard/MyTeams/MyTeam/useMintingOpen";
+import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
+import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
+import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
+import { useChainData } from "hooks/useChainData";
+import { toastSuccess } from "utils/toast";
 import {
-  chain as chainlist,
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { getChainData } from "../../constants/addresses";
-import { simulateTransaction } from "../../lib/tenderly";
-import { toastError } from "../../utils/toast";
 
 export interface PayParams {
   amount: string;
@@ -18,11 +19,10 @@ export interface PayParams {
   preferClaimedTokens: boolean;
   memo: string;
   metadata: PayMetadata;
-  simulate?: boolean;
 }
 
 export interface PayMetadata {
-  allowOverspending: boolean;
+  _votingDelegate: string;
   tierIdsToMint: number[];
 }
 
@@ -33,48 +33,56 @@ export function usePay({
   preferClaimedTokens,
   memo,
   metadata,
-  simulate = false,
 }: PayParams) {
-  const { chain } = useNetwork();
   const { address } = useAccount();
-  const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
+  const {
+    gameId,
+    currentPhase,
+    loading: { currentPhaseLoading },
+  } = useGameContext();
+  const {
+    chainData: { JBETHPaymentTerminal },
+  } = useChainData();
+  const mintingOpen = useMintingOpen();
+
+  const args = [
+    gameId,
+    amount,
+    token,
+    address,
+    minReturnedTokens,
+    preferClaimedTokens,
+    memo,
+    encodePayMetadata(metadata),
+  ];
+
+  const hasTokenIds =
+    metadata.tierIdsToMint && metadata.tierIdsToMint.length > 0;
 
   const { config } = usePrepareContractWrite({
-    addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.abi,
+    addressOrName: JBETHPaymentTerminal.address,
+    contractInterface: JBETHPaymentTerminal.interface,
     functionName: "pay",
     overrides: { value: amount },
-    onError: (error) => {
-      if (error.message.includes("insufficient funds")) {
-        toastError("Insufficient funds");
-      }
-    },
-    args: [
-      projectId,
-      amount,
-      token,
-      address,
-      minReturnedTokens,
-      preferClaimedTokens,
-      memo,
-      encodePayMetadata(metadata),
-    ],
+    args,
+    enabled: hasTokenIds && mintingOpen,
   });
 
-  const simulatePay = () =>
-    simulateTransaction({
-      chainId: chain?.id,
-      populatedTx: config.request,
-      userAddress: address,
-    });
+  const { data, write, isError, error } = useContractWrite(config);
+  if (isError) {
+    console.error("usePay::usePrepareContractWrite::error", error);
+  }
 
-  const { data, write, error, isError } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      toastSuccess("Mint complete");
+    },
+  });
 
   return {
     data,
-    write: simulate ? simulatePay : write,
+    write,
     isLoading,
     isSuccess,
     error,
@@ -84,14 +92,13 @@ export function usePay({
 
 function encodePayMetadata(metadata: PayMetadata) {
   const zeroBytes32 = ethers.constants.HashZero;
-  const IJB721Delegate_INTERFACE_ID = "0xb3bcbb79";
   return ethers.utils.defaultAbiCoder.encode(
-    ["bytes32", "bytes32", "bytes4", "bool", "uint16[]"],
+    ["bytes32", "bytes32", "bytes4", "address", "uint16[]"],
     [
       zeroBytes32,
       zeroBytes32,
-      IJB721Delegate_INTERFACE_ID,
-      metadata.allowOverspending,
+      IDefifaDelegate_INTERFACE_ID,
+      metadata._votingDelegate,
       metadata.tierIdsToMint,
     ]
   );

@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
 
-export const DEFIFA_PROJECT_ID_GOERLI = 308;
-export const DEFIFA_PROJECT_ID_MAINNET = 396;
-export const MINT_PRICE = ethers.utils.parseEther("0.07");
+export const MINT_PRICE = ethers.utils.parseEther("0.01");
+export const NEW_GAME_DASHBOARD =
+  process.env.NEXT_PUBLIC_OLD_GAME_DASHBOARD !== "true";

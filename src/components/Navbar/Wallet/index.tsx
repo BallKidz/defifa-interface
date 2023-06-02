@@ -1,6 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import Button from "../../UI/Button";
-import styles from "./Wallet.module.css";
+import Button from "components/UI/Button";
 
 const Wallet = () => {
   return (
@@ -18,7 +17,6 @@ const Wallet = () => {
 
         return (
           <div
-            className={styles.container}
             {...(!ready && {
               "aria-hidden": true,
               style: {
@@ -38,14 +36,9 @@ const Wallet = () => {
               }
 
               return (
-                <div style={{ display: "flex", gap: 12 }}>
-                  <Button onClick={openAccountModal}>
-                    {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
-                  </Button>
-                </div>
+                <Button onClick={openAccountModal} variant="secondary">
+                  {account.ensName ?? account.displayName}
+                </Button>
               );
             })()}
           </div>

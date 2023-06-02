@@ -17,23 +17,14 @@ export function useCountdown(targetDate: Date | undefined) {
         let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
         let hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
         let minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
+        let seconds = Math.floor((timeDifference / 1000) % 60);
 
         if (days > 1) {
           setTimeRemaining(`${days} days`);
         } else {
-          let timeRemainingString = "";
-
-          if (days === 1) {
-            timeRemainingString += `${hours}h ${minutes}m`;
-          } else {
-            if (hours > 0) {
-              timeRemainingString += `${hours}h `;
-            }
-
-            if (minutes > 0) {
-              timeRemainingString += `${minutes}m`;
-            }
-          }
+          const timeRemainingString = `${hours >= 10 ? hours : `0${hours}`}:${
+            minutes >= 10 ? minutes : `0${minutes}`
+          }:${seconds >= 10 ? seconds : `0${seconds}`}`;
 
           setTimeRemaining(timeRemainingString);
         }

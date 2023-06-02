@@ -1,22 +1,22 @@
+import {
+  darkTheme,
+  getDefaultWallets,
+  RainbowKitProvider,
+} from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import type { AppProps } from "next/app";
-
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "reactjs-popup/dist/index.css";
+import "styles/globals.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
-import { alchemyProvider } from "wagmi/providers/alchemy";
 import { infuraProvider } from "wagmi/providers/infura";
-import { publicProvider } from "wagmi/providers/public";
-import "../styles/globals.css";
-import { QueryClientProvider, QueryClient } from "react-query";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.goerli],
-    [
-      // alchemyProvider({ apiKey: "MdEnS2hppeVnx8sqq4FvS6G3sH2HuUu4" }),
-      infuraProvider({ apiKey: "738d1c1d7076486184d5d99e244873c6" }),
-      // publicProvider(),
-    ]
+    [chain.goerli],
+    [infuraProvider({ apiKey: "738d1c1d7076486184d5d99e244873c6" })]
   );
 
   const { connectors } = getDefaultWallets({
@@ -34,8 +34,24 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider chains={chains}>
+      <RainbowKitProvider
+        theme={darkTheme({ accentColor: "#7c3aed" })}
+        chains={chains}
+      >
         <QueryClientProvider client={queryClient}>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+          <div className="text-center p-1 bg-yellow-500 text-black text-sm font-medium">EXPERIMENTAL GAMES - USE ON GOERLI - REPORT BUGS</div>
           <Component {...pageProps} />
         </QueryClientProvider>
       </RainbowKitProvider>

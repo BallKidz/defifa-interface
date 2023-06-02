@@ -1,29 +1,13 @@
-import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { useChainData } from "hooks/useChainData";
+import { useContractRead } from "wagmi";
 
-export function useQuorum(proposalId: number) {
-  const network = useNetwork();
-
-  const chainData = getChainData(network?.chain?.id);
+export function useQuorum(proposalId: number, governor: string) {
+  const { chainData } = useChainData();
 
   return useContractRead({
-    addressOrName: chainData.defifaGovernor.address,
-    contractInterface: chainData.defifaGovernor.interface,
+    addressOrName: governor,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "quorum",
-    args: [proposalId],
-    chainId: chainData.chainId,
-  });
-}
-
-export function useQuorumReached(proposalId: number) {
-  const network = useNetwork();
-
-  const chainData = getChainData(network?.chain?.id);
-
-  return useContractRead({
-    addressOrName: chainData.defifaGovernor.address,
-    contractInterface: chainData.defifaGovernor.interface,
-    functionName: "_quorumReached",
     args: [proposalId],
     chainId: chainData.chainId,
   });

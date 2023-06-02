@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, useEffect, useMemo, useState } from "react";
-import Button from "../UI/Button";
-import styles from "./Team.module.css";
+import Button from "components/UI/Button";
+import Image from "next/image";
+import { FC, useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface TeamProps {
   id: number;
@@ -10,7 +11,7 @@ interface TeamProps {
   minted: number;
   supply: number;
   isVersus?: boolean;
-  selectAll: boolean;
+  selectAll?: boolean;
   txState?: boolean;
   onClick?: (id: number) => void;
   onAddMultiple?: (id: number) => void;
@@ -38,10 +39,6 @@ const Team: FC<TeamProps> = ({
     onClick?.(id);
   };
 
-  const calculateSeed = (threshold: number, id: number) => {
-    return id - threshold + 1;
-  };
-
   useEffect(() => {
     if (txState) {
       setSelected(false);
@@ -51,18 +48,10 @@ const Team: FC<TeamProps> = ({
   }, [txState]);
 
   useEffect(() => {
-    setSelected(selectAll);
+    setSelected(selectAll ?? false);
   }, [selectAll]);
 
-  const reaminingSupplyPerc =
-    minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
-
-  const checkStampOpacity = useMemo<number>(() => {
-    if (selected) {
-      return 1;
-    }
-    return 0;
-  }, [selected]);
+  const supplyPortion = minted > 0 ? ((minted / supply) * 100).toFixed(0) : 0;
 
   const onAddTierIds = () => {
     setTierIds([...tierIds, id]);
@@ -83,58 +72,38 @@ const Team: FC<TeamProps> = ({
   };
 
   return (
-    <div className={styles.parent}>
-      <div className={styles.container}>
-        <div
-          className={styles.imageContainer}
-          onClick={() => onTeamClicked(id)}
-        >
-          <img
-            src={img}
-            style={{ opacity: selected ? 0.8 : 1 }}
-            crossOrigin="anonymous"
-            alt="Team"
-            className={styles.teamImg}
-          />
-          <img
-            style={{ opacity: checkStampOpacity }}
-            className={styles.teamChecked}
-            src="/assets/team_selected.png"
-            alt="Check"
-          />
-        </div>
-
-        <div
-          className={styles.dataContainer}
-          style={{
-            display: "flex",
-            gap: "15px",
-            alignItems: "center",
-            height: "35px",
-          }}
-        >
-          <h3>{name}</h3>
-          {selected ? (
-            <div className={styles.quantityContainer}>
-              <p>{tierIds.length}</p>
-              <Button size="extraSmall" onClick={onAddTierIds}>
-                +
-              </Button>
-              <Button onClick={onRemoveTierIds} size="extraSmall">
-                -
-              </Button>
-            </div>
-          ) : null}
-        </div>
-
-        <p>
-          Mints: {minted} <span>({reaminingSupplyPerc}% of total)</span>
-        </p>
-        <p>Seed: #{id < 8 ? id : calculateSeed(8, id)}</p>
+    <div
+      className={twMerge(
+        "relative border border-gray-800 rounded-md max-w-[500px] mx-auto",
+        selected ? "border-violet-800 shadow-glow" : ""
+      )}
+    >
+      <div
+        className="cursor-pointer rounded-md overflow-hidden shadow-md"
+        role="button"
+        onClick={() => onTeamClicked(id)}
+      >
+        <Image
+          src={img}
+          crossOrigin="anonymous"
+          alt="Team"
+          width={500}
+          height={500}
+        />
       </div>
 
-      <div className={styles.vsContainer}>
-        <p style={{ visibility: isVersus ? "visible" : "hidden" }}>VS</p>
+      <div className="p-3 bottom-14 right-0 absolute">
+        {selected ? (
+          <div className="flex gap-2 items-center">
+            <p>{tierIds.length}</p>
+            <Button onClick={onAddTierIds}>+</Button>
+            <Button onClick={onRemoveTierIds}>-</Button>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="p-3">
+        {minted} minted <span>({supplyPortion}% of total)</span>
       </div>
     </div>
   );

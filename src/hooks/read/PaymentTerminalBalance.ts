@@ -1,16 +1,24 @@
-import { useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { useChainData } from "hooks/useChainData";
+import { useContractRead } from "wagmi";
 
-export function usePaymentTerminalBalance() {
-  const network = useNetwork();
-  const chainData = getChainData(network?.chain?.id);
-  const { ethPaymentTerminal, projectId, JBSingleTokenPaymentTerminalStore } =
-    chainData;
+export function usePaymentTerminalBalance(gameId: number) {
+  const { chainData } = useChainData();
+  const { JBETHPaymentTerminal, JBSingleTokenPaymentTerminalStore } = chainData;
+
+  // get the eth terminal's store
+  const { data: storeAddress } = useContractRead({
+    addressOrName: JBETHPaymentTerminal.address,
+    contractInterface: JBETHPaymentTerminal.interface,
+    functionName: "store",
+    args: [],
+  });
+
   return useContractRead({
-    addressOrName: JBSingleTokenPaymentTerminalStore.address,
-    contractInterface: JBSingleTokenPaymentTerminalStore.abi,
+    addressOrName: storeAddress?.toString() ?? "",
+    contractInterface: JBSingleTokenPaymentTerminalStore.interface,
     functionName: "balanceOf",
-    args: projectId ? [ethPaymentTerminal.address, projectId] : null,
+    args: gameId ? [JBETHPaymentTerminal.address, gameId] : null,
     watch: true,
+    enabled: !!storeAddress,
   });
 }

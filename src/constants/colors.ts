@@ -1,8 +1,8 @@
 export const colors = {
-  turquoise: "#17E4F1",
-  purple: "#C0B3F0",
+  purple: "#8b5cf6",
   pink: "#ED017C",
   black: "#000000",
   white: "#FFFFFF",
-  gold: "#fea282",
+  gold: "#FC8370",
+  king: "#F0A202",
 };

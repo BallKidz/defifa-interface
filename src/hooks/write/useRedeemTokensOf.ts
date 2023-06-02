@@ -1,73 +1,66 @@
-import { ethers } from "ethers";
+import { useRefundsOpen } from "components/GameDashboard/MyTeams/MyTeam/useRefundsOpen";
+import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
+import { useGameContext } from "contexts/GameContext";
+import { constants, ethers } from "ethers";
+import { useChainData } from "hooks/useChainData";
+import { toastSuccess } from "utils/toast";
 import {
-  chain as chainlist,
   useAccount,
   useContractWrite,
-  useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { ETH_TOKEN_ADDRESS, getChainData } from "../../constants/addresses";
-import { simulateTransaction } from "../../lib/tenderly";
-import { toastError, toastSuccess } from "../../utils/toast";
 
 export interface RedeemParams {
   tokenIds: string[];
-  simulate?: boolean;
   onSuccess?: () => void;
 }
 
-export function useRedeemTokensOf({
-  tokenIds,
-  simulate = false,
-  onSuccess,
-}: RedeemParams) {
-  const { chain } = useNetwork();
+export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
   const { address } = useAccount();
-  const { ethPaymentTerminal, projectId } = getChainData(chain?.id);
+  const {
+    chainData: { JBETHPaymentTerminal },
+  } = useChainData();
+  const { gameId } = useGameContext();
+  const canRedeem = useRefundsOpen();
+
+  const args = [
+    address, //user _holder address
+    gameId,
+    0, //_tokenCount
+    constants.AddressZero, //_tokenAddress
+    0, //_minReturnedTokens
+    address, //_beneficiary
+    "", //_memo
+    encodeRedeemMetadata(tokenIds),
+  ];
+
+  const hasTokenIds = tokenIds && tokenIds.length > 0;
 
   const { config } = usePrepareContractWrite({
-    addressOrName: ethPaymentTerminal.address,
-    contractInterface: ethPaymentTerminal.abi,
+    addressOrName: JBETHPaymentTerminal.address,
+    contractInterface: JBETHPaymentTerminal.interface,
     functionName: "redeemTokensOf",
-    onError: (error) => {
-      if (error.message.includes("insufficient funds")) {
-        toastError("Insufficient funds");
-      }
-    },
-    args: [
-      address, //user address
-      projectId,
-      "0",
-      ETH_TOKEN_ADDRESS,
-      "0",
-      address,
-      "",
-      encodeRedeemMetadata(tokenIds),
-    ],
+    args,
+    enabled: hasTokenIds && canRedeem,
   });
 
-  const simulatePay = () => {
-    simulateTransaction({
-      chainId: chain?.id,
-      populatedTx: config.request,
-      userAddress: address,
-    });
-  };
-
-  const { data, write, error, isError } = useContractWrite(config);
+  const { data, write, isError, error } = useContractWrite(config);
+  if (isError) {
+    console.error("useRedeemTokensOf::useContractWrite::error", error);
+  }
 
   const { isLoading, isSuccess } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess: () => {
-      onSuccess && onSuccess();
-      toastSuccess("Transaction successful");
+      onSuccess?.();
+      toastSuccess("Refund successful");
     },
   });
 
   return {
     data,
-    write: simulate ? simulatePay : write,
+    write,
     isLoading,
     isSuccess,
     error,
@@ -76,11 +69,9 @@ export function useRedeemTokensOf({
 }
 
 function encodeRedeemMetadata(tokenIds: string[]) {
-  const zeroBytes32 = ethers.utils.hexZeroPad(ethers.utils.hexlify(0), 32);
-  const IJB721Delegate_INTERFACE_ID = "0xb3bcbb79";
   return ethers.utils.defaultAbiCoder.encode(
     ["bytes32", "bytes4", "uint256[]"],
-    [zeroBytes32, IJB721Delegate_INTERFACE_ID, tokenIds]
+    [constants.HashZero, IDefifaDelegate_INTERFACE_ID, tokenIds]
   );
 }
 

@@ -4,8 +4,8 @@ import {
   formatDateToUTC,
   formatSecondsToLocal,
   formatSecondsToUTC,
-} from "../../utils/format/formatDate";
-import { useDeployerDuration } from "./DeployerDuration";
+} from "utils/format/formatDate";
+import { useGameTimes } from "./GameTimes";
 
 type DescriptionDates = {
   mintDuration: {
@@ -16,23 +16,18 @@ type DescriptionDates = {
     date: string;
     phase: number;
   };
-  refundPeriodDuration: {
-    date: string;
-    phase: number;
-  };
-  end: {
+  refundDuration: {
     date: string;
     phase: number;
   };
 };
 
 export function useDeployerDates(format: "local" | "utc") {
-  const deployerDuration = useDeployerDuration();
+  const { data: deployerDuration } = useGameTimes();
   const [dates, setDates] = useState<DescriptionDates>({
     mintDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
-    refundPeriodDuration: { date: "", phase: 0 },
-    end: { date: "", phase: 0 },
+    refundDuration: { date: "", phase: 0 },
   });
 
   useEffect(() => {
@@ -43,26 +38,24 @@ export function useDeployerDates(format: "local" | "utc") {
         date:
           format === "local"
             ? formatSecondsToLocal(
-                deployerDuration.mintDuration +
-                  deployerDuration.refundPeriodDuration,
+                deployerDuration.mintDuration + deployerDuration.refundDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
-                deployerDuration.mintDuration +
-                  deployerDuration.refundPeriodDuration,
+                deployerDuration.mintDuration + deployerDuration.refundDuration,
                 deployerDuration.start
               ),
         phase: 1,
       },
-      refundPeriodDuration: {
+      refundDuration: {
         date:
           format === "local"
             ? formatSecondsToLocal(
-                deployerDuration.refundPeriodDuration,
+                deployerDuration.refundDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
-                deployerDuration.refundPeriodDuration,
+                deployerDuration.refundDuration,
                 deployerDuration.start
               ),
         phase: 2,
@@ -73,13 +66,6 @@ export function useDeployerDates(format: "local" | "utc") {
             ? formatDateToLocal(deployerDuration.start * 1000)
             : formatDateToUTC(deployerDuration.start * 1000),
         phase: 3,
-      },
-      end: {
-        date:
-          format === "local"
-            ? formatDateToLocal(deployerDuration.end * 1000)
-            : formatDateToUTC(deployerDuration.end * 1000),
-        phase: 4,
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

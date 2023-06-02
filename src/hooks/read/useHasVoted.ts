@@ -1,14 +1,13 @@
-import { useAccount, useContractRead, useNetwork } from "wagmi";
-import { getChainData } from "../../constants/addresses";
+import { useChainData } from "hooks/useChainData";
+import { useAccount, useContractRead } from "wagmi";
 
-export function useHasVoted(proposalId: number) {
+export function useHasVoted(proposalId: number, governor: string) {
   const { address } = useAccount();
-  const network = useNetwork();
-  const chainData = getChainData(network?.chain?.id);
+  const { chainData } = useChainData();
 
   return useContractRead({
-    addressOrName: chainData.defifaGovernor.address,
-    contractInterface: chainData.defifaGovernor.interface,
+    addressOrName: governor,
+    contractInterface: chainData.DefifaGovernor.interface,
     functionName: "hasVoted",
     args: [proposalId, address],
     chainId: chainData.chainId,

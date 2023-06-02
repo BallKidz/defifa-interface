@@ -1,49 +1,20 @@
-@import url("https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;500;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap");
-@import "react-tabs/style/react-tabs.css";
+/* eslint-disable */
+
+@font-face {
+	font-family: 'Capsules';
+	src: url('/assets/fonts/Capsules.woff2') format('woff2');
+	font-weight: 100 700;
+}
+@font-face {
+    font-family: 'Capsules';
+    src: url('/assets/fonts/Capsules.woff2') format('woff2') tech('variations');
+    font-weight: 100 700;
+}
 
 :root {
-  --contentTitle: #c0b3f0;
-  --textColor: var(--contentTitle);
-  --bgColor: #5c517c;
-  --titleColor: #17e4f1;
-  --turquoise: #17e4f1;
-  --gold: #fea282;
-  --brown: #522a1c;
-  --blue: #4a3e6e;
-  --purple: #c0b3f0;
-  --lightGreen: #b7f6b7;
-  --green: #044904d6;
-  --pink: #ed017c;
-  --violet: #be69a7;
+    --toastify-font-family: 'Capsules', sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html {
-  min-height: 100%;
-}
-body {
-  background: linear-gradient(
-    308.94deg,
-    rgba(33, 28, 50, 0.94) 21.72%,
-    #181424 85.03%
-  );
-  color: var(--textColor);
-  height: 100%;
-  padding: 0;
-  max-width: 1920px;
-  margin: auto;
-  font-family: "DM Mono", monospace;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.react-tabs__tab:focus:after {
-  background: transparent;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

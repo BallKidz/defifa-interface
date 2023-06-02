@@ -1,0 +1,68 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--violet);
+  box-shadow: 0 0 2px 0 var(--violet);
+  transition: box-shadow 0.2s ease-in-out;
+  background: rgba(37, 34, 44, 0.9);
+}
+
+.container:hover,
+.container:focus {
+  box-shadow: 0 0 8px 0 var(--violet);
+}
+
+.scoreCardExpand {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.scoreCardInfo {
+  padding: 20px;
+}
+
+.scoreCardTitle {
+  margin-bottom: 40px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.scoreCardGroupsContainer {
+  display: grid;
+  gap: 50px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.scoreCardContainer {
+  padding: 50px;
+}
+
+.ballKidsScoreCardInput {
+  background: var(--contentTitle);
+  border: 0;
+}
+
+.proposalVotingButtonContainer {
+  margin-top: 30px;
+  display: flex;
+  gap: 50px;
+}
+
+.voteForm {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.buttonContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.votingOptions {
+  border: 2px solid var(--bgColor);
+  padding: 5px;
+  cursor: pointer;
+}

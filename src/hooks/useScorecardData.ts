@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { buildColumns } from "../utils/table/columns";
+import { buildColumns } from "utils/table/columns";
 import { CurrentScore } from "./read/CurrentScore";
 
 interface Column {
