@@ -33,7 +33,7 @@ export function MintCard({
     <div
       className={twMerge(
         "relative border border-gray-800 rounded-md max-w-[500px] mx-auto",
-        isSelected ? "border-violet-800 shadow-glow" : ""
+        isSelected ? "border-violet-800 shadow-glowViolet" : ""
       )}
     >
       <button

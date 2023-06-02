@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         <Navbar />
 
         <main className="pt-16">
-          <h1 className="text-5xl md:text-7xl text-center font-medium tracking-tight mb-8">
+          <h1 className="text-5xl md:text-7xl text-center font-medium tracking-tight mb-8 [text-shadow:_0_5px_30px_rgb(250_250_250_/_20%)]">
             Money Games with Friends
           </h1>
           <div className="text-center max-w-2xl mx-auto mb-12 text-lg">

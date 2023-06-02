@@ -1,11 +1,23 @@
 import { useGameContext } from "contexts/GameContext";
 import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
 import { PropsWithChildren } from "react";
+import { twMerge } from "tailwind-merge";
 import { fromWad } from "utils/format/formatNumber";
 
-function Pill({ children }: PropsWithChildren<{}>) {
+const SUCCESS_STYLE = "border-lime-900 text-lime-400 shadow-glowGreen";
+const NEUTRAL_STYLE = "border-neutral-500";
+
+function Pill({
+  children,
+  variant = "default",
+}: PropsWithChildren<{ variant?: "success" | "default" }>) {
   return (
-    <span className="px-3 py-1 rounded-full text-sm font-medium border border-neutral-700">
+    <span
+      className={twMerge(
+        "px-3 py-1 rounded-full text-sm font-medium border",
+        variant === "success" ? SUCCESS_STYLE : NEUTRAL_STYLE
+      )}
+    >
       {children}
     </span>
   );
@@ -26,7 +38,7 @@ function GameStats() {
 
   return (
     <div className="flex justify-center gap-4">
-      <Pill>
+      <Pill variant="success">
         <span className="font-bold">{fromWad(treasuryAmount)} ETH</span> in pot
       </Pill>
 
@@ -51,7 +63,7 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-5xl text-center mb-5">{metadata?.name}</h1>
+      <h1 className="text-5xl text-center mb-5 [text-shadow:_0_5px_30px_rgb(250_250_250_/_20%)]">{metadata?.name}</h1>
       <GameStats />
     </header>
   );

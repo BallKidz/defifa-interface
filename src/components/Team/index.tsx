@@ -75,7 +75,7 @@ const Team: FC<TeamProps> = ({
     <div
       className={twMerge(
         "relative border border-gray-800 rounded-md max-w-[500px] mx-auto",
-        selected ? "border-violet-800 shadow-glow" : ""
+        selected ? "border-violet-800 shadow-glowViolet" : ""
       )}
     >
       <div
