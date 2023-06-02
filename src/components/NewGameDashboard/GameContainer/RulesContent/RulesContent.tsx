@@ -17,18 +17,25 @@ export function RulesContent() {
   const { data: currentFc } = useProjectCurrentFundingCycle(gameId);
   console.log(currentFc.metadata.dataSource);
   const { data: maxTiers } = useMaxTiers(currentFc.metadata.dataSource);
-  console.log('Max tiers ',maxTiers?.toNumber());
-  const tierBeneficiary = useTierBeneficiaries(currentFc.metadata.dataSource, maxTiers?.toNumber() );
-  console.log('Reserved tokens per tier ',tierBeneficiary);
+  console.log("Max tiers ", maxTiers?.toNumber());
+  const tierBeneficiary = useTierBeneficiaries(
+    currentFc.metadata.dataSource,
+    maxTiers?.toNumber()
+  );
+  console.log("Reserved tokens per tier ", tierBeneficiary);
   // TODO: loop through tiers and get the max reserved tokens
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
-  const tokenBeneficiary = useDefaultTokenBeneficiary(currentFc.metadata.dataSource);
-  console.log('Default beneficiary ',tokenBeneficiary);
-  const { data: nftRewardTiers } = useNftRewardTiersOf(currentFc.metadata.dataSource);
-  console.log('NFT reward tiers ',nftRewardTiers); // Use this for tier beneficiaries
+  const tokenBeneficiary = useDefaultTokenBeneficiary(
+    currentFc.metadata.dataSource
+  );
+  console.log("Default beneficiary ", tokenBeneficiary);
+  const { data: nftRewardTiers } = useNftRewardTiersOf(
+    currentFc.metadata.dataSource
+  );
+  console.log("NFT reward tiers ", nftRewardTiers); // Use this for tier beneficiaries
 
   const { data: gameMetadata } = useGameMetadata(gameId);
-  console.log('Game metadata ',gameMetadata);
+  console.log("Game metadata ", gameMetadata);
   const fillPill = (phase: number) => {
     if (currentFcNumber === phase) {
       return "Active";
@@ -58,6 +65,7 @@ export function RulesContent() {
       return styles.upcoming;
     }
   };
+
   return (
     <Container>
       <p>{metadata?.description}</p>
@@ -81,31 +89,37 @@ export function RulesContent() {
           </span>
         </div>
         <div>
-          Phase 4: Scorecard submission. Anyone may submit a scorecard. Scorecards must be ratified by a majority of the Players.
+          Phase 4: Scorecard submission. Anyone may submit a scorecard.
+          Scorecards must be ratified by a majority of the Players.
         </div>
       </div>
       <div>
-        <div className={styles.container}>         
+        <div className={styles.container}>
           <p>
-            Winners: Claim prize anytime after a scorecard has been ratified. Redeeming a player card will burn it and transfer you its share of the pot.
+            Winners: Claim prize anytime after a scorecard has been ratified.
+            Redeeming a player card will burn it and transfer you its share of
+            the pot.
           </p>
           <p>
-            No Contest: This occurs when nobody queues the next game phase. Players may redeemed or keep their playing cards.
+            No Contest: This occurs when nobody queues the next game phase.
+            Players may redeemed or keep their playing cards.
           </p>
         </div>
       </div>
-        <div className={styles.container}>
-          <p>
-            Mint fees: {metadata?.seller_fee_basis_points}% is collected from Players on each playing card minted.
-          </p>
+      <div className={styles.container}>
+        <p>
+          Mint fees: {metadata?.seller_fee_basis_points}% is collected from
+          Players on each playing card minted.
+        </p>
         {/* TODO: test with RR and Benef. Create flow borking atm */}
-          <p>
-            Beneficiaries: {tokenBeneficiary.data === "0x0000000000000000000000000000000000000000"
-            ? 'No playing cards are being allocated to a default beneficiary in this game.'
+        <p>
+          Beneficiaries:{" "}
+          {tokenBeneficiary.data as unknown as string ===
+          "0x0000000000000000000000000000000000000000"
+            ? "No playing cards are being allocated to a default beneficiary in this game."
             : `See contract ${currentFc.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
-          </p>  
-        </div>
-       
+        </p>
+      </div>
     </Container>
   );
 }
