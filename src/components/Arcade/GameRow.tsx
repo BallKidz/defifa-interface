@@ -46,7 +46,7 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
           <span>{name !== null ? name : dataSourceName}</span>
         </td>
-        <td className="whitespace-nowrap py-4 pl-4 pr-3">
+        <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
           {getPhaseText() === "Mint" ? (
             <span>{`Mint until ${date.toLocaleString()}`}</span>
           ) : getPhaseText() === "No Contest Inevitable" ? (
@@ -58,10 +58,10 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
           )}
         </td>
 
-        <td className="whitespace-nowrap py-4 pl-4 pr-3">
+        <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
           <span>{fromWad4(treasuryAmount)} Ξ</span>
         </td>
-        <td className="whitespace-nowrap py-4 pl-4 pr-3">
+        <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
           {getPhaseText() === "No Contest Inevitable" ? (
             <span>{"Keep | Refund"}</span>
           ) : getPhaseText() === "No Contest" ? (

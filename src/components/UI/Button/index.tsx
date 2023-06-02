@@ -30,7 +30,9 @@ const Button = ({
 >) => {
   return (
     <button
+      {...props}
       className={twMerge(
+        props.className,
         "rounded-full font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600",
         variant === "primary"
           ? props.disabled
@@ -47,7 +49,6 @@ const Button = ({
           ? "px-7 py-2.5 text-md"
           : "px-3 py-2"
       )}
-      {...props}
       disabled={loading || props.disabled}
     >
       {loading ? "..." : children}

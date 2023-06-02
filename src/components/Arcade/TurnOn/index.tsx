@@ -21,9 +21,9 @@ const AllGames = () => {
             <tr className="font-normal">
               <th className="font-normal text-sm py-3">ID</th>
               <th className="font-normal text-sm py-3">Name</th>
-              <th className="font-normal text-sm py-3">Phase</th>
-              <th className="font-normal text-sm py-3">Pool Size</th>
-              <th className="font-normal text-sm py-3">Actions</th>
+              <th className="font-normal text-sm py-3 hidden md:table-cell">Phase</th>
+              <th className="font-normal text-sm py-3 hidden md:table-cell">Pool Size</th>
+              <th className="font-normal text-sm py-3 hidden md:table-cell">Actions</th>
             </tr>
           </thead>
 
