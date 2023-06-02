@@ -18,7 +18,7 @@ const Socials = () => {
           Discord
         </a>
       </Link>
-      <Link href="https://www.juicebox.money/v2/p/464" passHref>
+      <Link href="https://juicebox.money/@defifa" passHref>
         <a className="text-sm hover:underline" target="_blank">
           Juicebox
         </a>

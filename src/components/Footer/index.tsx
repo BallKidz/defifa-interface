@@ -35,7 +35,7 @@ const Footer = () => {
             </Link>
           </li>
           <li>
-            <Link href="https://www.juicebox.money/v2/p/464" passHref>
+            <Link href="https://juicebox.money/@defifa" passHref>
               <a className={LINK_CLASS} target="_blank">
                 Juicebox
               </a>
