@@ -17,7 +17,6 @@ export function useNftRewardsTotalSupply(
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "totalSupply",
     args: dataSourceAddress,
-    watch: true,
     chainId: chainData.chainId,
     enabled: hasDataSource,
   });
