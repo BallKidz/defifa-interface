@@ -38,14 +38,17 @@ export function createScoreCardFromArray(
   return scoreCard;
 }
 
-function getScoreCardsFromProposals(proposals: any): {
+export interface Scorecard {
   proposalId: number;
-  scorecards: DefifaTierRedemptionWeight[];
-}[] {
+  redemptionTierWeights: DefifaTierRedemptionWeight[];
+}
+[];
+
+function getScoreCardsFromProposals(proposals: any): Scorecard[] {
   const scoreCards = proposals?.map((proposal: any) => {
     return {
       proposalId: proposal.proposalId,
-      scorecards: proposal.calls.flatMap((call: any) => {
+      redemptionTierWeights: proposal.calls.flatMap((call: any) => {
         const calldata = call.calldata;
         const decodedCallData = ethers.utils.defaultAbiCoder.decode(
           ["tuple(uint256,uint256)[]"],
