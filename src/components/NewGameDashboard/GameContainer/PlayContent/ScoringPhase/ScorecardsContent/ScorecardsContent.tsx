@@ -51,6 +51,7 @@ export function ScorecardRow({
       <span onClick={onClick} role="button" className="hover:font-bold">
         Proposal: {scorecard.proposalId.toString()}
       </span>
+      <div>State: {proposalState}</div>
 
       <div>
         {scorecard.redemptionTierWeights.map((weight) => (
@@ -100,7 +101,6 @@ export function ScorecardsContent() {
   const { governor } = useGameContext();
   const { data: scorecards, isLoading } = useScorecards(governor);
   const { data: votes } = useAccountVotes(governor);
-  console.log(votes);
   if (isLoading) {
     return <Container>...</Container>;
   }
@@ -113,7 +113,22 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      <div className="mb-7">{votes?.toString()} votes available.</div>
+      <p className="mb-2">
+        A Scorecard proposes each Pick&apos;s redemption value. Players use
+        their voting power to vote for a Scorecard. The first Scorecard to reach
+        quorum and be ratified is the final scorecard.
+      </p>
+      <p className="mb-2">
+        The final Scorecard determines each Pick&apos;s redemption value.
+      </p>
+      <p className="mb-7">
+        Scorecards don&apos;t necessarily reflect the game&apos;s actual
+        outcome.
+      </p>
+
+      <div className="mb-7 font-medium">
+        {votes?.toString()} votes available.
+      </div>
 
       {!scorecards || scorecards.length === 0 ? (
         <Container>

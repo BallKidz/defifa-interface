@@ -1,3 +1,4 @@
+import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
@@ -9,6 +10,7 @@ export function useGovernorForDelegate(dataSource: string) {
     contractInterface: chainData.DefifaDelegate.interface,
     functionName: "owner",
     chainId: chainData.chainId,
+    enabled: Boolean(dataSource && dataSource !== constants.AddressZero),
   });
 
   return {

@@ -42,36 +42,41 @@ export function CustomScorecardContent() {
     <ActionContainer
       renderActions={() => <CustomScorecardActions scorecard={scorecard} />}
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-        {tiersLoading || currentFundingCycleLoading ? (
-          <span>...</span>
-        ) : (
-          tiers?.map((t: any) => (
-            <div
-              key={t.id}
-              className="relative border border-gray-800 rounded-md max-w-[500px] mx-auto"
-            >
-              <Image
-                src={t.teamImage}
-                crossOrigin="anonymous"
-                alt="Team"
-                width={500}
-                height={500}
-                className="rounded-md"
-              />
-              <div className="p-3">
-                <label htmlFor="">Score %</label>
-                <Input
-                  type="number"
-                  onChange={(e) => {
-                    onInput(t.id, parseInt(e.target.value || "0"));
-                  }}
+      {tiersLoading || currentFundingCycleLoading ? (
+        <span>...</span>
+      ) : (
+        <>
+          <p className="mb-2">
+            Give points to each Pick and submit your own scorecard.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+            {tiers?.map((t: any) => (
+              <div
+                key={t.id}
+                className="relative border border-gray-800 rounded-md max-w-[500px] mx-auto"
+              >
+                <Image
+                  src={t.teamImage}
+                  crossOrigin="anonymous"
+                  alt="Team"
+                  width={500}
+                  height={500}
+                  className="rounded-md"
                 />
+                <div className="p-3">
+                  <label htmlFor="">Score %</label>
+                  <Input
+                    type="number"
+                    onChange={(e) => {
+                      onInput(t.id, parseInt(e.target.value || "0"));
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
+            ))}
+          </div>{" "}
+        </>
+      )}
     </ActionContainer>
   );
 }
