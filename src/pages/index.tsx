@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is a protocol for launching money games built with Juicebox, secured by Ethereum."
+          content="Defifa is an on-chain gaming and governance experiment. Make your picks, load the pot and win."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

@@ -10,16 +10,6 @@ export function NewGameDashboard() {
   const name = metadata?.name;
   return (
     <>
-      <Head>
-        <title>{name} | Defifa</title>
-        <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
-        <meta
-          name="description"
-          content="Defifa is an on-chain gaming and governance experiment. Make your picks, load the pot and win."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <Container>
         <Navbar />
       </Container>
