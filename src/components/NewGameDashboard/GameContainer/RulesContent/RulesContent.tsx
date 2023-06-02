@@ -68,33 +68,35 @@ export function RulesContent() {
 
   return (
     <Container>
-      <p>{metadata?.description}</p>
-      <div className={styles.container}>
+      <p className="mb-5">{metadata?.description}</p>
+      <div className="p-4 border border-gray-800 rounded-lg mb-5 flex flex-col gap-2">
         <div>
-          Phase 1: Minting (mints open, refunds open)
+          Phase 1: MINTS OPEN (mints open, refunds open)
           <span className={pillStyle(mintDuration.phase)}>
             {fillPill(mintDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 2: Delay (mints closed)
+          Phase 2: REFUNDS OPEN (mints closed)
           <span className={pillStyle(refundDuration.phase)}>
             {fillPill(refundDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 3: Game time (refunds closed)
-          <span className={pillStyle(start.phase)}>
-            {fillPill(start.phase)}
-          </span>
-        </div>
-        <div>
-          Phase 4: Scorecard submission. Anyone may submit a scorecard.
-          Scorecards must be ratified by a majority of the Players.
+          <div>
+            Phase 3: SCORING (refunds closed)
+            <span className={pillStyle(start.phase)}>
+              {fillPill(start.phase)}
+            </span>
+          </div>
+          <div>
+            Anyone may submit a scorecard. Scorecards must be ratified by a
+            majority of the Players.
+          </div>
         </div>
       </div>
       <div>
-        <div className={styles.container}>
+        <div className="p-4 border border-gray-800 rounded-lg mb-5">
           <p>
             Winners: Claim prize anytime after a scorecard has been ratified.
             Redeeming a player card will burn it and transfer you its share of
@@ -106,7 +108,7 @@ export function RulesContent() {
           </p>
         </div>
       </div>
-      <div className={styles.container}>
+      <div className="p-4 border border-gray-800 rounded-lg mb-5">
         <p>
           Mint fees: {metadata?.seller_fee_basis_points}% is collected from
           Players on each playing card minted.
@@ -114,7 +116,7 @@ export function RulesContent() {
         {/* TODO: test with RR and Benef. Create flow borking atm */}
         <p>
           Beneficiaries:{" "}
-          {tokenBeneficiary.data as unknown as string ===
+          {(tokenBeneficiary.data as unknown as string) ===
           "0x0000000000000000000000000000000000000000"
             ? "No playing cards are being allocated to a default beneficiary in this game."
             : `See contract ${currentFc.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
