@@ -38,9 +38,7 @@ export function PhaseDetails() {
 
   const currentPhaseText = phaseText(currentPhase);
   const nextPhaseText =
-    currentPhase <= DefifaGamePhase.NO_CONTEST_INEVITABLE
-      ? phaseText(currentPhase + 1)
-      : null;
+    currentPhase < DefifaGamePhase.SCORING ? phaseText(currentPhase + 1) : null;
 
   const start = currentFundingCycle?.fundingCycle?.start?.toNumber() ?? 0;
   const duration = currentFundingCycle?.fundingCycle?.duration?.toNumber() ?? 0;
