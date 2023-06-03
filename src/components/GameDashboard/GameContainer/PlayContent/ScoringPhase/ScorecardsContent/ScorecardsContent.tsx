@@ -1,4 +1,3 @@
-import { ScorecardProposalState } from "types/interfaces";
 import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import Container from "components/UI/Container";
@@ -12,9 +11,33 @@ import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useApproveScorecard } from "hooks/write/useApproveScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useState } from "react";
+import { ScorecardProposalState } from "types/interfaces";
 
 const redemptionRateToPercentage = (redemptionRate: number) => {
   return redemptionRate === 0 ? 0 : (redemptionRate / ONE_BILLION) * 100;
+};
+
+const stateText = (state: ScorecardProposalState) => {
+  switch (state) {
+    case ScorecardProposalState.Pending:
+      return "Pending (0)";
+    case ScorecardProposalState.Active:
+      return "Active (1)";
+    case ScorecardProposalState.Canceled:
+      return "Canceled (2)";
+    case ScorecardProposalState.Defeated:
+      return "Canceled (3)";
+    case ScorecardProposalState.Succeeded:
+      return "Succeeded (4)";
+    case ScorecardProposalState.Queued:
+      return "Queued (5)";
+    case ScorecardProposalState.Expired:
+      return "Expired (6)";
+    case ScorecardProposalState.Executed:
+      return "Executed (7)";
+    default:
+      return "Unknown";
+  }
 };
 
 function ScorecardRow({
@@ -51,7 +74,7 @@ function ScorecardRow({
       <span onClick={onClick} role="button" className="hover:font-bold">
         Proposal: {scorecard.proposalId.toString()}
       </span>
-      <div>State: {proposalState}</div>
+      <div>State: {stateText(proposalState)}</div>
 
       <div>
         {scorecard.redemptionTierWeights.map((weight) => (

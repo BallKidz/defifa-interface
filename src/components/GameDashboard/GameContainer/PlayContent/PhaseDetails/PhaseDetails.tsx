@@ -4,6 +4,7 @@ import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/u
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/Countdown";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
+import { useRedemptionWeightIsSet } from "hooks/read/useRedemptionWeightIsSet";
 import { twJoin } from "tailwind-merge";
 
 const phaseText = (phase: DefifaGamePhase) => {
@@ -32,8 +33,14 @@ export function PhaseDetails() {
     loading: { currentFundingCycleLoading },
   } = useGameContext();
   const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
+  const isRedemptionPhase = useRedemptionWeightIsSet(
+    currentFundingCycle?.metadata.dataSource
+  ); // TODO probably move to shared context, to avoid mulitple calls in other components
 
-  const currentPhaseText = phaseText(currentPhase);
+  const currentPhaseText = isRedemptionPhase
+    ? "COLLECT ETH"
+    : phaseText(currentPhase);
+
   const nextPhaseText =
     currentPhase < DefifaGamePhase.SCORING ? phaseText(currentPhase + 1) : null;
 
@@ -51,7 +58,7 @@ export function PhaseDetails() {
     <div className="border border-gray-800 py-5 px-6 rounded-xl">
       <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
         <div className="flex flex-col text-center md:text-left gap-1">
-          <div>Phase {currentPhase}</div>
+          <div className="text-gray-300">Current phase</div>
           <div className="text-2xl uppercase">{currentPhaseText}</div>
         </div>
 

@@ -6,6 +6,7 @@ import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import Container from "components/UI/Container";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
+import { useRedemptionWeightIsSet } from "hooks/read/useRedemptionWeightIsSet";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
@@ -19,13 +20,20 @@ const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
 export function PlayContent() {
   const {
     currentPhase,
+    currentFundingCycle,
     loading: { currentPhaseLoading },
   } = useGameContext();
+  const isRedemptionPhase = useRedemptionWeightIsSet(
+    currentFundingCycle?.metadata.dataSource
+  );
+
   if (currentPhaseLoading) {
     return <Container className="text-center">...</Container>;
   }
 
-  const CurrentContent = PHASE_CONTENT[currentPhase];
+  const CurrentContent = isRedemptionPhase
+    ? RefundPhaseContent
+    : PHASE_CONTENT[currentPhase];
 
   return (
     <div>
