@@ -1,5 +1,4 @@
 import { GameRow } from "components/Arcade/GameRow";
-import { AllGamesContext } from "hooks/gamesContext";
 import { useAllGames } from "hooks/useAllGames";
 import styles from "./TurnOn.module.css";
 
@@ -12,7 +11,7 @@ const AllGames = () => {
   }
 
   return (
-    <AllGamesContext.Provider value={games}>
+    <>
       {isError && <div className={styles.error}>Failed to load games.</div>}
       {isLoading && <div className="text-center">Loading...</div>}
       {!isLoading && !isError && (
@@ -21,9 +20,15 @@ const AllGames = () => {
             <tr className="font-normal">
               <th className="font-normal text-sm py-3">ID</th>
               <th className="font-normal text-sm py-3">Name</th>
-              <th className="font-normal text-sm py-3 hidden md:table-cell">Phase</th>
-              <th className="font-normal text-sm py-3 hidden md:table-cell">Pool Size</th>
-              <th className="font-normal text-sm py-3 hidden md:table-cell">Actions</th>
+              <th className="font-normal text-sm py-3 hidden md:table-cell">
+                Phase
+              </th>
+              <th className="font-normal text-sm py-3 hidden md:table-cell">
+                Pool Size
+              </th>
+              <th className="font-normal text-sm py-3 hidden md:table-cell">
+                Actions
+              </th>
             </tr>
           </thead>
 
@@ -37,7 +42,7 @@ const AllGames = () => {
           </tbody>
         </table>
       )}
-    </AllGamesContext.Provider>
+    </>
   );
 };
 
