@@ -1,5 +1,5 @@
 import { ScorecardProposalState } from "types/interfaces";
-import { ActionContainer } from "components/NewGameDashboard/GameContainer/ActionContainer/ActionContainer";
+import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { GameContext } from "./GameContext";
-import { useCurrentGamePhase } from "components/NewGameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
+import { useCurrentGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import useNftRewards from "hooks/NftRewards";
