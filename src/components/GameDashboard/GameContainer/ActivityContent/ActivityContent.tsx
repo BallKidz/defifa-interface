@@ -4,6 +4,7 @@ import { constants } from "ethers";
 import Image from "next/image";
 import moment from "moment";
 import { ONE_BILLION } from "hooks/NftRewards";
+import EnsName from "./EnsName";
 
 interface TransferEvent {
   tier: number;
@@ -34,13 +35,13 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
     <div className="flex justify-between">
       <div>
         <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
-          <div>{transferEvent.from.id}</div>
+        {transferEvent.from.id && <EnsName address={transferEvent.from.id} />}
+        {!transferEvent.from.id && <div>{transferEvent.from.id}</div>}
+        
           <div>
             Minted {transferEvent.token.metadata.name}{" "}
             {moment(parseInt(transferEvent.timestamp) * 1000).fromNow()}
           </div>
-          <div>{transferEvent.tier}</div>
-          <div>{transferEvent.token.number}</div>
           <Image
             className=""
             src={transferEvent.token.metadata.image}
@@ -60,13 +61,12 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
     <div className="flex justify-between">
       <div>
         <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
-          <div>{transferEvent.to.id}</div>
+        {transferEvent.to.id && <EnsName address={transferEvent.to.id} />}
+        {!transferEvent.to.id && <div>{transferEvent.to.id}</div>}
           <div>
             Minted {transferEvent.token.metadata.name}{" "}
             {moment(parseInt(transferEvent.timestamp) * 1000).fromNow()}
           </div>
-          <div>{transferEvent.tier}</div>
-          <div>{transferEvent.token.number}</div>
           <Image
             className=""
             src={transferEvent.token.metadata.image}
@@ -96,7 +96,6 @@ export function ActivityContent() {
   const { data: activity, isLoading } = useGameActivity();
 
   const transfers = activity?.transfers;
-  console.log(transfers);
   if (isLoading) {
     return <Container className="text-center">...</Container>;
   }
@@ -113,13 +112,14 @@ export function ActivityContent() {
       if (toId === constants.AddressZero) {
         (activityEvent as ActivityEvent).action = "Redeem";
         (activityEvent as ActivityEvent).nonZeroId = fromId;
+        // eslint-disable-next-line react-hooks/rules-of-hooks
       } else if (fromId === constants.AddressZero) {
         (activityEvent as ActivityEvent).action = "Mint";
         (activityEvent as ActivityEvent).nonZeroId = toId;
       }
 
       obj.tier = Math.floor(parseInt(obj.token.number) / ONE_BILLION);
-
+      
       return obj;
     }
   );
