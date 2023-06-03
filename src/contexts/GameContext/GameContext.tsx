@@ -1,4 +1,4 @@
-import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
+import { DefifaGamePhase } from "components/NewGameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { BigNumber } from "ethers";
 import { createContext, useContext } from "react";
 import {

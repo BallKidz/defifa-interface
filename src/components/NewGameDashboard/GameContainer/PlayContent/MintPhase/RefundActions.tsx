@@ -1,5 +1,5 @@
 import Button from "components/UI/Button";
-import useRedeemTokensOf from "hooks/write/useRedeemTokensOf";
+import { useRedeemTokensOf } from "hooks/write/useRedeemTokensOf";
 
 export function RefundActions({
   tokenIdsToRedeem,

@@ -1,14 +1,5 @@
 import moment from "moment";
 
-export const formatMillistoMoment = (dateMillis: number) => {
-  return moment.unix(dateMillis);
-};
-
-export const formatSecondsToMoment = (seconds: number, fromDate: number) => {
-  let start = moment.unix(fromDate);
-  return moment(start).subtract(seconds, "seconds");
-};
-
 export const formatSecondsToUTC = (
   seconds: number,
   fromDate: number,

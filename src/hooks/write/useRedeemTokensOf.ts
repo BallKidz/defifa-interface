@@ -1,4 +1,3 @@
-import { useRefundsOpen } from "components/GameDashboard/MyTeams/MyTeam/useRefundsOpen";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { constants, ethers } from "ethers";
@@ -11,7 +10,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-export interface RedeemParams {
+interface RedeemParams {
   tokenIds: string[];
   onSuccess?: () => void;
 }
@@ -22,7 +21,6 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
   const { gameId } = useGameContext();
-  const canRedeem = useRefundsOpen();
 
   const args = [
     address, //user _holder address
@@ -42,7 +40,7 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
     contractInterface: JBETHPaymentTerminal.interface,
     functionName: "redeemTokensOf",
     args,
-    enabled: hasTokenIds && canRedeem,
+    enabled: hasTokenIds,
   });
 
   const { data, write, isError, error } = useContractWrite(config);
@@ -74,5 +72,3 @@ function encodeRedeemMetadata(tokenIds: string[]) {
     [constants.HashZero, IDefifaDelegate_INTERFACE_ID, tokenIds]
   );
 }
-
-export default useRedeemTokensOf;

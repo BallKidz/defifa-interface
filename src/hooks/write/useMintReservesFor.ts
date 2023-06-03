@@ -7,7 +7,7 @@ import {
 } from "wagmi";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
-import { DefifaGamePhase } from "components/Navbar/Info/CurrentPhase/useCurrentGamePhase";
+import { DefifaGamePhase } from "components/NewGameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 
 export function useMintReservesFor(

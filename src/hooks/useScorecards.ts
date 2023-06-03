@@ -26,18 +26,6 @@ const proposalsQuery = gql`
   }
 `;
 
-//createScoreCardFromArray
-export function createScoreCardFromArray(
-  scoreCardArray: any,
-  proposalId: number
-) {
-  const scoreCard: DefifaTierRedemptionWeight = {
-    id: scoreCardArray[0],
-    redemptionWeight: scoreCardArray[1],
-  };
-  return scoreCard;
-}
-
 export interface Scorecard {
   proposalId: number;
   redemptionTierWeights: DefifaTierRedemptionWeight[];

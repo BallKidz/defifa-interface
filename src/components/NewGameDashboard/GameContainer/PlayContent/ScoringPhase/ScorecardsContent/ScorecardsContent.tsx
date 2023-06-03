@@ -1,4 +1,4 @@
-import { ScoreCardProposalState } from "components/GameDashboard/SelfReferee/Attestation/types";
+import { ScorecardProposalState } from "types/interfaces";
 import { ActionContainer } from "components/NewGameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import Container from "components/UI/Container";
@@ -17,7 +17,7 @@ const redemptionRateToPercentage = (redemptionRate: number) => {
   return redemptionRate === 0 ? 0 : (redemptionRate / ONE_BILLION) * 100;
 };
 
-export function ScorecardRow({
+function ScorecardRow({
   scorecard,
   onClick,
 }: {
@@ -65,7 +65,8 @@ export function ScorecardRow({
       <div className="flex gap-3 items-center">
         {proposalVotes?.forVotes.toString()} attestations (
         {votesRemaining?.toNumber()} more needed)
-        {quourumReached && proposalState === ScoreCardProposalState.Succeeded ? (
+        {quourumReached &&
+        proposalState === ScorecardProposalState.Succeeded ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
@@ -75,7 +76,7 @@ export function ScorecardRow({
   );
 }
 
-export function ScorecardActions({
+function ScorecardActions({
   selectedScorecard,
 }: {
   selectedScorecard: Scorecard;
@@ -104,7 +105,7 @@ export function ScorecardsContent() {
   if (isLoading) {
     return <Container>...</Container>;
   }
-
+  console.log(votes);
   return (
     <ActionContainer
       renderActions={
@@ -113,18 +114,18 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      <p className="mb-2">
-        A Scorecard proposes each Pick&apos;s redemption value. Players use
-        their voting power to vote for a Scorecard. The first Scorecard to reach
-        quorum and be ratified is the final scorecard.
-      </p>
-      <p className="mb-2">
-        The final Scorecard determines each Pick&apos;s redemption value.
-      </p>
-      <p className="mb-7">
-        Scorecards don&apos;t necessarily reflect the game&apos;s actual
-        outcome.
-      </p>
+      <div className="mb-7 flex flex-col gap-2 max-w-prose">
+        <p>
+          A Scorecard proposes each Pick&apos;s redemption value. Players use
+          their voting power to vote for a Scorecard. The first Scorecard to
+          reach quorum and be ratified is the final scorecard.
+        </p>
+        <p>The final Scorecard determines each Pick&apos;s redemption value.</p>
+        <p>
+          Scorecards don&apos;t necessarily reflect the game&apos;s actual
+          outcome.
+        </p>
+      </div>
 
       <div className="mb-7 font-medium">
         {votes?.toString()} votes available.
