@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useDeployerDates } from "hooks/read/DeployerDates";

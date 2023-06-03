@@ -116,15 +116,12 @@ export function ScorecardsContent() {
     >
       <div className="mb-7 flex flex-col gap-2 max-w-prose">
         <p>
-          A Scorecard proposes each Pick&apos;s redemption value. Players use
-          their voting power to vote for a Scorecard. The first Scorecard to
-          reach quorum and be ratified is the final scorecard.
+          A Scorecard proposes each Pick's redemption value. Players use their
+          voting power to vote for a Scorecard. The first Scorecard to reach
+          quorum and be ratified is the final scorecard.
         </p>
-        <p>The final Scorecard determines each Pick&apos;s redemption value.</p>
-        <p>
-          Scorecards don&apos;t necessarily reflect the game&apos;s actual
-          outcome.
-        </p>
+        <p>The final Scorecard determines each Pick's redemption value.</p>
+        <p>Scorecards don't necessarily reflect the game's actual outcome.</p>
       </div>
 
       <div className="mb-7 font-medium">
@@ -135,7 +132,7 @@ export function ScorecardsContent() {
         <Container>
           No scorecards submitted yet.{" "}
           <div className="text-xs">
-            (or, some scorecards haven&apos;t been indexed yet)
+            (or, some scorecards haven't been indexed yet)
           </div>
         </Container>
       ) : (

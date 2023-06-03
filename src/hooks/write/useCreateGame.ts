@@ -16,9 +16,7 @@ const convertTo18Decimals = (value: number) => {
   return fixedValue.toString();
 };
 
-export function useCreateGame(
-  _launchProjectData?: DefifaLaunchProjectData
-) {
+export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();

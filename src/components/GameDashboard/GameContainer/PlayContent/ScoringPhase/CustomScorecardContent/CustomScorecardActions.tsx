@@ -29,7 +29,7 @@ export function CustomScorecardActions({
         ) : null}
       </div>
       {totalScorePercentage > 100 ? (
-        <span className="text-red-500">Can&apos;t allocate more than 100%</span>
+        <span className="text-red-500">Can't allocate more than 100%</span>
       ) : null}
       <Button
         onClick={() => write?.()}

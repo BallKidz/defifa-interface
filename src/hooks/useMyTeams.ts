@@ -1,10 +1,10 @@
+import { useGameContext } from "contexts/GameContext";
+import request, { gql } from "graphql-request";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
+import { useCallback, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { useChainData } from "./useChainData";
-import request, { gql } from "graphql-request";
-import { useEffect, useState } from "react";
 import { useInterval } from "./useInterval";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
-import { useGameContext } from "contexts/GameContext";
 
 const myTeamsQuery = gql`
   query myTeamsQuery($owner: String!, $gameId: String!) {
@@ -113,7 +113,7 @@ export function useMyTeams() {
     }
   }
 
-  const fetchMyTeams = async () => {
+  const fetchMyTeams = useCallback(async () => {
     setError({ isError: false, error: "" });
     if (!address) return;
     const variables = {
@@ -158,7 +158,8 @@ export function useMyTeams() {
       console.error("subgraph::myTeams", error);
       setIsLoading(false);
     }
-  };
+  }, [address, graphUrl, gameId]);
+
   useEffect(() => {
     if (isConnecting) {
       setIsLoading(true);
@@ -172,8 +173,7 @@ export function useMyTeams() {
     }
     if (!address) return;
     fetchMyTeams();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address, isConnecting, isDisconnected, graphUrl]);
+  }, [address, isConnecting, isDisconnected, graphUrl, fetchMyTeams]);
 
   return {
     teams,

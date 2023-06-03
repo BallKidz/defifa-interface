@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useGameContext } from "contexts/GameContext";
 import Image from "next/image";

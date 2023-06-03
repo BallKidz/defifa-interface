@@ -3,7 +3,8 @@ import React from "react";
 const CopyURLToClipboard = () => {
   const handleCopyURL = () => {
     const currentURL = window.location.href;
-    navigator.clipboard.writeText(currentURL)
+    navigator.clipboard
+      .writeText(currentURL)
       .then(() => {
         console.log("URL copied to clipboard:", currentURL);
         // You can show a success message or perform additional actions here
@@ -14,9 +15,7 @@ const CopyURLToClipboard = () => {
       });
   };
 
-  return (
-    <button onClick={handleCopyURL}>Copy URL to Clipboard</button>
-  );
+  return <button onClick={handleCopyURL}>Copy URL to Clipboard</button>;
 };
 
 export default CopyURLToClipboard;

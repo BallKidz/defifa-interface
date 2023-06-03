@@ -8,13 +8,18 @@ const ArcadeDescription = () => {
 
         <ol>
           <li className={styles.listItem}>
-            <span className={styles.keywords}>Collect:</span>  Mint NFT playing cards to fill the game pot. A portion is reserved for artists and creators.
+            <span className={styles.keywords}>Collect:</span> Mint NFT playing
+            cards to fill the game pot. A portion is reserved for artists and
+            creators.
           </li>
           <li className={styles.listItem}>
-            <span className={styles.keywords}>Referee:</span>  Players attest to the game result or delegate to a trusted referee.
+            <span className={styles.keywords}>Referee:</span> Players attest to
+            the game result or delegate to a trusted referee.
           </li>
           <li className={styles.listItem}>
-            <span className={styles.keywords}>Earn:</span>  The pot backs the value of the winning NFTs. Creators and players earn governance tokens.
+            <span className={styles.keywords}>Earn:</span> The pot backs the
+            value of the winning NFTs. Creators and players earn governance
+            tokens.
           </li>
         </ol>
       </div>

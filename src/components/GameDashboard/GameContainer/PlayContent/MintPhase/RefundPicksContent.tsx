@@ -69,10 +69,8 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
   if (mintedTokens.length === 0) {
     return (
       <Container>
-        <div>You haven&apos;t minted yet.</div>
-        <div className="text-xs">
-          (or, your mints haven&apos;t been indexed yet)
-        </div>
+        <div>You haven't minted yet.</div>
+        <div className="text-xs">(or, your mints haven't been indexed yet)</div>
       </Container>
     );
   }

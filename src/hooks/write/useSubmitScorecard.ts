@@ -18,7 +18,9 @@ export function useSubmitScorecard(
     functionName: "submitScorecard",
     args: [_tierWeights],
     chainId: chainData.chainId,
-    enabled: Boolean(_tierWeights && _tierWeights.length > 0 && governorAddress),
+    enabled: Boolean(
+      _tierWeights && _tierWeights.length > 0 && governorAddress
+    ),
   });
 
   const { data, write, error, isError } = useContractWrite(config);

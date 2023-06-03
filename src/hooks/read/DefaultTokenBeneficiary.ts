@@ -2,7 +2,9 @@ import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
-export function useDefaultTokenBeneficiary(dataSourceAddress: string | undefined) {
+export function useDefaultTokenBeneficiary(
+  dataSourceAddress: string | undefined
+) {
   const { chainData } = useChainData();
 
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
