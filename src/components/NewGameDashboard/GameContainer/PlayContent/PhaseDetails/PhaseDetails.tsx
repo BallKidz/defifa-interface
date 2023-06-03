@@ -31,10 +31,7 @@ export function PhaseDetails() {
     currentFundingCycle,
     loading: { currentFundingCycleLoading },
   } = useGameContext();
-  const {
-    data: nextPhaseNeedsQueueing,
-    isLoading: nextPhaseNeedsQueueingLoading,
-  } = useNextPhaseNeedsQueueing();
+  const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
 
   const currentPhaseText = phaseText(currentPhase);
   const nextPhaseText =
@@ -65,7 +62,9 @@ export function PhaseDetails() {
           timeRemainingText ? (
             <div className="text-center">
               <div className="text-xs mb-1">Phase ends in</div>
-              <div className="text-4xl" style={{ color: '#EB007B' }}>{timeRemainingText}</div>
+              <div className="text-4xl" style={{ color: "#EB007B" }}>
+                {timeRemainingText}
+              </div>
             </div>
           ) : null}
         </div>

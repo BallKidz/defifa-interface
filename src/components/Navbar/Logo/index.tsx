@@ -1,10 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
-import styles from "./Logo.module.css";
+import Image from "next/image";
 
-export function Logo({ src }: { src: string }) {
+export function Logo() {
   return (
-    <div className={styles.container}>
-      <img src={src} alt="Defifa" width={80} />
+    <div>
+      <Image src="/assets/defifa.svg" alt="Defifa" width={80} height={80} />
     </div>
   );
 }

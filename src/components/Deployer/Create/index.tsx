@@ -1,7 +1,7 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import bs58 from "bs58";
 import Button from "components/UI/Button";
-import Content from "components/UI/Content";
+import Content from "components/Deployer/Content";
 import EthSymbol from "components/UI/EthSymbol/EthSymbol";
 import { Input } from "components/UI/Input";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
