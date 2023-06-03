@@ -65,7 +65,7 @@ export function ScorecardRow({
       <div className="flex gap-3 items-center">
         {proposalVotes?.forVotes.toString()} attestations (
         {votesRemaining?.toNumber()} more needed)
-        {quourumReached && proposalState === ScoreCardProposalState.Active ? (
+        {quourumReached && proposalState === ScoreCardProposalState.Succeeded ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
