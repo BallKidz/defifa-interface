@@ -1,4 +1,4 @@
-import { ScoreCardProposalState } from "components/GameDashboard/SelfReferee/Attestation/types";
+import { ScorecardProposalState } from "types/interfaces";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
@@ -19,6 +19,6 @@ export function useProposalState(
 
   return {
     ...res,
-    data: res.data as unknown as ScoreCardProposalState,
+    data: res.data as unknown as ScorecardProposalState,
   };
 }

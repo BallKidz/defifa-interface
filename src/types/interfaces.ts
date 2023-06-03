@@ -57,7 +57,7 @@ export type JBFundingCycle = {
   metadata: BigNumber; // encoded FundingCycleMetadata
 };
 
-export type JBFundingCycleMetadataGlobal = {
+type JBFundingCycleMetadataGlobal = {
   allowSetController: boolean;
   allowSetTerminals: boolean;
   pauseTransfers: boolean;
@@ -94,4 +94,15 @@ export interface DefifaTimeData {
 export interface DefifaTierRedemptionWeight {
   id: number;
   redemptionWeight: number;
+}
+
+export enum ScorecardProposalState {
+  "Pending",
+  "Active",
+  "Canceled",
+  "Defeated",
+  "Succeeded",
+  "Queued",
+  "Expired",
+  "Executed",
 }

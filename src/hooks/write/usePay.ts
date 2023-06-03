@@ -1,4 +1,3 @@
-import { useMintingOpen } from "components/GameDashboard/MyTeams/MyTeam/useMintingOpen";
 import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
@@ -11,7 +10,7 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 
-export interface PayParams {
+interface PayParams {
   amount: string;
   token: string;
   minReturnedTokens: string;
@@ -20,7 +19,7 @@ export interface PayParams {
   metadata: PayMetadata;
 }
 
-export interface PayMetadata {
+interface PayMetadata {
   _votingDelegate: string;
   tierIdsToMint: number[];
 }
@@ -34,15 +33,10 @@ export function usePay({
   metadata,
 }: PayParams) {
   const { address } = useAccount();
-  const {
-    gameId,
-    currentPhase,
-    loading: { currentPhaseLoading },
-  } = useGameContext();
+  const { gameId } = useGameContext();
   const {
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
-  const mintingOpen = useMintingOpen();
 
   const args = [
     gameId,
@@ -64,7 +58,7 @@ export function usePay({
     functionName: "pay",
     overrides: { value: amount },
     args,
-    enabled: hasTokenIds && mintingOpen,
+    enabled: hasTokenIds,
   });
 
   const { data, write, isError, error } = useContractWrite(config);
