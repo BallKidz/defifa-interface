@@ -13,7 +13,6 @@ export function useProjectCurrentFundingCycle(projectId: number) {
     functionName: "currentFundingCycleOf",
     args: projectId,
     chainId: chainData.chainId,
-    watch: true,
   });
 
   return {
