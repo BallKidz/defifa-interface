@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Defifa: Money games</title>
+        <title>Money Games with Friends | Defifa</title>
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
           </h1>
           <div className="text-center max-w-2xl mx-auto mb-12 text-lg">
             <p>Defifa is an on-chain gaming and governance experiment.</p>
-            <p> Make your picks, load the pot and win.</p>
+            <p>Make your picks, load the pot, and win.</p>
           </div>
 
           <div className="mx-auto min-h-screen">
