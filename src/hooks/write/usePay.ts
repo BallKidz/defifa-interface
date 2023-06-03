@@ -33,11 +33,7 @@ export function usePay({
   metadata,
 }: PayParams) {
   const { address } = useAccount();
-  const {
-    gameId,
-    currentPhase,
-    loading: { currentPhaseLoading },
-  } = useGameContext();
+  const { gameId } = useGameContext();
   const {
     chainData: { JBETHPaymentTerminal },
   } = useChainData();
