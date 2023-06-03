@@ -9,6 +9,7 @@ const query = gql`
   query gameActivityQuery($gameId: String!) {
     transfers(where: { token_: { gameId: $gameId } }) {
       transactionHash
+      timestamp
       from {
         id
       }
@@ -19,6 +20,7 @@ const query = gql`
         number
         metadata {
           image
+          name
         }
       }
     }
