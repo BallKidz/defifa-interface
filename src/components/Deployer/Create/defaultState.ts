@@ -1,6 +1,6 @@
 import { getChainData } from "config";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
-import { MINT_PRICE } from "constants/constants";
+import { BALLKIDZ_MULTISIG_ADDRESS, MINT_PRICE } from "constants/constants";
 import { constants } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { DefifaLaunchProjectData } from "types/interfaces";
@@ -28,9 +28,8 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
     tiers: [],
     splits: [],
     token: ETH_TOKEN_ADDRESS,
-    ballkidzFeeProjectTokenAccount:
-      "0x11834239698c7336EF232C00a2A9926d3375DF9D",
-    defaultVotingDelegate: "0x11834239698c7336EF232C00a2A9926d3375DF9D",
+    ballkidzFeeProjectTokenAccount: BALLKIDZ_MULTISIG_ADDRESS,
+    defaultVotingDelegate: BALLKIDZ_MULTISIG_ADDRESS,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
     baseUri: "ipfs://",
