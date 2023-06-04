@@ -2,7 +2,6 @@ import { ActionContainer } from "components/GameDashboard/GameContainer/ActionCo
 import Button from "components/UI/Button";
 import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
-import { ONE_BILLION } from "hooks/NftRewards";
 import { useProposalState } from "hooks/read/ProposalState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useQuorum } from "hooks/read/Quorum";
@@ -12,10 +11,7 @@ import { useApproveScorecard } from "hooks/write/useApproveScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useState } from "react";
 import { ScorecardProposalState } from "types/interfaces";
-
-const redemptionRateToPercentage = (redemptionRate: number) => {
-  return redemptionRate === 0 ? 0 : (redemptionRate / ONE_BILLION) * 100;
-};
+import { redemptionWeightToPercentage } from "utils/defifa";
 
 const stateText = (state: ScorecardProposalState) => {
   switch (state) {
@@ -80,7 +76,7 @@ function ScorecardRow({
         {scorecard.redemptionTierWeights.map((weight) => (
           <div key={weight.id.toString()}>
             Tier {weight.id.toString()}:{" "}
-            {redemptionRateToPercentage(weight.redemptionWeight).toString()}%
+            {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
           </div>
         ))}
       </div>

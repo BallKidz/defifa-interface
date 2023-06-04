@@ -43,7 +43,6 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
-    address: addressFor("DefifaGovernor", DefifaDeployment as ForgeDeploy)!,
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {

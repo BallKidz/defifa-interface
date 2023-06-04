@@ -71,7 +71,7 @@ const DeployerCreate = () => {
       DEFAULT_MINT_DURATION_SECONDS +
       DEFAULT_REFUND_DURATION_SECONDS +
       GAME_START_BUFFER_SECONDS,
-    votingPeriod: 0,
+    votingPeriod: 0, // seconds
     votingStartTime: 0,
     tiers: [],
     splits: [],

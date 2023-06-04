@@ -4,7 +4,6 @@ import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/u
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/Countdown";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
-import { useRedemptionWeightIsSet } from "hooks/read/useRedemptionWeightIsSet";
 import { twJoin } from "tailwind-merge";
 
 const phaseText = (phase: DefifaGamePhase) => {
@@ -15,6 +14,8 @@ const phaseText = (phase: DefifaGamePhase) => {
       return "Minting open";
     case DefifaGamePhase.REFUND:
       return "Refunds open";
+    case DefifaGamePhase.COMPLETE:
+      return "Game over: collect ETH";
     case DefifaGamePhase.NO_CONTEST:
       return "No Contest";
     case DefifaGamePhase.NO_CONTEST_INEVITABLE:
@@ -33,13 +34,8 @@ export function PhaseDetails() {
     loading: { currentFundingCycleLoading },
   } = useGameContext();
   const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
-  const isRedemptionPhase = useRedemptionWeightIsSet(
-    currentFundingCycle?.metadata.dataSource
-  ); // TODO probably move to shared context, to avoid mulitple calls in other components
 
-  const currentPhaseText = isRedemptionPhase
-    ? "COLLECT ETH"
-    : phaseText(currentPhase);
+  const currentPhaseText = phaseText(currentPhase);
 
   const nextPhaseText =
     currentPhase < DefifaGamePhase.SCORING ? phaseText(currentPhase + 1) : null;

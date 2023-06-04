@@ -1,10 +1,10 @@
 import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import { Input } from "components/UI/Input";
 import { useGameContext } from "contexts/GameContext";
-import { ONE_BILLION } from "hooks/NftRewards";
 import Image from "next/image";
 import { useState } from "react";
 import { DefifaTierRedemptionWeight } from "types/interfaces";
+import { percentageToRedemptionWeight } from "utils/defifa";
 import { CustomScorecardActions } from "./CustomScorecardActions";
 
 interface ScorecardMap {
@@ -32,9 +32,7 @@ export function CustomScorecardContent() {
       const scorePercentage = scorecardMap[t.id];
       return {
         id: t.id,
-        redemptionWeight: scorePercentage
-          ? (scorePercentage / 100) * ONE_BILLION
-          : 0,
+        redemptionWeight: percentageToRedemptionWeight(scorePercentage),
       };
     }) ?? [];
 

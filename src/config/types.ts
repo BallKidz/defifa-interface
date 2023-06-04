@@ -13,10 +13,12 @@ export interface DefifaConfig {
   JBController: ContractData;
   JBSingleTokenPaymentTerminalStore: {
     interface: ContractInterface;
-  };
+  }; // address read on-chain per game
   JBETHPaymentTerminal: ContractData;
   DefifaDelegate: ContractData;
-  DefifaGovernor: ContractData;
+  DefifaGovernor: {
+    interface: ContractInterface;
+  }; // address read on-chain per game
   DefifaDeployer: ContractData;
 
   subgraph: string;

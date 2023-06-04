@@ -1,18 +1,18 @@
 import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
-import { useGameContext } from "contexts/GameContext";
-import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
-import { CountdownPhaseContent } from "./CountdownPhaseContent";
-import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import Container from "components/UI/Container";
-import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
+import { useGameContext } from "contexts/GameContext";
+import { CountdownPhaseContent } from "./CountdownPhaseContent";
+import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
+import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
-import { useRedemptionWeightIsSet } from "hooks/read/useRedemptionWeightIsSet";
+import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
   [DefifaGamePhase.MINT]: MintPhaseContent,
   [DefifaGamePhase.REFUND]: RefundPhaseContent,
   [DefifaGamePhase.SCORING]: ScoringPhaseContent,
+  [DefifaGamePhase.COMPLETE]: RefundPhaseContent,
   [DefifaGamePhase.NO_CONTEST]: RefundPhaseContent,
   [DefifaGamePhase.NO_CONTEST_INEVITABLE]: RefundPhaseContent,
 };
@@ -20,20 +20,14 @@ const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
 export function PlayContent() {
   const {
     currentPhase,
-    currentFundingCycle,
     loading: { currentPhaseLoading },
   } = useGameContext();
-  const isRedemptionPhase = useRedemptionWeightIsSet(
-    currentFundingCycle?.metadata.dataSource
-  );
 
   if (currentPhaseLoading) {
     return <Container className="text-center">...</Container>;
   }
 
-  const CurrentContent = isRedemptionPhase
-    ? RefundPhaseContent
-    : PHASE_CONTENT[currentPhase];
+  const CurrentContent = PHASE_CONTENT[currentPhase];
 
   return (
     <div>

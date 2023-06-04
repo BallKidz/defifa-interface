@@ -29,7 +29,7 @@ export interface DefifaLaunchProjectData {
   distributionLimit: number;
   ballkidzFeeProjectTokenAccount: string;
   defaultTokenUriResolver: string;
-  votingPeriod: number;
+  votingPeriod: number; // seconds
   votingStartTime: number;
   terminal: string; // address
   store: string; // address
