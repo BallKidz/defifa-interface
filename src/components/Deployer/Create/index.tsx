@@ -1,12 +1,10 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import bs58 from "bs58";
-import Button from "components/UI/Button";
 import Content from "components/Deployer/Content";
+import Button from "components/UI/Button";
 import EthSymbol from "components/UI/EthSymbol/EthSymbol";
 import { Input } from "components/UI/Input";
-import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { BigNumber, constants } from "ethers";
-import { useChainData } from "hooks/useChainData";
 import { useCreateGame } from "hooks/write/useCreateGame";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
 import Link from "next/link";
@@ -18,90 +16,32 @@ import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
-import { MINT_PRICE } from "constants/constants";
-import { formatUnits } from "ethers/lib/utils";
-
-const unixToDatetimeLocal = (timestamp: number): string => {
-  const date = new Date(timestamp * 1000);
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, "0");
-  const day = `${date.getDate()}`.padStart(2, "0");
-  const hours = `${date.getHours()}`.padStart(2, "0");
-  const minutes = `${date.getMinutes() + 5}`.padStart(2, "0"); //now + 5 minutes
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
-};
-
-const datetimeLocalToUnix = (value: string): number => {
-  return Math.floor(new Date(value).getTime() / 1000);
-};
-
-const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
-const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
-const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
-// const DEFAULT_MINT_DURATION_SECONDS = 60 * 60 * 72; // 1 hour
-// const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour
-// const GAME_START_BUFFER_SECONDS = 60 * 5; // 5 minutes
+import {
+  createDefaultLaunchProjectData,
+  createDefaultTierData,
+} from "./defaultState";
+import { datetimeLocalToUnix } from "./utils";
 
 const DeployerCreate = () => {
-  const [step, setStep] = useState(1);
-  const { chainData } = useChainData();
-  const { JBETHPaymentTerminal, JBTiered721DelegateStore } = chainData;
-  const [addNftOpen, setAddNftOpen] = useState(true);
-  const [iPFSNeedsHashing, setIPFSNeedsHashing] = useState(false);
+  const [formValues, setFormValues] = useState<DefifaLaunchProjectData>(
+    createDefaultLaunchProjectData()
+  );
 
-  const [tier, setTier] = useState<DefifaTierParams>({
-    name: "",
-    price: formatUnits(MINT_PRICE),
-    reservedRate: 0,
-    reservedTokenBeneficiary: constants.AddressZero,
-    encodedIPFSUri:
-      "0x0000000000000000000000000000000000000000000000000000000000000000",
-    shouldUseReservedTokenBeneficiaryAsDefault: false,
-  });
-  const currentUnixTimestamp = Math.floor(Date.now() / 1000);
-  const [isUploading, setIsUploading] = useState(false);
-  const [imageUri, setImageUri] = useState<any>();
-  const [formValues, setFormValues] = useState<DefifaLaunchProjectData>({
-    name: "Your game name",
-    rules: "Your game rules",
-    mintDuration: DEFAULT_MINT_DURATION_SECONDS,
-    refundDuration: DEFAULT_REFUND_DURATION_SECONDS,
-    start:
-      currentUnixTimestamp +
-      DEFAULT_MINT_DURATION_SECONDS +
-      DEFAULT_REFUND_DURATION_SECONDS +
-      GAME_START_BUFFER_SECONDS,
-    votingPeriod: 0, // seconds
-    votingStartTime: 0,
-    tiers: [],
-    splits: [],
-    token: ETH_TOKEN_ADDRESS,
-    ballkidzFeeProjectTokenAccount:
-      "0x11834239698c7336EF232C00a2A9926d3375DF9D",
-    defaultVotingDelegate: "0x11834239698c7336EF232C00a2A9926d3375DF9D",
-    terminal: JBETHPaymentTerminal.address,
-    defaultTokenUriResolver: constants.AddressZero,
-    contractUri: "",
-    baseUri: "ipfs://",
-    distributionLimit: 0,
-    projectMetadata: {
-      content: "",
-      domain: 0,
-    },
-    store: JBTiered721DelegateStore.address,
-  });
+  const [tier, setTier] = useState<DefifaTierParams>(createDefaultTierData());
   const [editedTier, setEditedTier] = useState<DefifaTierParams | null>(null);
-  const minDate = unixToDatetimeLocal(currentUnixTimestamp);
-  const [inputKey, setInputKey] = useState(0);
-
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTierParams>>();
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [step, setStep] = useState(1);
+  const [addNftOpen, setAddNftOpen] = useState(true);
+  const [iPFSNeedsHashing, setIPFSNeedsHashing] = useState(false);
+  const [imageUri, setImageUri] = useState<any>();
 
   const {
     write: createTournament,
     isLoading,
     isSuccess,
-    isError,
     transactionData,
   } = useCreateGame(formValues);
 
@@ -291,15 +231,7 @@ const DeployerCreate = () => {
       tiers: mergedTier ? [...prevValues.tiers, mergedTier] : prevValues.tiers,
     }));
 
-    setTier({
-      name: "",
-      price: formatUnits(MINT_PRICE), // default price if nothing entered
-      reservedRate: 0,
-      reservedTokenBeneficiary: constants.AddressZero,
-      encodedIPFSUri:
-        "0x0000000000000000000000000000000000000000000000000000000000000000",
-      shouldUseReservedTokenBeneficiaryAsDefault: false,
-    });
+    setTier(createDefaultTierData());
 
     setImageUri("");
 
