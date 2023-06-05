@@ -3,6 +3,7 @@ import { QueueNextPhaseButton } from "components/GameDashboard/QueueNextPhaseBut
 import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/Countdown";
+import { useGameTimes } from "hooks/read/GameTimes";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { twJoin } from "tailwind-merge";
 
@@ -34,16 +35,23 @@ export function PhaseDetails() {
     loading: { currentFundingCycleLoading },
   } = useGameContext();
   const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
+  const { data: gameTimes } = useGameTimes();
 
   const currentPhaseText = phaseText(currentPhase);
 
   const nextPhaseText =
-    currentPhase < DefifaGamePhase.SCORING ? phaseText(currentPhase + 1) : null;
+    currentPhase === DefifaGamePhase.MINT &&
+    (gameTimes?.refundDuration ?? 0) === 0
+      ? phaseText(DefifaGamePhase.SCORING)
+      : currentPhase < DefifaGamePhase.SCORING
+      ? phaseText(currentPhase + 1)
+      : null;
 
   const start = currentFundingCycle?.fundingCycle?.start?.toNumber() ?? 0;
   const duration = currentFundingCycle?.fundingCycle?.duration?.toNumber() ?? 0;
   const end = start + duration;
   const timeElapsed = Date.now() / 1000 - start;
+  const waitingForBlock = Date.now() / 1000 > end;
 
   const { timeRemaining: timeRemainingText } = useCountdown(
     new Date(end * 1000)
@@ -54,7 +62,7 @@ export function PhaseDetails() {
     <div className="border border-gray-800 py-5 px-6 rounded-xl">
       <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
         <div className="flex flex-col text-center md:text-left gap-1">
-          <div className="text-gray-300">Current phase</div>
+          <div className="text-neutral-300">Current phase</div>
           <div className="text-2xl uppercase">{currentPhaseText}</div>
         </div>
 
@@ -62,12 +70,21 @@ export function PhaseDetails() {
           {(currentPhase === DefifaGamePhase.MINT ||
             currentPhase === DefifaGamePhase.REFUND) &&
           !currentFundingCycleLoading &&
-          timeRemainingText ? (
+          timeRemainingText &&
+          !waitingForBlock ? (
             <div className="text-center">
               <div className="text-xs mb-1">Phase ends in</div>
               <div className="text-4xl" style={{ color: "#EB007B" }}>
                 {timeRemainingText}
               </div>
+            </div>
+          ) : null}
+          {(currentPhase === DefifaGamePhase.MINT ||
+            currentPhase === DefifaGamePhase.REFUND) &&
+          !currentFundingCycleLoading &&
+          waitingForBlock ? (
+            <div className="text-center">
+              <div>Next phase starting, waiting for next block...</div>
             </div>
           ) : null}
         </div>

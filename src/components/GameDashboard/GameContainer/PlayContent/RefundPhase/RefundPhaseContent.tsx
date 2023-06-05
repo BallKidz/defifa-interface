@@ -14,9 +14,9 @@ export function RefundPhaseContent() {
             <a
               className={twJoin(
                 selectedTab === "refund"
-                  ? "underline font-medium text-gray-50"
-                  : "text-gray-400",
-                "cursor-pointer hover:text-gray-300"
+                  ? "underline font-medium text-neutral-50"
+                  : "text-neutral-400",
+                "cursor-pointer hover:text-neutral-300"
               )}
               onClick={() => setSelectedTab("refund")}
             >

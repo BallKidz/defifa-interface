@@ -55,13 +55,13 @@ export function MintCard({
           <div className="flex gap-2 items-center">
             <p>{selectedCount}</p>
             <button
-              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 bg-violet-600 hover:bg-violet-500 text-gray-50"
+              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 bg-violet-600 hover:bg-violet-500 text-neutral-50"
               onClick={onIncrement}
             >
               <PlusIcon className="h-4 w-4" />
             </button>
             <button
-              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 bg-violet-600 hover:bg-violet-500 text-gray-50"
+              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 bg-violet-600 hover:bg-violet-500 text-neutral-50"
               onClick={onDecrement}
             >
               <MinusIcon className="h-4 w-4" />

@@ -16,7 +16,7 @@ function TabButton({
   return (
     <button
       className={twJoin(
-        active ? "underline" : "text-gray-400 hover:text-gray-200",
+        active ? "underline" : "text-neutral-400 hover:text-neutral-200",
         "rounded-md px-4 py-2 font-medium capitalize"
       )}
       {...props}

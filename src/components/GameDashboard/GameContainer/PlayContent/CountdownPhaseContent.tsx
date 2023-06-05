@@ -5,20 +5,27 @@ import { useGameTimes } from "hooks/read/GameTimes";
 export function CountdownPhaseContent() {
   const { data, isLoading } = useGameTimes();
   const mintStart = new Date(
-    (data?.start - data?.mintDuration - data?.refundDuration) * 1000
+    (data?.start ?? 0 - data?.mintDuration ?? 0 - data?.refundDuration ?? 0) *
+      1000
   );
 
   const { timeRemaining } = useCountdown(mintStart);
 
-  if (!data || isLoading)
+  if (!data || isLoading) {
     return <Container className="text-center">...</Container>;
+  }
 
   return (
     <div className="flex justify-center">
       {timeRemaining ? (
-        <span>Game starting in {timeRemaining}...</span>
+        <div className="text-center">
+          <div className="mb-1">Game starts in</div>
+          <div className="text-4xl" style={{ color: "#EB007B" }}>
+            {timeRemaining}
+          </div>
+        </div>
       ) : (
-        <span>Game starting, waiting for next block...</span>
+        <span>Game starting now, waiting for next block...</span>
       )}
     </div>
   );

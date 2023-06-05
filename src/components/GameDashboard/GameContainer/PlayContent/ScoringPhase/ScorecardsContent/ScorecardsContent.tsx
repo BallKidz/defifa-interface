@@ -133,7 +133,7 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      <div className="mb-7 flex flex-col gap-2 max-w-prose">
+      <div className="mb-7 flex flex-col gap-2">
         <p>
           A Scorecard proposes each Pick's redemption value. Players use their
           voting power to vote for a Scorecard. The first Scorecard to reach

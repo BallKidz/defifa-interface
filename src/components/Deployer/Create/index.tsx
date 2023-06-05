@@ -371,7 +371,7 @@ const DeployerCreate = () => {
               <DatePicker
                 id="start"
                 name="start"
-                className="block w-full rounded-sm border-0 py-1.5 text-gray-50 bg-slate-950 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-sm border-0 py-1.5 text-neutral-50 bg-slate-950 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 selected={new Date(formValues.start * 1000)}
                 showTimeInput
                 dateFormat="MM/dd/yyyy h:mm aa"
@@ -385,7 +385,7 @@ const DeployerCreate = () => {
                 required
               />
 
-              <span className="text-xs text-gray-400 mt-1">
+              <span className="text-xs text-neutral-400 mt-1">
                 Must be later than: now + mint duration + refund duration.
               </span>
             </div>
@@ -403,7 +403,7 @@ const DeployerCreate = () => {
                 step="0.01" // set the step size, e.g., 1 hour increments
                 required
               />
-              <span className="text-xs text-gray-400 mt-1">
+              <span className="text-xs text-neutral-400 mt-1">
                 Hours prior to the start of the game.
               </span>
             </div>
@@ -424,7 +424,7 @@ const DeployerCreate = () => {
                 step="0.01" // set the step size, e.g., 1 hour increments
                 required
               />
-              <span className="text-xs text-gray-400 mt-1">
+              <span className="text-xs text-neutral-400 mt-1">
                 Hours allowed for refunds. Takes place between minting and game
                 time.
               </span>
@@ -469,7 +469,7 @@ const DeployerCreate = () => {
                 value={tierGeneralValues?.reservedRate}
                 onChange={handleTierGeneralValues}
               />
-              <span className="text-xs mt-1 text-gray-400">
+              <span className="text-xs mt-1 text-neutral-400">
                 For example: reserve 1 NFT for every X minted NFTs
               </span>
             </div>
@@ -484,7 +484,7 @@ const DeployerCreate = () => {
                 value={tierGeneralValues?.reservedTokenBeneficiary}
                 onChange={handleTierGeneralValues}
               />
-              <span className="text-xs mt-1 text-gray-400">
+              <span className="text-xs mt-1 text-neutral-400">
                 ETH address that will receive the reserved NFTs
               </span>
             </div>

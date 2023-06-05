@@ -3,6 +3,7 @@ import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
 import { PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
 import { fromWad } from "utils/format/formatNumber";
+import { DefifaGamePhase } from "./QueueNextPhaseButton/useCurrentGamePhase";
 
 const SUCCESS_STYLE = "border-lime-900 text-lime-400 shadow-glowGreen";
 const NEUTRAL_STYLE = "border-neutral-500";
@@ -26,6 +27,7 @@ function Pill({
 function GameStats() {
   const {
     nfts: { totalSupply },
+    currentPhase,
   } = useGameContext();
   const { gameId } = useGameContext();
   const { data: treasuryAmount, isLoading: isTerminalLoading } =
@@ -36,6 +38,8 @@ function GameStats() {
   if (isTerminalLoading || !totalSupply)
     return <div className="text-center">...</div>;
 
+  if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
+  
   return (
     <div className="flex justify-center gap-4">
       <Pill category="success">
