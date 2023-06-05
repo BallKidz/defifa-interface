@@ -1,9 +1,9 @@
+import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { DEFAULT_NFT_MAX_SUPPLY } from "../NftRewards";
 import { useNftRewardTiersOf } from "./NftRewardsTiers";
-import { useProjectCurrentFundingCycle } from "./ProjectCurrentFundingCycle";
-import { useGameContext } from "contexts/GameContext";
+import { useProjectCurrentFundingCycle } from "./useProjectCurrentFundingCycle";
 
 export function useAttestationPower(id: number, mintsHeldFromTier: number) {
   const { gameId } = useGameContext();

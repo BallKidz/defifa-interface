@@ -1,5 +1,5 @@
 import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { CountdownPhaseContent } from "./CountdownPhaseContent";
 import { MintPhaseContent } from "./MintPhase/MintPhaseContent";

@@ -1,6 +1,6 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useCountdown } from "hooks/Countdown";
-import { useGameTimes } from "hooks/read/GameTimes";
+import { useGameTimes } from "hooks/read/useGameTimes";
 
 export function CountdownPhaseContent() {
   const { data, isLoading } = useGameTimes();
@@ -19,13 +19,13 @@ export function CountdownPhaseContent() {
     <div className="flex justify-center">
       {timeRemaining ? (
         <div className="text-center">
-          <div className="mb-1">Game starts in</div>
+          <div className="mb-1">Minting live in</div>
           <div className="text-4xl" style={{ color: "#EB007B" }}>
             {timeRemaining}
           </div>
         </div>
       ) : (
-        <span>Game starting now, waiting for next block...</span>
+        <span>Minting starting now, waiting for next block...</span>
       )}
     </div>
   );

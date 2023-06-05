@@ -1,6 +1,6 @@
-import Navbar from "../Navbar";
-import Info from "../Navbar/Info";
-import Container from "components/UI/Container";
+import Navbar from "../layout/Navbar";
+import Info from "../layout/Navbar/Info";
+import Container from "components/layout/Container";
 import ArcadeLoad from "./TurnOn";
 import ArcadeDescription from "./Description";
 

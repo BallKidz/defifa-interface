@@ -2,7 +2,7 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import bs58 from "bs58";
 import Content from "components/Deployer/Content";
 import Button from "components/UI/Button";
-import EthSymbol from "components/UI/EthSymbol/EthSymbol";
+import { EthSymbol } from "components/UI/EthSymbol/EthSymbol";
 import { Input } from "components/UI/Input";
 import { BigNumber, constants } from "ethers";
 import { useCreateGame } from "hooks/write/useCreateGame";

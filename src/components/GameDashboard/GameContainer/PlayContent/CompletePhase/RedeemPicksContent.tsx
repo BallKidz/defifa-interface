@@ -1,4 +1,4 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";

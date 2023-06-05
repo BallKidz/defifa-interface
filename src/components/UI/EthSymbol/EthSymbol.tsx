@@ -1,3 +1,3 @@
-export default function EthSymbol() {
-  return <span className="font-serif">Ξ</span>;
+export function EthSymbol() {
+  return <span className="font-sans">Ξ</span>;
 }

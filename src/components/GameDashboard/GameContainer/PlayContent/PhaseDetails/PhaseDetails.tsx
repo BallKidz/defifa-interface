@@ -3,7 +3,7 @@ import { QueueNextPhaseButton } from "components/GameDashboard/QueueNextPhaseBut
 import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/Countdown";
-import { useGameTimes } from "hooks/read/GameTimes";
+import { useGameTimes } from "hooks/read/useGameTimes";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { twJoin } from "tailwind-merge";
 

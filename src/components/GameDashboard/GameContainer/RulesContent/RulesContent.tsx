@@ -1,8 +1,8 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useDeployerDates } from "hooks/read/DeployerDates";
-import { useGameMetadata } from "hooks/read/GameMetadata";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { useGameMetadata } from "hooks/read/useGameMetadata";
+import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
 import styles from "./index.module.css";
 import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";

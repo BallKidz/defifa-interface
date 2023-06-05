@@ -1,4 +1,4 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { RefundPicksContent } from "../MintPhase/RefundPicksContent";

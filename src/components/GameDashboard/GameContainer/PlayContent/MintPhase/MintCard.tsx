@@ -1,4 +1,4 @@
-import { PickCard, PickCardProps } from "components/PickCard";
+import { PickCard, PickCardProps } from "components/UI/PickCard";
 import { useGameContext } from "contexts/GameContext";
 
 export function MintCard({

@@ -1,13 +1,13 @@
 import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useProposalState } from "hooks/read/ProposalState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
-import { useQuorum } from "hooks/read/Quorum";
+import { useQuorum } from "hooks/read/useQuorum";
 import { useAccountVotes } from "hooks/read/useGetVotes";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
-import { useApproveScorecard } from "hooks/write/useApproveScorecard";
+import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useState } from "react";
 import { ScorecardProposalState } from "types/interfaces";
@@ -49,7 +49,7 @@ function ScorecardRow({
     scorecard.proposalId,
     governor
   );
-  const { write, isLoading } = useApproveScorecard(
+  const { write, isLoading } = useRatifyScorecard(
     scorecard.redemptionTierWeights,
     governor
   );
@@ -82,7 +82,7 @@ function ScorecardRow({
       </div>
 
       <div className="flex gap-3 items-center">
-        {proposalVotes?.forVotes.toString()} attestations (
+        {proposalVotes?.forVotes.toString()} votes (
         {votesRemaining?.toNumber()} more needed)
         {quourumReached &&
         proposalState === ScorecardProposalState.Succeeded ? (

@@ -1,4 +1,4 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameActivity } from "./useGameActivity";
 import { constants } from "ethers";
 import Image from "next/image";

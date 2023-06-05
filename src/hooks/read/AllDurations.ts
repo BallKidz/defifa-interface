@@ -1,6 +1,5 @@
-import { useContractRead, useNetwork } from "wagmi";
 import { useChainData } from "hooks/useChainData";
-import { useGameContext } from "contexts/GameContext";
+import { useContractRead } from "wagmi";
 
 export function useAllDuration(gameId: number) {
   const { chainData } = useChainData();

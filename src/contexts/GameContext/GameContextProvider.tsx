@@ -1,11 +1,11 @@
 import { PropsWithChildren } from "react";
 import { GameContext } from "./GameContext";
 import { useCurrentGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
 import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
 import useNftRewards from "hooks/NftRewards";
 import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
-import { useGameMetadata } from "hooks/read/GameMetadata";
+import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
 
 export default function GameContextProvider({

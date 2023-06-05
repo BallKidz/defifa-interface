@@ -1,4 +1,3 @@
-import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
 import { JBFundingCycle, JBFundingCycleMetadata } from "types/interfaces";
 import { useContractRead } from "wagmi";

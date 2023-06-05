@@ -1,5 +1,5 @@
 import { useGameContext } from "contexts/GameContext";
-import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
+import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
 import { fromWad } from "utils/format/formatNumber";

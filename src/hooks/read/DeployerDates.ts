@@ -5,7 +5,7 @@ import {
   formatSecondsToLocal,
   formatSecondsToUTC,
 } from "utils/format/formatDate";
-import { useGameTimes } from "./GameTimes";
+import { useGameTimes } from "./useGameTimes";
 
 type DescriptionDates = {
   mintDuration: {
