@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { QueueNextPhaseButton } from "components/GameDashboard/GameContainer/PlayContent/PhaseDetails/QueueNextPhaseButton/QueueNextPhaseButton";
+import { QueueNextPhaseButton } from "components/GameDashboard/GameContainer/PlayContent/PhaseDetails/QueueNextPhaseButton";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/useCountdown";
