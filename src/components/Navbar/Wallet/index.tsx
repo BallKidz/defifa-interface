@@ -38,7 +38,7 @@ const Wallet = () => {
               return (
                 <Button
                   onClick={openAccountModal}
-                  variant="secondary"
+                  category="secondary"
                   className="w-full"
                 >
                   {account.ensName ?? account.displayName}

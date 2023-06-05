@@ -10,18 +10,22 @@ const SECONDARY_BUTTON_CLASS =
 const SECONDARY_BUTTON_DISABLED_CLASS =
   "bg-violet-1100 text-gray-400 cursor-not-allowed border border-solid border-gray-600";
 
-const TERTIARY_BUTTON_CLASS =
+const TERTIARY_CONFIRM_BUTTON_CLASS =
   "bg-violet-1100 hover:bg-violet-1000 text-violet-400 underline";
+const TERTIARY_DEFAULT_BUTTON_CLASS =
+  "bg-grey-950 hover:bg-neutral-1000 text-grey-50 underline";
 
 const Button = ({
   children,
-  variant = "primary",
+  category = "primary",
+  variant = "confirm",
   size = "md",
   loading = false,
   ...props
 }: {
   children: any;
-  variant?: "primary" | "secondary" | "tertiary";
+  category?: "primary" | "secondary" | "tertiary";
+  variant?: "default" | "confirm";
   loading?: boolean;
   size?: "sm" | "md" | "lg";
 } & DetailedHTMLProps<
@@ -34,15 +38,17 @@ const Button = ({
       className={twMerge(
         props.className,
         " min-w-[70px] rounded-full font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600",
-        variant === "primary"
+        category === "primary"
           ? props.disabled
             ? PRIMARY_BUTTON_DISABLED_CLASS
             : PRIMARY_BUTTON_CLASS
-          : variant === "secondary"
+          : category === "secondary"
           ? props.disabled
             ? SECONDARY_BUTTON_DISABLED_CLASS
             : SECONDARY_BUTTON_CLASS
-          : TERTIARY_BUTTON_CLASS,
+          : variant === "default"
+          ? TERTIARY_DEFAULT_BUTTON_CLASS
+          : TERTIARY_CONFIRM_BUTTON_CLASS,
         size === "sm"
           ? "px-3 py-1"
           : size === "lg"
