@@ -2,7 +2,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import { QueueNextPhaseButton } from "components/GameDashboard/QueueNextPhaseButton/QueueNextPhaseButton";
 import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
-import { useCountdown } from "hooks/Countdown";
+import { useCountdown } from "hooks/useCountdown";
 import { useGameTimes } from "hooks/read/useGameTimes";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { twJoin } from "tailwind-merge";

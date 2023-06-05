@@ -1,5 +1,5 @@
 import Container from "components/layout/Container";
-import { useCountdown } from "hooks/Countdown";
+import { useCountdown } from "hooks/useCountdown";
 import { useGameTimes } from "hooks/read/useGameTimes";
 
 export function CountdownPhaseContent() {
