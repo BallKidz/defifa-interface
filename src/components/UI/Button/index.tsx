@@ -13,7 +13,7 @@ const SECONDARY_BUTTON_DISABLED_CLASS =
 const TERTIARY_CONFIRM_BUTTON_CLASS =
   "bg-violet-1100 hover:bg-violet-1000 text-violet-400 underline";
 const TERTIARY_DEFAULT_BUTTON_CLASS =
-  "bg-neutral-950 hover:bg-neutral-1000 text-neutral-50 underline";
+  "bg-violet-1100 hover:bg-neutral-800 text-neutral-50 underline";
 
 const Button = ({
   children,

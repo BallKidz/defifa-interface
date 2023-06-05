@@ -13,17 +13,19 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
   const chainData = getChainData();
   const currentUnixTimestamp = Math.floor(Date.now() / 1000);
 
+  const scoringStartTime =
+    currentUnixTimestamp +
+    DEFAULT_MINT_DURATION_SECONDS +
+    DEFAULT_REFUND_DURATION_SECONDS +
+    GAME_START_BUFFER_SECONDS;
+
   return {
-    name: "Your game name",
-    rules: "Your game rules",
+    name: "",
+    rules: "",
     mintDuration: DEFAULT_MINT_DURATION_SECONDS,
     refundDuration: DEFAULT_REFUND_DURATION_SECONDS,
-    start:
-      currentUnixTimestamp +
-      DEFAULT_MINT_DURATION_SECONDS +
-      DEFAULT_REFUND_DURATION_SECONDS +
-      GAME_START_BUFFER_SECONDS,
-    votingPeriod: 0, // seconds
+    start: scoringStartTime,
+    votingPeriod: 0, // seconds, 0 to allow ratify as soon as quorum is reached.
     votingStartTime: 0,
     tiers: [],
     splits: [],

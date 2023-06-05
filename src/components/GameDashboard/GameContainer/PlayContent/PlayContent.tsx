@@ -27,14 +27,15 @@ export function PlayContent() {
     return <Container className="text-center">...</Container>;
   }
 
-  const CurrentContent = PHASE_CONTENT[currentPhase];
+  const CurrentContent = PHASE_CONTENT[currentPhase] ?? null;
 
   return (
     <div>
       <Container className="mb-6">
         {currentPhase === DefifaGamePhase.MINT ||
         currentPhase === DefifaGamePhase.REFUND ||
-        currentPhase === DefifaGamePhase.SCORING ? (
+        currentPhase === DefifaGamePhase.SCORING ||
+        currentPhase === DefifaGamePhase.COMPLETE ? (
           <PhaseDetails />
         ) : null}
         {currentPhase === DefifaGamePhase.NO_CONTEST ||

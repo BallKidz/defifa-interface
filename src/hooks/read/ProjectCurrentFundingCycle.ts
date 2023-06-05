@@ -17,9 +17,11 @@ export function useProjectCurrentFundingCycle(projectId: number) {
 
   return {
     ...res,
-    data: res.data as unknown as {
-      fundingCycle: JBFundingCycle;
-      metadata: JBFundingCycleMetadata;
-    },
+    data: res.data as unknown as
+      | {
+          fundingCycle: JBFundingCycle;
+          metadata: JBFundingCycleMetadata;
+        }
+      | undefined,
   };
 }

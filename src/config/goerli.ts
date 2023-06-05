@@ -50,7 +50,7 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     interface: DefifaDeployer.abi,
   },
   subgraph:
-    "https://api.studio.thegraph.com/query/36773/defifa-aeolian/version/latest",
+    "https://api.thegraph.com/subgraphs/name/tomquirk/defifa-subgrap-hosted",
 };
 
 console.info("goerli chain data::", DEFIFA_CONFIG_GOERLI);
