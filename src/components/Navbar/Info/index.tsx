@@ -4,6 +4,7 @@ import { Logo } from "../Logo";
 import Wallet from "../Wallet";
 import Socials from "./Socials";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import ConnectWarpcast from "../SocialConnect/Farcaster";
 
 const Info = () => {
   return (
@@ -17,11 +18,12 @@ const Info = () => {
 
         <Socials />
 
-        {/*         <Link href="/create">
+        <Link href="/create">
           <a className="text-sm flex gap-2 items-center font-medium hover:underline">
             Create game <ArrowRightIcon className="h-4 w-4" />
           </a>
-        </Link> */}
+        </Link>
+        <ConnectWarpcast />
       </div>
 
       <Wallet />

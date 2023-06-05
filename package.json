@@ -13,6 +13,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.1",
     "@ballkidz/defifa-collection-deployer": "1.0.25",
+    "@farcaster/hub-web": "^0.3.5",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@jbx-protocol/juice-721-delegate": "6.0.3",
@@ -34,6 +35,7 @@
     "react-confirm-alert": "^3.0.6",
     "react-datepicker": "^4.12.0",
     "react-dom": "18.2.0",
+    "react-qr-code": "^2.0.11",
     "react-query": "^3.39.2",
     "react-table": "^7.8.0",
     "react-tabs": "^6.0.0",
