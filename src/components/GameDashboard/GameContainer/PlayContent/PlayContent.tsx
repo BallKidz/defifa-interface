@@ -6,13 +6,14 @@ import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
 import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
+import { CompletePhaseContent } from "./CompletePhase/CompletePhaseContent";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
   [DefifaGamePhase.MINT]: MintPhaseContent,
   [DefifaGamePhase.REFUND]: RefundPhaseContent,
   [DefifaGamePhase.SCORING]: ScoringPhaseContent,
-  [DefifaGamePhase.COMPLETE]: RefundPhaseContent,
+  [DefifaGamePhase.COMPLETE]: CompletePhaseContent,
   [DefifaGamePhase.NO_CONTEST]: RefundPhaseContent,
   [DefifaGamePhase.NO_CONTEST_INEVITABLE]: RefundPhaseContent,
 };

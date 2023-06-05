@@ -1,17 +1,25 @@
 import Container from "components/UI/Container";
 import { useGameContext } from "contexts/GameContext";
+import { BigNumber } from "ethers";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
-import { ActionContainer } from "../../ActionContainer/ActionContainer";
-import { MintCard } from "./MintCard";
-import { RefundActions } from "./RefundActions";
-import { useMintSelection } from "./useMintSelection";
-import { useMyPicks } from "./useMyPicks";
+import { useAmountRedeemed } from "hooks/read/useAmountRedeemed";
+import { usePaymentTerminalOverflow } from "hooks/read/usePaymentTerminalOverflow";
 import { useAccount } from "wagmi";
+import { ActionContainer } from "../../ActionContainer/ActionContainer";
+import { useMintSelection } from "../MintPhase/useMintSelection";
+import { useMyPicks } from "../MintPhase/useMyPicks";
+import { RedeemPicksActions } from "./RedeemPicksActions";
+import { RedeemCard } from "./RedeemCard";
 
-export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
+export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
+  const { nfts, gameId, currentFundingCycle } = useGameContext();
+
   const { data: picks, isLoading: picksLoading } = useMyPicks();
-  const { nfts } = useGameContext();
+  const { data: overflow } = usePaymentTerminalOverflow(gameId);
+  const { data: amountRedeemed } = useAmountRedeemed(
+    currentFundingCycle?.metadata.dataSource
+  );
 
   const {
     incrementTierSelection,
@@ -79,18 +87,21 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
     <ActionContainer
       renderActions={
         totalSelected && !disabled
-          ? () => <RefundActions tokenIdsToRedeem={tokenIdsToRedeem} />
+          ? () => <RedeemPicksActions tokenIdsToRedeem={tokenIdsToRedeem} />
           : undefined
       }
     >
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
         {pickedNfts?.map((t: any) => (
-          <MintCard
+          <RedeemCard
             key={t.id}
+            tokenIds={mintedTokens
+              ?.filter((token: any) => token.number.startsWith(t.id))
+              .map((token: any) => token.number)}
+            overflow={overflow ?? BigNumber.from(0)}
+            amountRedeemed={amountRedeemed ?? BigNumber.from(0)}
             imageSrc={t.teamImage}
-            mintedCount={pickCounts?.[t.id] ?? 0}
             selectedCount={selectedTiers?.[t.id]?.count ?? 0}
-            selectionLimit={pickCounts?.[t.id] ?? 0} // limit selection to the number of mints
             onIncrement={() => incrementTierSelection(t.id)}
             onDecrement={() => decrementTierSelection(t.id)}
             disabled={disabled}
