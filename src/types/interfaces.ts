@@ -93,7 +93,7 @@ export interface DefifaTimeData {
 
 export interface DefifaTierRedemptionWeight {
   id: number;
-  redemptionWeight: number;
+  redemptionWeight: BigNumber;
 }
 
 export enum ScorecardProposalState {

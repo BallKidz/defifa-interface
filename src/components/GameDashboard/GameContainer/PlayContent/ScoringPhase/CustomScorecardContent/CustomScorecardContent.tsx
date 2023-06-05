@@ -6,9 +6,10 @@ import { useState } from "react";
 import { DefifaTierRedemptionWeight } from "types/interfaces";
 import { percentageToRedemptionWeight } from "utils/defifa";
 import { CustomScorecardActions } from "./CustomScorecardActions";
+import { BigNumber } from "ethers";
 
 interface ScorecardMap {
-  [key: string]: number; // score
+  [key: string]: number; // score percentage
 }
 
 export function CustomScorecardContent() {
