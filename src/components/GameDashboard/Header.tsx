@@ -3,7 +3,7 @@ import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance"
 import { PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
 import { fromWad } from "utils/format/formatNumber";
-import { DefifaGamePhase } from "./QueueNextPhaseButton/useCurrentGamePhase";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 
 const SUCCESS_STYLE = "border-lime-900 text-lime-400 shadow-glowGreen";
 const NEUTRAL_STYLE = "border-neutral-500";
@@ -39,10 +39,10 @@ function GameStats() {
     return <div className="text-center">...</div>;
 
   if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
-  
+
   return (
     <div className="flex justify-center gap-4">
-      <Pill category="success">
+      <Pill category={treasuryAmount.eq(0) ? "default" : "success"}>
         <span className="font-bold">{fromWad(treasuryAmount)} ETH</span> in pot
       </Pill>
 

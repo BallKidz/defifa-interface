@@ -1,7 +1,7 @@
 import {
   DefifaGamePhase,
   useCurrentGamePhase,
-} from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
+} from "hooks/read/useCurrentGamePhase";
 import { useAllDuration } from "hooks/read/AllDurations";
 import { useGameName } from "hooks/read/useGameName";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";

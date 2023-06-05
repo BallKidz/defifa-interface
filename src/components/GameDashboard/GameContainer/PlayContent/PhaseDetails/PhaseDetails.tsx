@@ -1,6 +1,6 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { QueueNextPhaseButton } from "components/GameDashboard/QueueNextPhaseButton/QueueNextPhaseButton";
-import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
+import { QueueNextPhaseButton } from "components/GameDashboard/GameContainer/PlayContent/PhaseDetails/QueueNextPhaseButton/QueueNextPhaseButton";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
 import { useCountdown } from "hooks/useCountdown";
 import { useGameTimes } from "hooks/read/useGameTimes";
@@ -16,7 +16,7 @@ const phaseText = (phase: DefifaGamePhase) => {
     case DefifaGamePhase.REFUND:
       return "Refunds open";
     case DefifaGamePhase.COMPLETE:
-      return "Game over: collect ETH";
+      return "Game over - collect ETH";
     case DefifaGamePhase.NO_CONTEST:
       return "No Contest";
     case DefifaGamePhase.NO_CONTEST_INEVITABLE:

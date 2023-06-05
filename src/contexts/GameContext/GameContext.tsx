@@ -1,4 +1,4 @@
-import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { BigNumber } from "ethers";
 import { createContext, useContext } from "react";
 import {
