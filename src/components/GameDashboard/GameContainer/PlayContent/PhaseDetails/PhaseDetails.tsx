@@ -32,7 +32,7 @@ export function PhaseDetails() {
   const {
     currentPhase,
     currentFundingCycle,
-    loading: { currentFundingCycleLoading },
+    loading: { currentFundingCycleLoading, currentPhaseLoading },
   } = useGameContext();
   const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
   const { data: gameTimes } = useGameTimes();
@@ -87,6 +87,7 @@ export function PhaseDetails() {
               <div>Next phase starting, waiting for next block...</div>
             </div>
           ) : null}
+          {currentFundingCycleLoading || currentPhaseLoading ? "..." : null}
         </div>
 
         {nextPhaseText ? (
