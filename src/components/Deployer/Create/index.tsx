@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { DefifaLaunchProjectData, DefifaTierParams } from "types/interfaces";
+import { DefifaLaunchProjectData, DefifaTierParams } from "types/defifa";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";

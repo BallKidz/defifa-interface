@@ -10,26 +10,26 @@ import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useState } from "react";
-import { ScorecardProposalState } from "types/interfaces";
+import { ProposalState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 
-const stateText = (state: ScorecardProposalState) => {
+const stateText = (state: ProposalState) => {
   switch (state) {
-    case ScorecardProposalState.Pending:
+    case ProposalState.Pending:
       return "Pending (0)";
-    case ScorecardProposalState.Active:
+    case ProposalState.Active:
       return "Active (1)";
-    case ScorecardProposalState.Canceled:
+    case ProposalState.Canceled:
       return "Canceled (2)";
-    case ScorecardProposalState.Defeated:
+    case ProposalState.Defeated:
       return "Canceled (3)";
-    case ScorecardProposalState.Succeeded:
+    case ProposalState.Succeeded:
       return "Succeeded (4)";
-    case ScorecardProposalState.Queued:
+    case ProposalState.Queued:
       return "Queued (5)";
-    case ScorecardProposalState.Expired:
+    case ProposalState.Expired:
       return "Expired (6)";
-    case ScorecardProposalState.Executed:
+    case ProposalState.Executed:
       return "Executed (7)";
     default:
       return "Unknown";
@@ -85,7 +85,7 @@ function ScorecardRow({
         {proposalVotes?.forVotes.toString()} votes (
         {votesRemaining?.toNumber()} more needed)
         {quourumReached &&
-        proposalState === ScorecardProposalState.Succeeded ? (
+        proposalState === ProposalState.Succeeded ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>

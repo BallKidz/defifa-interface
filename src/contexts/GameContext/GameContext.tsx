@@ -1,15 +1,12 @@
-import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { BigNumber } from "ethers";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { createContext, useContext } from "react";
-import {
-  JBFundingCycle,
-  JBFundingCycleMetadata,
-  JBProjectMetadata,
-} from "types/interfaces";
+import { DefifaProjectMetadata } from "types/defifa";
+import { JBFundingCycle, JBFundingCycleMetadata } from "types/juicebox";
 
 type GameContextType = {
   gameId: number;
-  metadata: JBProjectMetadata | undefined;
+  metadata: DefifaProjectMetadata | undefined;
   currentPhase: DefifaGamePhase;
   governor: string | undefined;
   currentFundingCycle:

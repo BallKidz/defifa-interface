@@ -3,7 +3,7 @@ import Button from "components/UI/Button";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
-import { DefifaTierRedemptionWeight } from "types/interfaces";
+import { DefifaTierRedemptionWeight } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 
 export function CustomScorecardActions({

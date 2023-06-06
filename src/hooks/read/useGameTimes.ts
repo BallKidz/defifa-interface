@@ -1,6 +1,6 @@
 import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
-import { DefifaTimeData } from "types/interfaces";
+import { DefifaTimeData } from "types/defifa";
 import { useContractRead } from "wagmi";
 
 export function useGameTimes() {

@@ -1,5 +1,5 @@
 import { useChainData } from "hooks/useChainData";
-import { JBFundingCycle, JBFundingCycleMetadata } from "types/interfaces";
+import { JBFundingCycle, JBFundingCycleMetadata } from "types/juicebox";
 import { useContractRead } from "wagmi";
 
 export function useProjectCurrentFundingCycle(projectId: number) {

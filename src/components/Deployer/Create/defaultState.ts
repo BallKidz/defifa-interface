@@ -7,7 +7,7 @@ import {
 } from "constants/constants";
 import { constants } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
-import { DefifaLaunchProjectData } from "types/interfaces";
+import { DefifaLaunchProjectData } from "types/defifa";
 
 const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
 const DEFAULT_REFUND_DURATION_SECONDS = 60 * 60; // 1 hour

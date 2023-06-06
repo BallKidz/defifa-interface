@@ -1,4 +1,4 @@
-import { DefifaTierParams } from "types/interfaces";
+import { DefifaTierParams } from "types/defifa";
 
 interface EditTierProps {
   tier: DefifaTierParams;

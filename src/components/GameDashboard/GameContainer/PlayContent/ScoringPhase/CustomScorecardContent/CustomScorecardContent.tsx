@@ -3,7 +3,7 @@ import { Input } from "components/UI/Input";
 import { useGameContext } from "contexts/GameContext";
 import Image from "next/image";
 import { useState } from "react";
-import { DefifaTierRedemptionWeight } from "types/interfaces";
+import { DefifaTierRedemptionWeight } from "types/defifa";
 import { percentageToRedemptionWeight } from "utils/defifa";
 import { CustomScorecardActions } from "./CustomScorecardActions";
 import { BigNumber } from "ethers";

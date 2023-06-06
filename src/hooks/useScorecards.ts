@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import request, { gql } from "graphql-request";
-import { DefifaTierRedemptionWeight } from "types/interfaces";
+import { DefifaTierRedemptionWeight } from "types/defifa";
 import { useQuery } from "wagmi";
 import { useChainData } from "./useChainData";
 

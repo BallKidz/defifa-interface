@@ -2,7 +2,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { constants } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { useChainData } from "hooks/useChainData";
-import { DefifaLaunchProjectData } from "types/interfaces";
+import { DefifaLaunchProjectData } from "types/defifa";
 import {
   useAccount,
   useContractWrite,
