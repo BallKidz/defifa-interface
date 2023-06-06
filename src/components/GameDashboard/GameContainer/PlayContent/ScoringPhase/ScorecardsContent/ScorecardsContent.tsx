@@ -43,7 +43,7 @@ function ScorecardRow({
   scorecard: Scorecard;
   onClick?: () => void;
 }) {
-  const { governor } = useGameContext();
+  const { governor, nfts } = useGameContext();
 
   const { data: proposalVotes } = useProposalVotes(
     scorecard.proposalId,
@@ -66,26 +66,27 @@ function ScorecardRow({
   const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
 
   return (
-    <div className="mb-5">
-      <span onClick={onClick} role="button" className="hover:font-bold">
-        Proposal: {scorecard.proposalId.toString()}
-      </span>
-      <div>State: {stateText(proposalState)}</div>
-
+    <div 
+      className="border border-pink-500 rounded-lg shadow p-4 mb-5" 
+      onClick={onClick}>
+      <h2 className="text-xl font-bold mb-4" role="button">
+        Proposed Scorecard
+      </h2>
       <div>
         {scorecard.redemptionTierWeights.map((weight) => (
           <div key={weight.id.toString()}>
-            Tier {weight.id.toString()}:{" "}
+            {nfts.tiers[weight.id-1].teamName}:{" "} {/* tiers 0 indexed */}
             {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
           </div>
         ))}
       </div>
+      <div>State: {stateText(proposalState)}</div>
 
       <div className="flex gap-3 items-center">
-        {proposalVotes?.forVotes.toString()} votes (
+        Current votes: {proposalVotes?.forVotes.toString()}  (
         {votesRemaining?.toNumber()} more needed)
         {quourumReached &&
-        proposalState === ProposalState.Succeeded ? (
+        proposalState === ScorecardProposalState.Succeeded ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
@@ -124,7 +125,7 @@ export function ScorecardsContent() {
   if (isLoading) {
     return <Container>...</Container>;
   }
-  console.log(votes);
+  
   return (
     <ActionContainer
       renderActions={
