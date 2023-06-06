@@ -1,5 +1,3 @@
-// Retreives each NftRewardTier from IPFS given an array of CIDs (IpfsHashes)
-
 import axios from "axios";
 import { BigNumber } from "ethers";
 import { useQuery } from "react-query";
@@ -10,7 +8,7 @@ import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
 
-async function getRewardTierFromIPFS({
+async function fetchDefifaTier({
   tier,
 }: {
   tier: JB721Tier;
@@ -36,7 +34,7 @@ async function getRewardTierFromIPFS({
   };
 }
 
-async function getRewardTierFromSVG({
+async function fetchSVGDefifaTier({
   tier,
 }: {
   tier: JB721Tier;
@@ -65,8 +63,7 @@ async function getRewardTierFromSVG({
   };
 }
 
-// Returns an array of NftRewardTiers
-export default function useNftRewards(tiers: JB721Tier[]) {
+export function useDefifaTiers(tiers: JB721Tier[]) {
   return useQuery(
     "nft-rewards",
     async () => {
@@ -80,11 +77,11 @@ export default function useNftRewards(tiers: JB721Tier[]) {
             tier.encodedIPFSUri ===
             "0x0000000000000000000000000000000000000000000000000000000000000000"
           ) {
-            return getRewardTierFromSVG({
+            return fetchSVGDefifaTier({
               tier,
             });
           } else {
-            return getRewardTierFromIPFS({
+            return fetchDefifaTier({
               tier,
             });
           }

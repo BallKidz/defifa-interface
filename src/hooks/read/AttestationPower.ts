@@ -1,6 +1,6 @@
 import { useGameContext } from "contexts/GameContext";
 import { useEffect, useState } from "react";
-import { DEFAULT_NFT_MAX_SUPPLY } from "../NftRewards";
+import { DEFAULT_NFT_MAX_SUPPLY } from "../useDefifaTiers";
 
 export function useAttestationPower(tierId: number, mintsHeldFromTier: number) {
   const {

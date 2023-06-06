@@ -3,7 +3,7 @@ import { useGameActivity } from "./useGameActivity";
 import { constants } from "ethers";
 import Image from "next/image";
 import moment from "moment";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
 import EnsName from "./EnsName";
 
 interface TransferEvent {

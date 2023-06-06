@@ -1,6 +1,6 @@
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
 import { useAccount } from "wagmi";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { MintCard } from "./MintCard";

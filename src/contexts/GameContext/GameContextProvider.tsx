@@ -3,8 +3,8 @@ import { GameContext } from "./GameContext";
 import { useCurrentGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
 import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
-import useNftRewards from "hooks/NftRewards";
-import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
+import { useDefifaTiers } from "hooks/useDefifaTiers";
+import { useTotalSupply } from "hooks/read/JB721Delegate/useTotalSupply";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
 
@@ -22,9 +22,11 @@ export default function GameContextProvider({
     useGameMetadata(gameId);
   const dataSource = currentFundingCycle?.metadata.dataSource;
 
-  const { data: totalSupply } = useNftRewardsTotalSupply(dataSource);
+  const { data: totalSupply } = useTotalSupply(dataSource);
   const { data: tiersOf, isLoading: tiersOfLoading } = useTiersOf(dataSource);
-  const { data: tiers, isLoading: tiersLoading } = useNftRewards(tiersOf ?? []);
+  const { data: tiers, isLoading: tiersLoading } = useDefifaTiers(
+    tiersOf ?? []
+  );
 
   const { data: governor } = useGovernorForDelegate(dataSource);
 

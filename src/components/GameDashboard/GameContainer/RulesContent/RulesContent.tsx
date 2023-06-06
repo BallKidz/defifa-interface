@@ -28,9 +28,7 @@ export function RulesContent() {
     currentFc?.metadata.dataSource
   );
   console.log("Default beneficiary ", tokenBeneficiary);
-  const { data: nftRewardTiers } = useTiersOf(
-    currentFc?.metadata.dataSource
-  );
+  const { data: nftRewardTiers } = useTiersOf(currentFc?.metadata.dataSource);
   console.log("NFT reward tiers ", nftRewardTiers); // Use this for tier beneficiaries
 
   const { data: gameMetadata } = useGameMetadata(gameId);
