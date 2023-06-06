@@ -1,5 +1,5 @@
-import Navbar from "components/Navbar";
-import Container from "components/UI/Container";
+import Navbar from "components/layout/Navbar";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import Head from "next/head";
 import { GameContainer } from "./GameContainer/GameContainer";

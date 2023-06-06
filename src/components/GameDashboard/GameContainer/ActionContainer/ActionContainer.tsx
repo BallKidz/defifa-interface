@@ -1,4 +1,4 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 
 export function ActionContainer({
   children,

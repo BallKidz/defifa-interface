@@ -57,7 +57,7 @@ export function Modal({
                 </div>
 
                 <div className="mt-4 flex gap-3 justify-end">
-                  <Button variant="secondary">Close</Button>
+                  <Button category="secondary">Close</Button>
 
                   <Button>OK</Button>
                 </div>

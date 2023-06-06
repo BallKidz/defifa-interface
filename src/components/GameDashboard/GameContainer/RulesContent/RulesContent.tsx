@@ -1,36 +1,34 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useDeployerDates } from "hooks/read/DeployerDates";
-import { useGameMetadata } from "hooks/read/GameMetadata";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
+import { useGameMetadata } from "hooks/read/useGameMetadata";
+import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
 import styles from "./index.module.css";
 import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
-import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
+import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
 
 export function RulesContent() {
   const { metadata } = useGameContext();
   const { mintDuration, start, refundDuration } = useDeployerDates("local");
   const { gameId } = useGameContext();
   const { data: currentFc } = useProjectCurrentFundingCycle(gameId);
-  console.log(currentFc.metadata.dataSource);
-  const { data: maxTiers } = useMaxTiers(currentFc.metadata.dataSource);
+
+  const { data: maxTiers } = useMaxTiers(currentFc?.metadata.dataSource);
   console.log("Max tiers ", maxTiers?.toNumber());
   const tierBeneficiary = useTierBeneficiaries(
-    currentFc.metadata.dataSource,
+    currentFc?.metadata.dataSource,
     maxTiers?.toNumber()
   );
   console.log("Reserved tokens per tier ", tierBeneficiary);
   // TODO: loop through tiers and get the max reserved tokens
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
   const tokenBeneficiary = useDefaultTokenBeneficiary(
-    currentFc.metadata.dataSource
+    currentFc?.metadata.dataSource
   );
   console.log("Default beneficiary ", tokenBeneficiary);
-  const { data: nftRewardTiers } = useNftRewardTiersOf(
-    currentFc.metadata.dataSource
-  );
+  const { data: nftRewardTiers } = useTiersOf(currentFc?.metadata.dataSource);
   console.log("NFT reward tiers ", nftRewardTiers); // Use this for tier beneficiaries
 
   const { data: gameMetadata } = useGameMetadata(gameId);
@@ -38,9 +36,9 @@ export function RulesContent() {
   const fillPill = (phase: number) => {
     if (currentFcNumber === phase) {
       return "Active";
-    } else if (currentFcNumber > phase) {
+    } else if (currentFcNumber ?? 0 > phase) {
       return "Completed";
-    } else if (currentFcNumber < phase) {
+    } else if (currentFcNumber ?? 0 < phase) {
       switch (phase) {
         case 1:
           return `${mintDuration.date}`;
@@ -56,7 +54,7 @@ export function RulesContent() {
   };
 
   const pillStyle = (phase: number) => {
-    if (currentFcNumber > phase) {
+    if (currentFcNumber ?? 0 > phase) {
       return styles.completed;
     } else if (currentFcNumber === phase) {
       return styles.active;
@@ -118,7 +116,7 @@ export function RulesContent() {
           {(tokenBeneficiary.data as unknown as string) ===
           "0x0000000000000000000000000000000000000000"
             ? "No playing cards are being allocated to a default beneficiary in this game."
-            : `See contract ${currentFc.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
+            : `See contract ${currentFc?.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
         </p>
       </div>
     </Container>

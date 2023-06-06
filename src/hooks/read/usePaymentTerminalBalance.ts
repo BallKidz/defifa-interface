@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
@@ -13,11 +14,16 @@ export function usePaymentTerminalBalance(gameId: number) {
     args: [],
   });
 
-  return useContractRead({
+  const res = useContractRead({
     addressOrName: storeAddress?.toString() ?? "",
     contractInterface: JBSingleTokenPaymentTerminalStore.interface,
     functionName: "balanceOf",
     args: gameId ? [JBETHPaymentTerminal.address, gameId] : null,
     enabled: !!storeAddress,
   });
+
+  return {
+    ...res,
+    data: res.data as unknown as BigNumber,
+  };
 }

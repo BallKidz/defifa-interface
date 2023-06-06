@@ -1,4 +1,4 @@
-import { ScorecardProposalState } from "types/interfaces";
+import { ProposalState } from "types/defifa";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
@@ -19,6 +19,6 @@ export function useProposalState(
 
   return {
     ...res,
-    data: res.data as unknown as ScorecardProposalState,
+    data: res.data as unknown as ProposalState,
   };
 }

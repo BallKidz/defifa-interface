@@ -10,7 +10,8 @@ export function QueueNextPhaseButton() {
         write?.();
       }}
       size="sm"
-      variant="tertiary"
+      category="tertiary"
+      variant="default"
       loading={isLoading}
     >
       Queue next phase

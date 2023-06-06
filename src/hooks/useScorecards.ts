@@ -1,8 +1,16 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import request, { gql } from "graphql-request";
-import { DefifaTierRedemptionWeight } from "types/interfaces";
+import { DefifaTierRedemptionWeight } from "types/defifa";
 import { useQuery } from "wagmi";
 import { useChainData } from "./useChainData";
+
+// TODO flesh out
+interface Proposal {
+  proposalId: number;
+  calls: {
+    calldata: string;
+  }[];
+}
 
 const proposalsQuery = gql`
   query proposalsQuery($governorAddress: String!) {
@@ -32,19 +40,19 @@ export interface Scorecard {
 }
 [];
 
-function getScoreCardsFromProposals(proposals: any): Scorecard[] {
-  const scoreCards = proposals?.map((proposal: any) => {
+function getScoreCardsFromProposals(proposals: Proposal[]): Scorecard[] {
+  const scoreCards = proposals?.map((proposal) => {
     return {
       proposalId: proposal.proposalId,
-      redemptionTierWeights: proposal.calls.flatMap((call: any) => {
+      redemptionTierWeights: proposal.calls.flatMap((call) => {
         const calldata = call.calldata;
         const decodedCallData = ethers.utils.defaultAbiCoder.decode(
           ["tuple(uint256,uint256)[]"],
           ethers.utils.hexDataSlice(calldata, 4)
-        );
+        ) as BigNumber[][][];
 
-        return decodedCallData[0].map((t: any) => ({
-          id: t[0],
+        return decodedCallData[0].map((t) => ({
+          id: t[0].toNumber(),
           redemptionWeight: t[1],
         }));
       }),
@@ -62,9 +70,13 @@ export function useScorecards(governorAddress: string | undefined) {
     ["scorecards", governorAddress],
     async () => {
       if (!governorAddress) return;
-      const res = await request(graphUrl, proposalsQuery, {
-        governorAddress: governorAddress.toLowerCase(),
-      });
+      const res = await request<{ proposals: Proposal[] }>(
+        graphUrl,
+        proposalsQuery,
+        {
+          governorAddress: governorAddress.toLowerCase(),
+        }
+      );
 
       const scoreCards = getScoreCardsFromProposals(res.proposals);
 

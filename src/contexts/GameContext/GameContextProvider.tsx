@@ -1,11 +1,11 @@
 import { PropsWithChildren } from "react";
 import { GameContext } from "./GameContext";
-import { useCurrentGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
-import { useProjectCurrentFundingCycle } from "hooks/read/ProjectCurrentFundingCycle";
-import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
-import useNftRewards from "hooks/NftRewards";
-import { useNftRewardsTotalSupply } from "hooks/read/NftRewardsTotalSupply";
-import { useGameMetadata } from "hooks/read/GameMetadata";
+import { useCurrentGamePhase } from "hooks/read/useCurrentGamePhase";
+import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
+import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
+import { useDefifaTiers } from "hooks/useDefifaTiers";
+import { useTotalSupply } from "hooks/read/JB721Delegate/useTotalSupply";
+import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
 
 export default function GameContextProvider({
@@ -21,10 +21,13 @@ export default function GameContextProvider({
   const { data: metadata, isLoading: metadataLoading } =
     useGameMetadata(gameId);
   const dataSource = currentFundingCycle?.metadata.dataSource;
-  const { data: totalSupply } = useNftRewardsTotalSupply(dataSource);
-  const { data: tiersOf, isLoading: tiersOfLoading } =
-    useNftRewardTiersOf(dataSource);
-  const { data: tiers, isLoading: tiersLoading } = useNftRewards(tiersOf ?? []);
+
+  const { data: totalSupply } = useTotalSupply(dataSource);
+  const { data: tiersOf, isLoading: tiersOfLoading } = useTiersOf(dataSource);
+  const { data: tiers, isLoading: tiersLoading } = useDefifaTiers(
+    tiersOf ?? []
+  );
+
   const { data: governor } = useGovernorForDelegate(dataSource);
 
   const context = {

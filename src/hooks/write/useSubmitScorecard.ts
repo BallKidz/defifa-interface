@@ -1,5 +1,5 @@
 import { useChainData } from "hooks/useChainData";
-import { DefifaTierRedemptionWeight } from "types/interfaces";
+import { DefifaTierRedemptionWeight } from "types/defifa";
 import {
   useContractWrite,
   usePrepareContractWrite,

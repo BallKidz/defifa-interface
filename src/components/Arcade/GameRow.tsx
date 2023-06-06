@@ -1,14 +1,56 @@
 import {
   DefifaGamePhase,
   useCurrentGamePhase,
-} from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
+} from "hooks/read/useCurrentGamePhase";
 import { useAllDuration } from "hooks/read/AllDurations";
-import { useGameName } from "hooks/read/GameName";
-import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
+import { useGameName } from "hooks/read/useGameName";
+import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { Game } from "hooks/useAllGames";
 import Link from "next/link";
 import { FC } from "react";
 import { fromWad4 } from "utils/format/formatNumber";
+
+const phaseText = (phase?: DefifaGamePhase) => {
+  switch (phase) {
+    case DefifaGamePhase.COUNTDOWN:
+      return "Countdown";
+    case DefifaGamePhase.MINT:
+      return "Minting open";
+    case DefifaGamePhase.REFUND:
+      return "Refunds open";
+    case DefifaGamePhase.COMPLETE:
+      return "Redeem";
+    case DefifaGamePhase.NO_CONTEST:
+      return "No Contest";
+    case DefifaGamePhase.NO_CONTEST_INEVITABLE:
+      return "No Contest Inevitable";
+    case DefifaGamePhase.SCORING:
+      return "Scoring";
+    default:
+      return "Game Over";
+  }
+};
+
+const availableActionsText = (phase?: DefifaGamePhase) => {
+  switch (phase) {
+    case DefifaGamePhase.COUNTDOWN:
+      return "Minting soon";
+    case DefifaGamePhase.MINT:
+      return "Mint | Refund";
+    case DefifaGamePhase.REFUND:
+      return "Keep | Refund";
+    case DefifaGamePhase.COMPLETE:
+      return "Keep | Redeem";
+    case DefifaGamePhase.NO_CONTEST:
+      return "Keep | Refund";
+    case DefifaGamePhase.NO_CONTEST_INEVITABLE:
+      return "Keep | Refund";
+    case DefifaGamePhase.SCORING:
+      return "Score & Attest";
+    default:
+      return "Keep";
+  }
+};
 
 export const GameRow: FC<{ game: Game }> = ({ game }) => {
   const { gameId, name, address } = game;
@@ -19,25 +61,6 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
 
   // const currentDate = new Date(); // Get the current date and time
   const { data: currentPhase } = useCurrentGamePhase(gameId);
-  const isMintPhase = currentPhase === DefifaGamePhase.MINT;
-  const getPhaseText = (): string => {
-    switch (currentPhase) {
-      case DefifaGamePhase.COUNTDOWN:
-        return "Countdown";
-      case DefifaGamePhase.MINT:
-        return "Mint";
-      case DefifaGamePhase.REFUND:
-        return "Refund";
-      case DefifaGamePhase.SCORING:
-        return "Scoring";
-      case DefifaGamePhase.NO_CONTEST_INEVITABLE:
-        return "No Contest Inevitable";
-      case DefifaGamePhase.NO_CONTEST:
-        return "No Contest";
-      default:
-        return "";
-    }
-  };
 
   return (
     <Link href={`/game/${gameId}`}>
@@ -47,14 +70,14 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
           <span>{name !== null ? name : dataSourceName}</span>
         </td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
-          {getPhaseText() === "Mint" ? (
+          {currentPhase === DefifaGamePhase.MINT ? (
             <span>{`Mint until ${date.toLocaleString()}`}</span>
-          ) : getPhaseText() === "No Contest Inevitable" ? (
+          ) : currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
             <span>{"Referee no show"}</span>
-          ) : getPhaseText() === "No Contest" ? (
+          ) : currentPhase === DefifaGamePhase.NO_CONTEST ? (
             <span>{"Referee no show"}</span>
           ) : (
-            <span>{getPhaseText()}</span>
+            <span>{phaseText(currentPhase)}</span>
           )}
         </td>
 
@@ -62,21 +85,7 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
           <span>{fromWad4(treasuryAmount)} Ξ</span>
         </td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
-          {getPhaseText() === "No Contest Inevitable" ? (
-            <span>{"Keep | Refund"}</span>
-          ) : getPhaseText() === "No Contest" ? (
-            <span>{"Keep | Refund"}</span>
-          ) : getPhaseText() === "Scoring" ? (
-            <span>{"Attest & Claim"}</span>
-          ) : getPhaseText() === "Mint" ? (
-            <span>{"Play | Refund"}</span>
-          ) : getPhaseText() === "Refund" ? (
-            <span>{"Keep | Refund"}</span>
-          ) : getPhaseText() === "Countdown" ? (
-            <span>{"Wait to play"}</span>
-          ) : (
-            <span>{getPhaseText()}</span>
-          )}
+          {availableActionsText(currentPhase)}
         </td>
       </tr>
     </Link>

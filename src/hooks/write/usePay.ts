@@ -17,6 +17,7 @@ interface PayParams {
   preferClaimedTokens: boolean;
   memo: string;
   metadata: PayMetadata;
+  onSuccess?: () => void;
 }
 
 interface PayMetadata {
@@ -31,6 +32,7 @@ export function usePay({
   preferClaimedTokens,
   memo,
   metadata,
+  onSuccess,
 }: PayParams) {
   const { address } = useAccount();
   const { gameId } = useGameContext();
@@ -70,6 +72,7 @@ export function usePay({
     hash: data?.hash,
     onSuccess() {
       toastSuccess("Mint complete");
+      onSuccess?.();
     },
   });
 

@@ -1,6 +1,5 @@
-import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
-import { JBFundingCycle, JBFundingCycleMetadata } from "types/interfaces";
+import { JBFundingCycle, JBFundingCycleMetadata } from "types/juicebox";
 import { useContractRead } from "wagmi";
 
 export function useProjectCurrentFundingCycle(projectId: number) {
@@ -17,9 +16,11 @@ export function useProjectCurrentFundingCycle(projectId: number) {
 
   return {
     ...res,
-    data: res.data as unknown as {
-      fundingCycle: JBFundingCycle;
-      metadata: JBFundingCycleMetadata;
-    },
+    data: res.data as unknown as
+      | {
+          fundingCycle: JBFundingCycle;
+          metadata: JBFundingCycleMetadata;
+        }
+      | undefined,
   };
 }

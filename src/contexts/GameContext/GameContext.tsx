@@ -1,15 +1,12 @@
-import { DefifaGamePhase } from "components/GameDashboard/QueueNextPhaseButton/useCurrentGamePhase";
 import { BigNumber } from "ethers";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { createContext, useContext } from "react";
-import {
-  JBFundingCycle,
-  JBFundingCycleMetadata,
-  JBProjectMetadata,
-} from "types/interfaces";
+import { DefifaProjectMetadata, DefifaTier } from "types/defifa";
+import { JBFundingCycle, JBFundingCycleMetadata } from "types/juicebox";
 
 type GameContextType = {
   gameId: number;
-  metadata: JBProjectMetadata | undefined;
+  metadata: DefifaProjectMetadata | undefined;
   currentPhase: DefifaGamePhase;
   governor: string | undefined;
   currentFundingCycle:
@@ -19,7 +16,7 @@ type GameContextType = {
       }
     | undefined;
   nfts: {
-    tiers: any;
+    tiers: DefifaTier[] | undefined | null;
     totalSupply: BigNumber | undefined;
   };
   loading: {

@@ -1,18 +1,15 @@
-import { colors } from "constants/colors";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import React, {
   PropsWithChildren,
   ReactElement,
   useMemo,
   useState,
 } from "react";
-
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import styles from "./Content.module.css";
 
 const Content: React.FC<
   PropsWithChildren<{
     open?: boolean;
-    color?: string;
     title?: string;
     socials?: boolean;
     createIcon?: boolean;
@@ -24,7 +21,7 @@ const Content: React.FC<
       loading: boolean;
     };
   }>
-> = ({ color = colors.purple, ...props }) => {
+> = ({ ...props }) => {
   const [displayContent, setDisplayContent] = useState<boolean>(
     props?.open ?? false
   );
@@ -34,14 +31,13 @@ const Content: React.FC<
       <h1
         className={styles.contentTitle}
         style={{
-          color: displayContent ? colors.gold : color,
           fontSize: `${props.fontSize}px`,
         }}
       >
         {props.title}
       </h1>
     );
-  }, [color, displayContent, props.fontSize, props.title]);
+  }, [props.fontSize, props.title]);
 
   return (
     <>

@@ -1,9 +1,9 @@
 import AllGames from "components/Arcade/TurnOn";
-import Navbar from "components/Navbar";
-import Container from "components/UI/Container";
+import Navbar from "components/layout/Navbar";
+import Container from "components/layout/Container";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Footer from "../components/Footer";
+import Footer from "../components/layout/Footer";
 
 const Home: NextPage = () => {
   return (

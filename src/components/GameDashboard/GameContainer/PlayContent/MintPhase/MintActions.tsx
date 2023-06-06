@@ -8,6 +8,7 @@ import { usePay } from "hooks/write/usePay";
 import { TierSelection } from "./useMintSelection";
 import { useAccount } from "wagmi";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export function MintActions({
   selectedTiers,
@@ -15,7 +16,10 @@ export function MintActions({
   selectedTiers: TierSelection | undefined;
 }) {
   const [claimVotes, setClaimVotes] = useState(false);
+
   const { address } = useAccount();
+  const router = useRouter();
+
   const totalSelected = Object.values(selectedTiers ?? {}).reduce(
     (acc, curr) => acc + curr.count,
     0
@@ -42,6 +46,9 @@ export function MintActions({
         ? address ?? constants.AddressZero
         : constants.AddressZero,
       tierIdsToMint,
+    },
+    onSuccess() {
+      router.reload();
     },
   });
 

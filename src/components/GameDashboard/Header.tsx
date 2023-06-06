@@ -1,21 +1,22 @@
 import { useGameContext } from "contexts/GameContext";
-import { usePaymentTerminalBalance } from "hooks/read/PaymentTerminalBalance";
+import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
 import { fromWad } from "utils/format/formatNumber";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 
 const SUCCESS_STYLE = "border-lime-900 text-lime-400 shadow-glowGreen";
 const NEUTRAL_STYLE = "border-neutral-500";
 
 function Pill({
   children,
-  variant = "default",
-}: PropsWithChildren<{ variant?: "success" | "default" }>) {
+  category = "default",
+}: PropsWithChildren<{ category?: "success" | "default" }>) {
   return (
     <span
       className={twMerge(
         "px-3 py-1 rounded-full text-sm font-medium border",
-        variant === "success" ? SUCCESS_STYLE : NEUTRAL_STYLE
+        category === "success" ? SUCCESS_STYLE : NEUTRAL_STYLE
       )}
     >
       {children}
@@ -26,6 +27,7 @@ function Pill({
 function GameStats() {
   const {
     nfts: { totalSupply },
+    currentPhase,
   } = useGameContext();
   const { gameId } = useGameContext();
   const { data: treasuryAmount, isLoading: isTerminalLoading } =
@@ -36,9 +38,11 @@ function GameStats() {
   if (isTerminalLoading || !totalSupply)
     return <div className="text-center">...</div>;
 
+  if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
+
   return (
     <div className="flex justify-center gap-4">
-      <Pill variant="success">
+      <Pill category={treasuryAmount.eq(0) ? "default" : "success"}>
         <span className="font-bold">{fromWad(treasuryAmount)} ETH</span> in pot
       </Pill>
 
@@ -63,7 +67,7 @@ export function Header() {
 
   return (
     <header>
-      <h1 className="text-5xl text-center mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)]">
+      <h1 className="text-5xl text-center mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-3xl mx-auto">
         {metadata?.name}
       </h1>
       <GameStats />

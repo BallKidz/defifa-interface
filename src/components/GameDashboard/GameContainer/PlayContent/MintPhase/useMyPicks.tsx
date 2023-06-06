@@ -33,7 +33,13 @@ export function useMyPicks() {
   return useQuery(
     ["picks", address, gameId],
     () => {
-      return request(subgraph, query, {
+      return request<{
+        contracts: {
+          mintedTokens: {
+            number: string;
+          }[];
+        }[];
+      }>(subgraph, query, {
         owner: address?.toLowerCase(),
         gameId: gameId.toString(),
       });

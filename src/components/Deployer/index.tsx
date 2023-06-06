@@ -1,5 +1,5 @@
-import Container from "components/UI/Container";
-import Navbar from "../Navbar";
+import Container from "components/layout/Container";
+import Navbar from "../layout/Navbar";
 import DeployerCreate from "./Create";
 
 const DeployerWrapper = () => {

@@ -27,7 +27,7 @@ export async function uploadToIPFS(file: File) {
   }
 }
 
-export async function uploadJsonToIpfs(jsonData: any) {
+export async function uploadJsonToIpfs(jsonData: { [k: string]: unknown }) {
   try {
     // Convert the JSON data to a Buffer
     const buffer = Buffer.from(JSON.stringify(jsonData));

@@ -1,9 +1,9 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameActivity } from "./useGameActivity";
 import { constants } from "ethers";
 import Image from "next/image";
 import moment from "moment";
-import { ONE_BILLION } from "hooks/NftRewards";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
 import EnsName from "./EnsName";
 
 interface TransferEvent {
@@ -35,9 +35,9 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
     <div className="flex justify-between">
       <div>
         <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
-        {transferEvent.from.id && <EnsName address={transferEvent.from.id} />}
-        {!transferEvent.from.id && <div>{transferEvent.from.id}</div>}
-        
+          {transferEvent.from.id && <EnsName address={transferEvent.from.id} />}
+          {!transferEvent.from.id && <div>{transferEvent.from.id}</div>}
+
           <div>
             Minted {transferEvent.token.metadata.name}{" "}
             {moment(parseInt(transferEvent.timestamp) * 1000).fromNow()}
@@ -61,8 +61,8 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
     <div className="flex justify-between">
       <div>
         <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
-        {transferEvent.to.id && <EnsName address={transferEvent.to.id} />}
-        {!transferEvent.to.id && <div>{transferEvent.to.id}</div>}
+          {transferEvent.to.id && <EnsName address={transferEvent.to.id} />}
+          {!transferEvent.to.id && <div>{transferEvent.to.id}</div>}
           <div>
             Minted {transferEvent.token.metadata.name}{" "}
             {moment(parseInt(transferEvent.timestamp) * 1000).fromNow()}
@@ -118,8 +118,10 @@ export function ActivityContent() {
         (activityEvent as ActivityEvent).nonZeroId = toId;
       }
 
-      obj.tier = Math.floor(parseInt(obj.token.number) / ONE_BILLION);
-      
+      obj.tier = Math.floor(
+        parseInt(obj.token.number) / DEFAULT_NFT_MAX_SUPPLY
+      );
+
       return obj;
     }
   );

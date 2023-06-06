@@ -42,7 +42,6 @@ export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
   },
   DefifaGovernor: {
     interface: DefifaGovernor.abi,
-    address: "0x", // TODO
   },
   DefifaDeployer: {
     address: "0x5e49F480f2Cdf6e638d0aBB7faa703e6aBAD46d1",

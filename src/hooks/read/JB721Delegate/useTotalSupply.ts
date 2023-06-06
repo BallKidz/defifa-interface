@@ -2,7 +2,7 @@ import { BigNumber, constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
-export function useNftRewardsTotalSupply(
+export function useTotalSupply(
   dataSourceAddress: string | undefined
 ) {
   const { chainData } = useChainData();

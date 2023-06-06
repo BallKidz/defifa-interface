@@ -1,11 +1,10 @@
 import axios from "axios";
+import { JUICEBOX_PROJECT_METADATA_DOMAIN } from "constants/constants";
 import { useChainData } from "hooks/useChainData";
 import { useQuery } from "react-query";
-import { JBProjectMetadata } from "types/interfaces";
+import { DefifaProjectMetadata } from "types/defifa";
 import { getIpfsUrl } from "utils/ipfs";
 import { useContractRead } from "wagmi";
-
-const METADATA_DOMAIN = 0;
 
 export function useGameMetadata(projectId: number) {
   const { chainData } = useChainData();
@@ -14,7 +13,7 @@ export function useGameMetadata(projectId: number) {
     addressOrName: chainData.JBProjects.address,
     contractInterface: chainData.JBProjects.interface,
     functionName: "metadataContentOf",
-    args: [projectId, METADATA_DOMAIN],
+    args: [projectId, JUICEBOX_PROJECT_METADATA_DOMAIN],
     chainId: chainData.chainId,
   });
 
@@ -23,7 +22,9 @@ export function useGameMetadata(projectId: number) {
     async () => {
       if (!metadataCid || typeof metadataCid !== "string") return;
 
-      const res = await axios.get<JBProjectMetadata>(getIpfsUrl(metadataCid));
+      const res = await axios.get<DefifaProjectMetadata>(
+        getIpfsUrl(metadataCid)
+      );
       return res.data;
     },
     {

@@ -1,29 +1,19 @@
+import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
+import { DefifaTimeData } from "types/defifa";
 import { useContractRead } from "wagmi";
 
-export enum DefifaGamePhase {
-  COUNTDOWN,
-  MINT,
-  REFUND,
-  SCORING,
-  NO_CONTEST_INEVITABLE,
-  NO_CONTEST,
-}
-
-export function useCurrentGamePhase(gameId: number) {
+export function useGameTimes() {
   const { chainData } = useChainData();
+  const { gameId } = useGameContext();
 
   const res = useContractRead({
     addressOrName: chainData.DefifaDeployer.address,
     contractInterface: chainData.DefifaDeployer.interface,
-    functionName: "currentGamePhaseOf",
+    functionName: "timesFor",
     args: gameId,
     chainId: chainData.chainId,
-    watch: true,
   });
 
-  return {
-    ...res,
-    data: res.data as unknown as DefifaGamePhase,
-  };
+  return { ...res, data: res.data as unknown as DefifaTimeData };
 }

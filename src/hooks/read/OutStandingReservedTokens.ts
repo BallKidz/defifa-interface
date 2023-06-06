@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import { useProvider } from "wagmi";
 import { useChainData } from "../useChainData";
+import { DefifaConfig } from "config/types";
 
 export function useOutstandingNumber() {
   const provider = useProvider();
@@ -26,7 +27,7 @@ export interface JBTiered721MintReservesForTiersData {
 
 export function getOutstandingNumberForAllTiers(
   provider: ethers.providers.Provider,
-  chainData: any,
+  chainData: DefifaConfig,
   dataSourceAddress?: string
 ): Promise<JBTiered721MintReservesForTiersData[]> {
   const contract = new ethers.Contract(

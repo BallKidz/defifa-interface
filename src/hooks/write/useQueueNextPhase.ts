@@ -1,6 +1,7 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
+import { toastError, toastSuccess } from "utils/toast";
 import {
   useAccount,
   useContractWrite,
@@ -18,17 +19,22 @@ export function useQueueNextPhase(simulate = false) {
     addressOrName: chainData.DefifaDeployer.address,
     contractInterface: chainData.DefifaDeployer.interface,
     functionName: "queueNextPhaseOf",
-    overrides: { gasLimit: 210000 },
     args: [gameId],
     chainId: chainData.chainId,
-    onError: (error) => {
-      console.error(error);
-    },
   });
 
   const { data, write, error, isError } = useContractWrite(config);
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      toastSuccess("Next phase queued");
+    },
+    onError: (error) => {
+      toastError("Failed to queue next phase");
+      console.error(error);
+    },
+  });
 
   return {
     data,

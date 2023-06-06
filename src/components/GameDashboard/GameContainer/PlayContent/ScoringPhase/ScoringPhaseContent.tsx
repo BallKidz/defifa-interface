@@ -1,4 +1,4 @@
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { CustomScorecardContent } from "./CustomScorecardContent/CustomScorecardContent";
@@ -18,9 +18,9 @@ export function ScoringPhaseContent() {
             <a
               className={twJoin(
                 selectedTab === "scorecards"
-                  ? "underline font-medium text-gray-50"
-                  : "text-gray-400",
-                "cursor-pointer hover:text-gray-300"
+                  ? "underline font-medium text-neutral-50"
+                  : "text-neutral-400",
+                "cursor-pointer hover:text-neutral-300"
               )}
               onClick={() => setSelectedTab("scorecards")}
             >
@@ -31,9 +31,9 @@ export function ScoringPhaseContent() {
             <a
               className={twJoin(
                 selectedTab === "customscorecard"
-                  ? "underline font-medium text-gray-50"
-                  : "text-gray-400",
-                "cursor-pointer hover:text-gray-300"
+                  ? "underline font-medium text-neutral-50"
+                  : "text-neutral-400",
+                "cursor-pointer hover:text-neutral-300"
               )}
               onClick={() => setSelectedTab("customscorecard")}
             >
@@ -44,9 +44,9 @@ export function ScoringPhaseContent() {
             <a
               className={twJoin(
                 selectedTab === "mypicks"
-                  ? "underline font-medium text-gray-50"
-                  : "text-gray-400",
-                "cursor-pointer hover:text-gray-300"
+                  ? "underline font-medium text-neutral-50"
+                  : "text-neutral-400",
+                "cursor-pointer hover:text-neutral-300"
               )}
               onClick={() => setSelectedTab("mypicks")}
             >

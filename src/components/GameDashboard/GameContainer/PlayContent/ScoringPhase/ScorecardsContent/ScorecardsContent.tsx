@@ -1,39 +1,35 @@
 import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
-import Container from "components/UI/Container";
+import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
-import { ONE_BILLION } from "hooks/NftRewards";
 import { useProposalState } from "hooks/read/ProposalState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
-import { useQuorum } from "hooks/read/Quorum";
 import { useAccountVotes } from "hooks/read/useGetVotes";
+import { useQuorum } from "hooks/read/useQuorum";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
-import { useApproveScorecard } from "hooks/write/useApproveScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
+import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useState } from "react";
-import { ScorecardProposalState } from "types/interfaces";
+import { ProposalState } from "types/defifa";
+import { redemptionWeightToPercentage } from "utils/defifa";
 
-const redemptionRateToPercentage = (redemptionRate: number) => {
-  return redemptionRate === 0 ? 0 : (redemptionRate / ONE_BILLION) * 100;
-};
-
-const stateText = (state: ScorecardProposalState) => {
+const stateText = (state: ProposalState) => {
   switch (state) {
-    case ScorecardProposalState.Pending:
+    case ProposalState.Pending:
       return "Pending (0)";
-    case ScorecardProposalState.Active:
+    case ProposalState.Active:
       return "Active (1)";
-    case ScorecardProposalState.Canceled:
+    case ProposalState.Canceled:
       return "Canceled (2)";
-    case ScorecardProposalState.Defeated:
+    case ProposalState.Defeated:
       return "Canceled (3)";
-    case ScorecardProposalState.Succeeded:
+    case ProposalState.Succeeded:
       return "Succeeded (4)";
-    case ScorecardProposalState.Queued:
+    case ProposalState.Queued:
       return "Queued (5)";
-    case ScorecardProposalState.Expired:
+    case ProposalState.Expired:
       return "Expired (6)";
-    case ScorecardProposalState.Executed:
+    case ProposalState.Executed:
       return "Executed (7)";
     default:
       return "Unknown";
@@ -47,13 +43,13 @@ function ScorecardRow({
   scorecard: Scorecard;
   onClick?: () => void;
 }) {
-  const { governor } = useGameContext();
+  const { governor, nfts } = useGameContext();
 
   const { data: proposalVotes } = useProposalVotes(
     scorecard.proposalId,
     governor
   );
-  const { write, isLoading } = useApproveScorecard(
+  const { write, isLoading } = useRatifyScorecard(
     scorecard.redemptionTierWeights,
     governor
   );
@@ -70,26 +66,27 @@ function ScorecardRow({
   const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
 
   return (
-    <div className="mb-5">
-      <span onClick={onClick} role="button" className="hover:font-bold">
-        Proposal: {scorecard.proposalId.toString()}
-      </span>
-      <div>State: {stateText(proposalState)}</div>
-
+    <div
+      className="border border-pink-500 rounded-lg shadow p-4 mb-5"
+      onClick={onClick}
+    >
+      <h2 className="text-xl font-bold mb-4" role="button">
+        Proposed Scorecard
+      </h2>
       <div>
         {scorecard.redemptionTierWeights.map((weight) => (
           <div key={weight.id.toString()}>
-            Tier {weight.id.toString()}:{" "}
-            {redemptionRateToPercentage(weight.redemptionWeight).toString()}%
+            {nfts?.tiers?.[weight.id - 1].teamName}: {/* tiers 0 indexed */}
+            {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
           </div>
         ))}
       </div>
+      <div>State: {stateText(proposalState)}</div>
 
       <div className="flex gap-3 items-center">
-        {proposalVotes?.forVotes.toString()} attestations (
+        Current votes: {proposalVotes?.forVotes.toString()} (
         {votesRemaining?.toNumber()} more needed)
-        {quourumReached &&
-        proposalState === ScorecardProposalState.Succeeded ? (
+        {quourumReached && proposalState === ProposalState.Succeeded ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
@@ -128,7 +125,7 @@ export function ScorecardsContent() {
   if (isLoading) {
     return <Container>...</Container>;
   }
-  console.log(votes);
+
   return (
     <ActionContainer
       renderActions={
@@ -137,7 +134,7 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      <div className="mb-7 flex flex-col gap-2 max-w-prose">
+      <div className="mb-7 flex flex-col gap-2">
         <p>
           A Scorecard proposes each Pick's redemption value. Players use their
           voting power to vote for a Scorecard. The first Scorecard to reach
