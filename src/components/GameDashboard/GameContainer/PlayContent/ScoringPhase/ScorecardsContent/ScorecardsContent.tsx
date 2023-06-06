@@ -4,11 +4,11 @@ import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useProposalState } from "hooks/read/ProposalState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
-import { useQuorum } from "hooks/read/useQuorum";
 import { useAccountVotes } from "hooks/read/useGetVotes";
+import { useQuorum } from "hooks/read/useQuorum";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
-import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
+import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useState } from "react";
 import { ProposalState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
@@ -66,16 +66,17 @@ function ScorecardRow({
   const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
 
   return (
-    <div 
-      className="border border-pink-500 rounded-lg shadow p-4 mb-5" 
-      onClick={onClick}>
+    <div
+      className="border border-pink-500 rounded-lg shadow p-4 mb-5"
+      onClick={onClick}
+    >
       <h2 className="text-xl font-bold mb-4" role="button">
         Proposed Scorecard
       </h2>
       <div>
         {scorecard.redemptionTierWeights.map((weight) => (
           <div key={weight.id.toString()}>
-            {nfts.tiers[weight.id-1].teamName}:{" "} {/* tiers 0 indexed */}
+            {nfts?.tiers?.[weight.id - 1].teamName}: {/* tiers 0 indexed */}
             {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
           </div>
         ))}
@@ -83,10 +84,9 @@ function ScorecardRow({
       <div>State: {stateText(proposalState)}</div>
 
       <div className="flex gap-3 items-center">
-        Current votes: {proposalVotes?.forVotes.toString()}  (
+        Current votes: {proposalVotes?.forVotes.toString()} (
         {votesRemaining?.toNumber()} more needed)
-        {quourumReached &&
-        proposalState === ScorecardProposalState.Succeeded ? (
+        {quourumReached && proposalState === ProposalState.Succeeded ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
@@ -125,7 +125,7 @@ export function ScorecardsContent() {
   if (isLoading) {
     return <Container>...</Container>;
   }
-  
+
   return (
     <ActionContainer
       renderActions={
