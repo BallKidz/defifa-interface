@@ -4,10 +4,14 @@ import { useGameTimes } from "hooks/read/useGameTimes";
 
 export function CountdownPhaseContent() {
   const { data, isLoading } = useGameTimes();
-  const mintStart = new Date(
-    (data?.start ?? 0 - data?.mintDuration ?? 0 - data?.refundDuration ?? 0) *
-      1000
-  );
+  const mintStart = data
+    ? new Date(
+        (data?.start ??
+          0 - data?.mintDuration ??
+          0 - data?.refundDuration ??
+          0) * 1000
+      )
+    : undefined;
 
   const { timeRemaining } = useCountdown(mintStart);
 
