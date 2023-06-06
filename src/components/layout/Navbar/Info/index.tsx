@@ -17,13 +17,12 @@ const Info = () => {
         </Link>
 
         <Socials />
-
         <Link href="/create">
           <a className="text-sm flex gap-2 items-center font-medium hover:underline">
             Create game <ArrowRightIcon className="h-4 w-4" />
           </a>
         </Link>
-        <ConnectWarpcast />
+        {/* <ConnectWarpcast /> */}
       </div>
 
       <Wallet />

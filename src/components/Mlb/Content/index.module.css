@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adjusted gap value, half of the previous value */
+}
+
+.container p {
+  color: var(--violet);
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.container a {
+  color: var(--violet);
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    gap: 7.5px; /* Adjusted gap value, half of the previous value */
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .container {
+    justify-content: center;
+  }
+}
