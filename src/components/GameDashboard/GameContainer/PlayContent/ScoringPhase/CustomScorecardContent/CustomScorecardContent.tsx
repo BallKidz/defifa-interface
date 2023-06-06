@@ -6,7 +6,6 @@ import { useState } from "react";
 import { DefifaTierRedemptionWeight } from "types/defifa";
 import { percentageToRedemptionWeight } from "utils/defifa";
 import { CustomScorecardActions } from "./CustomScorecardActions";
-import { BigNumber } from "ethers";
 
 interface ScorecardMap {
   [key: string]: number; // score percentage
@@ -29,7 +28,7 @@ export function CustomScorecardContent() {
   }
 
   const scorecard: DefifaTierRedemptionWeight[] =
-    tiers?.map((t: any) => {
+    tiers?.map((t) => {
       const scorePercentage = scorecardMap[t.id] ?? 0;
       return {
         id: t.id,
@@ -49,7 +48,7 @@ export function CustomScorecardContent() {
             Give points to each Pick and submit your own scorecard.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-            {tiers?.map((t: any) => (
+            {tiers?.map((t) => (
               <div
                 key={t.id}
                 className="relative border border-gray-800 rounded-md max-w-[500px] mx-auto"

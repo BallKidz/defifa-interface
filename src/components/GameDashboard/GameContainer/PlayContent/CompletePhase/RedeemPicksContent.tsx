@@ -8,8 +8,8 @@ import { useAccount } from "wagmi";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { useMintSelection } from "../MintPhase/useMintSelection";
 import { useMyPicks } from "../MintPhase/useMyPicks";
-import { RedeemPicksActions } from "./RedeemPicksActions";
 import { RedeemCard } from "./RedeemCard";
+import { RedeemPicksActions } from "./RedeemPicksActions";
 
 export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
@@ -30,9 +30,11 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
 
   const mintedTokens = picks?.contracts?.[0]?.mintedTokens ?? [];
   const pickCounts = mintedTokens.reduce(
-    (acc: { [k: string]: number }, token: any) => {
-      const tierId = Math.floor(token.number / DEFAULT_NFT_MAX_SUPPLY);
-      const count = acc[tierId] ? acc[tierId] + 1 : 1;
+    (acc: { [k: string]: number }, token) => {
+      const tierId = Math.floor(
+        parseInt(token.number) / DEFAULT_NFT_MAX_SUPPLY
+      );
+      const count = (acc[tierId] ?? 0) + 1;
       return {
         ...acc,
         [tierId]: count,
@@ -41,15 +43,15 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
     {}
   );
 
-  const pickedNfts = nfts.tiers?.filter((nft: any) =>
+  const pickedNfts = nfts.tiers?.filter((nft) =>
     Object.keys(pickCounts).includes(nft.id.toString())
   );
 
   const tokenIdsToRedeem = Object.keys(selectedTiers ?? {}).reduce(
     (acc: string[], curr) => {
       const tokenIds = mintedTokens
-        .filter((token: any) => token.number.startsWith(curr))
-        .map((token: any) => token.number)
+        .filter((token) => token.number.startsWith(curr))
+        .map((token) => token.number)
         .filter((number: string) => !acc.includes(number))
         .slice(0, selectedTiers?.[curr]?.count ?? 0);
 
@@ -92,18 +94,18 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
       }
     >
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-        {pickedNfts?.map((t: any) => (
+        {pickedNfts?.map((t) => (
           <RedeemCard
             key={t.id}
             tokenIds={mintedTokens
-              ?.filter((token: any) => token.number.startsWith(t.id))
-              .map((token: any) => token.number)}
+              ?.filter((token) => token.number.startsWith(t.id.toString()))
+              .map((token) => token.number)}
             overflow={overflow ?? BigNumber.from(0)}
             amountRedeemed={amountRedeemed ?? BigNumber.from(0)}
             imageSrc={t.teamImage}
             selectedCount={selectedTiers?.[t.id]?.count ?? 0}
-            onIncrement={() => incrementTierSelection(t.id)}
-            onDecrement={() => decrementTierSelection(t.id)}
+            onIncrement={() => incrementTierSelection(t.id.toString())}
+            onDecrement={() => decrementTierSelection(t.id.toString())}
             disabled={disabled}
           />
         ))}

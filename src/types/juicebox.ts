@@ -1,5 +1,3 @@
-// Splits as they are given to transactions such as reconfigureFundingCyclesOf
-
 import { BigNumber } from "ethers";
 
 export interface JBProjectMetadataParams {
@@ -67,4 +65,22 @@ export type JBFundingCycle = {
   basedOn: BigNumber;
   start: BigNumber;
   metadata: BigNumber; // encoded FundingCycleMetadata
+};
+
+export interface JB721TierParams {
+  allowManualMint: boolean;
+  category: number; // 1
+  encodedIPFSUri: string; // encoded link to the rewardTier on IPFS
+  initialQuantity: BigNumber; // uint64
+  reservedRate: BigNumber;
+  reservedTokenBeneficiary: string;
+  transfersPausable: boolean;
+  votingUnits: BigNumber;
+}
+
+// Tiers as they are stored on-chain.
+export type JB721Tier = JB721TierParams & {
+  id: BigNumber;
+  remainingQuantity?: BigNumber;
+  resolvedUri?: string | null;
 };

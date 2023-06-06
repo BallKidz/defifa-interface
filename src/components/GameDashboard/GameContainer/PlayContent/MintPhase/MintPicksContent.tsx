@@ -41,14 +41,14 @@ export function MintPicksContent() {
         {tiersLoading || currentFundingCycleLoading ? (
           <span>...</span>
         ) : (
-          tiers?.map((t: any) => (
+          tiers?.map((t) => (
             <MintCard
               key={t.id}
               imageSrc={t.teamImage}
               mintedCount={t.minted}
               selectedCount={selectedTiers?.[t.id]?.count ?? 0}
-              onIncrement={() => incrementTierSelection(t.id)}
-              onDecrement={() => decrementTierSelection(t.id)}
+              onIncrement={() => incrementTierSelection(t.id.toString())}
+              onDecrement={() => decrementTierSelection(t.id.toString())}
             />
           ))
         )}

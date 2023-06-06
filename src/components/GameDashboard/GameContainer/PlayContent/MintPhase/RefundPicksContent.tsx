@@ -1,12 +1,12 @@
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/NftRewards";
+import { useAccount } from "wagmi";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { MintCard } from "./MintCard";
 import { RefundActions } from "./RefundActions";
 import { useMintSelection } from "./useMintSelection";
 import { useMyPicks } from "./useMyPicks";
-import { useAccount } from "wagmi";
 
 export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
@@ -21,10 +21,12 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
   } = useMintSelection();
 
   const mintedTokens = picks?.contracts?.[0]?.mintedTokens ?? [];
-  const pickCounts = mintedTokens.reduce(
-    (acc: { [k: string]: number }, token: any) => {
-      const tierId = Math.floor(token.number / DEFAULT_NFT_MAX_SUPPLY);
-      const count = acc[tierId] ? acc[tierId] + 1 : 1;
+  const pickCounts: { [k: string]: number } = mintedTokens.reduce(
+    (acc: { [k: string]: number }, token) => {
+      const tierId = Math.floor(
+        parseInt(token.number) / DEFAULT_NFT_MAX_SUPPLY
+      );
+      const count = (acc[tierId] ?? 0) + 1;
       return {
         ...acc,
         [tierId]: count,
@@ -33,16 +35,16 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
     {}
   );
 
-  const pickedNfts = nfts.tiers?.filter((nft: any) =>
+  const pickedNfts = nfts.tiers?.filter((nft) =>
     Object.keys(pickCounts).includes(nft.id.toString())
   );
 
   const tokenIdsToRedeem = Object.keys(selectedTiers ?? {}).reduce(
     (acc: string[], curr) => {
       const tokenIds = mintedTokens
-        .filter((token: any) => token.number.startsWith(curr))
-        .map((token: any) => token.number)
-        .filter((number: string) => !acc.includes(number))
+        .filter((token) => token.number.startsWith(curr))
+        .map((token) => token.number)
+        .filter((number) => !acc.includes(number))
         .slice(0, selectedTiers?.[curr]?.count ?? 0);
 
       return [...acc, ...tokenIds];
@@ -84,15 +86,15 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
       }
     >
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-        {pickedNfts?.map((t: any) => (
+        {pickedNfts?.map((defifaTier) => (
           <MintCard
-            key={t.id}
-            imageSrc={t.teamImage}
-            mintedCount={pickCounts?.[t.id] ?? 0}
-            selectedCount={selectedTiers?.[t.id]?.count ?? 0}
-            selectionLimit={pickCounts?.[t.id] ?? 0} // limit selection to the number of mints
-            onIncrement={() => incrementTierSelection(t.id)}
-            onDecrement={() => decrementTierSelection(t.id)}
+            key={defifaTier.id}
+            imageSrc={defifaTier.teamImage}
+            mintedCount={pickCounts?.[defifaTier.id] ?? 0}
+            selectedCount={selectedTiers?.[defifaTier.id]?.count ?? 0}
+            selectionLimit={pickCounts?.[defifaTier.id.toString()] ?? 0} // limit selection to the number of mints
+            onIncrement={() => incrementTierSelection(defifaTier.id.toString())}
+            onDecrement={() => decrementTierSelection(defifaTier.id.toString())}
             disabled={disabled}
           />
         ))}

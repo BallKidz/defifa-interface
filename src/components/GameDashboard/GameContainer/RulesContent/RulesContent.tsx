@@ -7,7 +7,7 @@ import styles from "./index.module.css";
 import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
-import { useNftRewardTiersOf } from "hooks/read/NftRewardsTiers";
+import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
 
 export function RulesContent() {
   const { metadata } = useGameContext();
@@ -28,7 +28,7 @@ export function RulesContent() {
     currentFc?.metadata.dataSource
   );
   console.log("Default beneficiary ", tokenBeneficiary);
-  const { data: nftRewardTiers } = useNftRewardTiersOf(
+  const { data: nftRewardTiers } = useTiersOf(
     currentFc?.metadata.dataSource
   );
   console.log("NFT reward tiers ", nftRewardTiers); // Use this for tier beneficiaries

@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { createContext, useContext } from "react";
-import { DefifaProjectMetadata } from "types/defifa";
+import { DefifaProjectMetadata, DefifaTier } from "types/defifa";
 import { JBFundingCycle, JBFundingCycleMetadata } from "types/juicebox";
 
 type GameContextType = {
@@ -16,7 +16,7 @@ type GameContextType = {
       }
     | undefined;
   nfts: {
-    tiers: any;
+    tiers: DefifaTier[] | undefined | null;
     totalSupply: BigNumber | undefined;
   };
   loading: {

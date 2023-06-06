@@ -4,6 +4,7 @@ import {
   JBSplitGroup,
   JBProjectMetadataParams,
 } from "./juicebox";
+import { initial } from "lodash";
 
 export interface DefifaTierParams {
   name: string;
@@ -65,4 +66,15 @@ export enum ProposalState {
   "Queued",
   "Expired",
   "Executed",
+}
+
+export interface DefifaTier {
+  id: number;
+  description: string;
+  teamName: string;
+  teamImage: string;
+  maxSupply: number;
+  remainingQuantity: number;
+  initialQuantity: number;
+  minted: number;
 }

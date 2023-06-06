@@ -1,8 +1,9 @@
 import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
+import { JB721Tier } from "types/juicebox";
 import { useContractRead } from "wagmi";
 
-export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
+export function useTiersOf(dataSourceAddress: string | undefined) {
   const { chainData } = useChainData();
 
   const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
@@ -11,7 +12,7 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
     dataSourceAddress && dataSourceAddress !== constants.AddressZero
   );
 
-  return useContractRead({
+  const res = useContractRead({
     addressOrName: JBTiered721DelegateStore?.address ?? "",
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "tiersOf",
@@ -19,4 +20,9 @@ export function useNftRewardTiersOf(dataSourceAddress: string | undefined) {
     args: hasDataSource ? [dataSourceAddress, [], true, 0, 32] : null,
     chainId: chainData.chainId,
   });
+
+  return {
+    ...res,
+    data: res.data as unknown as JB721Tier[] | undefined,
+  };
 }
