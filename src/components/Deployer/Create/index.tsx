@@ -21,6 +21,7 @@ import {
   createDefaultTierData,
 } from "./defaultState";
 import { datetimeLocalToUnix } from "./utils";
+import { JUICEBOX_PROJECT_METADATA_DOMAIN } from "constants/constants";
 
 const DeployerCreate = () => {
   const [formValues, setFormValues] = useState<DefifaLaunchProjectData>(
@@ -75,7 +76,7 @@ const DeployerCreate = () => {
       contractUri: `ipfs://${contractUriCid}`,
       projectMetadata: {
         content: projectMetadataCid,
-        domain: 0,
+        domain: JUICEBOX_PROJECT_METADATA_DOMAIN,
       },
     }));
   };

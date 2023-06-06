@@ -1,20 +1,14 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
-import { constants, utils } from "ethers";
+import { constants } from "ethers";
+import { parseEther } from "ethers/lib/utils";
 import { useChainData } from "hooks/useChainData";
+import { DefifaLaunchProjectData } from "types/interfaces";
 import {
   useAccount,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import { DefifaLaunchProjectData } from "../../types/interfaces";
-
-const convertTo18Decimals = (value: number) => {
-  const decimals = 18;
-  // Convert the floating-point number to a fixed-point string
-  const fixedValue = utils.parseUnits(value.toString(), decimals);
-  return fixedValue.toString();
-};
 
 export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
   const { isConnected } = useAccount();
@@ -29,7 +23,7 @@ export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
         defaultTokenUriResolver,
         tiers: _launchProjectData.tiers.map((tier) => ({
           ...tier,
-          price: convertTo18Decimals(tier.price),
+          price: parseEther(tier.price),
         })),
       }
     : undefined;

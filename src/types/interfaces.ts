@@ -2,12 +2,12 @@ import { BigNumber } from "ethers";
 
 interface JBProjectMetadataParams {
   content: string;
-  domain: number; // 0
+  domain: number;
 }
 
 export interface DefifaTierParams {
   name: string;
-  price: any;
+  price: string;
   reservedRate: number;
   reservedTokenBeneficiary: string;
   encodedIPFSUri: string;

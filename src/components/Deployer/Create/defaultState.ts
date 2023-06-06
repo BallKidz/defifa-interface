@@ -1,6 +1,10 @@
 import { getChainData } from "config";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
-import { BALLKIDZ_MULTISIG_ADDRESS, MINT_PRICE } from "constants/constants";
+import {
+  BALLKIDZ_MULTISIG_ADDRESS,
+  JUICEBOX_PROJECT_METADATA_DOMAIN,
+  MINT_PRICE,
+} from "constants/constants";
 import { constants } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { DefifaLaunchProjectData } from "types/interfaces";
@@ -38,7 +42,7 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
     distributionLimit: 0,
     projectMetadata: {
       content: "",
-      domain: 0,
+      domain: JUICEBOX_PROJECT_METADATA_DOMAIN,
     },
     terminal: chainData.JBETHPaymentTerminal.address,
     store: chainData.JBTiered721DelegateStore.address,

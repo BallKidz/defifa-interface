@@ -1,7 +1,8 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-const PRIMARY_BUTTON_CLASS = "bg-violet-600 hover:bg-violet-500 text-neutral-50";
+const PRIMARY_BUTTON_CLASS =
+  "bg-violet-600 hover:bg-violet-500 text-neutral-50";
 const PRIMARY_BUTTON_DISABLED_CLASS =
   "bg-gray-700 text-neutral-50 cursor-not-allowed";
 
@@ -23,7 +24,6 @@ const Button = ({
   loading = false,
   ...props
 }: {
-  children: any;
   category?: "primary" | "secondary" | "tertiary";
   variant?: "default" | "confirm";
   loading?: boolean;
