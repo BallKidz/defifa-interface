@@ -1,26 +1,32 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
 import { useGameContext } from "contexts/GameContext";
-import { BigNumber } from "ethers";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
-import { DefifaTierRedemptionWeight } from "types/defifa";
-import { redemptionWeightToPercentage } from "utils/defifa";
+import { percentageToRedemptionWeight } from "utils/defifa";
+import { ScorecardPercentages } from "./CustomScorecardContent";
 
 export function CustomScorecardActions({
-  scorecard,
+  scorecardPercentages,
 }: {
-  scorecard: DefifaTierRedemptionWeight[];
+  scorecardPercentages: ScorecardPercentages;
 }) {
   const { governor } = useGameContext();
+
+  const scorecard = Object.keys(scorecardPercentages).map((tierId) => {
+    return {
+      id: Number(tierId),
+      redemptionWeight: percentageToRedemptionWeight(
+        scorecardPercentages[tierId]
+      ),
+    };
+  });
+
   const { write, isLoading } = useSubmitScorecard(scorecard, governor);
 
-  const totalScore =
-    scorecard?.reduce(
-      (acc, curr) => acc.add(curr.redemptionWeight),
-      BigNumber.from(0)
-    ) ?? BigNumber.from(0);
-
-  const totalScorePercentage = redemptionWeightToPercentage(totalScore);
+  const totalScorePercentage = Object.values(scorecardPercentages)?.reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
 
   return (
     <div className="flex justify-between items-center">
