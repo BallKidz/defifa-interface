@@ -39,10 +39,11 @@ export function CustomScorecardActions({
     governor
   );
 
-  const totalScorePercentage = Object.values(scorecardPercentages)?.reduce(
-    (acc, curr) => (acc ?? 0) + (curr ?? 0),
-    0
-  );
+  const totalScorePercentage =
+    Object.values(scorecardPercentages).reduce(
+      (acc, curr) => (acc ?? 0) + (curr ?? 0),
+      0
+    ) ?? 0;
 
   return (
     <div className="flex justify-between items-center">
