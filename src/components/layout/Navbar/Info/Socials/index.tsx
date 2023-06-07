@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const Socials = () => {
+const NavbarLinks = () => {
   let warcastIntent = "https://warpcast.com";
 
   if (typeof window !== "undefined") {
@@ -28,6 +28,11 @@ const Socials = () => {
           Code
         </a>
       </Link>
+      <Link href="/about" passHref>
+        <a className="text-sm hover:underline">
+          How it Works
+        </a>
+      </Link>
       {/* <Link href={warcastIntent} passHref>
         <a className="text-sm hover:underline" target="_blank">
           Farcaster
@@ -37,4 +42,4 @@ const Socials = () => {
   );
 };
 
-export default Socials;
+export default NavbarLinks;
