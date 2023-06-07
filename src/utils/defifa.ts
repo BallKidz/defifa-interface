@@ -7,7 +7,7 @@ import { BigNumber } from "ethers";
  * @returns redemption weight.
  */
 export function percentageToRedemptionWeight(percentage: number): BigNumber {
-  return percentage === 0
+  return !percentage
     ? BigNumber.from(0)
     : BigNumber.from(percentage).mul(TOTAL_REDEMPTION_WEIGHT).div(100);
 }
