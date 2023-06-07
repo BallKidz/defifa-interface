@@ -4,6 +4,26 @@ import { useGameContext } from "contexts/GameContext";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import { percentageToRedemptionWeight } from "utils/defifa";
 import { ScorecardPercentages } from "./CustomScorecardContent";
+import { DefifaTierRedemptionWeight } from "types/defifa";
+
+function useTierRedemptionWeights(
+  scorecardPercentages: ScorecardPercentages
+): DefifaTierRedemptionWeight[] {
+  const {
+    nfts: { tiers },
+  } = useGameContext();
+
+  const weights = tiers?.map((t) => {
+    return {
+      id: t.id,
+      redemptionWeight: percentageToRedemptionWeight(
+        scorecardPercentages[t.id.toString()] ?? 0
+      ),
+    };
+  });
+
+  return weights ?? [];
+}
 
 export function CustomScorecardActions({
   scorecardPercentages,
@@ -12,19 +32,15 @@ export function CustomScorecardActions({
 }) {
   const { governor } = useGameContext();
 
-  const scorecard = Object.keys(scorecardPercentages).map((tierId) => {
-    return {
-      id: Number(tierId),
-      redemptionWeight: percentageToRedemptionWeight(
-        scorecardPercentages[tierId]
-      ),
-    };
-  });
+  const tierRedemptionWeights = useTierRedemptionWeights(scorecardPercentages);
 
-  const { write, isLoading } = useSubmitScorecard(scorecard, governor);
+  const { write, isLoading } = useSubmitScorecard(
+    tierRedemptionWeights,
+    governor
+  );
 
   const totalScorePercentage = Object.values(scorecardPercentages)?.reduce(
-    (acc, curr) => acc + curr,
+    (acc, curr) => (acc ?? 0) + (curr ?? 0),
     0
   );
 

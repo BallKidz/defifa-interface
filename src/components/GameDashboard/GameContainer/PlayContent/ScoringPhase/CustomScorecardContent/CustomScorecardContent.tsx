@@ -6,7 +6,7 @@ import { useState } from "react";
 import { CustomScorecardActions } from "./CustomScorecardActions";
 
 export interface ScorecardPercentages {
-  [key: string]: number; // score percentage
+  [key: string]: number | undefined; // tier_id: score_percentage
 }
 
 export function CustomScorecardContent() {
@@ -21,10 +21,10 @@ export function CustomScorecardContent() {
     },
   } = useGameContext();
 
-  function onInput(tierId: number, scorePercentage: number) {
+  function onInput(tierId: number, scorePercentage: number | undefined) {
     const newScorecardMap = {
       ...scorecardPercentages,
-      [tierId]: scorePercentage,
+      [tierId.toString()]: scorePercentage,
     };
     setScorecardPercentages(newScorecardMap);
   }
@@ -59,10 +59,11 @@ export function CustomScorecardContent() {
                 <div className="p-3">
                   <label htmlFor="">Score %</label>
                   <Input
-                    type="number"
-                    value={scorecardPercentages[t.id] ?? 0}
+                    type="text"
+                    value={scorecardPercentages[t.id]}
                     onChange={(e) => {
-                      onInput(t.id, parseFloat(e.target.value || "0"));
+                      const value = e.target.value;
+                      onInput(t.id, value ? parseInt(value) : undefined);
                     }}
                     step={1}
                   />
