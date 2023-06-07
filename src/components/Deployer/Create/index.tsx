@@ -581,9 +581,9 @@ const DeployerCreate = () => {
                     </div>
 
                     <div className={styles.tierIcons}>
-                      <span role="button" onClick={() => editTier(tier, index)}>
+                      {/* <span role="button" onClick={() => editTier(tier, index)}>
                         <PencilSquareIcon className="h-5 w-5" />
-                      </span>
+                      </span> */}
                       <span role="button" onClick={() => onRemoveTier(index)}>
                         <TrashIcon className="h-5 w-5" />
                       </span>
