@@ -43,6 +43,7 @@ export function MintPicksContent() {
         ) : (
           tiers?.map((t) => (
             <MintCard
+              tierId={t.id}
               key={t.id}
               imageSrc={t.teamImage}
               mintedCount={t.minted}
