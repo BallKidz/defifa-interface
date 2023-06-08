@@ -1,26 +1,49 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
 import { useGameContext } from "contexts/GameContext";
-import { BigNumber } from "ethers";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
+import { percentageToRedemptionWeight } from "utils/defifa";
+import { ScorecardPercentages } from "./CustomScorecardContent";
 import { DefifaTierRedemptionWeight } from "types/defifa";
-import { redemptionWeightToPercentage } from "utils/defifa";
+
+function useTierRedemptionWeights(
+  scorecardPercentages: ScorecardPercentages
+): DefifaTierRedemptionWeight[] {
+  const {
+    nfts: { tiers },
+  } = useGameContext();
+
+  const weights = tiers?.map((t) => {
+    return {
+      id: t.id,
+      redemptionWeight: percentageToRedemptionWeight(
+        scorecardPercentages[t.id.toString()] ?? 0
+      ),
+    };
+  });
+
+  return weights ?? [];
+}
 
 export function CustomScorecardActions({
-  scorecard,
+  scorecardPercentages,
 }: {
-  scorecard: DefifaTierRedemptionWeight[];
+  scorecardPercentages: ScorecardPercentages;
 }) {
   const { governor } = useGameContext();
-  const { write, isLoading } = useSubmitScorecard(scorecard, governor);
 
-  const totalScore =
-    scorecard?.reduce(
-      (acc, curr) => acc.add(curr.redemptionWeight),
-      BigNumber.from(0)
-    ) ?? BigNumber.from(0);
+  const tierRedemptionWeights = useTierRedemptionWeights(scorecardPercentages);
 
-  const totalScorePercentage = redemptionWeightToPercentage(totalScore);
+  const { write, isLoading } = useSubmitScorecard(
+    tierRedemptionWeights,
+    governor
+  );
+
+  const totalScorePercentage =
+    Object.values(scorecardPercentages).reduce(
+      (acc, curr) => (acc ?? 0) + (curr ?? 0),
+      0
+    ) ?? 0;
 
   return (
     <div className="flex justify-between items-center">
