@@ -8,31 +8,26 @@ import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
 import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
+import Image from "next/image";
+import EnsName from "../ActivityContent/EnsName";
 
 export function RulesContent() {
-  const { metadata } = useGameContext();
+  const { metadata, gameId, nfts } = useGameContext();
   const { mintDuration, start, refundDuration } = useDeployerDates("local");
-  const { gameId } = useGameContext();
   const { data: currentFc } = useProjectCurrentFundingCycle(gameId);
 
   const { data: maxTiers } = useMaxTiers(currentFc?.metadata.dataSource);
-  console.log("Max tiers ", maxTiers?.toNumber());
   const tierBeneficiary = useTierBeneficiaries(
     currentFc?.metadata.dataSource,
     maxTiers?.toNumber()
   );
-  console.log("Reserved tokens per tier ", tierBeneficiary);
-  // TODO: loop through tiers and get the max reserved tokens
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
   const tokenBeneficiary = useDefaultTokenBeneficiary(
     currentFc?.metadata.dataSource
   );
-  console.log("Default beneficiary ", tokenBeneficiary);
   const { data: nftRewardTiers } = useTiersOf(currentFc?.metadata.dataSource);
-  console.log("NFT reward tiers ", nftRewardTiers); // Use this for tier beneficiaries
-
   const { data: gameMetadata } = useGameMetadata(gameId);
-  console.log("Game metadata ", gameMetadata);
+
   const fillPill = (phase: number) => {
     if (currentFcNumber === phase) {
       return "Active";
@@ -68,57 +63,89 @@ export function RulesContent() {
       <p className="mb-5">{metadata?.description}</p>
       <div className="p-4 border border-gray-800 rounded-lg mb-5 flex flex-col gap-2">
         <div>
-          Phase 1: MINTS OPEN (mints open, refunds open)
+          <span className="text-pink-500">Phase 1:  </span>MINTS OPEN (mints open, refunds open)
           <span className={pillStyle(mintDuration.phase)}>
             {fillPill(mintDuration.phase)}
           </span>
         </div>
         <div>
-          Phase 2: REFUNDS OPEN (mints closed)
+        <span className="text-pink-500">Phase 2:  </span>REFUNDS OPEN (mints closed)
           <span className={pillStyle(refundDuration.phase)}>
             {fillPill(refundDuration.phase)}
           </span>
         </div>
         <div>
           <div>
-            Phase 3: SCORING (refunds closed)
+          <span className="text-pink-500">Phase 3:  </span>SCORING (refunds closed)
             <span className={pillStyle(start.phase)}>
               {fillPill(start.phase)}
             </span>
           </div>
           <div>
-            Anyone may submit a scorecard. Scorecards must be ratified by a
-            majority of the Players.
+            Anyone may submit a scorecard. Scorecards must be ratified by a majority of the Players.
           </div>
         </div>
       </div>
       <div>
         <div className="p-4 border border-gray-800 rounded-lg mb-5">
           <p>
-            Winners: Claim prize anytime after a scorecard has been ratified.
-            Redeeming a player card will burn it and transfer you its share of
-            the pot.
+            <span className="text-pink-500">Winners: </span>Claim prize anytime after a scorecard has been ratified.
+            Redeeming a player card will burn it and transfer you its share of the pot.
           </p>
           <p>
-            No Contest: This occurs when nobody queues the next game phase.
+          <span className="text-pink-500">No Contest: </span>
+            This occurs when nobody queues the next game phase.
             Players may redeemed or keep their playing cards.
           </p>
         </div>
       </div>
       <div className="p-4 border border-gray-800 rounded-lg mb-5">
-        <p>
-          Mint fees: {metadata?.seller_fee_basis_points}% is collected from
-          Players on each playing card minted.
-        </p>
-        {/* TODO: test with RR and Benef. Create flow borking atm */}
-        <p>
-          Beneficiaries:{" "}
-          {(tokenBeneficiary.data as unknown as string) ===
-          "0x0000000000000000000000000000000000000000"
-            ? "No playing cards are being allocated to a default beneficiary in this game."
-            : `See contract ${currentFc?.metadata.dataSource} for more info about beneficiaries by playing card (tier).`}
-        </p>
-      </div>
+  <div className="flex items-center">
+    <span className="text-pink-500">Mint Fees:</span>
+    {metadata?.seller_fee_basis_points === 0 ? (
+      <span className="ml-2">No fees are collected</span>
+    ) : (
+      <>
+        {/* <EnsName address={metadata?.fee_recipient} /> */}
+        <EnsName address={tokenBeneficiary?.toString()} />
+        <span className="ml-2">collects a {metadata?.seller_fee_basis_points}% fee on each pick minted.</span>
+      </>
+    )}
+  </div>
+  <div>
+  <div className="flex items-center">
+    <span className="text-pink-500">Reserved Mints:</span>
+    {nftRewardTiers?.filter((tier) => tier.reservedRate.toNumber() > 0).length === 0 ? (
+      <p className="ml-2">No reserve tokens are minted in this game</p>
+    ) : null}
+  </div>
+  {nftRewardTiers && nftRewardTiers?.filter((tier) => tier?.reservedRate.toNumber() > 0).length > 0 && (
+    <div className="flex flex-wrap">
+      {nftRewardTiers
+        ?.filter((tier) => tier.reservedRate.toNumber() > 0)
+        .map((tier, index) => {
+          const matchingTier = nfts?.tiers?.find((t) => t.id === tier.id.toNumber());
+          const imageSrc = matchingTier ? matchingTier.teamImage : "";
+
+          return (
+            <div key={tier.id.toNumber()} className="p-4 border border-pink-800 rounded-lg mb-5">
+              {/* <Image src={imageSrc} width={100} height={100} alt="" /> */}
+              <p>Pick: {tier.id.toNumber()}</p>
+              <div className="flex items-center">
+                <span><EnsName address={tier.reservedTokenBeneficiary} /></span>
+                <span className="ml-2">will receive {1 / (tier.reservedRate.toNumber() + 1) * 100}% of this pick's tokens.</span>
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  )}
+</div>
+
+
+</div>
+
     </Container>
   );
+  
 }

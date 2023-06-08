@@ -88,6 +88,7 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
         {pickedNfts?.map((defifaTier) => (
           <MintCard
+            tierId={defifaTier.id}
             key={defifaTier.id}
             imageSrc={defifaTier.teamImage}
             mintedCount={pickCounts?.[defifaTier.id] ?? 0}

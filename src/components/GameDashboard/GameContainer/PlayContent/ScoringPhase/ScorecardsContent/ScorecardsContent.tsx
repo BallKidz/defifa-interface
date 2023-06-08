@@ -134,11 +134,31 @@ export function ScorecardsContent() {
           : undefined
       }
     >
+      
+      {!scorecards || scorecards.length === 0 ? (
+    <Container>
+    <span className="text-pink-500">No scorecards submitted yet.</span> Anybody may submit a scorecard.{" "}
+          <div className="text-xs mb-5">
+            (or, some scorecards haven't been indexed yet)
+          </div>
+        </Container>
+      ) : (
+        scorecards?.map((scorecard) => (
+          <>
+          <div className="mb-3 font-bold text-lg">Select a Scorecard:</div>
+          <ScorecardRow
+            key={scorecard.proposalId.toString()}
+            scorecard={scorecard}
+            onClick={() => setSelectedScorecard(scorecard)}
+          />
+          </>
+        ))
+      )}
       <div className="mb-7 flex flex-col gap-2">
         <p>
           A Scorecard proposes each Pick's redemption value. Players use their
           voting power to vote for a Scorecard. The first Scorecard to reach
-          quorum and be ratified is the final scorecard.
+          quorum of 50% and be ratified is the final scorecard.
         </p>
         <p>The final Scorecard determines each Pick's redemption value.</p>
         <p>Scorecards don't necessarily reflect the game's actual outcome.</p>
@@ -148,22 +168,7 @@ export function ScorecardsContent() {
         {votes?.toString()} votes available.
       </div>
 
-      {!scorecards || scorecards.length === 0 ? (
-        <Container>
-          No scorecards submitted yet.{" "}
-          <div className="text-xs">
-            (or, some scorecards haven't been indexed yet)
-          </div>
-        </Container>
-      ) : (
-        scorecards?.map((scorecard) => (
-          <ScorecardRow
-            key={scorecard.proposalId.toString()}
-            scorecard={scorecard}
-            onClick={() => setSelectedScorecard(scorecard)}
-          />
-        ))
-      )}
+      
     </ActionContainer>
   );
 }
