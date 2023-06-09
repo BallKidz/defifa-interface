@@ -30,11 +30,12 @@ export function CustomScorecardActions({
 }: {
   scorecardPercentages: ScorecardPercentages;
 }) {
-  const { governor } = useGameContext();
+  const { governor, gameId } = useGameContext();
 
   const tierRedemptionWeights = useTierRedemptionWeights(scorecardPercentages);
 
   const { write, isLoading } = useSubmitScorecard(
+    gameId,
     tierRedemptionWeights,
     governor
   );

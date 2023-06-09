@@ -1,7 +1,8 @@
 import { ContractInterface } from "ethers";
+import { EthereumAddress } from "types/defifa";
 
 interface ContractData {
-  address: `0x${string}`;
+  address: EthereumAddress;
   interface: ContractInterface;
 }
 
@@ -16,9 +17,7 @@ export interface DefifaConfig {
   }; // address read on-chain per game
   JBETHPaymentTerminal: ContractData;
   DefifaDelegate: ContractData;
-  DefifaGovernor: {
-    interface: ContractInterface;
-  }; // address read on-chain per game
+  DefifaGovernor: ContractData;
   DefifaDeployer: ContractData;
 
   subgraph: string;

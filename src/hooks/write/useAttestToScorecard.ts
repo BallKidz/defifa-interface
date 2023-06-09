@@ -6,7 +6,8 @@ import {
 } from "wagmi";
 
 export function useAttestToScorecard(
-  proposalId: number,
+  gameId: number,
+  scorecardId: number,
   governorAddress: string | undefined
 ) {
   const { chainData } = useChainData();
@@ -14,10 +15,10 @@ export function useAttestToScorecard(
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governorAddress ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "attestToScorecard",
-    args: [proposalId],
+    functionName: "attestToScorecardFrom",
+    args: [gameId, scorecardId],
     chainId: chainData.chainId,
-    enabled: Boolean(governorAddress && proposalId),
+    enabled: Boolean(governorAddress && scorecardId),
   });
 
   const { data, write, error, isError } = useContractWrite(config);

@@ -43,22 +43,24 @@ function ScorecardRow({
   scorecard: Scorecard;
   onClick?: () => void;
 }) {
-  const { governor, nfts } = useGameContext();
+  const { governor, nfts, gameId } = useGameContext();
 
   const { data: proposalVotes } = useProposalVotes(
-    scorecard.proposalId,
+    scorecard.scorecardId,
     governor
   );
   const { write, isLoading } = useRatifyScorecard(
+    gameId,
     scorecard.redemptionTierWeights,
     governor
   );
   const { data: proposalState } = useProposalState(
-    scorecard.proposalId,
+    gameId,
+    scorecard.scorecardId,
     governor
   );
 
-  const { data: quorum } = useQuorum(scorecard.proposalId, governor);
+  const { data: quorum } = useQuorum(gameId, scorecard.scorecardId, governor);
   const quourumReached = proposalVotes?.forVotes
     ? quorum?.lte(proposalVotes.forVotes)
     : false;
@@ -101,15 +103,16 @@ function ScorecardActions({
 }: {
   selectedScorecard: Scorecard;
 }) {
-  const { governor } = useGameContext();
+  const { governor, gameId } = useGameContext();
   const { write, isLoading } = useAttestToScorecard(
-    selectedScorecard.proposalId,
+    gameId,
+    selectedScorecard.scorecardId,
     governor
   );
 
   return (
     <div className="flex justify-between">
-      <div>{selectedScorecard.proposalId.toString()}</div>
+      <div>{selectedScorecard.scorecardId.toString()}</div>
       <Button loading={isLoading} onClick={() => write?.()}>
         Attest to scorecard
       </Button>
@@ -134,10 +137,10 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      
       {!scorecards || scorecards.length === 0 ? (
-    <Container>
-    <span className="text-pink-500">No scorecards submitted yet.</span> Anybody may submit a scorecard.{" "}
+        <Container>
+          <span className="text-pink-500">No scorecards submitted yet.</span>{" "}
+          Anybody may submit a scorecard.{" "}
           <div className="text-xs mb-5">
             (or, some scorecards haven't been indexed yet)
           </div>
@@ -145,12 +148,12 @@ export function ScorecardsContent() {
       ) : (
         scorecards?.map((scorecard) => (
           <>
-          <div className="mb-3 font-bold text-lg">Select a Scorecard:</div>
-          <ScorecardRow
-            key={scorecard.proposalId.toString()}
-            scorecard={scorecard}
-            onClick={() => setSelectedScorecard(scorecard)}
-          />
+            <div className="mb-3 font-bold text-lg">Select a Scorecard:</div>
+            <ScorecardRow
+              key={scorecard.scorecardId.toString()}
+              scorecard={scorecard}
+              onClick={() => setSelectedScorecard(scorecard)}
+            />
           </>
         ))
       )}
@@ -167,8 +170,6 @@ export function ScorecardsContent() {
       <div className="mb-7 font-medium">
         {votes?.toString()} votes available.
       </div>
-
-      
     </ActionContainer>
   );
 }

@@ -7,6 +7,7 @@ import { useDefifaTiers } from "hooks/useDefifaTiers";
 import { useTotalSupply } from "hooks/read/JB721Delegate/useTotalSupply";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
+import { useChainData } from "hooks/useChainData";
 
 export default function GameContextProvider({
   gameId,
@@ -24,11 +25,14 @@ export default function GameContextProvider({
 
   const { data: totalSupply } = useTotalSupply(dataSource);
   const { data: tiersOf, isLoading: tiersOfLoading } = useTiersOf(dataSource);
+  console.log(tiersOf, dataSource)
   const { data: tiers, isLoading: tiersLoading } = useDefifaTiers(
     tiersOf ?? []
   );
 
-  const { data: governor } = useGovernorForDelegate(dataSource);
+  const { chainData } = useChainData();
+
+  const governor = chainData.DefifaGovernor.address;
 
   const context = {
     gameId,

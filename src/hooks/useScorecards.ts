@@ -6,7 +6,7 @@ import { useChainData } from "./useChainData";
 
 // TODO flesh out
 interface Proposal {
-  proposalId: number;
+  scorecardId: number;
   calls: {
     calldata: string;
   }[];
@@ -24,7 +24,7 @@ const proposalsQuery = gql`
       eta
       executed
       id
-      proposalId
+      scorecardId
       queued
       governor {
         id
@@ -35,7 +35,7 @@ const proposalsQuery = gql`
 `;
 
 export interface Scorecard {
-  proposalId: number;
+  scorecardId: number;
   redemptionTierWeights: DefifaTierRedemptionWeight[];
 }
 [];
@@ -43,7 +43,7 @@ export interface Scorecard {
 function getScoreCardsFromProposals(proposals: Proposal[]): Scorecard[] {
   const scoreCards = proposals?.map((proposal) => {
     return {
-      proposalId: proposal.proposalId,
+      scorecardId: proposal.scorecardId,
       redemptionTierWeights: proposal.calls.flatMap((call) => {
         const calldata = call.calldata;
         const decodedCallData = ethers.utils.defaultAbiCoder.decode(

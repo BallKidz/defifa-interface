@@ -3,7 +3,8 @@ import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
 export function useProposalState(
-  proposalId: number,
+  gameId: number,
+  scorecardId: number,
   governorAddress: string | undefined
 ) {
   const { chainData } = useChainData();
@@ -11,8 +12,8 @@ export function useProposalState(
   const res = useContractRead({
     addressOrName: governorAddress ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "state",
-    args: [proposalId],
+    functionName: "stateOf",
+    args: [gameId, scorecardId],
     chainId: chainData.chainId,
     enabled: !!governorAddress,
   });

@@ -8,6 +8,7 @@ import JBProjects from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBP
 import JBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/deployments/mainnet/JBSingleTokenPaymentTerminalStore.json";
 import { chain } from "wagmi";
 import { DefifaConfig } from "./types";
+import { EthereumAddress } from "types/defifa";
 
 /**
  * !!! WARNING this file is completely out of date for NBA defifa edition !!!
@@ -16,18 +17,18 @@ export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
   chainId: chain.mainnet.id,
 
   JBProjects: {
-    address: JBProjects.address as `0x${string}`,
+    address: JBProjects.address as EthereumAddress,
     interface: JBProjects.abi,
   },
   JBController: {
-    address: JBController.address as `0x${string}`,
+    address: JBController.address as EthereumAddress,
     interface: JBController.abi,
   },
   JBSingleTokenPaymentTerminalStore: {
     interface: JBSingleTokenPaymentTerminalStore.abi,
   },
   JBETHPaymentTerminal: {
-    address: JBETHPaymentTerminal.address as `0x${string}`,
+    address: JBETHPaymentTerminal.address as EthereumAddress,
     interface: JBETHPaymentTerminal.abi,
   },
 
@@ -42,6 +43,7 @@ export const DEFIFA_CONFIG_MAINNET: DefifaConfig = {
   },
   DefifaGovernor: {
     interface: DefifaGovernor.abi,
+    address: "0x00", // TODO
   },
   DefifaDeployer: {
     address: "0x5e49F480f2Cdf6e638d0aBB7faa703e6aBAD46d1",

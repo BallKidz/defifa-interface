@@ -2,7 +2,7 @@ import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
 export function useProposalVotes(
-  proposalId: number,
+  scorecardId: number,
   governor: string | undefined
 ) {
   const { chainData } = useChainData();
@@ -11,8 +11,8 @@ export function useProposalVotes(
     addressOrName: governor ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
     functionName: "proposalVotes",
-    args: [proposalId],
+    args: [scorecardId],
     chainId: chainData.chainId,
-    enabled: Boolean(governor && proposalId),
+    enabled: Boolean(governor && scorecardId),
   });
 }
