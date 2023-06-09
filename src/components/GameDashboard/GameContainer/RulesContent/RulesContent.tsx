@@ -69,14 +69,14 @@ export function RulesContent() {
           </span>
         </div>
         <div>
-        <span className="text-pink-500">Phase 2:  </span>REFUNDS OPEN (mints closed)
+          <span className="text-pink-500">Phase 2:  </span>REFUNDS OPEN (mints closed)
           <span className={pillStyle(refundDuration.phase)}>
             {fillPill(refundDuration.phase)}
           </span>
         </div>
         <div>
           <div>
-          <span className="text-pink-500">Phase 3:  </span>SCORING (refunds closed)
+            <span className="text-pink-500">Phase 3:  </span>SCORING (refunds closed)
             <span className={pillStyle(start.phase)}>
               {fillPill(start.phase)}
             </span>
@@ -93,59 +93,56 @@ export function RulesContent() {
             Redeeming a player card will burn it and transfer you its share of the pot.
           </p>
           <p>
-          <span className="text-pink-500">No Contest: </span>
+            <span className="text-pink-500">No Contest: </span>
             This occurs when nobody queues the next game phase.
             Players may redeemed or keep their playing cards.
           </p>
         </div>
       </div>
       <div className="p-4 border border-gray-800 rounded-lg mb-5">
-  <div className="flex items-center">
-    <span className="text-pink-500">Mint Fees:</span>
-    {metadata?.seller_fee_basis_points === 0 ? (
-      <span className="ml-2">No fees are collected</span>
-    ) : (
-      <>
-        {/* <EnsName address={metadata?.fee_recipient} /> */}
-        <EnsName address={tokenBeneficiary?.toString()} />
-        <span className="ml-2">collects a {metadata?.seller_fee_basis_points}% fee on each pick minted.</span>
-      </>
-    )}
-  </div>
-  <div>
-  <div className="flex items-center">
-    <span className="text-pink-500">Reserved Mints:</span>
-    {nftRewardTiers?.filter((tier) => tier.reservedRate.toNumber() > 0).length === 0 ? (
-      <p className="ml-2">No reserve tokens are minted in this game</p>
-    ) : null}
-  </div>
-  {nftRewardTiers && nftRewardTiers?.filter((tier) => tier?.reservedRate.toNumber() > 0).length > 0 && (
-    <div className="flex flex-wrap">
-      {nftRewardTiers
-        ?.filter((tier) => tier.reservedRate.toNumber() > 0)
-        .map((tier, index) => {
-          const matchingTier = nfts?.tiers?.find((t) => t.id === tier.id.toNumber());
-          const imageSrc = matchingTier ? matchingTier.teamImage : "";
+        {/*       <div className="flex items-center">
+          <span className="text-pink-500">Mint Fees:</span>
+          {metadata?.seller_fee_basis_points === 0 ? (
+            <span className="ml-2">No fees are collected</span>
+          ) : (
+            <>
+              {/* <EnsName address={metadata?.fee_recipient} /> 
+              <EnsName address={tokenBeneficiary?.toString()} />
+              <span className="ml-2">collects a {metadata?.seller_fee_basis_points}% fee on each pick minted.</span>
+            </>
+          )}
+        </div> */}
+        <div>
+          <div className="flex items-center">
+            <span className="text-pink-500">Reserved Mints:</span>
+            {nftRewardTiers?.filter((tier) => tier.reservedRate.toNumber() > 0).length === 0 ? (
+              <p className="ml-2">No reserve tokens are minted in this game</p>
+            ) : null}
+          </div>
+          {nftRewardTiers && nftRewardTiers?.filter((tier) => tier?.reservedRate.toNumber() > 0).length > 0 && (
+            <div className="flex flex-wrap">
+              {nftRewardTiers
+                ?.filter((tier) => tier.reservedRate.toNumber() > 0)
+                .map((tier, index) => {
+                  const matchingTier = nfts?.tiers?.find((t) => t.id === tier.id.toNumber());
+                  const imageSrc = matchingTier ? matchingTier.teamImage : "";
 
-          return (
-            <div key={tier.id.toNumber()} className="p-4 border border-pink-800 rounded-lg mb-5">
-              {/* <Image src={imageSrc} width={100} height={100} alt="" /> */}
-              <p>Pick: {tier.id.toNumber()}</p>
-              <div className="flex items-center">
-                <span><EnsName address={tier.reservedTokenBeneficiary} /></span>
-                <span className="ml-2">will receive {1 / (tier.reservedRate.toNumber() + 1) * 100}% of this pick's tokens.</span>
-              </div>
+                  return (
+                    <div key={tier.id.toNumber()} className="p-4 border border-pink-800 rounded-lg mb-5">
+                      {/* <Image src={imageSrc} width={100} height={100} alt="" /> */}
+                      <p>Pick: {tier.id.toNumber()}</p>
+                      <div className="flex items-center">
+                        <span><EnsName address={tier.reservedTokenBeneficiary} /></span>
+                        <span className="ml-2">will receive {1 / (tier.reservedRate.toNumber() + 1) * 100}% of this pick's tokens.</span>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
-          );
-        })}
-    </div>
-  )}
-</div>
-
-
-</div>
-
+          )}
+        </div>
+      </div>
     </Container>
   );
-  
+
 }
