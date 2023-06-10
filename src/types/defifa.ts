@@ -33,10 +33,10 @@ export interface DefifaLaunchProjectData {
   ballkidzFeeProjectTokenAccount: EthereumAddress;
   votingPeriod: number; // seconds
   votingStartTime: number;
-  defaultVotingDelegate: EthereumAddress; 
+  defaultVotingDelegate: EthereumAddress;
   store: EthereumAddress;
-  defaultTokenUriResolver: EthereumAddress; 
-  terminal: EthereumAddress; 
+  defaultTokenUriResolver: EthereumAddress;
+  terminal: EthereumAddress;
 }
 
 export interface DefifaProjectMetadata {
@@ -59,15 +59,12 @@ export interface DefifaTierRedemptionWeight {
   redemptionWeight: BigNumber;
 }
 
-export enum ProposalState {
-  "Pending",
-  "Active",
-  "Canceled",
-  "Defeated",
-  "Succeeded",
-  "Queued",
-  "Expired",
-  "Executed",
+export enum DefifaScorecardState {
+  PENDING,
+  ACTIVE,
+  DEFEATED,
+  SUCCEEDED,
+  RATIFIED,
 }
 
 export interface DefifaTier {
