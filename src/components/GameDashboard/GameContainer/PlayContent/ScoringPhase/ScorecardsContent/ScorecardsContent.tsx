@@ -20,11 +20,11 @@ const stateText = (state: DefifaScorecardState) => {
     case DefifaScorecardState.ACTIVE:
       return "Active (1)";
     case DefifaScorecardState.DEFEATED:
-      return "Canceled (2)";
+      return "Defeated (2)";
     case DefifaScorecardState.SUCCEEDED:
-      return "Canceled (3)";
+      return "Succeeded (3)";
     case DefifaScorecardState.RATIFIED:
-      return "Succeeded (4)";
+      return "Ratified (4)";
     default:
       return "Unknown";
   }
@@ -52,9 +52,6 @@ function ScorecardRow({
   );
 
   const { data: quorum } = useQuorum(gameId, scorecard.id, governor);
-  const quourumReached = proposalVotes?.forVotes
-    ? quorum?.lte(proposalVotes.forVotes)
-    : false;
 
   const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
 
@@ -79,7 +76,7 @@ function ScorecardRow({
       <div className="flex gap-3 items-center">
         Current votes: {proposalVotes?.forVotes.toString()} (
         {votesRemaining?.toNumber()} more needed)
-        {quourumReached && proposalState === DefifaScorecardState.SUCCEEDED ? (
+        {proposalState === DefifaScorecardState.SUCCEEDED ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
