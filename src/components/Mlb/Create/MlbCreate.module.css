@@ -1,0 +1,65 @@
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  .label {
+    margin-bottom: 0.5rem;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 30px;
+    align-items: center;
+  }
+  
+  .addNftContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-right: 1px solid var(--blue);
+    border-left: 1px solid var(--blue);
+    border-bottom: 1px solid var(--blue);
+    padding: 20px;
+    background: rgba(37, 34, 44, 0.9);
+    box-shadow: 0 0 1px 0 var(--blue);
+  }
+  
+  .tiersListContainer {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .tier {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(37, 34, 44, 0.9);
+    padding: 10px 20px;
+    border: 1px solid var(--blue);
+    align-items: center;
+  }
+  
+  .tierDetails {
+    display: grid;
+    grid-template-columns: repeat(4, 2fr);
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .tierIcons {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .tierIcons span {
+    cursor: pointer;
+    color: var(--blue);
+  }
+  .overlayModal {
+    background-color: var(--bgColor);
+  }
+  

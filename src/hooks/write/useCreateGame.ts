@@ -14,7 +14,7 @@ export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
-
+  console.log("_launchProjectData", _launchProjectData);
   const defaultTokenUriResolver =
     _launchProjectData?.defaultTokenUriResolver || constants.AddressZero;
   const preparedLaunchProjectData = _launchProjectData
