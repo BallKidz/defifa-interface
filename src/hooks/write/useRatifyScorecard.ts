@@ -9,6 +9,7 @@ import {
 } from "wagmi";
 
 export function useRatifyScorecard(
+  gameId: number,
   _tierWeights: DefifaTierRedemptionWeight[],
   governor: string | undefined
 ) {
@@ -19,8 +20,8 @@ export function useRatifyScorecard(
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "ratifyScorecard",
-    args: [_tierWeights],
+    functionName: "ratifyScorecardFrom",
+    args: [gameId, _tierWeights],
     chainId: chainData.chainId,
     enabled: !!governor,
   });

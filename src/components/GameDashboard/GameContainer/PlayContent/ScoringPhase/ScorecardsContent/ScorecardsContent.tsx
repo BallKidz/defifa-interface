@@ -2,7 +2,7 @@ import { ActionContainer } from "components/GameDashboard/GameContainer/ActionCo
 import Button from "components/UI/Button";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
-import { useProposalState } from "hooks/read/ProposalState";
+import { useScorecardState } from "hooks/read/ScorecardState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useAccountVotes } from "hooks/read/useGetVotes";
 import { useQuorum } from "hooks/read/useQuorum";
@@ -10,27 +10,21 @@ import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useState } from "react";
-import { ProposalState } from "types/defifa";
+import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 
-const stateText = (state: ProposalState) => {
+const stateText = (state: DefifaScorecardState) => {
   switch (state) {
-    case ProposalState.Pending:
+    case DefifaScorecardState.PENDING:
       return "Pending (0)";
-    case ProposalState.Active:
+    case DefifaScorecardState.ACTIVE:
       return "Active (1)";
-    case ProposalState.Canceled:
-      return "Canceled (2)";
-    case ProposalState.Defeated:
-      return "Canceled (3)";
-    case ProposalState.Succeeded:
-      return "Succeeded (4)";
-    case ProposalState.Queued:
-      return "Queued (5)";
-    case ProposalState.Expired:
-      return "Expired (6)";
-    case ProposalState.Executed:
-      return "Executed (7)";
+    case DefifaScorecardState.DEFEATED:
+      return "Defeated (2)";
+    case DefifaScorecardState.SUCCEEDED:
+      return "Succeeded (3)";
+    case DefifaScorecardState.RATIFIED:
+      return "Ratified (4)";
     default:
       return "Unknown";
   }
@@ -43,27 +37,28 @@ function ScorecardRow({
   scorecard: Scorecard;
   onClick?: () => void;
 }) {
-  const { governor, nfts } = useGameContext();
+  const { governor, nfts, gameId } = useGameContext();
 
   const { data: proposalVotes } = useProposalVotes(
-    scorecard.proposalId,
+    gameId,
+    scorecard.id,
     governor
   );
+
   const { write, isLoading } = useRatifyScorecard(
-    scorecard.redemptionTierWeights,
+    gameId,
+    scorecard.tierWeights,
     governor
   );
-  const { data: proposalState } = useProposalState(
-    scorecard.proposalId,
+  const { data: proposalState } = useScorecardState(
+    gameId,
+    scorecard.id,
     governor
   );
 
-  const { data: quorum } = useQuorum(scorecard.proposalId, governor);
-  const quourumReached = proposalVotes?.forVotes
-    ? quorum?.lte(proposalVotes.forVotes)
-    : false;
+  const { data: quorum } = useQuorum(gameId, scorecard.id, governor);
 
-  const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
+  const votesRemaining = quorum?.sub(proposalVotes);
 
   return (
     <div
@@ -74,7 +69,7 @@ function ScorecardRow({
         Proposed Scorecard
       </h2>
       <div>
-        {scorecard.redemptionTierWeights.map((weight) => (
+        {scorecard.tierWeights.map((weight) => (
           <div key={weight.id.toString()}>
             {nfts?.tiers?.[weight.id - 1].teamName}: {/* tiers 0 indexed */}
             {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
@@ -84,9 +79,9 @@ function ScorecardRow({
       <div>State: {stateText(proposalState)}</div>
 
       <div className="flex gap-3 items-center">
-        Current votes: {proposalVotes?.forVotes.toString()} (
-        {votesRemaining?.toNumber()} more needed)
-        {quourumReached && proposalState === ProposalState.Succeeded ? (
+        Current votes: {proposalVotes?.toString()} ({votesRemaining?.toNumber()}{" "}
+        more needed)
+        {proposalState === DefifaScorecardState.SUCCEEDED ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
           </Button>
@@ -101,15 +96,16 @@ function ScorecardActions({
 }: {
   selectedScorecard: Scorecard;
 }) {
-  const { governor } = useGameContext();
+  const { governor, gameId } = useGameContext();
   const { write, isLoading } = useAttestToScorecard(
-    selectedScorecard.proposalId,
+    gameId,
+    selectedScorecard.id,
     governor
   );
 
   return (
     <div className="flex justify-between">
-      <div>{selectedScorecard.proposalId.toString()}</div>
+      <div>{selectedScorecard.id.toString()}</div>
       <Button loading={isLoading} onClick={() => write?.()}>
         Attest to scorecard
       </Button>
@@ -119,9 +115,10 @@ function ScorecardActions({
 
 export function ScorecardsContent() {
   const [selectedScorecard, setSelectedScorecard] = useState<Scorecard>();
-  const { governor } = useGameContext();
-  const { data: scorecards, isLoading } = useScorecards(governor);
-  const { data: votes } = useAccountVotes(governor);
+  const { gameId, governor } = useGameContext();
+  const { data: scorecards, isLoading } = useScorecards(gameId);
+
+  const { data: votes } = useAccountVotes(gameId, governor);
   if (isLoading) {
     return <Container>...</Container>;
   }
@@ -134,25 +131,25 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      
       {!scorecards || scorecards.length === 0 ? (
-    <Container>
-    <span className="text-pink-500">No scorecards submitted yet.</span> Anybody may submit a scorecard.{" "}
+        <Container>
+          <span className="text-pink-500">No scorecards submitted yet.</span>{" "}
+          Anybody may submit a scorecard.
           <div className="text-xs mb-5">
             (or, some scorecards haven't been indexed yet)
           </div>
         </Container>
       ) : (
-        scorecards?.map((scorecard) => (
-          <>
+        <>
           <div className="mb-3 font-bold text-lg">Select a Scorecard:</div>
-          <ScorecardRow
-            key={scorecard.proposalId.toString()}
-            scorecard={scorecard}
-            onClick={() => setSelectedScorecard(scorecard)}
-          />
-          </>
-        ))
+          {scorecards?.map((scorecard) => (
+            <ScorecardRow
+              key={scorecard.id.toString()}
+              scorecard={scorecard}
+              onClick={() => setSelectedScorecard(scorecard)}
+            />
+          ))}
+        </>
       )}
       <div className="mb-7 flex flex-col gap-2">
         <p>
@@ -167,8 +164,6 @@ export function ScorecardsContent() {
       <div className="mb-7 font-medium">
         {votes?.toString()} votes available.
       </div>
-
-      
     </ActionContainer>
   );
 }

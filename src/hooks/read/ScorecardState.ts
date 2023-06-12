@@ -1,9 +1,10 @@
-import { ProposalState } from "types/defifa";
+import { DefifaScorecardState } from "types/defifa";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
-export function useProposalState(
-  proposalId: number,
+export function useScorecardState(
+  gameId: number,
+  scorecardId: number,
   governorAddress: string | undefined
 ) {
   const { chainData } = useChainData();
@@ -11,14 +12,14 @@ export function useProposalState(
   const res = useContractRead({
     addressOrName: governorAddress ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "state",
-    args: [proposalId],
+    functionName: "stateOf",
+    args: [gameId, scorecardId],
     chainId: chainData.chainId,
     enabled: !!governorAddress,
   });
 
   return {
     ...res,
-    data: res.data as unknown as ProposalState,
+    data: res.data as unknown as DefifaScorecardState,
   };
 }

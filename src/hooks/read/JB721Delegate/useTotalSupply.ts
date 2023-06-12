@@ -15,7 +15,7 @@ export function useTotalSupply(
   const res = useContractRead({
     addressOrName: JBTiered721DelegateStore?.address ?? "",
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
-    functionName: "totalSupply",
+    functionName: "totalSupplyOf",
     args: dataSourceAddress,
     chainId: chainData.chainId,
     enabled: hasDataSource,
