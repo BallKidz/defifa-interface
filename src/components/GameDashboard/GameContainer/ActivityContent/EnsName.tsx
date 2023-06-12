@@ -12,7 +12,7 @@ export default function EthereumAddress({
 }: EthereumAddressProps) {
   const { data: ensName } = useEnsName(address, { enabled: !ensDisabled })
   return (
-    <div>
+    <div className="flex items-center gap-2">
       <span className="inline-flex items-center">
         {ensName && address && (
           // eslint-disable-next-line @next/next/no-img-element

@@ -3,16 +3,15 @@ import { Input } from "components/UI/Input";
 import { useGameContext } from "contexts/GameContext";
 import Image from "next/image";
 import { useState } from "react";
-import { DefifaTierRedemptionWeight } from "types/defifa";
-import { percentageToRedemptionWeight } from "utils/defifa";
 import { CustomScorecardActions } from "./CustomScorecardActions";
 
-interface ScorecardMap {
-  [key: string]: number; // score percentage
+export interface ScorecardPercentages {
+  [key: string]: number | undefined; // tier_id: score_percentage
 }
 
 export function CustomScorecardContent() {
-  const [scorecardMap, setScorecardMap] = useState<ScorecardMap>({});
+  const [scorecardPercentages, setScorecardPercentages] =
+    useState<ScorecardPercentages>({});
 
   const {
     nfts: { tiers },
@@ -22,23 +21,19 @@ export function CustomScorecardContent() {
     },
   } = useGameContext();
 
-  function onInput(tierId: number, scorePercentage: number) {
-    const newScorecardMap = { ...scorecardMap, [tierId]: scorePercentage };
-    setScorecardMap(newScorecardMap);
+  function onInput(tierId: number, scorePercentage: number | undefined) {
+    const newScorecardMap = {
+      ...scorecardPercentages,
+      [tierId.toString()]: scorePercentage,
+    };
+    setScorecardPercentages(newScorecardMap);
   }
-
-  const scorecard: DefifaTierRedemptionWeight[] =
-    tiers?.map((t) => {
-      const scorePercentage = scorecardMap[t.id] ?? 0;
-      return {
-        id: t.id,
-        redemptionWeight: percentageToRedemptionWeight(scorePercentage),
-      };
-    }) ?? [];
 
   return (
     <ActionContainer
-      renderActions={() => <CustomScorecardActions scorecard={scorecard} />}
+      renderActions={() => (
+        <CustomScorecardActions scorecardPercentages={scorecardPercentages} />
+      )}
     >
       {tiersLoading || currentFundingCycleLoading ? (
         <span>...</span>
@@ -64,15 +59,18 @@ export function CustomScorecardContent() {
                 <div className="p-3">
                   <label htmlFor="">Score %</label>
                   <Input
-                    type="number"
+                    type="text"
+                    value={scorecardPercentages[t.id]}
                     onChange={(e) => {
-                      onInput(t.id, parseInt(e.target.value || "0"));
+                      const value = e.target.value;
+                      onInput(t.id, value ? parseInt(value) : undefined);
                     }}
+                    step={1}
                   />
                 </div>
               </div>
             ))}
-          </div>{" "}
+          </div>
         </>
       )}
     </ActionContainer>
