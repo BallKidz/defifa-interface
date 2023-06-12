@@ -39,7 +39,11 @@ function ScorecardRow({
 }) {
   const { governor, nfts, gameId } = useGameContext();
 
-  const { data: proposalVotes } = useProposalVotes(scorecard.id, governor);
+  const { data: proposalVotes } = useProposalVotes(
+    gameId,
+    scorecard.id,
+    governor
+  );
   const { write, isLoading } = useRatifyScorecard(
     gameId,
     scorecard.tierWeights,
@@ -113,7 +117,7 @@ export function ScorecardsContent() {
   const { gameId, governor } = useGameContext();
   const { data: scorecards, isLoading } = useScorecards(gameId);
 
-  const { data: votes } = useAccountVotes(governor);
+  const { data: votes } = useAccountVotes(gameId, governor);
   if (isLoading) {
     return <Container>...</Container>;
   }
