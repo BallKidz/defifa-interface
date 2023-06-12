@@ -25,7 +25,7 @@ export default function GameContextProvider({
 
   const { data: totalSupply } = useTotalSupply(dataSource);
   const { data: tiersOf, isLoading: tiersOfLoading } = useTiersOf(dataSource);
-  console.log(tiersOf, dataSource)
+  console.log(tiersOf, dataSource, totalSupply)
   const { data: tiers, isLoading: tiersLoading } = useDefifaTiers(
     tiersOf ?? []
   );

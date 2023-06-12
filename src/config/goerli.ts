@@ -33,11 +33,10 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     interface: JBETHPaymentTerminal.abi,
   },
   JBTiered721DelegateStore: {
-    // address: addressFor(
-    //   "JBTiered721DelegateStore",
-    //   Juice721DelegateDeployment as ForgeDeploy
-    // )!,
-    address: "0x2206f10e626dAc1b3F90eC98E4791F406e006351", // delegate 3.3, WIP
+    address: addressFor(
+      "JBTiered721DelegateStore",
+      Juice721DelegateDeployment as ForgeDeploy
+    )!,
     interface: IJBTiered721DelegateStore.abi,
   },
   DefifaDelegate: {

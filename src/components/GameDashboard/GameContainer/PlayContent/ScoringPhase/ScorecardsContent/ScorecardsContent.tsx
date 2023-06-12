@@ -44,6 +44,7 @@ function ScorecardRow({
     scorecard.id,
     governor
   );
+
   const { write, isLoading } = useRatifyScorecard(
     gameId,
     scorecard.tierWeights,
@@ -57,7 +58,7 @@ function ScorecardRow({
 
   const { data: quorum } = useQuorum(gameId, scorecard.id, governor);
 
-  const votesRemaining = quorum?.sub(proposalVotes?.forVotes ?? 0);
+  const votesRemaining = quorum?.sub(proposalVotes);
 
   return (
     <div
@@ -78,8 +79,8 @@ function ScorecardRow({
       <div>State: {stateText(proposalState)}</div>
 
       <div className="flex gap-3 items-center">
-        Current votes: {proposalVotes?.forVotes.toString()} (
-        {votesRemaining?.toNumber()} more needed)
+        Current votes: {proposalVotes?.toString()} ({votesRemaining?.toNumber()}{" "}
+        more needed)
         {proposalState === DefifaScorecardState.SUCCEEDED ? (
           <Button size="sm" loading={isLoading} onClick={() => write?.()}>
             Ratify scorecard
