@@ -65,7 +65,7 @@ function ScorecardRow({
   const votesRemaining = gameQuroum?.sub(proposalVotes ?? BigNumber.from(0));
 
   return (
-    <div className="border border-violet-800 shadow-glowViolet rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
+    <div className="border border-pink-800 shadow-glowPink rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
       <div className="p-4">
         <div className="text-xs flex justify-between items-center mb-2">
           SCORECARD <Pill size="sm">{stateText(proposalState)}</Pill>

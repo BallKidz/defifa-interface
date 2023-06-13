@@ -2,19 +2,19 @@ import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { twMerge } from "tailwind-merge";
 
 const PRIMARY_BUTTON_CLASS =
-  "bg-violet-600 hover:bg-violet-500 text-neutral-50";
+  "bg-pink-600 hover:bg-pink-500 text-neutral-50";
 const PRIMARY_BUTTON_DISABLED_CLASS =
   "bg-gray-700 text-neutral-50 cursor-not-allowed";
 
 const SECONDARY_BUTTON_CLASS =
-  "bg-violet-1100 border border-solid font-medium border-violet-400 hover:bg-violet-1000 text-violet-400";
+  "bg-pink-1100 border border-solid font-medium border-pink-400 hover:bg-pink-1000 text-pink-400";
 const SECONDARY_BUTTON_DISABLED_CLASS =
-  "bg-violet-1100 text-neutral-500 cursor-not-allowed border border-solid border-gray-600";
+  "bg-pink-1100 text-neutral-500 cursor-not-allowed border border-solid border-gray-600";
 
 const TERTIARY_CONFIRM_BUTTON_CLASS =
-  "bg-violet-1100 hover:bg-violet-1000 text-violet-400 underline";
+  "bg-pink-1100 hover:bg-pink-1000 text-pink-400 underline";
 const TERTIARY_DEFAULT_BUTTON_CLASS =
-  "bg-violet-1100 hover:bg-neutral-800 text-neutral-50 underline";
+  "bg-pink-1100 hover:bg-neutral-800 text-neutral-50 underline";
 
 const Button = ({
   children,
@@ -36,7 +36,7 @@ const Button = ({
     <button
       {...props}
       className={twMerge(
-        "min-w-[70px] rounded-full font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600",
+        "min-w-[70px] rounded-full font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600",
         category === "primary"
           ? props.disabled
             ? PRIMARY_BUTTON_DISABLED_CLASS

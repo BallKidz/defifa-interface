@@ -1,5 +1,6 @@
+import { EthAddress } from "components/UI/EthAddress";
 import EtherscanLink from "components/UI/EtherscanLink";
-import Container from "components/layout/Container";
+import { Pill } from "components/UI/Pill";
 import { useGameContext } from "contexts/GameContext";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
 import { useDeployerDates } from "hooks/read/DeployerDates";
@@ -8,8 +9,6 @@ import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
-import styles from "./index.module.css";
-import { EthAddress } from "components/UI/EthAddress";
 
 export function RulesContent() {
   const { metadata, gameId, nfts } = useGameContext();
@@ -48,46 +47,30 @@ export function RulesContent() {
     }
   };
 
-  const pillStyle = (phase: number) => {
-    if (currentFcNumber ?? 0 > phase) {
-      return styles.completed;
-    } else if (currentFcNumber === phase) {
-      return styles.active;
-    } else {
-      return styles.upcoming;
-    }
-  };
-
   return (
-    <Container>
+    <div>
       <p className="mb-5">{metadata?.description}</p>
       <div className="mb-5">
         <EtherscanLink type="address" value={currentFc?.metadata.dataSource}>
           View NFT on Etherscan
         </EtherscanLink>
       </div>
-      <div className="p-4 border border-gray-800 rounded-lg mb-5 flex flex-col gap-2">
+      <div className="mb-5 flex flex-col gap-2">
         <div>
           <span className="text-pink-500">Phase 1: </span>MINTS OPEN (mints
           open, refunds open)
-          <span className={pillStyle(mintDuration.phase)}>
-            {fillPill(mintDuration.phase)}
-          </span>
+          <Pill size="sm">{fillPill(mintDuration.phase)}</Pill>
         </div>
         <div>
           <span className="text-pink-500">Phase 2: </span>REFUNDS OPEN (mints
           closed)
-          <span className={pillStyle(refundDuration.phase)}>
-            {fillPill(refundDuration.phase)}
-          </span>
+          <Pill size="sm">{fillPill(refundDuration.phase)}</Pill>
         </div>
         <div>
           <div>
             <span className="text-pink-500">Phase 3: </span>SCORING (refunds
             closed)
-            <span className={pillStyle(start.phase)}>
-              {fillPill(start.phase)}
-            </span>
+            <Pill size="sm">{fillPill(start.phase)}</Pill>
           </div>
           <div>
             Anyone may submit a scorecard. Scorecards must be ratified by a
@@ -95,21 +78,19 @@ export function RulesContent() {
           </div>
         </div>
       </div>
-      <div>
-        <div className="p-4 border border-gray-800 rounded-lg mb-5">
-          <p>
-            <span className="text-pink-500">Winners: </span>Claim prize anytime
-            after a scorecard has been ratified. Redeeming a player card will
-            burn it and transfer you its share of the pot.
-          </p>
-          <p>
-            <span className="text-pink-500">No Contest: </span>
-            This occurs when nobody queues the next game phase. Players may
-            redeemed or keep their playing cards.
-          </p>
-        </div>
+      <div className="py-4 border-t border-gray-800 rounded-lg mb-5">
+        <p>
+          <span className="text-pink-500">Winners: </span>Claim prize anytime
+          after a scorecard has been ratified. Redeeming a player card will burn
+          it and transfer you its share of the pot.
+        </p>
+        <p>
+          <span className="text-pink-500">No Contest: </span>
+          This occurs when nobody queues the next game phase. Players may
+          redeemed or keep their playing cards.
+        </p>
       </div>
-      <div className="p-4 border border-gray-800 rounded-lg mb-5">
+      <div className="mb-5 py-4 border-t border-gray-800">
         <div className="flex items-center">
           <span className="text-pink-500">Mint Fees:</span>
           {metadata?.seller_fee_basis_points === 0 ? (
@@ -171,6 +152,6 @@ export function RulesContent() {
             )}
         </div>
       </div>
-    </Container>
+    </div>
   );
 }

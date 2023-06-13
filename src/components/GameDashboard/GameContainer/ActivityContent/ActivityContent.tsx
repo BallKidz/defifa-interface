@@ -78,7 +78,7 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
         Minted {transferEvent.token.metadata.name}
       </div>
 
-      <div className="rounded-lg ml-11 border-violet-900 border inline-flex overflow-hidden p-1">
+      <div className="rounded-lg ml-11 border-pink-900 border inline-flex overflow-hidden p-1">
         <Image
           className="rounded-md"
           src={transferEvent.token.metadata.image}

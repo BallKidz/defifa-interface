@@ -4,6 +4,8 @@ import { useGameContext } from "contexts/GameContext";
 import Head from "next/head";
 import { GameContainer } from "./GameContainer/GameContainer";
 import { Header } from "./Header";
+import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
+import { RulesContent } from "./GameContainer/RulesContent/RulesContent";
 
 export function GameDashboard() {
   const { metadata } = useGameContext();
@@ -23,14 +25,24 @@ export function GameDashboard() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container>
-        <Navbar />
-      </Container>
-      <Container>
+
+      <Container className="my-5 py-3">
         <Header />
       </Container>
 
-      <GameContainer />
+      <Container>
+        <div className="grid grid-cols-12 gap-4">
+          <div className="p-2 rounded-lg bg-neutral-900 col-span-9">
+            <PlayContent />
+          </div>
+          <div className="p-5 rounded-lg bg-neutral-900 col-span-3">
+            <span className="mb-2 font-semibold text-sm">How to play</span>
+            <div className="text-xs">
+              <RulesContent />
+            </div>
+          </div>
+        </div>
+      </Container>
     </>
   );
 }

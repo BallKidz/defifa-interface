@@ -3,7 +3,7 @@ import { twJoin } from "tailwind-merge";
 
 const Container = (props: PropsWithChildren<{ className?: string }>) => {
   return (
-    <div className={twJoin("max-w-5xl mx-auto px-3 w-full", props.className)}>
+    <div className={twJoin("px-7 max-w-7xl mx-auto", props.className)}>
       {props.children}
     </div>
   );
