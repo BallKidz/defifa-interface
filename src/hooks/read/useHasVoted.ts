@@ -1,7 +1,7 @@
 import { useChainData } from "hooks/useChainData";
 import { useAccount, useContractRead } from "wagmi";
 
-export function useHasVoted(proposalId: number, governor: string) {
+export function useHasVoted(scorecardId: number, governor: string) {
   const { address } = useAccount();
   const { chainData } = useChainData();
 
@@ -9,7 +9,7 @@ export function useHasVoted(proposalId: number, governor: string) {
     addressOrName: governor,
     contractInterface: chainData.DefifaGovernor.interface,
     functionName: "hasVoted",
-    args: [proposalId, address],
+    args: [scorecardId, address],
     chainId: chainData.chainId,
   });
 }

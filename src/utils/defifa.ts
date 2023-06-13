@@ -1,5 +1,5 @@
 import { TOTAL_REDEMPTION_WEIGHT } from "constants/constants";
-import { BigNumber } from "ethers";
+import { BigNumber, BigNumberish } from "ethers";
 
 /**
  * Return the redemption weight for a given percentage.
@@ -18,9 +18,12 @@ export function percentageToRedemptionWeight(percentage: number): BigNumber {
  * @returns percentage, number between 0 and 100.
  */
 export function redemptionWeightToPercentage(
-  redemptionWeight: BigNumber
+  redemptionWeight: BigNumberish
 ): number {
-  return redemptionWeight.eq(0)
+  return BigNumber.from(redemptionWeight).eq(0)
     ? 0
-    : redemptionWeight.mul(100).div(TOTAL_REDEMPTION_WEIGHT).toNumber();
+    : BigNumber.from(redemptionWeight)
+        .mul(100)
+        .div(TOTAL_REDEMPTION_WEIGHT)
+        .toNumber();
 }

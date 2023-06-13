@@ -36,8 +36,7 @@ const Button = ({
     <button
       {...props}
       className={twMerge(
-        props.className,
-        " min-w-[70px] rounded-full font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600",
+        "min-w-[70px] rounded-full font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600",
         category === "primary"
           ? props.disabled
             ? PRIMARY_BUTTON_DISABLED_CLASS
@@ -53,7 +52,8 @@ const Button = ({
           ? "px-3 py-1"
           : size === "lg"
           ? "px-7 py-2.5 text-md"
-          : "px-3 py-2"
+          : "px-3 py-2",
+        props.className
       )}
       disabled={loading || props.disabled}
     >

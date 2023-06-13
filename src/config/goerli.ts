@@ -11,24 +11,25 @@ import JBSingleTokenPaymentTerminalStore from "@jbx-protocol/juice-contracts-v3/
 import { addressFor, ForgeDeploy } from "forge-run-parser";
 import { chain } from "wagmi";
 import { DefifaConfig } from "./types";
+import { EthereumAddress } from "types/defifa";
 
 export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
   chainId: chain.goerli.id,
 
   JBProjects: {
-    address: JBProjects.address as `0x${string}`,
+    address: JBProjects.address as EthereumAddress,
     interface: JBProjects.abi,
   },
 
   JBController: {
-    address: JBController.address as `0x${string}`,
+    address: JBController.address as EthereumAddress,
     interface: JBController.abi,
   },
   JBSingleTokenPaymentTerminalStore: {
     interface: JBSingleTokenPaymentTerminalStore.abi,
   },
   JBETHPaymentTerminal: {
-    address: JBETHPaymentTerminal.address as `0x${string}`,
+    address: JBETHPaymentTerminal.address as EthereumAddress,
     interface: JBETHPaymentTerminal.abi,
   },
   JBTiered721DelegateStore: {
@@ -43,6 +44,7 @@ export const DEFIFA_CONFIG_GOERLI: DefifaConfig = {
     interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
+    address: addressFor("DefifaGovernor", DefifaDeployment as ForgeDeploy)!,
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {

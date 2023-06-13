@@ -1,18 +1,25 @@
+import { BigNumber } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useContractRead } from "wagmi";
 
 export function useProposalVotes(
-  proposalId: number,
+  gameId: number,
+  scorecardId: number,
   governor: string | undefined
 ) {
   const { chainData } = useChainData();
 
-  return useContractRead({
+  const res = useContractRead({
     addressOrName: governor ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "proposalVotes",
-    args: [proposalId],
+    functionName: "attestationCountOf",
+    args: [gameId, scorecardId],
     chainId: chainData.chainId,
-    enabled: Boolean(governor && proposalId),
+    enabled: Boolean(governor && scorecardId),
   });
+
+  return {
+    ...res,
+    data: res.data as unknown as BigNumber | undefined,
+  };
 }

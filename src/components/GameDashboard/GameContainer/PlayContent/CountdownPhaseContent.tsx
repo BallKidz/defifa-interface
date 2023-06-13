@@ -1,27 +1,12 @@
 import Container from "components/layout/Container";
-import { useCountdown } from "hooks/useCountdown";
 import { useGameTimes } from "hooks/read/useGameTimes";
-import { min } from "lodash";
+import { useCountdown } from "hooks/useCountdown";
 
 export function CountdownPhaseContent() {
   const { data, isLoading } = useGameTimes();
   const mintStart = data
-    ? new Date(
-        (data?.start ??
-          0 - data?.mintDuration ??
-          0 - data?.refundDuration ??
-          0) * 1000
-      )
+    ? new Date((data.start - data.mintDuration - data.refundDuration) * 1000)
     : undefined;
-
-  console.log(
-    "COUNTDOWN PHASE TIMES",
-    mintStart,
-    data?.start,
-    data?.mintDuration,
-    data?.refundDuration,
-    Date.now()
-  );
 
   const { timeRemaining } = useCountdown(mintStart);
 

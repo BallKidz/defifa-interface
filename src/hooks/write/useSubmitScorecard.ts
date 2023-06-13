@@ -7,6 +7,7 @@ import {
 } from "wagmi";
 
 export function useSubmitScorecard(
+  gameId: number,
   _tierWeights: DefifaTierRedemptionWeight[],
   governorAddress: string | undefined
 ) {
@@ -15,8 +16,8 @@ export function useSubmitScorecard(
   const { config } = usePrepareContractWrite({
     addressOrName: governorAddress ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "submitScorecard",
-    args: [_tierWeights],
+    functionName: "submitScorecardFor",
+    args: [gameId, _tierWeights],
     chainId: chainData.chainId,
     enabled: Boolean(
       _tierWeights && _tierWeights.length > 0 && governorAddress

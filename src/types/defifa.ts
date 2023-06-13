@@ -15,9 +15,11 @@ export interface DefifaTierParams {
   shouldUseReservedTokenBeneficiaryAsDefault: boolean;
 }
 
+export type EthereumAddress = `0x${string}`;
+
 export interface DefifaLaunchProjectData {
   name: string;
-  rules: string;
+  rules: string; // not used onchain
   projectMetadata: JBProjectMetadataParams;
   contractUri: string;
   baseUri: string;
@@ -28,13 +30,13 @@ export interface DefifaLaunchProjectData {
   start: number;
   splits: JBGroupedSplits<JBSplitGroup>[];
   distributionLimit: number;
-  ballkidzFeeProjectTokenAccount: string;
-  defaultTokenUriResolver: string;
+  ballkidzFeeProjectTokenAccount: EthereumAddress;
   votingPeriod: number; // seconds
   votingStartTime: number;
-  terminal: string; // address
-  store: string; // address
-  defaultVotingDelegate: string;
+  defaultVotingDelegate: EthereumAddress;
+  store: EthereumAddress;
+  defaultTokenUriResolver: EthereumAddress;
+  terminal: EthereumAddress;
 }
 
 export interface DefifaProjectMetadata {
@@ -57,15 +59,12 @@ export interface DefifaTierRedemptionWeight {
   redemptionWeight: BigNumber;
 }
 
-export enum ProposalState {
-  "Pending",
-  "Active",
-  "Canceled",
-  "Defeated",
-  "Succeeded",
-  "Queued",
-  "Expired",
-  "Executed",
+export enum DefifaScorecardState {
+  PENDING,
+  ACTIVE,
+  DEFEATED,
+  SUCCEEDED,
+  RATIFIED,
 }
 
 export interface DefifaTier {
