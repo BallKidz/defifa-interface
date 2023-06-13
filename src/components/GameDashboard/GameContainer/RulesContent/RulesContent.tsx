@@ -9,6 +9,7 @@ import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
 import EnsName from "../ActivityContent/EnsName";
 import styles from "./index.module.css";
+import EtherscanLink from "components/UI/EtherscanLink";
 
 export function RulesContent() {
   const { metadata, gameId, nfts } = useGameContext();
@@ -60,6 +61,11 @@ export function RulesContent() {
   return (
     <Container>
       <p className="mb-5">{metadata?.description}</p>
+      <div className="mb-5">
+        <EtherscanLink type="address" value={currentFc?.metadata.dataSource}>
+          View NFT on Etherscan
+        </EtherscanLink>
+      </div>
       <div className="p-4 border border-gray-800 rounded-lg mb-5 flex flex-col gap-2">
         <div>
           <span className="text-pink-500">Phase 1: </span>MINTS OPEN (mints
@@ -162,16 +168,6 @@ export function RulesContent() {
               </div>
             )}
         </div>
-      </div>
-
-      <div>
-        <a
-          href={`https://etherscan.io/address/${currentFc?.metadata.dataSource}`}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          View NFT on Etherscan
-        </a>
       </div>
     </Container>
   );

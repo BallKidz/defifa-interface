@@ -1,5 +1,7 @@
 import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
+import { EthAddress } from "components/UI/EthAddress";
+import { Pill } from "components/UI/Pill";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
@@ -7,6 +9,7 @@ import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useScorecardState } from "hooks/read/ScorecardState";
 import { useGameQuorum } from "hooks/read/useGameQuorum";
 import { useAccountVotes } from "hooks/read/useGetVotes";
+import { useEnsName } from "hooks/useEnsName";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
@@ -17,15 +20,15 @@ import { redemptionWeightToPercentage } from "utils/defifa";
 const stateText = (state: DefifaScorecardState) => {
   switch (state) {
     case DefifaScorecardState.PENDING:
-      return "Pending (0)";
+      return "Pending";
     case DefifaScorecardState.ACTIVE:
-      return "Active (1)";
+      return "Active";
     case DefifaScorecardState.DEFEATED:
-      return "Defeated (2)";
+      return "Defeated";
     case DefifaScorecardState.SUCCEEDED:
-      return "Succeeded (3)";
+      return "Succeeded";
     case DefifaScorecardState.RATIFIED:
-      return "Ratified (4)";
+      return "Ratified";
     default:
       return "Unknown";
   }
@@ -61,31 +64,65 @@ function ScorecardRow({
   const votesRemaining = quorum?.sub(proposalVotes ?? BigNumber.from(0));
 
   return (
-    <div
-      className="border border-pink-500 rounded-lg shadow p-4 mb-5"
-      onClick={onClick}
-    >
-      <h2 className="text-xl font-bold mb-4" role="button">
-        Proposed Scorecard
-      </h2>
-      <div>
-        {scorecard.tierWeights.map((weight) => (
-          <div key={weight.id.toString()}>
-            {nfts?.tiers?.[weight.id - 1].teamName}: {/* tiers 0 indexed */}
-            {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
+    <div className="border border-violet-800 shadow-glowViolet rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
+      <div className="p-4">
+        <span className="text-xs">SCORECARD</span>
+        <span className="mb-4 flex justify-between items-center">
+          <span>
+            By <EthAddress address={scorecard.submitter.id} />
+          </span>
+          <span>
+            <Pill>{stateText(proposalState)}</Pill>
+          </span>
+        </span>
+        <div className="w-full text-sm mb-5">
+          <div className="flex justify-between w-full">
+            <span>Tier</span>
+            <span>Score</span>
           </div>
-        ))}
-      </div>
-      <div>State: {stateText(proposalState)}</div>
+          {scorecard.tierWeights.map((weight) => (
+            <div
+              key={weight.id.toString()}
+              className="flex justify-between w-full border-b border-gray-800 p-1"
+            >
+              <span>{nfts?.tiers?.[weight.id - 1].teamName}</span>{" "}
+              {/* tiers 0 indexed */}
+              <span>
+                {redemptionWeightToPercentage(
+                  weight.redemptionWeight
+                ).toString()}
+                %
+              </span>
+            </div>
+          ))}
+        </div>
 
-      <div className="flex gap-3 items-center">
-        Current votes: {proposalVotes?.toString()} ({votesRemaining?.toNumber()}{" "}
-        more needed)
-        {proposalState === DefifaScorecardState.SUCCEEDED ? (
-          <Button size="sm" loading={isLoading} onClick={() => write?.()}>
-            Ratify scorecard
-          </Button>
-        ) : null}
+        <div className="flex justify-between mb-2">
+          <span>Votes</span>
+          <span>{proposalVotes?.toString()}</span>
+        </div>
+        <div className="flex justify-between">
+          <span>Votes needed</span>
+          <span>{quorum?.toNumber()}</span>
+        </div>
+      </div>
+
+      <div className="flex border-t border-gray-700">
+        <Button
+          disabled={proposalState !== DefifaScorecardState.SUCCEEDED}
+          onClick={() => write?.()}
+          className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-gray-800 rounded-none"
+          category="secondary"
+        >
+          Lock in
+        </Button>
+        <Button
+          className="flex-1 p-2 rounded-none border-none"
+          onClick={onClick}
+          category="secondary"
+        >
+          Select
+        </Button>
       </div>
     </div>
   );
@@ -107,7 +144,7 @@ function ScorecardActions({
     <div className="flex justify-between">
       <div>{selectedScorecard.id.toString()}</div>
       <Button loading={isLoading} onClick={() => write?.()}>
-        Attest to scorecard
+        Vote for scorecard
       </Button>
     </div>
   );
@@ -141,14 +178,19 @@ export function ScorecardsContent() {
         </Container>
       ) : (
         <>
-          <div className="mb-3 font-bold text-lg">Select a Scorecard:</div>
-          {scorecards?.map((scorecard) => (
-            <ScorecardRow
-              key={scorecard.id.toString()}
-              scorecard={scorecard}
-              onClick={() => setSelectedScorecard(scorecard)}
-            />
-          ))}
+          <div className="mb-3 font-medium text-lg">
+            Select a Scorecard and vote
+          </div>
+          <div className="mb-3">You have {votes?.toString()} votes.</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {scorecards?.map((scorecard) => (
+              <ScorecardRow
+                key={scorecard.id.toString()}
+                scorecard={scorecard}
+                onClick={() => setSelectedScorecard(scorecard)}
+              />
+            ))}
+          </div>
         </>
       )}
       <div className="mb-7 flex flex-col gap-2">
@@ -159,10 +201,6 @@ export function ScorecardsContent() {
         </p>
         <p>The final Scorecard determines each Pick's redemption value.</p>
         <p>Scorecards don't necessarily reflect the game's actual outcome.</p>
-      </div>
-
-      <div className="mb-7 font-medium">
-        {votes?.toString()} votes available.
       </div>
     </ActionContainer>
   );

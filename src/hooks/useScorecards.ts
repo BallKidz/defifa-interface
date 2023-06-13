@@ -1,16 +1,7 @@
-import { BigNumber, ethers } from "ethers";
 import request, { gql } from "graphql-request";
 import { DefifaTierRedemptionWeight } from "types/defifa";
 import { useQuery } from "wagmi";
 import { useChainData } from "./useChainData";
-
-// TODO flesh out
-interface Proposal {
-  scorecardId: number;
-  calls: {
-    calldata: string;
-  }[];
-}
 
 const scorecardsQuery = gql`
   query scorecardsQuery($gameId: ID!) {
@@ -20,6 +11,9 @@ const scorecardsQuery = gql`
         redemptionWeight
         id
       }
+      submitter {
+        id
+      }
     }
   }
 `;
@@ -27,6 +21,9 @@ const scorecardsQuery = gql`
 export interface Scorecard {
   id: number;
   tierWeights: DefifaTierRedemptionWeight[];
+  submitter: {
+    id: string; // address
+  };
 }
 
 export function useScorecards(gameId: number) {
