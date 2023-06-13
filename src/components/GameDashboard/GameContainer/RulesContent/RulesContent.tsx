@@ -77,7 +77,6 @@ export function RulesContent() {
         <div>
           <span className="text-pink-500">Phase 2: </span>REFUNDS OPEN (mints
           closed)
-          <span className="text-pink-500">Phase 2:  </span>REFUNDS OPEN (mints closed)
           <span className={pillStyle(refundDuration.phase)}>
             {fillPill(refundDuration.phase)}
           </span>
@@ -86,7 +85,6 @@ export function RulesContent() {
           <div>
             <span className="text-pink-500">Phase 3: </span>SCORING (refunds
             closed)
-            <span className="text-pink-500">Phase 3:  </span>SCORING (refunds closed)
             <span className={pillStyle(start.phase)}>
               {fillPill(start.phase)}
             </span>
@@ -112,21 +110,6 @@ export function RulesContent() {
         </div>
       </div>
       <div className="p-4 border border-gray-800 rounded-lg mb-5">
-        {/*             <div className="flex items-center">
-                <span className="text-pink-500">Mint Fees:</span>
-                {metadata?.seller_fee_basis_points === 0 ? (
-                  <span className="ml-2">No fees are collected</span>
-                ) : (
-                  <>
-                    {/* <EnsName address={metadata?.fee_recipient} /> 
-                    <EnsName address={tokenBeneficiary?.toString()} />
-                    <span className="ml-2">
-                collects a {metadata?.seller_fee_basis_points}% fee on each pick
-                minted.
-              </span>
-                  </>
-                )}
-              </div> */}
         <div>
           <div className="flex items-center">
             <span className="text-pink-500">Reserved Mints:</span>
