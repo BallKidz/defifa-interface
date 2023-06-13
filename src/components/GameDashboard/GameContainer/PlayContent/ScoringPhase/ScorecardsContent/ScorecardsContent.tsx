@@ -2,10 +2,10 @@ import { ActionContainer } from "components/GameDashboard/GameContainer/ActionCo
 import Button from "components/UI/Button";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
-import { useScorecardState } from "hooks/read/ScorecardState";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
+import { useScorecardState } from "hooks/read/ScorecardState";
+import { useGameQuorum } from "hooks/read/useGameQuorum";
 import { useAccountVotes } from "hooks/read/useGetVotes";
-import { useQuorum } from "hooks/read/useQuorum";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
@@ -56,8 +56,7 @@ function ScorecardRow({
     governor
   );
 
-  const { data: quorum } = useQuorum(gameId, scorecard.id, governor);
-
+  const { data: quorum } = useGameQuorum(gameId, governor);
   const votesRemaining = quorum?.sub(proposalVotes);
 
   return (
