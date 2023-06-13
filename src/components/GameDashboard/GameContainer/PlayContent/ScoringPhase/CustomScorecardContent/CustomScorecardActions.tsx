@@ -4,20 +4,23 @@ import { useGameContext } from "contexts/GameContext";
 import { useSubmitScorecard } from "hooks/write/useSubmitScorecard";
 import { percentageToRedemptionWeight } from "utils/defifa";
 import { ScorecardPercentages } from "./CustomScorecardContent";
-import { DefifaTierRedemptionWeight } from "types/defifa";
+import {
+  DefifaTierRedemptionWeight,
+  DefifaTierRedemptionWeightParams,
+} from "types/defifa";
 
 function useTierRedemptionWeights(
   scorecardPercentages: ScorecardPercentages
-): DefifaTierRedemptionWeight[] {
+): DefifaTierRedemptionWeightParams[] {
   const {
     nfts: { tiers },
   } = useGameContext();
 
-  const weights = tiers?.map((t) => {
+  const weights = tiers?.map((tier) => {
     return {
-      id: t.id,
+      id: tier.id,
       redemptionWeight: percentageToRedemptionWeight(
-        scorecardPercentages[t.id.toString()] ?? 0
+        scorecardPercentages[tier.id.toString()] ?? 0
       ),
     };
   });

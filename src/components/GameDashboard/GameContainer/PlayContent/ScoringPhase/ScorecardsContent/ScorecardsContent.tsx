@@ -85,7 +85,7 @@ function ScorecardRow({
               key={weight.id.toString()}
               className="flex justify-between w-full border-b border-gray-800 p-1"
             >
-              <span>{nfts?.tiers?.[weight.id - 1].teamName}</span>{" "}
+              <span>{nfts?.tiers?.[weight.tierId - 1].teamName}</span>{" "}
               {/* tiers 0 indexed */}
               <span>
                 {redemptionWeightToPercentage(
