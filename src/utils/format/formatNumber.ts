@@ -18,3 +18,9 @@ export const fromWad4 = (wadValue?: BigNumberish) => {
   const formattedResult = parseFloat(result).toFixed(4);
   return formattedResult;
 };
+
+export const formatNumber = (value: number | undefined): string => {
+  return typeof value === "undefined"
+    ? ""
+    : new Intl.NumberFormat().format(value);
+};

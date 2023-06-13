@@ -16,6 +16,7 @@ import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useState } from "react";
 import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
+import { formatNumber } from "utils/format/formatNumber";
 
 const stateText = (state: DefifaScorecardState) => {
   switch (state) {
@@ -99,11 +100,11 @@ function ScorecardRow({
 
         <div className="flex justify-between mb-2">
           <span>Votes</span>
-          <span>{proposalVotes?.toString()}</span>
+          <span>{formatNumber(proposalVotes?.toNumber())}</span>
         </div>
         <div className="flex justify-between">
           <span>Votes needed</span>
-          <span>{quorum?.toNumber()}</span>
+          <span>{formatNumber(quorum?.toNumber())}</span>
         </div>
       </div>
 
@@ -181,7 +182,9 @@ export function ScorecardsContent() {
           <div className="mb-3 font-medium text-lg">
             Select a Scorecard and vote
           </div>
-          <div className="mb-3">You have {votes?.toString()} votes.</div>
+          <div className="mb-3">
+            You have {formatNumber(votes?.toNumber())} votes.
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {scorecards?.map((scorecard) => (
               <ScorecardRow

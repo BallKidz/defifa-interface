@@ -4,6 +4,8 @@ import { MouseEventHandler, useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 import { truncateEthAddress } from "utils/format/formatAddress";
 import EtherscanLink from "./EtherscanLink";
+import Image from "next/image";
+import { ensAvatarUrlForAddress } from "utils/ens";
 
 interface EthAddressProps {
   className?: string;
@@ -14,6 +16,8 @@ interface EthAddressProps {
   onClick?: MouseEventHandler;
   href?: string;
   truncateTo?: number;
+  withEnsAvatar?: boolean;
+  avatarClassName?: string;
 }
 
 export function EthAddress({
@@ -25,6 +29,8 @@ export function EthAddress({
   linkDisabled = false,
   ensDisabled = false,
   truncateTo,
+  withEnsAvatar = false,
+  avatarClassName,
 }: EthAddressProps) {
   const { data: ensName } = useEnsName(address, { enabled: !ensDisabled });
 
@@ -39,7 +45,17 @@ export function EthAddress({
   if (!formattedAddress) return null;
 
   return (
-    <span className="inline-flex items-center">
+    <span className="inline-flex items-center gap-2">
+      {withEnsAvatar && address && (
+        <Image
+          src={ensAvatarUrlForAddress(address, { size: 72 })}
+          className={twMerge("h-9 w-9 rounded-full", avatarClassName)}
+          alt={`Avatar for ${ensName ?? address}`}
+          loading="lazy"
+          height={36}
+          width={36}
+        />
+      )}
       {linkDisabled ? (
         <span className={twMerge("select-all leading-[22px]", className)}>
           {formattedAddress}
