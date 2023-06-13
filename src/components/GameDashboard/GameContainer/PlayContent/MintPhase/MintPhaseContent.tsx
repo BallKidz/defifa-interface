@@ -9,36 +9,34 @@ export function MintPhaseContent() {
 
   return (
     <div>
-      <Container>
-        <ul className="flex gap-8 mb-6 text-lg">
-          <li>
-            <a
-              className={twJoin(
-                selectedTab === "mint"
-                  ? "underline font-medium text-neutral-50"
-                  : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300"
-              )}
-              onClick={() => setSelectedTab("mint")}
-            >
-              Mint
-            </a>
-          </li>
-          <li>
-            <a
-              className={twJoin(
-                selectedTab === "refund"
-                  ? "underline font-medium text-neutral-50"
-                  : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300"
-              )}
-              onClick={() => setSelectedTab("refund")}
-            >
-              My picks
-            </a>
-          </li>
-        </ul>
-      </Container>
+      <ul className="flex gap-8 mb-6 text-lg">
+        <li>
+          <a
+            className={twJoin(
+              selectedTab === "mint"
+                ? "underline font-medium text-neutral-50"
+                : "text-neutral-400",
+              "cursor-pointer hover:text-neutral-300"
+            )}
+            onClick={() => setSelectedTab("mint")}
+          >
+            Mint
+          </a>
+        </li>
+        <li>
+          <a
+            className={twJoin(
+              selectedTab === "refund"
+                ? "underline font-medium text-neutral-50"
+                : "text-neutral-400",
+              "cursor-pointer hover:text-neutral-300"
+            )}
+            onClick={() => setSelectedTab("refund")}
+          >
+            My picks
+          </a>
+        </li>
+      </ul>
       {selectedTab === "mint" ? <MintPicksContent /> : <RefundPicksContent />}
     </div>
   );

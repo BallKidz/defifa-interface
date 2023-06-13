@@ -26,16 +26,16 @@ export function GameDashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container className="my-5 py-3">
+      <Container className="my-5 py-3 border-b border-gray-800">
         <Header />
       </Container>
 
       <Container>
-        <div className="grid grid-cols-12 gap-4">
-          <div className="p-2 rounded-lg bg-neutral-900 col-span-9">
+        <div className="grid grid-cols-4 gap-6 items-start relative">
+          <div className="rounded-lg col-span-3">
             <PlayContent />
           </div>
-          <div className="p-5 rounded-lg bg-neutral-900 col-span-3">
+          <div className="p-5 rounded-lg bg-neutral-900 col-span-1 sticky top-4">
             <span className="mb-2 font-semibold text-sm">How to play</span>
             <div className="text-xs">
               <RulesContent />

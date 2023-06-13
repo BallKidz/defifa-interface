@@ -1,4 +1,3 @@
-import Container from "components/layout/Container";
 
 export function ActionContainer({
   children,
@@ -8,11 +7,11 @@ export function ActionContainer({
   renderActions?: () => React.ReactNode;
 }) {
   return (
-    <div className="relative">
-      <Container className="mb-12">{children}</Container>
+    <div>
+      <div className="mb-12">{children}</div>
       {renderActions ? (
         <div className="sticky bottom-0 left-0 right-0 h-20 bg-pink-1100 shadow-md border-t border-gray-700 flex items-center w-full">
-          <Container>{renderActions()}</Container>
+          {renderActions()}
         </div>
       ) : null}
     </div>

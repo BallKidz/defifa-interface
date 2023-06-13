@@ -21,7 +21,7 @@ export function RulesContent() {
     maxTiers?.toNumber()
   );
   const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
-  const tokenBeneficiary = useDefaultTokenBeneficiary(
+  const { data: tokenBeneficiary } = useDefaultTokenBeneficiary(
     currentFc?.metadata.dataSource
   );
   const { data: nftRewardTiers } = useTiersOf(currentFc?.metadata.dataSource);
@@ -93,12 +93,12 @@ export function RulesContent() {
       <div className="mb-5 py-4 border-t border-gray-800">
         <div className="flex items-center">
           <span className="text-pink-500">Mint Fees:</span>
-          {metadata?.seller_fee_basis_points === 0 ? (
+          {metadata?.seller_fee_basis_points === 0 || !tokenBeneficiary ? (
             <span className="ml-2">No fees are collected</span>
           ) : (
             <>
               {/* <EthAddress address={metadata?.fee_recipient} /> */}
-              <EthAddress address={tokenBeneficiary?.toString()} />
+              <EthAddress address={tokenBeneficiary} />
               <span className="ml-2">
                 collects a {metadata?.seller_fee_basis_points}% fee on each pick
                 minted.

@@ -13,7 +13,7 @@ export function useDefaultTokenBeneficiary(
     dataSourceAddress && dataSourceAddress !== constants.AddressZero
   );
 
-  return useContractRead({
+  const res = useContractRead({
     addressOrName: JBTiered721DelegateStore?.address ?? "",
     contractInterface: JBTiered721DelegateStore?.interface ?? "",
     functionName: "defaultReservedTokenBeneficiaryOf",
@@ -21,4 +21,9 @@ export function useDefaultTokenBeneficiary(
     args: hasDataSource ? [dataSourceAddress] : null,
     chainId: chainData.chainId,
   });
+
+  return {
+    ...res,
+    data: res.data as unknown as string | undefined,
+  };
 }
