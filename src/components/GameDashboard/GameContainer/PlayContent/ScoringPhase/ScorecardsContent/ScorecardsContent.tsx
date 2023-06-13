@@ -69,7 +69,7 @@ function ScorecardRow({
         <span className="text-xs">SCORECARD</span>
         <span className="mb-4 flex justify-between items-center">
           <span>
-            By <EthAddress address={scorecard.submitter.id} />
+            By <EthAddress address={scorecard.submitter?.id} />
           </span>
           <span>
             <Pill>{stateText(proposalState)}</Pill>
