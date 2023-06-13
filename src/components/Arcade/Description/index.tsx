@@ -27,7 +27,7 @@ const ArcadeDescription = () => {
             } absolute top-0 left-0 w-4 h-4 transform rounded-full transition-transform`}
           ></div>
         </div>
-        <span className="ml-2 text-sm font-medium text-gray-700">
+        <span className="ml-2 text-sm font-medium text-neutral-700">
           {isExpanded ? 'hide' : 'Learn how to play'}
         </span>
       </div>

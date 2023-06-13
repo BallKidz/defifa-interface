@@ -71,7 +71,7 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
           />
         )}
         <span className="rounded-full h-[4px] w-[4px] bg-gray-400"></span>
-        <span className="text-gray-400">{time}</span>
+        <span className="text-neutral-400">{time}</span>
       </div>
 
       <div className="mb-1 ml-11 -translate-y-1">
