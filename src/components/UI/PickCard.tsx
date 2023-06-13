@@ -23,6 +23,9 @@ export function PickCard({
 }: PickCardProps) {
   const isSelected = selectedCount > 0;
 
+  const limitReached =
+    typeof selectionLimit !== "undefined" && selectedCount >= selectionLimit;
+
   return (
     <div
       className={twMerge(
@@ -34,7 +37,7 @@ export function PickCard({
         className="rounded-md overflow-hidden shadow-md"
         role="button"
         onClick={onIncrement}
-        disabled={disabled}
+        disabled={disabled || limitReached}
       >
         <Image
           src={imageSrc}
