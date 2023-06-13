@@ -1,10 +1,10 @@
+import { EthAddress } from "components/UI/EthAddress";
 import Container from "components/layout/Container";
-import { useGameActivity } from "./useGameActivity";
 import { constants } from "ethers";
-import Image from "next/image";
-import moment from "moment";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
-import EnsName from "./EnsName";
+import moment from "moment";
+import Image from "next/image";
+import { useGameActivity } from "./useGameActivity";
 
 interface TransferEvent {
   tier: number;
@@ -35,7 +35,9 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
     <div className="flex justify-between">
       <div>
         <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
-          {transferEvent.from.id && <EnsName address={transferEvent.from.id} />}
+          {transferEvent.from.id && (
+            <EthAddress address={transferEvent.from.id} />
+          )}
           {!transferEvent.from.id && <div>{transferEvent.from.id}</div>}
 
           <div>
@@ -57,25 +59,34 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
 }
 
 function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
+  const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
   return (
-    <div className="flex justify-between">
-      <div>
-        <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
-          {transferEvent.to.id && <EnsName address={transferEvent.to.id} />}
-          {!transferEvent.to.id && <div>{transferEvent.to.id}</div>}
-          <div>
-            Minted {transferEvent.token.metadata.name}{" "}
-            {moment(parseInt(transferEvent.timestamp) * 1000).fromNow()}
-          </div>
-          <Image
-            className=""
-            src={transferEvent.token.metadata.image}
-            crossOrigin="anonymous"
-            alt="Team"
-            width={100}
-            height={100}
+    <div className="border-b border-solid border-gray-800 overflow-hidden py-3">
+      <div className="flex items-center gap-3">
+        {transferEvent.to.id && (
+          <EthAddress
+            className="font-medium"
+            address={transferEvent.to.id}
+            withEnsAvatar
           />
-        </div>
+        )}
+        <span className="rounded-full h-[4px] w-[4px] bg-gray-400"></span>
+        <span className="text-neutral-400">{time}</span>
+      </div>
+
+      <div className="mb-1 ml-11 -translate-y-1">
+        Minted {transferEvent.token.metadata.name}
+      </div>
+
+      <div className="rounded-lg ml-11 border-violet-900 border inline-flex overflow-hidden p-1">
+        <Image
+          className="rounded-md"
+          src={transferEvent.token.metadata.image}
+          crossOrigin="anonymous"
+          alt="Team"
+          width={200}
+          height={200}
+        />
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import EtherscanLink from "components/UI/EtherscanLink";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
@@ -7,9 +8,8 @@ import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
-import EnsName from "../ActivityContent/EnsName";
 import styles from "./index.module.css";
-import EtherscanLink from "components/UI/EtherscanLink";
+import { EthAddress } from "components/UI/EthAddress";
 
 export function RulesContent() {
   const { metadata, gameId, nfts } = useGameContext();
@@ -110,6 +110,21 @@ export function RulesContent() {
         </div>
       </div>
       <div className="p-4 border border-gray-800 rounded-lg mb-5">
+        <div className="flex items-center">
+          <span className="text-pink-500">Mint Fees:</span>
+          {metadata?.seller_fee_basis_points === 0 ? (
+            <span className="ml-2">No fees are collected</span>
+          ) : (
+            <>
+              {/* <EnsName address={metadata?.fee_recipient} /> */}
+              <EnsName address={tokenBeneficiary?.toString()} />
+              <span className="ml-2">
+                collects a {metadata?.seller_fee_basis_points}% fee on each pick
+                minted.
+              </span>
+            </>
+          )}
+        </div>
         <div>
           <div className="flex items-center">
             <span className="text-pink-500">Reserved Mints:</span>
@@ -139,7 +154,9 @@ export function RulesContent() {
                         <p>Pick: {tier.id.toNumber()}</p>
                         <div className="flex items-center">
                           <span>
-                            <EnsName address={tier.reservedTokenBeneficiary} />
+                            <EthAddress
+                              address={tier.reservedTokenBeneficiary}
+                            />
                           </span>
                           <span className="ml-2">
                             will receive{" "}

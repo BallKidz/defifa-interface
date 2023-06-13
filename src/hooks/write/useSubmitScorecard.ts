@@ -1,5 +1,8 @@
 import { useChainData } from "hooks/useChainData";
-import { DefifaTierRedemptionWeight } from "types/defifa";
+import {
+  DefifaTierRedemptionWeight,
+  DefifaTierRedemptionWeightParams,
+} from "types/defifa";
 import {
   useContractWrite,
   usePrepareContractWrite,
@@ -8,7 +11,7 @@ import {
 
 export function useSubmitScorecard(
   gameId: number,
-  _tierWeights: DefifaTierRedemptionWeight[],
+  _tierWeights: DefifaTierRedemptionWeightParams[],
   governorAddress: string | undefined
 ) {
   const { chainData } = useChainData();

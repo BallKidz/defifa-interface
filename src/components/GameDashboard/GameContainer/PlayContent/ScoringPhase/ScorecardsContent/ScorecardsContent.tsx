@@ -9,24 +9,24 @@ import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useScorecardState } from "hooks/read/ScorecardState";
 import { useGameQuorum } from "hooks/read/useGameQuorum";
 import { useAccountVotes } from "hooks/read/useGetVotes";
-import { useEnsName } from "hooks/useEnsName";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useState } from "react";
 import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
+import { formatNumber } from "utils/format/formatNumber";
 
 const stateText = (state: DefifaScorecardState) => {
   switch (state) {
     case DefifaScorecardState.PENDING:
       return "Pending";
     case DefifaScorecardState.ACTIVE:
-      return "Active";
+      return "Voting open";
     case DefifaScorecardState.DEFEATED:
       return "Defeated";
     case DefifaScorecardState.SUCCEEDED:
-      return "Succeeded";
+      return "Approved";
     case DefifaScorecardState.RATIFIED:
       return "Ratified";
     default:
@@ -36,9 +36,11 @@ const stateText = (state: DefifaScorecardState) => {
 
 function ScorecardRow({
   scorecard,
+  gameQuroum,
   onClick,
 }: {
   scorecard: Scorecard;
+  gameQuroum: BigNumber;
   onClick?: () => void;
 }) {
   const { governor, nfts, gameId } = useGameContext();
@@ -60,23 +62,22 @@ function ScorecardRow({
     governor
   );
 
-  const { data: quorum } = useGameQuorum(gameId, governor);
-  const votesRemaining = quorum?.sub(proposalVotes ?? BigNumber.from(0));
+  const votesRemaining = gameQuroum?.sub(proposalVotes ?? BigNumber.from(0));
 
   return (
     <div className="border border-violet-800 shadow-glowViolet rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
       <div className="p-4">
-        <span className="text-xs">SCORECARD</span>
+        <div className="text-xs flex justify-between items-center mb-2">
+          SCORECARD <Pill size="sm">{stateText(proposalState)}</Pill>
+        </div>
         <span className="mb-4 flex justify-between items-center">
           <span>
             By <EthAddress address={scorecard.submitter?.id} />
           </span>
-          <span>
-            <Pill>{stateText(proposalState)}</Pill>
-          </span>
         </span>
-        <div className="w-full text-sm mb-5">
-          <div className="flex justify-between w-full">
+
+        <div className="text-sm mb-5">
+          <div className="flex justify-between font-medium border-b border-gray-700 py-1">
             <span>Tier</span>
             <span>Score</span>
           </div>
@@ -85,7 +86,7 @@ function ScorecardRow({
               key={weight.id.toString()}
               className="flex justify-between w-full border-b border-gray-800 p-1"
             >
-              <span>{nfts?.tiers?.[weight.id - 1].teamName}</span>{" "}
+              <span>{nfts?.tiers?.[weight.tierId - 1].teamName}</span>{" "}
               {/* tiers 0 indexed */}
               <span>
                 {redemptionWeightToPercentage(
@@ -97,13 +98,13 @@ function ScorecardRow({
           ))}
         </div>
 
-        <div className="flex justify-between mb-2">
-          <span>Votes</span>
-          <span>{proposalVotes?.toString()}</span>
+        <div className="flex justify-between mb-1 text-sm">
+          <span className="text-neutral-300">Total Votes</span>
+          <span>{formatNumber(proposalVotes?.toNumber())}</span>
         </div>
-        <div className="flex justify-between">
-          <span>Votes needed</span>
-          <span>{quorum?.toNumber()}</span>
+        <div className="flex justify-between text-sm">
+          <span className="text-neutral-300">Votes needed</span>
+          <span>{formatNumber(votesRemaining?.toNumber())}</span>
         </div>
       </div>
 
@@ -154,8 +155,9 @@ export function ScorecardsContent() {
   const [selectedScorecard, setSelectedScorecard] = useState<Scorecard>();
   const { gameId, governor } = useGameContext();
   const { data: scorecards, isLoading } = useScorecards(gameId);
-
   const { data: votes } = useAccountVotes(gameId, governor);
+  const { data: quorum } = useGameQuorum(gameId, governor);
+
   if (isLoading) {
     return <Container>...</Container>;
   }
@@ -181,13 +183,20 @@ export function ScorecardsContent() {
           <div className="mb-3 font-medium text-lg">
             Select a Scorecard and vote
           </div>
-          <div className="mb-3">You have {votes?.toString()} votes.</div>
+          <div className="mb-3">
+            You have {formatNumber(votes?.toNumber())} votes.
+          </div>
+          <div className="mb-3">
+            A Scorecard needs at least {formatNumber(quorum?.toNumber())} votes
+            before it can be locked in.
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {scorecards?.map((scorecard) => (
               <ScorecardRow
                 key={scorecard.id.toString()}
                 scorecard={scorecard}
                 onClick={() => setSelectedScorecard(scorecard)}
+                gameQuroum={quorum}
               />
             ))}
           </div>

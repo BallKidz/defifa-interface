@@ -54,8 +54,14 @@ export interface DefifaTimeData {
   start: number;
 }
 
+export interface DefifaTierRedemptionWeightParams {
+  id: number; // tier ID
+  redemptionWeight: BigNumber;
+}
+
 export interface DefifaTierRedemptionWeight {
-  id: number;
+  id: number; // id of the weight, computed in the subgraph
+  tierId: number;
   redemptionWeight: BigNumber;
 }
 

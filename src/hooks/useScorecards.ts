@@ -9,6 +9,7 @@ const scorecardsQuery = gql`
       id
       tierWeights {
         redemptionWeight
+        tierId
         id
       }
       submitter {

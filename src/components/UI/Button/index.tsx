@@ -9,7 +9,7 @@ const PRIMARY_BUTTON_DISABLED_CLASS =
 const SECONDARY_BUTTON_CLASS =
   "bg-violet-1100 border border-solid font-medium border-violet-400 hover:bg-violet-1000 text-violet-400";
 const SECONDARY_BUTTON_DISABLED_CLASS =
-  "bg-violet-1100 text-neutral-400 cursor-not-allowed border border-solid border-gray-600";
+  "bg-violet-1100 text-neutral-500 cursor-not-allowed border border-solid border-gray-600";
 
 const TERTIARY_CONFIRM_BUTTON_CLASS =
   "bg-violet-1100 hover:bg-violet-1000 text-violet-400 underline";
