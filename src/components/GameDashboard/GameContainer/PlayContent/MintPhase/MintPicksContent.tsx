@@ -29,10 +29,6 @@ export function MintPicksContent() {
           : undefined
       }
     >
-      <p className="mb-4 text-sm">
-        Mint your picks. Your ETH is added to the total pot. At the end of the
-        game, the pot is split between those who pick correctly.
-      </p>
       <div className="mb-5 text-xl font-medium">
         {formatUnits(MINT_PRICE)} ETH / Pick
       </div>
