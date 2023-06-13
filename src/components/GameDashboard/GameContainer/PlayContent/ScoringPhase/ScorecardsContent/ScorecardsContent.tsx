@@ -2,6 +2,7 @@ import { ActionContainer } from "components/GameDashboard/GameContainer/ActionCo
 import Button from "components/UI/Button";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
+import { BigNumber } from "ethers";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useScorecardState } from "hooks/read/ScorecardState";
 import { useGameQuorum } from "hooks/read/useGameQuorum";
@@ -57,7 +58,7 @@ function ScorecardRow({
   );
 
   const { data: quorum } = useGameQuorum(gameId, governor);
-  const votesRemaining = quorum?.sub(proposalVotes);
+  const votesRemaining = quorum?.sub(proposalVotes ?? BigNumber.from(0));
 
   return (
     <div
