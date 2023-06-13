@@ -32,13 +32,7 @@ const MlbCreate = () => {
         return result.trim();
     }
 
-    useEffect(() => {
-        if (isSuccess) {
-            resetTableData();
-            setProject(createDefaultLaunchProjectData());
-        }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, game: any, index: number) => {
         const checked = event.target.checked;
         console.log('Checkbox clicked on row:', index, 'checked:', checked);
