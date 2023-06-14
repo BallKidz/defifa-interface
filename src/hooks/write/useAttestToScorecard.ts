@@ -18,7 +18,7 @@ export function useAttestToScorecard(
     functionName: "attestToScorecardFrom",
     args: [gameId, scorecardId],
     chainId: chainData.chainId,
-    enabled: Boolean(governorAddress && scorecardId),
+    enabled: Boolean(governorAddress && scorecardId && gameId),
   });
 
   const { data, write, error, isError } = useContractWrite(config);

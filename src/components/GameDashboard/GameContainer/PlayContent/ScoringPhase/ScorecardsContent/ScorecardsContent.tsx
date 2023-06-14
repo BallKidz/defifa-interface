@@ -53,7 +53,10 @@ function ScorecardRow({
 
   const { write, isLoading } = useRatifyScorecard(
     gameId,
-    scorecard.tierWeights,
+    scorecard.tierWeights.map((weight) => ({
+      id: weight.tierId,
+      redemptionWeight: weight.redemptionWeight,
+    })),
     governor
   );
   const { data: proposalState } = useScorecardState(
