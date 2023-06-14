@@ -29,15 +29,15 @@ export function PickCard({
   return (
     <div
       className={twMerge(
-        "relative border border-neutral-800 rounded-md max-w-[500px] mx-auto",
-        isSelected ? "border-pink-800 shadow-glowPink" : ""
+        "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform",
+        isSelected ? "border-pink-900 shadow-glowPink" : ""
       )}
     >
       <button
-        className="rounded-md overflow-hidden shadow-md"
         role="button"
         onClick={onIncrement}
         disabled={disabled || limitReached}
+        className="border-b border-neutral-800"
       >
         <Image
           src={imageSrc}

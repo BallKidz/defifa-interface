@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, PropsWithChildren, useState } from "react";
 import Button from "../Button";
 type ModalSetOpenFn = (open: boolean) => void;
 
@@ -11,10 +11,13 @@ export function useModal() {
 export function Modal({
   isOpen,
   setIsOpen,
-}: {
+  title,
+  children,
+}: PropsWithChildren<{
+  title: string;
   isOpen: boolean;
   setIsOpen: ModalSetOpenFn;
-}) {
+}>) {
   function closeModal() {
     setIsOpen(false);
   }
@@ -47,19 +50,14 @@ export function Modal({
             >
               <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-gray-950 border-neutral-700 border p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6">
-                  Payment successful
+                  {title}
                 </Dialog.Title>
-                <div className="mt-2">
-                  <p className="text-sm">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
+                <div className="mt-2">{children}</div>
 
                 <div className="mt-4 flex gap-3 justify-end">
-                  <Button category="secondary">Close</Button>
+                  {/* <Button category="secondary">Close</Button> */}
 
-                  <Button>OK</Button>
+                  <Button onClick={() => setIsOpen(false)}>OK</Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

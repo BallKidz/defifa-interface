@@ -4,10 +4,21 @@ import { useGameContext } from "contexts/GameContext";
 import Head from "next/head";
 import { GameContainer } from "./GameContainer/GameContainer";
 import { Header } from "./Header";
+import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
+import { useAllGames } from "hooks/useAllGames";
+import Link from "next/link";
+
+function GameButton({ game }: { game: any }) {
+  return (
+    <Link href={`/game/${game.gameId}`}>
+      <a className="px-6 py-1 border-r border-neutral-800">{game.gameId}</a>
+    </Link>
+  );
+}
 
 export function GameDashboard() {
   const { metadata } = useGameContext();
-
+  const { data: games } = useAllGames();
   const title = metadata?.name
     ? `${metadata.name} | Defifa`
     : "Money Games with Friends | Defifa";
@@ -23,14 +34,22 @@ export function GameDashboard() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container>
-        <Navbar />
-      </Container>
-      <Container>
+      <div className="border-b border-neutral-800 text-sm">
+        <Container className="flex overflow-hidden">
+          <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
+            <Link href="/">All games</Link>
+          </div>
+          {games?.map((g) => (
+            <GameButton key={g.gameId} game={g} />
+          ))}
+        </Container>
+      </div>
+
+      <Container className="mt-8 mb-6">
         <Header />
       </Container>
 
-      <GameContainer />
+      <PlayContent />
     </>
   );
 }

@@ -10,7 +10,7 @@ export function QueueNextPhaseButton() {
         write?.();
       }}
       size="sm"
-      category="tertiary"
+      category="secondary"
       variant="default"
       loading={isLoading}
     >

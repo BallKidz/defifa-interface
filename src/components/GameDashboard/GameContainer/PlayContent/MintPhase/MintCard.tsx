@@ -1,11 +1,17 @@
 import { PickCard, PickCardProps } from "components/UI/PickCard";
 import { useGameContext } from "contexts/GameContext";
+import { BigNumber } from "ethers";
+import { formatEther } from "ethers/lib/utils";
 
 export function MintCard({
   mintedCount,
   tierId,
+  price,
   ...props
-}: { mintedCount: number; tierId: number } & Omit<PickCardProps, "extra">) {
+}: { mintedCount: number; tierId: number; price: BigNumber } & Omit<
+  PickCardProps,
+  "extra"
+>) {
   const {
     nfts: { totalSupply, tiers: nfts },
   } = useGameContext();
@@ -23,11 +29,11 @@ export function MintCard({
     <PickCard
       extra={
         <>
-          <div>{mintedCount} mints</div>
-          <div>{supplyPortion}% of game mints</div>
-          {nfts && nfts?.[tierId - 1]?.minted > 0 && (
-            <div className="text-sm">{supplyPortionString}</div>
-          )}
+          <div>{formatEther(price)} ETH</div>
+          <div className="text-xs mt-2">
+            <div>{mintedCount} mints</div>
+            <div>{supplyPortion}% of game mints</div>
+          </div>
         </>
       }
       {...props}

@@ -76,6 +76,7 @@ export interface JB721TierParams {
   reservedTokenBeneficiary: string;
   transfersPausable: boolean;
   votingUnits: BigNumber;
+  price: BigNumber;
 }
 
 // Tiers as they are stored on-chain.

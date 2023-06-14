@@ -1,4 +1,5 @@
 import { Pill } from "components/UI/Pill";
+import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
@@ -21,18 +22,17 @@ function GameStats() {
   if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
 
   return (
-    <div className="flex justify-center gap-4">
-      <Pill category={treasuryAmount.eq(0) ? "default" : "success"}>
+    <div className="flex gap-4 text-sm">
+      <div>
         <span className="font-bold">{fromWad(treasuryAmount)} ETH</span> in pot
-      </Pill>
-
-      {/* <Pill>
+      </div>
+      |
+      {/* <div>
         <span className="font-bold">6</span> players
-      </Pill> */}
-
-      <Pill>
+      </div> */}
+      <div>
         <span className="font-bold">{totalSupply?.toNumber()}</span> {mintText}
-      </Pill>
+      </div>
     </div>
   );
 }
@@ -46,11 +46,16 @@ export function Header() {
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
-    <header>
-      <h1 className="text-5xl text-center mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-3xl mx-auto">
-        {metadata?.name}
-      </h1>
-      <GameStats />
+    <header className="flex justify-between">
+      <div>
+        <h1 className="text-3xl font-medium mb-2 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
+          {metadata?.name}
+        </h1>
+        <GameStats />
+      </div>
+      <div>
+        <Wallet />
+      </div>
     </header>
   );
 }

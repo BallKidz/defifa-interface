@@ -91,6 +91,7 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
             tierId={defifaTier.id}
             key={defifaTier.id}
             imageSrc={defifaTier.teamImage}
+            price={defifaTier.price}
             mintedCount={pickCounts?.[defifaTier.id] ?? 0}
             selectedCount={selectedTiers?.[defifaTier.id]?.count ?? 0}
             selectionLimit={pickCounts?.[defifaTier.id.toString()] ?? 0} // limit selection to the number of mints

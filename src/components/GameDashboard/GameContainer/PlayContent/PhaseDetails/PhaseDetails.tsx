@@ -1,4 +1,8 @@
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import {
+  CheckCircleIcon,
+  QuestionMarkCircleIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { QueueNextPhaseButton } from "components/GameDashboard/GameContainer/PlayContent/PhaseDetails/QueueNextPhaseButton";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useGameContext } from "contexts/GameContext";
@@ -6,13 +10,16 @@ import { useCountdown } from "hooks/useCountdown";
 import { useGameTimes } from "hooks/read/useGameTimes";
 import { useNextPhaseNeedsQueueing } from "hooks/read/PhaseNeedQueueing";
 import { twJoin } from "tailwind-merge";
+import Button from "components/UI/Button";
+import { Modal, useModal } from "components/UI/Modal/Modal";
+import { RulesContent } from "../../RulesContent/RulesContent";
 
 const phaseText = (phase: DefifaGamePhase) => {
   switch (phase) {
     case DefifaGamePhase.COUNTDOWN:
       return "Countdown";
     case DefifaGamePhase.MINT:
-      return "Minting open";
+      return "Minting live";
     case DefifaGamePhase.REFUND:
       return "Refunds open";
     case DefifaGamePhase.COMPLETE:
@@ -34,18 +41,10 @@ export function PhaseDetails() {
     currentFundingCycle,
     loading: { currentFundingCycleLoading, currentPhaseLoading },
   } = useGameContext();
+  const modal = useModal();
   const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
-  const { data: gameTimes } = useGameTimes();
 
   const currentPhaseText = phaseText(currentPhase);
-
-  const nextPhaseText =
-    currentPhase === DefifaGamePhase.MINT &&
-    (gameTimes?.refundDuration ?? 0) === 0
-      ? phaseText(DefifaGamePhase.SCORING)
-      : currentPhase < DefifaGamePhase.SCORING
-      ? phaseText(currentPhase + 1)
-      : null;
 
   const start = currentFundingCycle?.fundingCycle?.start?.toNumber() ?? 0;
   const duration = currentFundingCycle?.fundingCycle?.duration?.toNumber() ?? 0;
@@ -59,50 +58,43 @@ export function PhaseDetails() {
   const percentElapsed = Math.min((timeElapsed / duration) * 100, 100);
 
   return (
-    <div className="border border-neutral-800 py-5 px-6 rounded-xl">
-      <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
-        <div className="flex flex-col text-center md:text-left gap-1">
-          <div className="text-neutral-300">Current phase</div>
-          <div className="text-2xl uppercase">{currentPhaseText}</div>
+    <div>
+      {nextPhaseNeedsQueueing ? (
+        <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg mb-6">
+          <div className="flex justify-between items-start mb-2">
+            Next phase needs queueing
+            {/* <Button category="tertiary" className="bg-transparent min-w-0 text-gray-50">
+            <XMarkIcon className="h-5 w-5 inline" />
+          </Button> */}
+          </div>
+          <div className="">
+            <QueueNextPhaseButton />
+          </div>
         </div>
+      ) : null}
 
-        <div>
+      <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
+        <div className="flex items-center gap-3">
+          <span className="h-3 w-3 bg-red-600 rounded-full"></span>
+          <div className="text-lg">{currentPhaseText}</div>
           {(currentPhase === DefifaGamePhase.MINT ||
             currentPhase === DefifaGamePhase.REFUND) &&
           !currentFundingCycleLoading &&
           timeRemainingText &&
           !waitingForBlock ? (
-            <div className="text-center">
-              <div className="text-xs mb-1">Phase ends in</div>
-              <div className="text-4xl" style={{ color: "#EB007B" }}>
-                {timeRemainingText}
-              </div>
+            <div className="bg-red-700 rounded-md px-2">
+              {timeRemainingText}
             </div>
           ) : null}
-          {(currentPhase === DefifaGamePhase.MINT ||
-            currentPhase === DefifaGamePhase.REFUND) &&
-          !currentFundingCycleLoading &&
-          waitingForBlock ? (
-            <div className="text-center">
-              <div>Next phase starting, waiting for next block...</div>
-            </div>
-          ) : null}
-          {currentFundingCycleLoading || currentPhaseLoading ? "..." : null}
         </div>
 
-        {nextPhaseText ? (
-          <div className="flex flex-col gap-1 md:items-end md:text-right text-center">
-            <div className="flex gap-2 items-center">
-              Next: <span className="uppercase">{nextPhaseText}</span>{" "}
-              {!nextPhaseNeedsQueueing ? (
-                <CheckCircleIcon className="h-4 w-4" />
-              ) : null}
-            </div>
-            <div>
-              {nextPhaseNeedsQueueing ? <QueueNextPhaseButton /> : null}
-            </div>
-          </div>
-        ) : null}
+        <Button
+          category="tertiary"
+          className="hidden md:block text-base"
+          onClick={() => modal.setIsOpen(true)}
+        >
+          How to play <QuestionMarkCircleIcon className="h-4 w-4 inline" />
+        </Button>
       </div>
 
       {currentPhase === DefifaGamePhase.MINT ||
@@ -110,7 +102,7 @@ export function PhaseDetails() {
         <div className="w-full rounded-full bg-neutral-800 transition-all mt-3">
           <div
             className={twJoin(
-              "rounded-full h-2",
+              "rounded-full h-1",
               percentElapsed > 80
                 ? "bg-red-700"
                 : percentElapsed > 50
@@ -122,7 +114,15 @@ export function PhaseDetails() {
             }}
           />
         </div>
-      ) : null}
+      ) : (
+        <div className="w-full rounded-full bg-neutral-800 transition-all mt-3">
+          <div className="rounded-full h-1 bg-neutral-800" />
+        </div>
+      )}
+
+      <Modal title="How to play" {...modal}>
+        <RulesContent />
+      </Modal>
     </div>
   );
 }

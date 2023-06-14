@@ -170,14 +170,25 @@ export function ScorecardsContent() {
           : undefined
       }
     >
+      <div className="mb-7 flex flex-col gap-2 text-sm">
+        <p>Use your voting power to vote for a Scorecard.</p>
+        <p>
+          The first Scorecard to reach quorum of 50% and be approved is the
+          final scorecard. The final Scorecard determines each Pick's redemption
+          value.
+        </p>
+        <p className="text-xs">
+          Scorecards don't necessarily reflect the game's actual outcome.
+        </p>
+      </div>
       {!scorecards || scorecards.length === 0 ? (
-        <Container>
+        <>
           <span className="text-pink-500">No scorecards submitted yet.</span>{" "}
           Anybody may submit a scorecard.
           <div className="text-xs mb-5">
             (or, some scorecards haven't been indexed yet)
           </div>
-        </Container>
+        </>
       ) : (
         <>
           <div className="mb-3 font-medium text-lg">
@@ -202,15 +213,6 @@ export function ScorecardsContent() {
           </div>
         </>
       )}
-      <div className="mb-7 flex flex-col gap-2">
-        <p>
-          A Scorecard proposes each Pick's redemption value. Players use their
-          voting power to vote for a Scorecard. The first Scorecard to reach
-          quorum of 50% and be ratified is the final scorecard.
-        </p>
-        <p>The final Scorecard determines each Pick's redemption value.</p>
-        <p>Scorecards don't necessarily reflect the game's actual outcome.</p>
-      </div>
     </ActionContainer>
   );
 }

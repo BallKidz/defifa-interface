@@ -1,6 +1,7 @@
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
+import { useRouter } from "next/router";
 import { toastError, toastSuccess } from "utils/toast";
 import {
   useAccount,
@@ -14,6 +15,7 @@ export function useQueueNextPhase(simulate = false) {
   const { openConnectModal } = useConnectModal();
   const { gameId } = useGameContext();
   const { chainData } = useChainData();
+  const router = useRouter();
 
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: chainData.DefifaDeployer.address,
@@ -29,6 +31,7 @@ export function useQueueNextPhase(simulate = false) {
     hash: data?.hash,
     onSuccess() {
       toastSuccess("Next phase queued");
+      router.reload();
     },
     onError: (error) => {
       toastError("Failed to queue next phase");

@@ -8,24 +8,6 @@ export function RefundPhaseContent() {
 
   return (
     <div>
-      <Container>
-        <ul className="flex gap-8 mb-6 text-lg">
-          <li>
-            <a
-              className={twJoin(
-                selectedTab === "refund"
-                  ? "underline font-medium text-neutral-50"
-                  : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300"
-              )}
-              onClick={() => setSelectedTab("refund")}
-            >
-              My picks
-            </a>
-          </li>
-        </ul>
-      </Container>
-
       <RefundPicksContent />
     </div>
   );

@@ -29,13 +29,10 @@ export function MintPicksContent() {
           : undefined
       }
     >
-      <p className="mb-4">
+      <p className="mb-4 text-sm max-w-prose">
         Mint your picks. Your ETH is added to the total pot. At the end of the
         game, the pot is split between those who pick correctly.
       </p>
-      <div className="mb-5 text-xl font-medium">
-        {formatUnits(MINT_PRICE)} ETH / Pick
-      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
         {tiersLoading || currentFundingCycleLoading ? (
@@ -43,6 +40,7 @@ export function MintPicksContent() {
         ) : (
           tiers?.map((t) => (
             <MintCard
+              price={t.price}
               tierId={t.id}
               key={t.id}
               imageSrc={t.teamImage}

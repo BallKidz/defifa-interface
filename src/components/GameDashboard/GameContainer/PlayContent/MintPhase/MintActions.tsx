@@ -9,6 +9,7 @@ import { TierSelection } from "./useMintSelection";
 import { useAccount } from "wagmi";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { toastSuccess } from "utils/toast";
 
 export function MintActions({
   selectedTiers,
@@ -48,6 +49,8 @@ export function MintActions({
       tierIdsToMint,
     },
     onSuccess() {
+      toastSuccess("Mint complete");
+
       router.reload();
     },
   });

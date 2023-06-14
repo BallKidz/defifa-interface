@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { twMerge } from "tailwind-merge";
 
-const PRIMARY_BUTTON_CLASS = "bg-pink-700 hover:bg-pink-500 text-neutral-50";
+const PRIMARY_BUTTON_CLASS = "bg-pink-700 hover:bg-pink-400 text-neutral-50";
 const PRIMARY_BUTTON_DISABLED_CLASS =
   "bg-neutral-700 text-neutral-50 cursor-not-allowed";
 
@@ -11,9 +11,9 @@ const SECONDARY_BUTTON_DISABLED_CLASS =
   "bg-gray-950 text-neutral-500 cursor-not-allowed border border-solid border-neutral-600";
 
 const TERTIARY_CONFIRM_BUTTON_CLASS =
-  "bg-gray-950 hover:bg-pink-950 text-pink-400 underline";
+  "bg-gray-950 hover:bg-pink-950 text-pink-400";
 const TERTIARY_DEFAULT_BUTTON_CLASS =
-  "bg-gray-950 hover:bg-neutral-800 text-neutral-50 underline";
+  "bg-gray-950 hover:bg-neutral-800 text-neutral-50";
 
 const Button = ({
   children,

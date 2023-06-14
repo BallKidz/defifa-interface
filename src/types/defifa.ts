@@ -82,4 +82,5 @@ export interface DefifaTier {
   remainingQuantity: number;
   initialQuantity: number;
   minted: number;
+  price: BigNumber;
 }

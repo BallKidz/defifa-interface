@@ -13,14 +13,14 @@ export function ScoringPhaseContent() {
   return (
     <div>
       <Container>
-        <ul className="flex gap-8 mb-6 text-lg">
+        <ul className="flex gap-2 mb-6 text-sm">
           <li>
             <a
               className={twJoin(
                 selectedTab === "scorecards"
-                  ? "underline font-medium text-neutral-50"
+                  ? "bg-neutral-800 text-neutral-50 rounded-md"
                   : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300"
+                "cursor-pointer hover:text-neutral-300 px-4 py-2"
               )}
               onClick={() => setSelectedTab("scorecards")}
             >
@@ -31,9 +31,9 @@ export function ScoringPhaseContent() {
             <a
               className={twJoin(
                 selectedTab === "customscorecard"
-                  ? "underline font-medium text-neutral-50"
+                  ? "bg-neutral-800 text-neutral-50 rounded-md"
                   : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300"
+                "cursor-pointer hover:text-neutral-300 px-4 py-2"
               )}
               onClick={() => setSelectedTab("customscorecard")}
             >
@@ -44,9 +44,9 @@ export function ScoringPhaseContent() {
             <a
               className={twJoin(
                 selectedTab === "mypicks"
-                  ? "underline font-medium text-neutral-50"
+                  ? "bg-neutral-800 text-neutral-50 rounded-md"
                   : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300"
+                "cursor-pointer hover:text-neutral-300 px-4 py-2"
               )}
               onClick={() => setSelectedTab("mypicks")}
             >
