@@ -71,11 +71,12 @@ function ScorecardRow({
   return (
     <div className="border border-neutral-800 shadow-glowWhite rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
       <div className="p-4">
-        {stateText(proposalState) && (
-          <div className="text-xs flex justify-between items-center mb-2">
-            SCORECARD <Pill size="sm">{stateText(proposalState)}</Pill>
-          </div>
-        )}
+        <div className="text-xs flex justify-between items-center mb-2">
+          SCORECARD{" "}
+          {stateText(proposalState) && (
+            <Pill size="sm">{stateText(proposalState)}</Pill>
+          )}
+        </div>
 
         <span className="mb-4 flex justify-between items-center">
           <span>

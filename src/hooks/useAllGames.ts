@@ -4,7 +4,7 @@ import { useChainData } from "./useChainData";
 
 const allGamesQuery = gql`
   query myTeamsQuery {
-    contracts {
+    contracts(orderBy: gameId, orderDirection: desc) {
       name
       address
       gameId

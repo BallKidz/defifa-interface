@@ -33,12 +33,9 @@ const AllGames = () => {
           </thead>
 
           <tbody>
-            {games
-              ?.sort((a, b) => a.gameId - b.gameId) // Sort the games array by game.id
-              .reverse() // Reverse the order of the games array
-              .map((game) => (
-                <GameRow game={game} key={game.gameId} />
-              ))}
+            {games.map((game) => (
+              <GameRow game={game} key={game.gameId} />
+            ))}
           </tbody>
         </table>
       )}
