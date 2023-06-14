@@ -189,30 +189,31 @@ export function ScorecardsContent() {
           </div>
         </div>
       </div>
+
+      <div className="flex gap-8">
+        <div className="mb-3 flex flex-col">
+          <span className="uppercase text-xs">Your Votes</span>
+          <span className="text-lg">
+            {formatNumber(votes?.toNumber())} votes
+          </span>
+        </div>
+        <div className="mb-3 flex flex-col">
+          <span className="uppercase text-xs">Quorum</span>
+          <span className="text-lg">
+            {formatNumber(quorum?.toNumber())} votes
+          </span>
+        </div>
+      </div>
+
       {!scorecards || scorecards.length === 0 ? (
-        <>
-          <span className="text-pink-500">No scorecards submitted yet.</span>{" "}
-          Anyone can submit a scorecard.
-          <div className="text-xs mb-5">
+        <div className="mt-5 text-neutral-300">
+          <p>No scorecards submitted yet.</p> Anyone can submit a scorecard.
+          <div className="text-xs mb-5 mt-1">
             (or, some scorecards haven't been indexed yet)
           </div>
-        </>
+        </div>
       ) : (
         <>
-          <div className="flex gap-8">
-            <div className="mb-3 flex flex-col">
-              <span className="uppercase text-xs">Your Votes</span>
-              <span className="text-lg">
-                {formatNumber(votes?.toNumber())} votes
-              </span>
-            </div>
-            <div className="mb-3 flex flex-col">
-              <span className="uppercase text-xs">Quorum</span>
-              <span className="text-lg">
-                {formatNumber(quorum?.toNumber())} votes
-              </span>
-            </div>
-          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {scorecards?.map((scorecard) => (
               <ScorecardRow
