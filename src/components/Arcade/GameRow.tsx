@@ -1,9 +1,8 @@
+import { useAllDuration } from "hooks/read/AllDurations";
 import {
   DefifaGamePhase,
   useCurrentGamePhase,
 } from "hooks/read/useCurrentGamePhase";
-import { useAllDuration } from "hooks/read/AllDurations";
-import { useGameName } from "hooks/read/useGameName";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { Game } from "hooks/useAllGames";
 import Link from "next/link";
@@ -53,8 +52,7 @@ const availableActionsText = (phase?: DefifaGamePhase) => {
 };
 
 export const GameRow: FC<{ game: Game }> = ({ game }) => {
-  const { gameId, name, address } = game;
-  const dataSourceName = useGameName(address);
+  const { gameId, name } = game;
   const duration = useAllDuration(gameId);
   const date = new Date(duration?.start * 1000 + duration?.[1]);
   const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
@@ -67,7 +65,7 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
       <tr className="text-sm cursor-pointer hover:font-semibold">
         <td className="whitespace-nowrap py-4 pl-4 pr-3">{gameId}</td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3">
-          <span>{name !== null ? name : dataSourceName}</span>
+          <span>{name}</span>
         </td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
           {currentPhase === DefifaGamePhase.MINT ? (

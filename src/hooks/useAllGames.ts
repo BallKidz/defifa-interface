@@ -8,14 +8,6 @@ const allGamesQuery = gql`
       name
       address
       gameId
-      tokenUriResolver
-      mintedTokens {
-        id
-        metadata {
-          description
-          name
-        }
-      }
     }
   }
 `;
