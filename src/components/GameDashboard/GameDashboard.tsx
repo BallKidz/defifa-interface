@@ -11,8 +11,8 @@ import Link from "next/link";
 function GameButton({ game }: { game: any }) {
   return (
     <Link href={`/game/${game.gameId}`}>
-      <a className="px-6 py-1 border-r border-neutral-800 max-w-[50px] overflow-ellipsis">
-        {game.name}
+      <a className="px-6 py-1 border-r border-neutral-800 max-w-[130px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
+        {game.name ?? game.gameId}
       </a>
     </Link>
   );
