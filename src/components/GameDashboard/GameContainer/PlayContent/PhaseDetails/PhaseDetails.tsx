@@ -42,7 +42,10 @@ export function PhaseDetails() {
     loading: { currentFundingCycleLoading, currentPhaseLoading },
   } = useGameContext();
   const modal = useModal();
-  const { data: nextPhaseNeedsQueueing } = useNextPhaseNeedsQueueing();
+  const {
+    data: nextPhaseNeedsQueueing,
+    isLoading: nextPhaseNeedsQueueingLoading,
+  } = useNextPhaseNeedsQueueing();
 
   const currentPhaseText = phaseText(currentPhase);
 
@@ -59,7 +62,7 @@ export function PhaseDetails() {
 
   return (
     <div>
-      {nextPhaseNeedsQueueing ? (
+      {nextPhaseNeedsQueueing && !nextPhaseNeedsQueueingLoading ? (
         <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg mb-6">
           <div className="flex justify-between items-start mb-2">
             Next phase needs queueing

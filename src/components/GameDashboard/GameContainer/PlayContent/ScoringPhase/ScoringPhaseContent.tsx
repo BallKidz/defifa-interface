@@ -50,7 +50,7 @@ export function ScoringPhaseContent() {
               )}
               onClick={() => setSelectedTab("mypicks")}
             >
-              My picks
+              My NFTs
             </a>
           </li>
         </ul>

@@ -1,3 +1,4 @@
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import { EthAddress } from "components/UI/EthAddress";
@@ -22,11 +23,11 @@ const stateText = (state: DefifaScorecardState) => {
     case DefifaScorecardState.PENDING:
       return "Pending";
     case DefifaScorecardState.ACTIVE:
-      return "Voting open";
+      return null;
     case DefifaScorecardState.DEFEATED:
       return "Defeated";
     case DefifaScorecardState.SUCCEEDED:
-      return "Approved";
+      return "Quorum reached";
     case DefifaScorecardState.RATIFIED:
       return "Locked in";
     default:
@@ -70,9 +71,12 @@ function ScorecardRow({
   return (
     <div className="border border-neutral-800 shadow-glowWhite rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
       <div className="p-4">
-        <div className="text-xs flex justify-between items-center mb-2">
-          SCORECARD <Pill size="sm">{stateText(proposalState)}</Pill>
-        </div>
+        {stateText(proposalState) && (
+          <div className="text-xs flex justify-between items-center mb-2">
+            SCORECARD <Pill size="sm">{stateText(proposalState)}</Pill>
+          </div>
+        )}
+
         <span className="mb-4 flex justify-between items-center">
           <span>
             By <EthAddress address={scorecard.submitter?.id} />
@@ -173,36 +177,41 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      <div className="mb-7 flex flex-col gap-2 text-sm">
-        <p>Use your voting power to vote for a Scorecard.</p>
-        <p>
-          The first Scorecard to reach quorum of 50% and be approved is the
-          final scorecard. The final Scorecard determines each Pick's redemption
-          value.
-        </p>
-        <p className="text-xs">
-          Scorecards don't necessarily reflect the game's actual outcome.
-        </p>
+      <div className="mb-5 flex flex-col gap-2 text-sm text-neutral-300">
+        <div className="flex gap-2">
+          <QuestionMarkCircleIcon className="inline h-4 w-4" />
+          <div>
+            <p className="mb-1">
+              Vote on the game's final outcome. The first Scorecard to reach
+              quorum and be approved is the final outcome. The final outcome
+              determines each NFT's redemption value.
+            </p>
+          </div>
+        </div>
       </div>
       {!scorecards || scorecards.length === 0 ? (
         <>
           <span className="text-pink-500">No scorecards submitted yet.</span>{" "}
-          Anybody may submit a scorecard.
+          Anyone can submit a scorecard.
           <div className="text-xs mb-5">
             (or, some scorecards haven't been indexed yet)
           </div>
         </>
       ) : (
         <>
-          <div className="mb-3 font-medium text-lg">
-            Select a Scorecard and vote
-          </div>
-          <div className="mb-3">
-            You have {formatNumber(votes?.toNumber())} votes.
-          </div>
-          <div className="mb-3">
-            A Scorecard needs at least {formatNumber(quorum?.toNumber())} votes
-            before it can be locked in.
+          <div className="flex gap-8">
+            <div className="mb-3 flex flex-col">
+              <span className="uppercase text-xs">Your Votes</span>
+              <span className="text-lg">
+                {formatNumber(votes?.toNumber())} votes
+              </span>
+            </div>
+            <div className="mb-3 flex flex-col">
+              <span className="uppercase text-xs">Quorum</span>
+              <span className="text-lg">
+                {formatNumber(quorum?.toNumber())} votes
+              </span>
+            </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {scorecards?.map((scorecard) => (

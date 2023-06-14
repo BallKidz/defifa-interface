@@ -1,10 +1,9 @@
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { useGameContext } from "contexts/GameContext";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { MintActions } from "./MintActions";
 import { MintCard } from "./MintCard";
 import { useMintSelection } from "./useMintSelection";
-import { MINT_PRICE } from "constants/constants";
-import { formatUnits } from "ethers/lib/utils";
 
 export function MintPicksContent() {
   const {
@@ -29,9 +28,11 @@ export function MintPicksContent() {
           : undefined
       }
     >
-      <p className="mb-4 text-sm max-w-prose">
-        Mint your picks. Your ETH is added to the total pot. At the end of the
-        game, the pot is split between those who pick correctly.
+      <p className="mb-4 text-sm text-neutral-400 flex items-start gap-2">
+        <QuestionMarkCircleIcon className="h-4 w-4 inline" /> Mint NFTs to buy
+        in. Your ETH is added to the total pot. When minting is over, vote on
+        the game's outcome. The pot is split based on the outcome with the most
+        votes.
       </p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
