@@ -20,7 +20,7 @@ const ArcadeDescription = () => {
             checked={isExpanded}
             onChange={() => {}}
           />
-          <div className="w-10 h-4 bg-gray-300 rounded-full shadow-inner"></div>
+          <div className="w-10 h-4 bg-neutral-300 rounded-full shadow-inner"></div>
           <div
             className={`${
               isExpanded ? 'translate-x-6 bg-pink-500' : 'translate-x-0 bg-pink-500'

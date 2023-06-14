@@ -28,7 +28,7 @@ const stateText = (state: DefifaScorecardState) => {
     case DefifaScorecardState.SUCCEEDED:
       return "Approved";
     case DefifaScorecardState.RATIFIED:
-      return "Ratified";
+      return "Locked in";
     default:
       return "Unknown";
   }
@@ -65,7 +65,7 @@ function ScorecardRow({
   const votesRemaining = gameQuroum?.sub(proposalVotes ?? BigNumber.from(0));
 
   return (
-    <div className="border border-violet-800 shadow-glowViolet rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
+    <div className="border border-neutral-800 shadow-glowWhite rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
       <div className="p-4">
         <div className="text-xs flex justify-between items-center mb-2">
           SCORECARD <Pill size="sm">{stateText(proposalState)}</Pill>
@@ -77,16 +77,16 @@ function ScorecardRow({
         </span>
 
         <div className="text-sm mb-5">
-          <div className="flex justify-between font-medium border-b border-gray-700 py-1">
+          <div className="flex justify-between font-medium border-b border-neutral-700 py-1">
             <span>Tier</span>
             <span>Score</span>
           </div>
           {scorecard.tierWeights.map((weight) => (
             <div
               key={weight.id.toString()}
-              className="flex justify-between w-full border-b border-gray-800 p-1"
+              className="flex justify-between w-full border-b border-neutral-800 p-1"
             >
-              <span>{nfts?.tiers?.[weight.tierId - 1].teamName}</span>{" "}
+              <span>{nfts?.tiers?.[weight.tierId - 1]?.teamName}</span>{" "}
               {/* tiers 0 indexed */}
               <span>
                 {redemptionWeightToPercentage(
@@ -108,11 +108,11 @@ function ScorecardRow({
         </div>
       </div>
 
-      <div className="flex border-t border-gray-700">
+      <div className="flex border-t border-neutral-700">
         <Button
           disabled={proposalState !== DefifaScorecardState.SUCCEEDED}
           onClick={() => write?.()}
-          className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-gray-800 rounded-none"
+          className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-neutral-800 rounded-none"
           category="secondary"
         >
           Lock in

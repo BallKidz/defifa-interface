@@ -46,7 +46,7 @@ export function CustomScorecardContent() {
             {tiers?.map((t) => (
               <div
                 key={t.id}
-                className="relative border border-gray-800 rounded-md max-w-[500px] mx-auto"
+                className="relative border border-neutral-800 rounded-md max-w-[500px] mx-auto"
               >
                 <Image
                   src={t.teamImage}

@@ -66,7 +66,7 @@ export function RulesContent() {
           View NFT on Etherscan
         </EtherscanLink>
       </div>
-      <div className="p-4 border border-gray-800 rounded-lg mb-5 flex flex-col gap-2">
+      <div className="p-4 border border-neutral-800 rounded-lg mb-5 flex flex-col gap-2">
         <div>
           <span className="text-pink-500">Phase 1: </span>MINTS OPEN (mints
           open, refunds open)
@@ -96,7 +96,7 @@ export function RulesContent() {
         </div>
       </div>
       <div>
-        <div className="p-4 border border-gray-800 rounded-lg mb-5">
+        <div className="p-4 border border-neutral-800 rounded-lg mb-5">
           <p>
             <span className="text-pink-500">Winners: </span>Claim prize anytime
             after a scorecard has been ratified. Redeeming a player card will
@@ -109,7 +109,7 @@ export function RulesContent() {
           </p>
         </div>
       </div>
-      <div className="p-4 border border-gray-800 rounded-lg mb-5">
+      <div className="p-4 border border-neutral-800 rounded-lg mb-5">
         <div className="flex items-center">
           <span className="text-pink-500">Mint Fees:</span>
           {metadata?.seller_fee_basis_points === 0 ? (

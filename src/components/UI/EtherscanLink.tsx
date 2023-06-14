@@ -33,7 +33,7 @@ const EtherscanLink: React.FC<
       {type === "tx" ? (
         <>
           {children}{" "}
-          <LinkIcon className="inline h-4 w-4 text-grey-600 dark:text-slate-200" />
+          <LinkIcon className="inline h-4 w-4 text-grey-600 dark:text-neutral-200" />
         </>
       ) : (
         <> {children ?? renderValue}</>

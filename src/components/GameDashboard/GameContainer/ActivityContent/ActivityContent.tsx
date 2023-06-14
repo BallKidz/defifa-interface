@@ -34,7 +34,7 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   return (
     <div className="flex justify-between">
       <div>
-        <div className="border border-solid border-gray-800 block rounded-lg overflow-hidden">
+        <div className="border border-solid border-neutral-800 block rounded-lg overflow-hidden">
           {transferEvent.from.id && (
             <EthAddress address={transferEvent.from.id} />
           )}
@@ -61,7 +61,7 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
 function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
   return (
-    <div className="border-b border-solid border-gray-800 overflow-hidden py-3">
+    <div className="border-b border-solid border-neutral-800 overflow-hidden py-3">
       <div className="flex items-center gap-3">
         {transferEvent.to.id && (
           <EthAddress
@@ -70,7 +70,7 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
             withEnsAvatar
           />
         )}
-        <span className="rounded-full h-[4px] w-[4px] bg-gray-400"></span>
+        <span className="rounded-full h-[4px] w-[4px] bg-neutral-400"></span>
         <span className="text-neutral-400">{time}</span>
       </div>
 
@@ -78,7 +78,7 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
         Minted {transferEvent.token.metadata.name}
       </div>
 
-      <div className="rounded-lg ml-11 border-violet-900 border inline-flex overflow-hidden p-1">
+      <div className="rounded-lg ml-11 border-pink-900 border inline-flex overflow-hidden p-1">
         <Image
           className="rounded-md"
           src={transferEvent.token.metadata.image}

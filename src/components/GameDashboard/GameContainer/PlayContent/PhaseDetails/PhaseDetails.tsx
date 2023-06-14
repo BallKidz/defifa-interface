@@ -59,7 +59,7 @@ export function PhaseDetails() {
   const percentElapsed = Math.min((timeElapsed / duration) * 100, 100);
 
   return (
-    <div className="border border-gray-800 py-5 px-6 rounded-xl">
+    <div className="border border-neutral-800 py-5 px-6 rounded-xl">
       <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
         <div className="flex flex-col text-center md:text-left gap-1">
           <div className="text-neutral-300">Current phase</div>
@@ -107,7 +107,7 @@ export function PhaseDetails() {
 
       {currentPhase === DefifaGamePhase.MINT ||
       currentPhase === DefifaGamePhase.REFUND ? (
-        <div className="w-full rounded-full bg-gray-800 transition-all mt-3">
+        <div className="w-full rounded-full bg-neutral-800 transition-all mt-3">
           <div
             className={twJoin(
               "rounded-full h-2",
