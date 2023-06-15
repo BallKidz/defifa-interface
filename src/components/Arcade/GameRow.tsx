@@ -1,8 +1,8 @@
-import { useAllDuration } from "hooks/read/AllDurations";
 import {
   DefifaGamePhase,
   useCurrentGamePhase,
 } from "hooks/read/useCurrentGamePhase";
+import { useGameTimes } from "hooks/read/useGameTimes";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { Game } from "hooks/useAllGames";
 import Link from "next/link";
@@ -53,8 +53,8 @@ const availableActionsText = (phase?: DefifaGamePhase) => {
 
 export const GameRow: FC<{ game: Game }> = ({ game }) => {
   const { gameId, name } = game;
-  const duration = useAllDuration(gameId);
-  const date = new Date(duration?.start * 1000 + duration?.[1]);
+  const { data: times } = useGameTimes(gameId);
+  const date = new Date(times?.start * 1000);
   const { data: treasuryAmount } = usePaymentTerminalBalance(gameId);
 
   // const currentDate = new Date(); // Get the current date and time

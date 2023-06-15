@@ -1,10 +1,9 @@
 import { BigNumber } from "ethers";
 import {
   JBGroupedSplits,
-  JBSplitGroup,
   JBProjectMetadataParams,
+  JBSplitGroup,
 } from "./juicebox";
-import { initial } from "lodash";
 
 export interface DefifaTierParams {
   name: string;
@@ -19,24 +18,25 @@ export type EthereumAddress = `0x${string}`;
 
 export interface DefifaLaunchProjectData {
   name: string;
-  rules: string; // not used onchain
   projectMetadata: JBProjectMetadataParams;
   contractUri: string;
   baseUri: string;
   tiers: DefifaTierParams[];
   token: string;
-  mintDuration: number;
-  refundDuration: number;
+  mintPeriodDuration: number;
+  refundPeriodDuration: number;
   start: number;
   splits: JBGroupedSplits<JBSplitGroup>[];
-  distributionLimit: number;
   ballkidzFeeProjectTokenAccount: EthereumAddress;
-  votingPeriod: number; // seconds
-  votingStartTime: number;
-  defaultVotingDelegate: EthereumAddress;
-  store: EthereumAddress;
+  ballkidzFeeProjectTokenAllocator: EthereumAddress;
+  attestationStartTime: number;
+  attestationGracePeriod: number; // seconds
+  defaultAttestationDelegate: EthereumAddress;
   defaultTokenUriResolver: EthereumAddress;
   terminal: EthereumAddress;
+  store: EthereumAddress;
+
+  rules: string; // not used onchain
 }
 
 export interface DefifaProjectMetadata {
@@ -49,9 +49,9 @@ export interface DefifaProjectMetadata {
 }
 
 export interface DefifaTimeData {
-  mintDuration: number;
-  refundDuration: number;
   start: number;
+  mintPeriodDuration: number;
+  refundPeriodDuration: number;
 }
 
 export interface DefifaTierRedemptionWeightParams {

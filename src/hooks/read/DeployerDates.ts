@@ -8,7 +8,7 @@ import {
 import { useGameTimes } from "./useGameTimes";
 
 type DescriptionDates = {
-  mintDuration: {
+  mintPeriodDuration: {
     date: string;
     phase: number;
   };
@@ -16,46 +16,48 @@ type DescriptionDates = {
     date: string;
     phase: number;
   };
-  refundDuration: {
+  refundPeriodDuration: {
     date: string;
     phase: number;
   };
 };
 
-export function useDeployerDates(format: "local" | "utc") {
-  const { data: deployerDuration } = useGameTimes();
+export function useDeployerDates(format: "local" | "utc", gameId: number) {
+  const { data: deployerDuration } = useGameTimes(gameId);
   const [dates, setDates] = useState<DescriptionDates>({
-    mintDuration: { date: "", phase: 0 },
+    mintPeriodDuration: { date: "", phase: 0 },
     start: { date: "", phase: 0 },
-    refundDuration: { date: "", phase: 0 },
+    refundPeriodDuration: { date: "", phase: 0 },
   });
 
   useEffect(() => {
     if (!deployerDuration) return;
 
     setDates({
-      mintDuration: {
+      mintPeriodDuration: {
         date:
           format === "local"
             ? formatSecondsToLocal(
-                deployerDuration.mintDuration + deployerDuration.refundDuration,
+                deployerDuration.mintPeriodDuration +
+                  deployerDuration.refundPeriodDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
-                deployerDuration.mintDuration + deployerDuration.refundDuration,
+                deployerDuration.mintPeriodDuration +
+                  deployerDuration.refundPeriodDuration,
                 deployerDuration.start
               ),
         phase: 1,
       },
-      refundDuration: {
+      refundPeriodDuration: {
         date:
           format === "local"
             ? formatSecondsToLocal(
-                deployerDuration.refundDuration,
+                deployerDuration.refundPeriodDuration,
                 deployerDuration.start
               )
             : formatSecondsToUTC(
-                deployerDuration.refundDuration,
+                deployerDuration.refundPeriodDuration,
                 deployerDuration.start
               ),
         phase: 2,

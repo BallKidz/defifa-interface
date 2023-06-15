@@ -26,20 +26,20 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
   return {
     name: "",
     rules: "",
-    mintDuration: DEFAULT_MINT_DURATION_SECONDS,
-    refundDuration: DEFAULT_REFUND_DURATION_SECONDS,
+    mintPeriodDuration: DEFAULT_MINT_DURATION_SECONDS,
+    refundPeriodDuration: DEFAULT_REFUND_DURATION_SECONDS,
     start: scoringStartTime,
-    votingPeriod: 0, // seconds, 0 to allow ratify as soon as quorum is reached.
-    votingStartTime: 0,
+    attestationGracePeriod: 0, // seconds, 0 to allow ratify as soon as quorum is reached.
+    attestationStartTime: 0,
     tiers: [],
     splits: [],
     token: ETH_TOKEN_ADDRESS,
     ballkidzFeeProjectTokenAccount: BALLKIDZ_MULTISIG_ADDRESS,
-    defaultVotingDelegate: BALLKIDZ_MULTISIG_ADDRESS,
+    ballkidzFeeProjectTokenAllocator: constants.AddressZero,
+    defaultAttestationDelegate: BALLKIDZ_MULTISIG_ADDRESS,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
     baseUri: "ipfs://",
-    distributionLimit: 0,
     projectMetadata: {
       content: "",
       domain: JUICEBOX_PROJECT_METADATA_DOMAIN,

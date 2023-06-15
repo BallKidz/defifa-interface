@@ -1,4 +1,4 @@
-import { IDefifaDelegate_INTERFACE_ID } from "constants/addresses";
+import { IDefifaDelegate_INTERFACE_ID } from "constants/constants";
 import { useGameContext } from "contexts/GameContext";
 import { ethers } from "ethers";
 import { useChainData } from "hooks/useChainData";
