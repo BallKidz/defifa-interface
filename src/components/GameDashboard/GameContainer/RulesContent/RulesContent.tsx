@@ -116,8 +116,8 @@ export function RulesContent() {
             <span className="ml-2">No fees are collected</span>
           ) : (
             <>
-              {/* <EthAddress address={metadata?.fee_recipient} /> */}
-              <EthAddress address={tokenBeneficiary?.toString()} />
+              {/* <EnsName address={metadata?.fee_recipient} /> */}
+              <EnsName address={tokenBeneficiary?.toString()} />
               <span className="ml-2">
                 collects a {metadata?.seller_fee_basis_points}% fee on each pick
                 minted.
