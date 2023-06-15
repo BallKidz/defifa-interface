@@ -37,14 +37,14 @@ export function GameDashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="border-b border-neutral-800 text-sm">
-        <Container className="flex overflow-hidden">
+        <div className="flex overflow-auto">
           <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
             <Link href="/">All games</Link>
           </div>
           {games?.map((g) => (
             <GameButton key={g.gameId} game={g} />
           ))}
-        </Container>
+        </div>
       </div>
 
       <Container className="mt-8 mb-6">

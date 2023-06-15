@@ -1,9 +1,9 @@
-import { Pill } from "components/UI/Pill";
+import { EthLogo } from "components/UI/EthLogo";
 import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
+import { formatEther } from "ethers/lib/utils";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
-import { fromWad } from "utils/format/formatNumber";
 
 function GameStats() {
   const {
@@ -22,16 +22,21 @@ function GameStats() {
   if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
 
   return (
-    <div className="flex gap-4 text-sm">
-      <div>
-        <span className="font-bold">{fromWad(treasuryAmount)} ETH</span> in pot
+    <div className="flex gap-2 text-sm items-center">
+      <div className="flex gap-3">
+        <span className="font-bold flex items-center gap-1">
+          <EthLogo className="h-4 w-4" />
+          {formatEther(treasuryAmount)}
+        </span>{" "}
+        in pot
       </div>
-      |
+      •
       {/* <div>
         <span className="font-bold">6</span> players
       </div> */}
       <div>
-        <span className="font-bold">{totalSupply?.toNumber()}</span> {mintText}
+        <span className="font-bold">{totalSupply?.toNumber()}</span>{" "}
+        <span>{mintText}</span>
       </div>
     </div>
   );
@@ -48,7 +53,7 @@ export function Header() {
   return (
     <header className="flex justify-between">
       <div>
-        <h1 className="text-3xl font-medium mb-2 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
+        <h1 className="text-3xl font-medium mb-3 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
           {metadata?.name}
         </h1>
         <GameStats />

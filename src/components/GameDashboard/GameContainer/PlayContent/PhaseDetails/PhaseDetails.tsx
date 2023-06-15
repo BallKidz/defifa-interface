@@ -63,7 +63,7 @@ export function PhaseDetails() {
   return (
     <div>
       {nextPhaseNeedsQueueing && !nextPhaseNeedsQueueingLoading ? (
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg mb-6">
+        <div className="bg-slate-900 border border-slate-800 p-4 rounded-lg mb-7">
           <div className="flex justify-between items-start mb-2">
             Next phase needs queueing
             {/* <Button category="tertiary" className="bg-transparent min-w-0 text-gray-50">
@@ -78,14 +78,14 @@ export function PhaseDetails() {
 
       <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
         <div className="flex items-center gap-3">
-          <span className="h-3 w-3 bg-red-600 rounded-full"></span>
+          <span className="h-[7px] w-[7px] bg-lime-400 shadow-glowGreen rounded-full"></span>
           <div className="text-lg">{currentPhaseText}</div>
           {(currentPhase === DefifaGamePhase.MINT ||
             currentPhase === DefifaGamePhase.REFUND) &&
           !currentFundingCycleLoading &&
           timeRemainingText &&
           !waitingForBlock ? (
-            <div className="bg-red-700 rounded-md px-2">
+            <div className="bg-rose-700 shadow-glowPink rounded-md px-2.5">
               {timeRemainingText}
             </div>
           ) : null}

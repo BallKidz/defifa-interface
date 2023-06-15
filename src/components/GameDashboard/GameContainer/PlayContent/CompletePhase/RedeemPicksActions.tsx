@@ -12,7 +12,7 @@ export function RedeemPicksActions({
     tokenIds: tokenIdsToRedeem,
   });
 
-  const picksText = totalSelected === 1 ? "pick" : "picks";
+  const picksText = totalSelected === 1 ? "NFT" : "NFTs";
 
   return (
     <div className="flex justify-between items-center">
