@@ -1,11 +1,16 @@
 import Container from "components/layout/Container";
+import { useGameContext } from "contexts/GameContext";
 import { useGameTimes } from "hooks/read/useGameTimes";
 import { useCountdown } from "hooks/useCountdown";
 
 export function CountdownPhaseContent() {
-  const { data, isLoading } = useGameTimes();
+  const { gameId } = useGameContext();
+  const { data, isLoading } = useGameTimes(gameId);
   const mintStart = data
-    ? new Date((data.start - data.mintDuration - data.refundDuration) * 1000)
+    ? new Date(
+        (data.start - data.mintPeriodDuration - data.refundPeriodDuration) *
+          1000
+      )
     : undefined;
 
   const { timeRemaining } = useCountdown(mintStart);

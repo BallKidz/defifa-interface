@@ -30,9 +30,9 @@ export function MintPicksContent() {
     >
       <p className="mb-4 text-sm text-neutral-400 flex items-start gap-2">
         <QuestionMarkCircleIcon className="h-4 w-4 inline" /> Mint NFTs to buy
-        in. Your ETH is added to the total pot. When minting is over, vote on
-        the game's outcome. The pot is split based on the outcome with the most
-        votes.
+        in. Your ETH is added to the pot; the pot is split between NFT holders
+        when the game finishes. When minting is over, vote on the game's
+        outcome. The final outcome determines how the pot is split.
       </p>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">

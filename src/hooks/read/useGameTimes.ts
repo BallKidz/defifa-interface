@@ -3,9 +3,8 @@ import { useChainData } from "hooks/useChainData";
 import { DefifaTimeData } from "types/defifa";
 import { useContractRead } from "wagmi";
 
-export function useGameTimes() {
+export function useGameTimes(gameId: number) {
   const { chainData } = useChainData();
-  const { gameId } = useGameContext();
 
   const res = useContractRead({
     addressOrName: chainData.DefifaDeployer.address,
@@ -15,5 +14,15 @@ export function useGameTimes() {
     chainId: chainData.chainId,
   });
 
-  return { ...res, data: res.data as unknown as DefifaTimeData };
+  const { data } = res;
+  if (!data) return res;
+
+  const [start, mintPeriodDuration, refundPeriodDuration] = data as number[];
+  const timeData: DefifaTimeData = {
+    start,
+    mintPeriodDuration,
+    refundPeriodDuration,
+  };
+
+  return { ...res, data: timeData };
 }

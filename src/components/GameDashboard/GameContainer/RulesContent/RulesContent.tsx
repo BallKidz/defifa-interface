@@ -13,7 +13,10 @@ import { EthAddress } from "components/UI/EthAddress";
 
 export function RulesContent() {
   const { metadata, gameId, nfts } = useGameContext();
-  const { mintDuration, start, refundDuration } = useDeployerDates("local");
+  const { mintPeriodDuration, start, refundPeriodDuration } = useDeployerDates(
+    "local",
+    gameId
+  );
   const { data: currentFc } = useProjectCurrentFundingCycle(gameId);
 
   const { data: maxTiers } = useMaxTiers(currentFc?.metadata.dataSource);
@@ -36,9 +39,9 @@ export function RulesContent() {
     } else if (currentFcNumber ?? 0 < phase) {
       switch (phase) {
         case 1:
-          return `${mintDuration.date}`;
+          return `${mintPeriodDuration.date}`;
         case 2:
-          return `${refundDuration.date}`;
+          return `${refundPeriodDuration.date}`;
         case 3:
           return `${start.date}`;
         default:
@@ -70,15 +73,15 @@ export function RulesContent() {
         <div>
           <span className="text-pink-500">Phase 1: </span>MINTS OPEN (mints
           open, refunds open)
-          <span className={pillStyle(mintDuration.phase)}>
-            {fillPill(mintDuration.phase)}
+          <span className={pillStyle(mintPeriodDuration.phase)}>
+            {fillPill(mintPeriodDuration.phase)}
           </span>
         </div>
         <div>
           <span className="text-pink-500">Phase 2: </span>REFUNDS OPEN (mints
           closed)
-          <span className={pillStyle(refundDuration.phase)}>
-            {fillPill(refundDuration.phase)}
+          <span className={pillStyle(refundPeriodDuration.phase)}>
+            {fillPill(refundPeriodDuration.phase)}
           </span>
         </div>
         <div>
