@@ -309,7 +309,7 @@ const DeployerCreate = () => {
 
   if (isSuccess && transactionData) {
     console.log(transactionData);
-    const gameId = BigNumber.from(transactionData.logs[1].topics[3]).toNumber();
+    const gameId = BigNumber.from(transactionData.logs[2].topics[3]).toNumber();
 
     return (
       <div className="text-center">

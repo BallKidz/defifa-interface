@@ -16,7 +16,7 @@ export function useRatifyScorecard(
   const { isConnected } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
-
+  console.log(gameId, _tierWeights, governor);
   const { config, error: err } = usePrepareContractWrite({
     addressOrName: governor ?? "",
     contractInterface: chainData.DefifaGovernor.interface,
