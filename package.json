@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
-    "@ballkidz/defifa-collection-deployer": "1.0.36",
+    "@ballkidz/defifa-collection-deployer": "1.0.37",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
     "@jbx-protocol/juice-721-delegate": "7.0.0",
