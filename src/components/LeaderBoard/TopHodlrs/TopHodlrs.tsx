@@ -10,24 +10,32 @@ import { twMerge } from "tailwind-merge";
 interface LeaderBoardMetric {
   uniqueGameIds: number;
   id: string;
-  ownedTokens: [{
-    gameId: string;
-  }];
+  ownedTokens: [
+    {
+      gameId: string;
+    }
+  ];
   rowNumber: number;
   index: number;
 }
 
 type ActivityEvent = LeaderBoardMetric & {
   id: string;
-  ownedTokens: [{
-    gameId: string;
-  }];
+  ownedTokens: [
+    {
+      gameId: string;
+    }
+  ];
   uniqueGameIds: number;
   gamesPlayed: number;
   rowNumber: number;
 };
 
-function HodlrsLeaderBoard({ LeaderBoardMetric }: { LeaderBoardMetric: LeaderBoardMetric }) {
+function HodlrsLeaderBoard({
+  LeaderBoardMetric,
+}: {
+  LeaderBoardMetric: LeaderBoardMetric;
+}) {
   return (
     <tr>
       <td>{LeaderBoardMetric.rowNumber}</td> {/* Display the row number */}
@@ -40,9 +48,10 @@ function HodlrsLeaderBoard({ LeaderBoardMetric }: { LeaderBoardMetric: LeaderBoa
           />
         </div>
       </td>
-
       <td>
-        <div className="flex justify-center items-center gap-3"> {/* Center the content */}
+        <div className="flex justify-center items-center gap-3">
+          {" "}
+          {/* Center the content */}
           {LeaderBoardMetric.ownedTokens.length}
         </div>
       </td>
@@ -50,8 +59,11 @@ function HodlrsLeaderBoard({ LeaderBoardMetric }: { LeaderBoardMetric: LeaderBoa
   );
 }
 
-
-function ActivityItem({ LeaderBoardMetric }: { LeaderBoardMetric: LeaderBoardMetric }) {
+function ActivityItem({
+  LeaderBoardMetric,
+}: {
+  LeaderBoardMetric: LeaderBoardMetric;
+}) {
   return <HodlrsLeaderBoard LeaderBoardMetric={LeaderBoardMetric} />;
 }
 
@@ -67,23 +79,33 @@ export function TopHoldrsContent() {
     return <Container className="text-center">No leaders yet.</Container>;
   }
 
-  const reformattedArray: ActivityEvent[] = leaders.map((obj: LeaderBoardMetric, index: number) => {
-    const activityEvent: ActivityEvent = { ...obj };
-    const leaderId = activityEvent.id;
-    const gamesPlayed = activityEvent.ownedTokens.length;
-    const uniqueGameIds = [...new Set(activityEvent.ownedTokens.map((token) => token.gameId))].length;
+  const reformattedArray: ActivityEvent[] = leaders.map(
+    (obj: LeaderBoardMetric, index: number) => {
+      const leaderId = obj.id;
+      const gamesPlayed = obj.ownedTokens.length;
+      const uniqueGameIds = [
+        ...new Set(obj.ownedTokens.map((token) => token.gameId)),
+      ].length;
 
-    activityEvent.id = leaderId;
-    activityEvent.gamesPlayed = gamesPlayed;
-    activityEvent.uniqueGameIds = uniqueGameIds;
-    activityEvent.rowNumber = index + 1;
+      const activityEvent = {
+        ...obj,
+        gamesPlayed,
+        id: leaderId,
+        uniqueGameIds,
+        rowNumber: index + 1,
+      };
 
-    return activityEvent;
-  });
+      return activityEvent as ActivityEvent;
+    }
+  );
   const top10Array = reformattedArray
     .sort((a, b) => b.ownedTokens.length - a.ownedTokens.length)
     .slice(0, 10) // Limit to the top 10 rows
-    .filter((item) => item.ownedTokens.length > 0 && item.id !== "0x0000000000000000000000000000000000000000"); // Filter out rows where games played is 0
+    .filter(
+      (item) =>
+        item.ownedTokens.length > 0 &&
+        item.id !== "0x0000000000000000000000000000000000000000"
+    ); // Filter out rows where games played is 0
 
   return (
     <div
