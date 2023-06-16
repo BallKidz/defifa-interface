@@ -47,14 +47,16 @@ export function EthAddress({
   return (
     <span className="inline-flex items-center gap-2">
       {withEnsAvatar && address && (
-        <Image
-          src={ensAvatarUrlForAddress(address, { size: 72 })}
-          className={twMerge("h-9 w-9 rounded-full", avatarClassName)}
-          alt={`Avatar for ${ensName ?? address}`}
-          loading="lazy"
-          height={36}
-          width={36}
-        />
+        <div className={twMerge("h-9 w-9 flex", avatarClassName)}>
+          <Image
+            src={ensAvatarUrlForAddress(address, { size: 72 })}
+            alt={`Avatar for ${ensName ?? address}`}
+            className="rounded-full"
+            loading="lazy"
+            height={36}
+            width={36}
+          />
+        </div>
       )}
       {linkDisabled ? (
         <span className={twMerge("select-all leading-[22px]", className)}>

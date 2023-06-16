@@ -63,7 +63,13 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   return (
     <div className="border-b border-solid border-neutral-800 overflow-hidden text-xs py-2">
       <div className="flex gap-2 items-center justify-between">
-        {transferEvent.to.id && <EthAddress address={transferEvent.to.id} />}
+        {transferEvent.to.id && (
+          <EthAddress
+            withEnsAvatar
+            avatarClassName="h-4 w-4"
+            address={transferEvent.to.id}
+          />
+        )}
         <span className="text-neutral-500">{time}</span>
       </div>
 
