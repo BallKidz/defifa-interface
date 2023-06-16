@@ -112,7 +112,7 @@ function ScorecardRow({
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-neutral-300">Votes needed</span>
-          <span>{formatNumber(votesRemaining?.toNumber())}</span>
+          <span>{formatNumber(Math.max(votesRemaining?.toNumber(), 0))}</span>
         </div>
       </div>
 
@@ -178,19 +178,6 @@ export function ScorecardsContent() {
           : undefined
       }
     >
-      <div className="mb-5 flex flex-col gap-2 text-sm text-neutral-300">
-        <div className="flex gap-2">
-          <QuestionMarkCircleIcon className="inline h-4 w-4" />
-          <div>
-            <p className="mb-1">
-              Vote on the game's final outcome. The first Scorecard to reach
-              quorum and be approved is the final outcome. The final outcome
-              determines each NFT's redemption value.
-            </p>
-          </div>
-        </div>
-      </div>
-
       <div className="flex gap-8">
         <div className="mb-3 flex flex-col">
           <span className="uppercase text-xs">Your Votes</span>

@@ -1,14 +1,15 @@
-import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
+import { EthAddress } from "components/UI/EthAddress";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
+import { constants } from "ethers";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
+import { CompletePhaseContent } from "./CompletePhase/CompletePhaseContent";
 import { CountdownPhaseContent } from "./CountdownPhaseContent";
 import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
+import { useGameMints } from "./MintPhase/useGameMints";
 import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
-import { CompletePhaseContent } from "./CompletePhase/CompletePhaseContent";
-import { useGameMints } from "./MintPhase/useGameMints";
-import { EthAddress } from "components/UI/EthAddress";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
@@ -23,7 +24,9 @@ const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
 function useGamePlayers() {
   const { gameId } = useGameContext();
   const { data: mints } = useGameMints(gameId);
-  const players = Array.from(new Set(mints?.map((m: any) => m.owner.id) ?? []));
+  const players = Array.from(
+    new Set(mints?.map((m: any) => m.owner.id) ?? [])
+  ).filter((a) => a !== constants.AddressZero);
   return players as string[];
 }
 
@@ -31,7 +34,7 @@ function LeftColumn() {
   const players = useGamePlayers();
   return (
     <div>
-      <h2 className="text-neutral-300 font-medium mb-3">Active players</h2>
+      <h2 className="text-neutral-300 font-medium text-sm mb-3">Players</h2>
 
       {players.map((player) => (
         <div key={player} className="text-sm">

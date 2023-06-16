@@ -1,7 +1,7 @@
+import { EthAmount } from "components/UI/EthAmount";
 import { PickCard, PickCardProps } from "components/UI/PickCard";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
-import { formatEther } from "ethers/lib/utils";
 import { useTokenRedemptionValue } from "hooks/read/useTokenRedemptionValue";
 
 export function RedeemCard({
@@ -22,11 +22,13 @@ export function RedeemCard({
     amountRedeemed,
   });
 
-  const redemptionValueText = formatEther(tokenRedemptionValue);
-
   return (
     <PickCard
-      extra={<>{redemptionValueText} ETH each</>}
+      extra={
+        <span className="items-center flex gap-2">
+          <EthAmount amountWei={tokenRedemptionValue} /> each
+        </span>
+      }
       selectionLimit={tokenIds.length}
       {...props}
     />

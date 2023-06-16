@@ -69,6 +69,13 @@ export function RulesContent() {
         on the game's outcome. The final outcome determines how the pot is
         split.
       </p>
+
+      <p className="mb-5">
+        Vote on the game's final outcome. The first Scorecard to reach quorum
+        and be approved is the final outcome. The final outcome determines each
+        NFT's redemption value.
+      </p>
+
       <div className="mb-5">
         <EtherscanLink type="address" value={currentFc?.metadata.dataSource}>
           View NFT on Etherscan
@@ -76,15 +83,14 @@ export function RulesContent() {
       </div>
       <div className="border-t border-neutral-800 pt-4 mb-5 flex flex-col gap-2">
         <div>
-          <span className="text-pink-500">Phase 1: </span>Minting (mints
-          open, refunds open)
+          <span className="text-pink-500">Phase 1: </span>Minting (mints open,
+          refunds open)
           <span className={pillStyle(mintPeriodDuration.phase)}>
             {fillPill(mintPeriodDuration.phase)}
           </span>
         </div>
         <div>
-          <span className="text-pink-500">Phase 2: </span>Refund (mints
-          closed)
+          <span className="text-pink-500">Phase 2: </span>Refund (mints closed)
           <span className={pillStyle(refundPeriodDuration.phase)}>
             {fillPill(refundPeriodDuration.phase)}
           </span>

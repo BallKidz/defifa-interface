@@ -93,7 +93,7 @@ export function PhaseDetails() {
 
         <Button
           category="tertiary"
-          className="hidden md:block text-base"
+          className="hidden md:block text-sm text-neutral-300"
           onClick={() => modal.setIsOpen(true)}
         >
           <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How to play
