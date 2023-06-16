@@ -50,7 +50,7 @@ export function CustomScorecardActions({
     ) ?? 0;
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center w-full">
       <div className="flex gap-2 items-center">
         {totalScorePercentage.toString()}% allocated
         {totalScorePercentage === 100 ? (

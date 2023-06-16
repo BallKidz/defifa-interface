@@ -29,7 +29,7 @@ export function MintCard({
     <PickCard
       extra={
         <>
-          <div className="mb-2">
+          <div className="mb-1 mt-1 font-medium">
             <EthAmount amountWei={price} />
           </div>
           <div className="text-xs">

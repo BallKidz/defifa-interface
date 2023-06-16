@@ -24,6 +24,6 @@ export function usePaymentTerminalBalance(gameId: number) {
 
   return {
     ...res,
-    data: res.data as unknown as BigNumber,
+    data: res.data as unknown as BigNumber | undefined,
   };
 }

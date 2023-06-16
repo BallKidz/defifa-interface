@@ -96,13 +96,10 @@ export function PhaseDetails() {
           className="hidden md:block text-base"
           onClick={() => modal.setIsOpen(true)}
         >
-          How to play <QuestionMarkCircleIcon className="h-4 w-4 inline" />
+          <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How to play
         </Button>
       </div>
-      <div className="text-sm ml-5 text-neutral-300 mt-2">
-        <span className="font-medium">Rules:</span> {metadata?.description}
-      </div>
-
+      {/* 
       {currentPhase === DefifaGamePhase.MINT ||
       currentPhase === DefifaGamePhase.REFUND ? (
         <div className="w-full rounded-full bg-neutral-800 transition-all mt-3">
@@ -124,7 +121,7 @@ export function PhaseDetails() {
         <div className="w-full rounded-full bg-neutral-800 transition-all mt-3">
           <div className="rounded-full h-1 bg-neutral-800" />
         </div>
-      )}
+      )} */}
       <Modal title="How to play" {...modal}>
         <RulesContent />
       </Modal>

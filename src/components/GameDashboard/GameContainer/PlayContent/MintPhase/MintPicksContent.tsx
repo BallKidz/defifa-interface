@@ -46,7 +46,7 @@ export function MintPicksContent() {
           : undefined
       }
     >
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+      <div className="grid grid-cols-2 2xl:grid-cols-3 gap-3 md:gap-6 2xl:gap-4">
         {tiersLoading || currentFundingCycleLoading ? (
           <span>...</span>
         ) : (

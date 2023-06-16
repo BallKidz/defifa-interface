@@ -15,7 +15,7 @@ export function RefundActions({
   const picksText = totalSelected === 1 ? "pick" : "picks";
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center w-full">
       <div>
         {totalSelected} {picksText} to refund
       </div>

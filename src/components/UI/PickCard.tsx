@@ -29,15 +29,16 @@ export function PickCard({
   return (
     <div
       className={twMerge(
-        "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform",
-        isSelected ? "border-pink-900 shadow-glowPink" : ""
+        "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:shadow-glowPink hover:border-pink-900 transition-transform",
+        isSelected
+          ? "border-pink-800 hover:border-pink-800 shadow-glowPink"
+          : ""
       )}
     >
       <button
         role="button"
         onClick={onIncrement}
         disabled={disabled || limitReached}
-        className="border-b border-neutral-800"
       >
         <Image
           src={imageSrc}
@@ -72,7 +73,7 @@ export function PickCard({
         ) : null}
       </div>
 
-      <div className="p-3">{extra}</div>
+      <div className="px-3 pb-3">{extra}</div>
     </div>
   );
 }

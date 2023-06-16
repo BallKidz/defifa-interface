@@ -1,12 +1,13 @@
-import Navbar from "components/layout/Navbar";
 import Container from "components/layout/Container";
+import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
-import Head from "next/head";
-import { GameContainer } from "./GameContainer/GameContainer";
-import { Header } from "./Header";
-import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
 import { useAllGames } from "hooks/useAllGames";
+import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
+import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
+import { Header } from "./Header";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -36,21 +37,45 @@ export function GameDashboard() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="border-b border-neutral-800 text-sm">
-        <div className="flex overflow-auto">
-          <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
-            <Link href="/">All games</Link>
+
+      <div className="border-b border-neutral-800 text-sm bg-neutral-950">
+        <Container>
+          <div className="flex overflow-auto">
+            <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
+              <Link href="/">All games</Link>
+            </div>
+            {games?.map((g) => (
+              <GameButton key={g.gameId} game={g} />
+            ))}
           </div>
-          {games?.map((g) => (
-            <GameButton key={g.gameId} game={g} />
-          ))}
-        </div>
+        </Container>
       </div>
 
-      <Container className="mt-8 mb-6">
+      <nav className="border-b border-neutral-800 bg-neutral-900 py-2">
+        <Container className="flex justify-between">
+          <div>
+            <Image
+              src="/assets/defifa_spinner.gif"
+              height={40}
+              width={51}
+              alt="logo"
+            />
+          </div>
+          <div className="flex gap-6 items-center">
+            <Link href="/about">
+              <a className="flex items-center gap-2 text-neutral-300">
+                <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How it
+                works
+              </a>
+            </Link>
+            <Wallet />
+          </div>{" "}
+        </Container>
+      </nav>
+
+      <Container className="mt-2 border-b border-neutral-800 pb-4">
         <Header />
       </Container>
-
       <PlayContent />
     </>
   );
