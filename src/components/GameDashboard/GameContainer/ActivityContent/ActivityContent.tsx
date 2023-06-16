@@ -61,24 +61,17 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
 function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
   return (
-    <div className="border-b border-solid border-neutral-800 overflow-hidden py-3">
-      <div className="flex items-center gap-3">
-        {transferEvent.to.id && (
-          <EthAddress
-            className="font-medium"
-            address={transferEvent.to.id}
-            withEnsAvatar
-          />
-        )}
-        <span className="rounded-full h-[4px] w-[4px] bg-neutral-400"></span>
-        <span className="text-neutral-400">{time}</span>
+    <div className="border-b border-solid border-neutral-800 overflow-hidden text-xs py-2">
+      <div className="flex gap-2 items-center justify-between">
+        {transferEvent.to.id && <EthAddress address={transferEvent.to.id} />}
+        <span className="text-neutral-500">{time}</span>
       </div>
 
-      <div className="mb-1 ml-11 -translate-y-1">
-        Minted {transferEvent.token.metadata.name}
+      <div className="mb-1">
+        Minted tier {transferEvent.token.metadata.name}
       </div>
 
-      <div className="rounded-lg ml-11 border-pink-900 border inline-flex overflow-hidden p-1">
+      {/* <div className="rounded-lg ml-11 border-pink-900 border inline-flex overflow-hidden p-1">
         <Image
           className="rounded-md"
           src={transferEvent.token.metadata.image}
@@ -87,15 +80,15 @@ function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
           width={200}
           height={200}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
 
 function ActivityItem({ transferEvent }: { transferEvent: TransferEvent }) {
-  if (transferEvent.to.id === constants.AddressZero) {
-    return <RedeemEvent transferEvent={transferEvent} />;
-  }
+  // if (transferEvent.to.id === constants.AddressZero) {
+  //   return <RedeemEvent transferEvent={transferEvent} />;
+  // }
   if (transferEvent.from.id === constants.AddressZero) {
     return <PayEvent transferEvent={transferEvent} />;
   }
@@ -108,11 +101,11 @@ export function ActivityContent() {
 
   const transfers = activity?.transfers;
   if (isLoading) {
-    return <Container className="text-center">...</Container>;
+    return <div>...</div>;
   }
 
   if (!transfers || transfers.length === 0) {
-    return <Container className="text-center">No activity yet.</Container>;
+    return <div>No activity yet.</div>;
   }
   const reformattedArray: ActivityEvent[] = transfers.map(
     (obj: TransferEvent) => {
@@ -138,28 +131,26 @@ export function ActivityContent() {
   );
 
   return (
-    <Container className="mb-12">
-      <div className="flex flex-col gap-8 max-w-3xl mx-auto mt-8">
-        {reformattedArray
-          .sort((a, b) => {
-            if (a.nonZeroId === b.nonZeroId) {
-              return parseInt(a.token.number) - parseInt(b.token.number);
-            }
-            return a.nonZeroId < b.nonZeroId ? -1 : 1;
-          })
-          .map((transferEvent) => {
-            const transferEventWithTier = {
-              ...transferEvent,
-            };
+    <div className="flex flex-col max-w-3xl mx-auto">
+      {reformattedArray
+        .sort((a, b) => {
+          if (a.nonZeroId === b.nonZeroId) {
+            return parseInt(a.token.number) - parseInt(b.token.number);
+          }
+          return a.nonZeroId < b.nonZeroId ? -1 : 1;
+        })
+        .map((transferEvent) => {
+          const transferEventWithTier = {
+            ...transferEvent,
+          };
 
-            return (
-              <ActivityItem
-                key={transferEvent.transactionHash + transferEvent.token.number}
-                transferEvent={transferEventWithTier}
-              />
-            );
-          })}
-      </div>
-    </Container>
+          return (
+            <ActivityItem
+              key={transferEvent.transactionHash + transferEvent.token.number}
+              transferEvent={transferEventWithTier}
+            />
+          );
+        })}
+    </div>
   );
 }

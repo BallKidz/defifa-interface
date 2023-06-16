@@ -10,6 +10,9 @@ import { useGameMints } from "./MintPhase/useGameMints";
 import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
+import { useState } from "react";
+import { ActivityContent } from "../ActivityContent/ActivityContent";
+import { twJoin } from "tailwind-merge";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
@@ -31,16 +34,42 @@ function useGamePlayers() {
 }
 
 function LeftColumn() {
+  const [currentTab, setCurrentTab] = useState<"players" | "activity">(
+    "activity"
+  );
   const players = useGamePlayers();
   return (
     <div>
-      <h2 className="text-neutral-300 font-medium text-sm mb-3">Players</h2>
-
-      {players.map((player) => (
-        <div key={player} className="text-sm">
-          <EthAddress withEnsAvatar address={player} />
-        </div>
-      ))}
+      <ul className="flex text-xs gap-2 items-center mb-2">
+        <li
+          className={twJoin(
+            currentTab === "activity"
+              ? "bg-neutral-800 text-neutral-50 rounded-md"
+              : "text-neutral-400",
+            "cursor-pointer hover:text-neutral-300 px-2 py-1"
+          )}
+        >
+          <a onClick={() => setCurrentTab("activity")}>Feed</a>
+        </li>
+        <li
+          className={twJoin(
+            currentTab === "players"
+              ? "bg-neutral-800 text-neutral-50 rounded-md"
+              : "text-neutral-400",
+            "cursor-pointer hover:text-neutral-300 px-2 py-1"
+          )}
+        >
+          <a onClick={() => setCurrentTab("players")}>Players</a>
+        </li>
+      </ul>
+      {currentTab === "players"
+        ? players.map((player) => (
+            <div key={player} className="text-sm">
+              <EthAddress withEnsAvatar address={player} />
+            </div>
+          ))
+        : null}
+      {currentTab === "activity" ? <ActivityContent /> : null}
     </div>
   );
 }
@@ -58,8 +87,8 @@ export function PlayContent() {
   const CurrentContent = PHASE_CONTENT[currentPhase] ?? null;
 
   return (
-    <Container className="grid grid-cols-[230px_1fr_350px] items-start">
-      <div className="py-5">
+    <Container className="grid grid-cols-[250px_1fr_350px] items-start">
+      <div className="py-5 pr-2">
         <LeftColumn />
       </div>
       <div className="border-l border-neutral-800 py-3">
