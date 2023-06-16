@@ -6,11 +6,11 @@ import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { MintCard } from "./MintCard";
 import { RefundActions } from "./RefundActions";
 import { useMintSelection } from "./useMintSelection";
-import { useMyPicks } from "./useMyPicks";
+import { useMyMints } from "./useMyMints";
 
 export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
-  const { data: picks, isLoading: picksLoading } = useMyPicks();
+  const { data: picks, isLoading: picksLoading } = useMyMints();
   const { nfts } = useGameContext();
 
   const {

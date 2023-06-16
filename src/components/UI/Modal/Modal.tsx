@@ -48,7 +48,7 @@ export function Modal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-xl bg-gray-950 border-neutral-700 border p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-xl bg-gray-950 border-neutral-700 border p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6">
                   {title}
                 </Dialog.Title>
@@ -57,7 +57,7 @@ export function Modal({
                 <div className="mt-4 flex gap-3 justify-end">
                   {/* <Button category="secondary">Close</Button> */}
 
-                  <Button onClick={() => setIsOpen(false)}>OK</Button>
+                  <Button onClick={() => setIsOpen(false)}>Got it</Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

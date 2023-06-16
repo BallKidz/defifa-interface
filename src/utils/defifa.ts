@@ -1,5 +1,6 @@
 import { TOTAL_REDEMPTION_WEIGHT } from "constants/constants";
 import { BigNumber, BigNumberish } from "ethers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
 
 /**
  * Return the redemption weight for a given percentage.
@@ -26,4 +27,10 @@ export function redemptionWeightToPercentage(
         .mul(100)
         .div(TOTAL_REDEMPTION_WEIGHT)
         .toNumber();
+}
+
+export function tokenNumberToTierId(tokenNumber: string) {
+  const tierId = Math.floor(parseInt(tokenNumber) / DEFAULT_NFT_MAX_SUPPLY);
+
+  return tierId;
 }

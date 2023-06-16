@@ -7,7 +7,7 @@ import { usePaymentTerminalOverflow } from "hooks/read/usePaymentTerminalOverflo
 import { useAccount } from "wagmi";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { useMintSelection } from "../MintPhase/useMintSelection";
-import { useMyPicks } from "../MintPhase/useMyPicks";
+import { useMyMints } from "../MintPhase/useMyMints";
 import { RedeemCard } from "./RedeemCard";
 import { RedeemPicksActions } from "./RedeemPicksActions";
 
@@ -15,7 +15,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
   const { nfts, gameId, currentFundingCycle } = useGameContext();
 
-  const { data: picks, isLoading: picksLoading } = useMyPicks();
+  const { data: picks, isLoading: picksLoading } = useMyMints();
   const { data: overflow } = usePaymentTerminalOverflow(gameId);
   const { data: amountRedeemed } = useAmountRedeemed(
     currentFundingCycle?.metadata.dataSource

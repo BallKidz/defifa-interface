@@ -40,6 +40,7 @@ export function PhaseDetails() {
     currentPhase,
     currentFundingCycle,
     loading: { currentFundingCycleLoading, currentPhaseLoading },
+    metadata,
   } = useGameContext();
   const modal = useModal();
   const {
@@ -75,7 +76,6 @@ export function PhaseDetails() {
           </div>
         </div>
       ) : null}
-
       <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
         <div className="flex items-center gap-3">
           <span className="h-[7px] w-[7px] bg-lime-400 shadow-glowGreen rounded-full"></span>
@@ -98,6 +98,9 @@ export function PhaseDetails() {
         >
           How to play <QuestionMarkCircleIcon className="h-4 w-4 inline" />
         </Button>
+      </div>
+      <div className="text-sm ml-5 text-neutral-300 mt-2">
+        <span className="font-medium">Rules:</span> {metadata?.description}
       </div>
 
       {currentPhase === DefifaGamePhase.MINT ||
@@ -122,7 +125,6 @@ export function PhaseDetails() {
           <div className="rounded-full h-1 bg-neutral-800" />
         </div>
       )}
-
       <Modal title="How to play" {...modal}>
         <RulesContent />
       </Modal>
