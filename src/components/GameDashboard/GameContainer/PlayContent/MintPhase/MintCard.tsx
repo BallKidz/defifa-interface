@@ -11,7 +11,7 @@ export function MintCard({
   ...props
 }: {
   mintedCount: number;
-  playerCount: number;
+  playerCount?: number;
   tierId: number;
   price: BigNumber;
 } & Omit<PickCardProps, "extra">) {
@@ -37,9 +37,11 @@ export function MintCard({
         <>
           <div>{formatEther(price)} ETH</div>
           <div className="text-xs mt-2">
-            <div>
-              {playerCount} {playerText}
-            </div>
+            {playerCount ? (
+              <div>
+                {playerCount} {playerText}
+              </div>
+            ) : null}
             <div>
               {mintedCount} {mintedText}
             </div>
