@@ -23,21 +23,22 @@ function GameStats() {
   if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
 
   return (
-    <div className="flex gap-2 text-sm items-center">
-      <div className="flex gap-3">
-        <span className="font-bold flex items-center gap-1">
-          <EthAmount amountWei={treasuryAmount} />
-        </span>{" "}
-        in pot
+    <div className="flex gap-6  items-center">
+      <div className="flex gap-1 flex-col items-end">
+        <span className="uppercase text-sm">in pot</span>
+        <span className="font-medium flex items-center gap-1 text-2xl text-lime-400">
+          {treasuryAmount ? <EthAmount amountWei={treasuryAmount} /> : null}
+        </span>
       </div>
-      •
+      <div className="flex gap-1 flex-col items-end">
+        <span className="uppercase text-sm">Mints</span>
+        <span className="font-medium flex items-center gap-1 text-2xl">
+          {totalSupply?.toNumber()}
+        </span>
+      </div>
       {/* <div>
         <span className="font-bold">6</span> players
       </div> */}
-      <div>
-        <span className="font-bold">{totalSupply?.toNumber()}</span>{" "}
-        <span>{mintText}</span>
-      </div>
     </div>
   );
 }
@@ -51,16 +52,21 @@ export function Header() {
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
-    <header className="flex justify-between">
-      <div>
-        <h1 className="text-3xl font-medium mb-3 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
-          {metadata?.name}
-        </h1>
-        <GameStats />
+    <header className="flex justify-between items-start pt-4 pb-2">
+      <div className="flex gap-6 items-center">
+        <div className="text-5xl border border-neutral-800 p-4 rounded-lg bg-neutral-900 font-sans">
+          🕹️
+        </div>
+        <div>
+          <h1 className="text-2xl font-medium mb-3 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
+            {metadata?.name}
+          </h1>
+          <div className="text-sm text-neutral-300 mt-2 max-w-3xl">
+            <span className="font-medium">Rules:</span> {metadata?.description}
+          </div>
+        </div>
       </div>
-      <div>
-        <Wallet />
-      </div>
+      <GameStats />
     </header>
   );
 }
