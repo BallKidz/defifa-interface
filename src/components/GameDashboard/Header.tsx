@@ -1,3 +1,4 @@
+import { EthAmount } from "components/UI/EthAmount";
 import { EthLogo } from "components/UI/EthLogo";
 import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
@@ -25,8 +26,7 @@ function GameStats() {
     <div className="flex gap-2 text-sm items-center">
       <div className="flex gap-3">
         <span className="font-bold flex items-center gap-1">
-          <EthLogo className="h-4 w-4" />
-          {formatEther(treasuryAmount)}
+          <EthAmount amountWei={treasuryAmount} />
         </span>{" "}
         in pot
       </div>

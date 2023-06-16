@@ -1,3 +1,4 @@
+import { EthAmount } from "components/UI/EthAmount";
 import { PickCard, PickCardProps } from "components/UI/PickCard";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
@@ -23,29 +24,29 @@ export function MintCard({
     mintedCount > 0 && totalSupply
       ? ((mintedCount / totalSupply?.toNumber()) * 100).toFixed(0)
       : 0;
-  const supplyPortionString =
-    nfts && nfts?.[tierId - 1]?.minted > 0 && totalSupply
-      ? `${(mintedCount / nfts?.[tierId - 1]?.minted) * 100}% of this card`
-      : `0%`;
-
-  const playerText = playerCount === 1 ? "player" : "players";
-  const mintedText = mintedCount === 1 ? "mint" : "mints";
 
   return (
     <PickCard
       extra={
         <>
-          <div>{formatEther(price)} ETH</div>
-          <div className="text-xs mt-2">
-            {playerCount ? (
-              <div>
-                {playerCount} {playerText}
+          <div className="mb-2">
+            <EthAmount amountWei={price} />
+          </div>
+          <div className="text-xs">
+            {typeof playerCount !== "undefined" ? (
+              <div className="flex justify-between">
+                <span className="text-neutral-300">Players</span>
+                <span className="font-medium">{playerCount}</span>
               </div>
             ) : null}
-            <div>
-              {mintedCount} {mintedText}
+            <div className="flex justify-between">
+              <span className="text-neutral-300">Mints</span>
+              <span className="font-medium">{mintedCount}</span>
             </div>
-            {/* <div>{supplyPortion}% of game mints</div> */}
+            <div className="flex justify-between">
+              <span className="text-neutral-300">% of all mints</span>
+              <span className="font-medium">{supplyPortion}%</span>
+            </div>
           </div>
         </>
       }
