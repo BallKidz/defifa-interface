@@ -4,6 +4,20 @@ import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { MintActions } from "./MintActions";
 import { MintCard } from "./MintCard";
 import { useMintSelection } from "./useMintSelection";
+import { useGameMints } from "./useGameMints";
+import { tokenNumberToTierId } from "utils/defifa";
+
+function usePlayersInTiers(gameMints: any[] | undefined) {
+  return gameMints?.reduce((acc, token) => {
+    const tierId = tokenNumberToTierId(token.number);
+    const tier = acc[tierId] ?? [];
+    if (!tier.includes(token.owner.id)) {
+      tier.push(token.owner.id);
+    }
+    acc[tierId] = tier;
+    return acc;
+  }, {});
+}
 
 export function MintPicksContent() {
   const {
@@ -12,7 +26,11 @@ export function MintPicksContent() {
       currentFundingCycleLoading,
       nfts: { tiersLoading },
     },
+    gameId,
   } = useGameContext();
+  const { data: gameMints } = useGameMints(gameId);
+  const playersInTiers = usePlayersInTiers(gameMints);
+
   const {
     incrementTierSelection,
     decrementTierSelection,
@@ -28,13 +46,6 @@ export function MintPicksContent() {
           : undefined
       }
     >
-      <p className="mb-4 text-sm text-neutral-400 flex items-start gap-2">
-        <QuestionMarkCircleIcon className="h-4 w-4 inline" /> Mint NFTs to buy
-        in. Your ETH is added to the pot; the pot is split between NFT holders
-        when the game finishes. When minting is over, vote on the game's
-        outcome. The final outcome determines how the pot is split.
-      </p>
-
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
         {tiersLoading || currentFundingCycleLoading ? (
           <span>...</span>
@@ -46,6 +57,7 @@ export function MintPicksContent() {
               key={t.id}
               imageSrc={t.teamImage}
               mintedCount={t.minted}
+              playerCount={playersInTiers[t.id]?.length ?? 0}
               selectedCount={selectedTiers?.[t.id]?.count ?? 0}
               onIncrement={() => incrementTierSelection(t.id.toString())}
               onDecrement={() => decrementTierSelection(t.id.toString())}

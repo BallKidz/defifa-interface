@@ -62,23 +62,28 @@ export function RulesContent() {
   };
 
   return (
-    <Container>
-      <p className="mb-5">{metadata?.description}</p>
+    <div>
+      <p className="mb-5">
+        Mint NFTs to buy in. Your ETH is added to the pot; the pot is split
+        between NFT holders when the game finishes. When minting is over, vote
+        on the game's outcome. The final outcome determines how the pot is
+        split.
+      </p>
       <div className="mb-5">
         <EtherscanLink type="address" value={currentFc?.metadata.dataSource}>
           View NFT on Etherscan
         </EtherscanLink>
       </div>
-      <div className="p-4 border border-neutral-800 rounded-lg mb-5 flex flex-col gap-2">
+      <div className="border-t border-neutral-800 pt-4 mb-5 flex flex-col gap-2">
         <div>
-          <span className="text-pink-500">Phase 1: </span>MINTS OPEN (mints
+          <span className="text-pink-500">Phase 1: </span>Minting (mints
           open, refunds open)
           <span className={pillStyle(mintPeriodDuration.phase)}>
             {fillPill(mintPeriodDuration.phase)}
           </span>
         </div>
         <div>
-          <span className="text-pink-500">Phase 2: </span>REFUNDS OPEN (mints
+          <span className="text-pink-500">Phase 2: </span>Refund (mints
           closed)
           <span className={pillStyle(refundPeriodDuration.phase)}>
             {fillPill(refundPeriodDuration.phase)}
@@ -99,7 +104,7 @@ export function RulesContent() {
         </div>
       </div>
       <div>
-        <div className="p-4 border border-neutral-800 rounded-lg mb-5">
+        <div className="border-t border-neutral-800 pt-4 mb-5">
           <p>
             <span className="text-pink-500">Winners: </span>Claim prize anytime
             after a scorecard has been ratified. Redeeming a player card will
@@ -112,7 +117,7 @@ export function RulesContent() {
           </p>
         </div>
       </div>
-      <div className="p-4 border border-neutral-800 rounded-lg mb-5">
+      <div className="border-t border-neutral-800 pt-4 mb-5">
         <div className="flex items-center">
           <span className="text-pink-500">Mint Fees:</span>
           {metadata?.seller_fee_basis_points === 0 ? (
@@ -151,7 +156,7 @@ export function RulesContent() {
                     return (
                       <div
                         key={tier.id.toNumber()}
-                        className="p-4 border border-pink-800 rounded-lg mb-5"
+                        className="border-t border-pink-800 pt-4 mb-5"
                       >
                         {/* <Image src={imageSrc} width={100} height={100} alt="" /> */}
                         <p>Pick: {tier.id.toNumber()}</p>
@@ -174,6 +179,6 @@ export function RulesContent() {
             )}
         </div>
       </div>
-    </Container>
+    </div>
   );
 }

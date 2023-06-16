@@ -60,12 +60,7 @@ const DeployerCreate = () => {
       contractUri.infoUri;
     const contractUriCid = await uploadJsonToIpfs(contractUri);
     projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
-    projectMetadataUri.description =
-      formValuesIn.rules +
-      " " +
-      "For more info visit" +
-      " " +
-      contractUri.infoUri;
+    projectMetadataUri.description = formValuesIn.rules;
 
     const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
 

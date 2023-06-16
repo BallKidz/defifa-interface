@@ -32,7 +32,7 @@ export function PlayContent() {
 
   return (
     <div>
-      <Container className="mb-6">
+      <Container className="mb-10">
         {currentPhase === DefifaGamePhase.MINT ||
         currentPhase === DefifaGamePhase.REFUND ||
         currentPhase === DefifaGamePhase.SCORING ||

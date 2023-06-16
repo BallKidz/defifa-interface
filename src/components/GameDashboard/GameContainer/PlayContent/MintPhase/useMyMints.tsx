@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { useAccount } from "wagmi";
 
 const query = gql`
-  query myTeamsQuery($owner: String!, $gameId: String!) {
+  query myMintsQuery($owner: String!, $gameId: String!) {
     contracts(where: { gameId: $gameId }) {
       mintedTokens(where: { owner: $owner }) {
         id
@@ -23,7 +23,7 @@ const query = gql`
   }
 `;
 
-export function useMyPicks() {
+export function useMyMints() {
   const {
     chainData: { subgraph },
   } = useChainData();
