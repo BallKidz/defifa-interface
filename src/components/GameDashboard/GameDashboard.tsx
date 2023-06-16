@@ -38,7 +38,7 @@ export function GameDashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="border-b border-neutral-800 text-sm bg-neutral-950">
+      <div className="border-b border-neutral-900 text-sm">
         <Container>
           <div className="flex overflow-auto">
             <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
@@ -51,29 +51,27 @@ export function GameDashboard() {
         </Container>
       </div>
 
-      <nav className="border-b border-neutral-800 bg-neutral-900 py-2">
+      <nav className="border-b border-neutral-900 py-2">
         <Container className="flex justify-between">
-          <div>
-            <Image
-              src="/assets/defifa_spinner.gif"
-              height={40}
-              width={51}
-              alt="logo"
-            />
-          </div>
+          <Image
+            src="/assets/defifa_spinner.gif"
+            height={26}
+            width={45}
+            alt="logo"
+          />
           <div className="flex gap-6 items-center">
             <Link href="/about">
-              <a className="flex items-center gap-2 text-neutral-300">
+              <a className="flex items-center gap-2 text-neutral-300 text-sm">
                 <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How it
                 works
               </a>
             </Link>
             <Wallet />
-          </div>{" "}
+          </div>
         </Container>
       </nav>
 
-      <Container className="mt-2 border-b border-neutral-800 pb-4">
+      <Container className="border-b border-neutral-900 pb-4 bg-neutral-950">
         <Header />
       </Container>
       <PlayContent />

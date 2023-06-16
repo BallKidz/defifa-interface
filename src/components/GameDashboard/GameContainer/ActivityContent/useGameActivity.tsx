@@ -7,7 +7,7 @@ import { useAccount } from "wagmi";
 // BROKEN TODO
 const query = gql`
   query gameActivityQuery($gameId: String!) {
-    transfers(where: { token_: { gameId: $gameId } }) {
+    transfers(where: { token_: { gameId: $gameId } }, orderBy: timestamp, orderDirection: desc) {
       transactionHash
       timestamp
       from {

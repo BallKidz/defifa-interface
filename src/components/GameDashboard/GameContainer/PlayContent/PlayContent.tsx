@@ -40,13 +40,13 @@ function LeftColumn() {
   const players = useGamePlayers();
   return (
     <div>
-      <ul className="flex text-xs gap-2 items-center mb-2">
+      <ul className="flex text-sm gap-2 items-center mb-2">
         <li
           className={twJoin(
             currentTab === "activity"
-              ? "bg-neutral-800 text-neutral-50 rounded-md"
+              ? "bg-neutral-900 text-neutral-50 rounded-md"
               : "text-neutral-400",
-            "cursor-pointer hover:text-neutral-300 px-2 py-1"
+            "cursor-pointer hover:text-neutral-300 px-3 py-1"
           )}
         >
           <a onClick={() => setCurrentTab("activity")}>Feed</a>
@@ -54,9 +54,9 @@ function LeftColumn() {
         <li
           className={twJoin(
             currentTab === "players"
-              ? "bg-neutral-800 text-neutral-50 rounded-md"
+              ? "bg-neutral-900 text-neutral-50 rounded-md"
               : "text-neutral-400",
-            "cursor-pointer hover:text-neutral-300 px-2 py-1"
+            "cursor-pointer hover:text-neutral-300 px-3 py-1"
           )}
         >
           <a onClick={() => setCurrentTab("players")}>Players</a>
@@ -87,8 +87,8 @@ export function PlayContent() {
   const CurrentContent = PHASE_CONTENT[currentPhase] ?? null;
 
   return (
-    <Container className="grid grid-cols-[250px_1fr_350px] items-start">
-      <div className="py-5 pr-2">
+    <Container className="grid grid-cols-[240px_1fr_350px] items-start bg-neutral-950">
+      <div className="py-3 pr-2 overflow-auto h-fit">
         <LeftColumn />
       </div>
       <div className="border-l border-neutral-800 py-3">

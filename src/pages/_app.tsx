@@ -51,9 +51,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             pauseOnHover
             theme="dark"
           />
-          <div className="text-center p-0.5 bg-yellow-500 text-black text-xs font-medium">
+          {/* <div className="text-center p-0.5 bg-yellow-500 text-black text-xs font-medium">
             EXPERIMENTAL GAMES - USE ON GOERLI - REPORT BUGS
-          </div>
+          </div> */}
           <Component {...pageProps} />
         </QueryClientProvider>
       </RainbowKitProvider>

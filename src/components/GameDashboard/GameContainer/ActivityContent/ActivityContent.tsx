@@ -61,7 +61,7 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
 function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
   return (
-    <div className="border-b border-solid border-neutral-800 overflow-hidden text-xs py-2">
+    <div className="border-b border-solid border-neutral-900 overflow-hidden text-xs py-2">
       <div className="flex gap-2 items-center justify-between">
         {transferEvent.to.id && (
           <EthAddress

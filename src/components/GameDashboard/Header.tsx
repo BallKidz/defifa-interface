@@ -52,7 +52,7 @@ export function Header() {
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
-    <header className="flex justify-between items-start pt-4 pb-2">
+    <header className="flex justify-between items-center pt-4 pb-2 pr-10">
       <div className="flex gap-6 items-center">
         <div className="text-5xl border border-neutral-800 p-4 rounded-lg bg-neutral-900 font-sans">
           🕹️
@@ -62,10 +62,11 @@ export function Header() {
             {metadata?.name}
           </h1>
           <div className="text-sm text-neutral-300 mt-2 max-w-3xl">
-            <span className="font-medium">Rules:</span> {metadata?.description}
+            {metadata?.description}
           </div>
         </div>
       </div>
+
       <GameStats />
     </header>
   );

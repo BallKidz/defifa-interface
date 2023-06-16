@@ -28,11 +28,19 @@ const Wallet = () => {
           >
             {(() => {
               if (!connected) {
-                return <Button onClick={openConnectModal}>Connect</Button>;
+                return (
+                  <Button onClick={openConnectModal} category="secondary">
+                    Connect
+                  </Button>
+                );
               }
 
               if (chain.unsupported) {
-                return <Button onClick={openChainModal}>Wrong network</Button>;
+                return (
+                  <Button onClick={openChainModal} category="secondary">
+                    Wrong network
+                  </Button>
+                );
               }
 
               return (
