@@ -1,5 +1,3 @@
-import Container from "components/layout/Container";
-
 export function ActionContainer({
   children,
   renderActions,
@@ -8,11 +6,13 @@ export function ActionContainer({
   renderActions?: () => React.ReactNode;
 }) {
   return (
-    <div className="relative">
-      <div className="mb-12 px-5">{children}</div>
+    <div className="grid grid-cols-3 gap-12 items-start relative">
+      <div className="mb-12 col-span-2">{children}</div>
       {renderActions ? (
-        <div className="sticky bottom-0 left-0 right-0 h-20 bg-gray-950 shadow-md border-t border-neutral-700 flex items-center w-full">
-          {renderActions()}
+        <div className="sticky top-4 right-0">
+          <div className="p-6 rounded-xl bg-neutral-900 mr-5 min-h-[100px]">
+            {renderActions()}
+          </div>
         </div>
       ) : null}
     </div>

@@ -52,7 +52,7 @@ export function Header() {
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
-    <header className="flex justify-between items-center pt-4 pb-2 pr-10">
+    <header className="flex justify-between items-center pt-4 pb-2 pr-10 flex-wrap gap-6">
       <div className="flex gap-6 items-center">
         <div className="text-5xl border border-neutral-800 p-4 rounded-lg bg-neutral-900 font-sans">
           🕹️
@@ -61,7 +61,7 @@ export function Header() {
           <h1 className="text-2xl font-medium mb-3 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
             {metadata?.name}
           </h1>
-          <div className="text-sm text-neutral-300 mt-2 max-w-3xl">
+          <div className="text-sm text-neutral-300 mt-2 max-w-3xl hidden md:block">
             {metadata?.description}
           </div>
         </div>

@@ -367,7 +367,7 @@ const DeployerCreate = () => {
               <DatePicker
                 id="start"
                 name="start"
-                className="block w-full rounded-sm border-0 py-1.5 text-neutral-50 bg-neutral-950 shadow-sm ring-1 ring-inset ring-neutral-800 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-sm border-0 py-1.5 text-neutral-50  shadow-sm ring-1 ring-inset ring-neutral-800 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 selected={new Date(formValues.start * 1000)}
                 showTimeInput
                 dateFormat="MM/dd/yyyy h:mm aa"

@@ -40,13 +40,9 @@ export function MintPicksContent() {
 
   return (
     <ActionContainer
-      renderActions={
-        totalSelected
-          ? () => <MintActions selectedTiers={selectedTiers} />
-          : undefined
-      }
+      renderActions={() => <MintActions selectedTiers={selectedTiers} />}
     >
-      <div className="grid grid-cols-2 2xl:grid-cols-3 gap-3 md:gap-6 2xl:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
         {tiersLoading || currentFundingCycleLoading ? (
           <span>...</span>
         ) : (
@@ -57,7 +53,7 @@ export function MintPicksContent() {
               key={t.id}
               imageSrc={t.teamImage}
               mintedCount={t.minted}
-              playerCount={playersInTiers[t.id]?.length ?? 0}
+              playerCount={playersInTiers?.[t.id]?.length ?? 0}
               selectedCount={selectedTiers?.[t.id]?.count ?? 0}
               onIncrement={() => incrementTierSelection(t.id.toString())}
               onDecrement={() => decrementTierSelection(t.id.toString())}

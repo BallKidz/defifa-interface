@@ -10,13 +10,14 @@ import { useAccount } from "wagmi";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { toastSuccess } from "utils/toast";
+import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export function MintActions({
   selectedTiers,
 }: {
   selectedTiers: TierSelection | undefined;
 }) {
-  const [claimVotes, setClaimVotes] = useState(false);
+  const [claimVotes, setClaimVotes] = useState(true);
 
   const { address } = useAccount();
   const router = useRouter();
@@ -57,8 +58,18 @@ export function MintActions({
 
   const picksText = totalSelected === 1 ? "NFT" : "NFTs";
 
+  if (!selectedTiers || totalSelected === 0) {
+    return (
+      <div>
+        <div className="text-xl font-medium">Mint summary</div>
+        <div>← Make a selection and mint to play.</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex justify-between items-center w-full">
+    <div>
+      <div className="text-xl font-medium">Mint summary</div>
       <div>
         {totalSelected} {picksText}
       </div>
@@ -70,12 +81,18 @@ export function MintActions({
           type="checkbox"
           name="claimVotes"
           id="claimVotes"
+          checked={claimVotes}
           onChange={(e) => setClaimVotes(e.target.checked)}
         />
         <label htmlFor="claimVotes">Claim votes</label>
       </div>
 
-      <Button loading={isLoading} size="lg" onClick={() => write?.()}>
+      <Button
+        loading={isLoading}
+        size="lg"
+        className="w-full"
+        onClick={() => write?.()}
+      >
         Mint now
       </Button>
     </div>

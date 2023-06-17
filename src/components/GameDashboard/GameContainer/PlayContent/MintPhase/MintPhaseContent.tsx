@@ -1,4 +1,3 @@
-import Container from "components/layout/Container";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { MintPicksContent } from "./MintPicksContent";
@@ -9,7 +8,7 @@ export function MintPhaseContent() {
 
   return (
     <div>
-      <Container>
+      <div className="col-span-2">
         <ul className="flex gap-2 mb-6 text-sm">
           <li>
             <a
@@ -38,8 +37,9 @@ export function MintPhaseContent() {
             </a>
           </li>
         </ul>
-      </Container>
-      {selectedTab === "mint" ? <MintPicksContent /> : <RefundPicksContent />}
+
+        {selectedTab === "mint" ? <MintPicksContent /> : <RefundPicksContent />}
+      </div>
     </div>
   );
 }
