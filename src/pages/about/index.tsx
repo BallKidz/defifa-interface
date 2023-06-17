@@ -3,6 +3,7 @@ import Footer from "components/layout/Footer";
 import Navbar from "components/layout/Navbar";
 import { NextPage } from "next";
 import Link from "next/link";
+import { IDefifa_DAO_PROTOCOL_FEE } from "constants/constants";
 
 const Explanation = () => {
   return (
@@ -12,7 +13,7 @@ const Explanation = () => {
       </h1>
 
       <div className="text-center max-w-2xl mx-auto mb-6 text-lg">
-        <p>Defifa is an on-chain gaming and governance experiment.</p>
+        <p>Defifa is an onchain gaming and governance experiment.</p>
         <p>Make your picks, load the pot, and win.</p>
       </div>
       <div className="mx-auto max-w-4xl" style={{ textIndent: 50 }}>
@@ -73,12 +74,13 @@ const Explanation = () => {
           What does Defifa cost?
         </p>
         <p className="my-4" style={{ textIndent: 50 }}>
-          Defifa is powered by{" "}
-          <Link href="https://juicebox.money/" passHref>
-            <a className="underline hover:font-bold">Juicebox</a>
-          </Link>
-          , which charges a 2.5% fee on payouts to wallets. NFT redemptions and
-          payouts to Juicebox projects don't incur any fees.
+          Defifa offers a free protocol for creators to bring their games to life.
+          When a game's scorecard is ratified, {IDefifa_DAO_PROTOCOL_FEE * 100}% of pot goes into the Defifa treasury,
+          which is managed by the community of players, developers, and supporters. This ensures a sustainable
+          ecosystem where players have a say in the governance and growth of Defifa.
+          Visit the{" "}<Link href="https://juicebox.money/@defifa" passHref>
+            <a className="underline hover:font-bold">Defifa DAO Juicebox</a>
+          </Link>{" "}for more information.
         </p>
 
         <p className="my-4 font-bold italic text-center text-lg">

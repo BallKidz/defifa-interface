@@ -17,6 +17,7 @@ import { useState } from "react";
 import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 import { formatNumber } from "utils/format/formatNumber";
+import { Tooltip } from 'antd';
 
 const stateText = (state: DefifaScorecardState) => {
   switch (state) {
@@ -72,7 +73,7 @@ function ScorecardRow({
     <div className="border border-neutral-800 shadow-glowWhite rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
       <div className="p-4">
         <div className="text-xs flex justify-between items-center mb-2">
-          SCORECARD{" "}
+          SCORECARD BY:{" "}
           {stateText(proposalState) && (
             <Pill size="sm">{stateText(proposalState)}</Pill>
           )}
@@ -80,7 +81,7 @@ function ScorecardRow({
 
         <span className="mb-4 flex justify-between items-center">
           <span>
-            By <EthAddress address={scorecard.submitter?.id} />
+            <EthAddress withEnsAvatar={true} address={scorecard.submitter?.id} />
           </span>
         </span>
 
@@ -150,8 +151,11 @@ function ScorecardActions({
   );
 
   return (
-    <div className="flex justify-between">
-      <div>{selectedScorecard.id.toString()}</div>
+    <div className="flex justify-between items-center w-full">
+      <Tooltip title={selectedScorecard.id.toString()}>
+        <div className="flex gap-2 items-center truncate">{selectedScorecard.id.toString().substring(0, 6)}...</div>
+      </Tooltip>
+
       <Button loading={isLoading} onClick={() => write?.()}>
         Vote for scorecard
       </Button>

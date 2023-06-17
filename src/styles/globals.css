@@ -1,16 +1,24 @@
 @font-face {
-  font-family: "Capsules";
-  src: url("/assets/fonts/Capsules.woff2") format("woff2");
-  font-weight: 100 700;
+    font-family: "Capsules";
+    src: url("/assets/fonts/Capsules.woff2") format("woff2");
+    font-weight: 100 700;
 }
+
 @font-face {
-  font-family: "Capsules";
-  src: url("/assets/fonts/Capsules.woff2") format("woff2") tech("variations");
-  font-weight: 100 700;
+    font-family: "Capsules";
+    src: url("/assets/fonts/Capsules.woff2") format("woff2") tech("variations");
+    font-weight: 100 700;
+}
+
+.ant-tooltip-inner {
+    font-family: "Capsules";
+    src: url("/assets/fonts/Capsules.woff2") format("woff2") tech("variations");
+    font-weight: 100 700;
+    font-size: 14px;
 }
 
 :root {
-  --toastify-font-family: "Capsules", sans-serif;
+    --toastify-font-family: "Capsules", sans-serif;
 }
 
 @tailwind base;
