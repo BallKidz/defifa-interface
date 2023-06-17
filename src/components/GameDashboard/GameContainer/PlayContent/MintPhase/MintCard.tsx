@@ -2,7 +2,6 @@ import { EthAmount } from "components/UI/EthAmount";
 import { PickCard, PickCardProps } from "components/UI/PickCard";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
-import { formatEther } from "ethers/lib/utils";
 
 export function MintCard({
   mintedCount,
@@ -29,7 +28,7 @@ export function MintCard({
     <PickCard
       extra={
         <>
-          <div className="mb-1 mt-1 font-medium">
+          <div className="mb-1 mt-1 font-medium text-pink-500">
             <EthAmount amountWei={price} />
           </div>
           <div className="text-xs">

@@ -10,7 +10,7 @@ export function ActionContainer({
       <div className="mb-12 col-span-2">{children}</div>
       {renderActions ? (
         <div className="sticky top-4 right-0">
-          <div className="p-6 rounded-xl bg-neutral-900 mr-5 min-h-[100px]">
+          <div className="p-6 rounded-xl shadow-glowPink border bg-[#181424] border-neutral-800 mr-5 min-h-[100px]">
             {renderActions()}
           </div>
         </div>

@@ -29,7 +29,7 @@ export function PickCard({
   return (
     <div
       className={twMerge(
-        "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:shadow-glowPink hover:border-pink-900 transition-transform",
+        "relative border-2 border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl max-w-[500px] mx-auto overflow-hidden hover:shadow-glowPink hover:border-pink-900",
         isSelected
           ? "border-pink-800 hover:border-pink-800 shadow-glowPink"
           : ""

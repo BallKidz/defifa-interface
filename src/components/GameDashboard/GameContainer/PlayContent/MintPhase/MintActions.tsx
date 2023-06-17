@@ -1,9 +1,8 @@
 import Button from "components/UI/Button";
+import { EthAmount } from "components/UI/EthAmount";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
-import { MINT_PRICE } from "constants/constants";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber, constants } from "ethers";
-import { formatUnits, parseEther } from "ethers/lib/utils";
 import { usePay } from "hooks/write/usePay";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -11,7 +10,6 @@ import { useState } from "react";
 import { toastSuccess } from "utils/toast";
 import { useAccount } from "wagmi";
 import { TierSelection } from "./useMintSelection";
-import { EthAmount } from "components/UI/EthAmount";
 
 export function MintActions({
   selectedTiers,
@@ -77,6 +75,8 @@ export function MintActions({
     );
   }
 
+  console.log(selectedTiers, tiers);
+
   return (
     <div>
       <div className="text-xl font-medium mb-4">Mint summary</div>
@@ -84,7 +84,7 @@ export function MintActions({
         {Object.keys(selectedTiers)
           .filter((tierId) => selectedTiers[tierId].count > 0)
           .map((tierId) => {
-            const tier = tiers?.[parseInt(tierId)];
+            const tier = tiers?.[parseInt(tierId) - 1];
             const image = tier?.teamImage;
             const name = tier?.teamName;
             const count = selectedTiers?.[tierId].count;

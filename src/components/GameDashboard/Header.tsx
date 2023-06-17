@@ -54,7 +54,7 @@ export function Header() {
   return (
     <header className="flex justify-between items-center pt-4 pb-2 pr-10 flex-wrap gap-6">
       <div className="flex gap-6 items-center">
-        <div className="text-5xl border border-neutral-800 p-4 rounded-lg bg-neutral-900 font-sans">
+        <div className="text-5xl border border-gray-900 p-4 rounded-lg bg-gray-950 font-sans">
           🕹️
         </div>
         <div>
