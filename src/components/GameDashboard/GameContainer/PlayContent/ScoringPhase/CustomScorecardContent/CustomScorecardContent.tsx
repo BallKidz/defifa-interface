@@ -58,7 +58,7 @@ export function CustomScorecardContent() {
                   className="rounded-md"
                 />
                 <div className="p-3">
-                  <label htmlFor="">Score %</label>
+                  <label htmlFor="">Pot split %</label>
                   <Input
                     type="text"
                     value={scorecardPercentages[t.id]}
