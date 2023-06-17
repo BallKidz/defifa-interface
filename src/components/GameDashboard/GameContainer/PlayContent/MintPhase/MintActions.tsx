@@ -1,16 +1,17 @@
 import Button from "components/UI/Button";
-import { Modal, useModal } from "components/UI/Modal/Modal";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { MINT_PRICE } from "constants/constants";
-import { constants } from "ethers";
+import { useGameContext } from "contexts/GameContext";
+import { BigNumber, constants } from "ethers";
 import { formatUnits, parseEther } from "ethers/lib/utils";
 import { usePay } from "hooks/write/usePay";
-import { TierSelection } from "./useMintSelection";
-import { useAccount } from "wagmi";
-import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { toastSuccess } from "utils/toast";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { useAccount } from "wagmi";
+import { TierSelection } from "./useMintSelection";
+import { EthAmount } from "components/UI/EthAmount";
 
 export function MintActions({
   selectedTiers,
@@ -20,13 +21,22 @@ export function MintActions({
   const [claimVotes, setClaimVotes] = useState(true);
 
   const { address } = useAccount();
+  const {
+    nfts: { tiers },
+  } = useGameContext();
   const router = useRouter();
 
   const totalSelected = Object.values(selectedTiers ?? {}).reduce(
     (acc, curr) => acc + curr.count,
     0
   );
-  const cost = totalSelected * parseFloat(formatUnits(MINT_PRICE).toString());
+  const costWei =
+    tiers?.reduce((acc, curr) => {
+      const tierId = curr.id.toString();
+      const count = selectedTiers?.[tierId]?.count ?? 0;
+      return acc.add(curr.price.mul(count));
+    }, BigNumber.from(0)) ?? BigNumber.from(0);
+
   const tierIdsToMint = Object.keys(selectedTiers ?? {}).reduce(
     (acc: number[], tierId) => {
       const tiers = Array(selectedTiers?.[tierId].count).fill(
@@ -38,7 +48,7 @@ export function MintActions({
   );
 
   const { write, isLoading, isSuccess, isError } = usePay({
-    amount: parseEther(cost.toString()).toString(),
+    amount: costWei.toString(),
     token: ETH_TOKEN_ADDRESS,
     minReturnedTokens: "0",
     preferClaimedTokens: true,
@@ -69,24 +79,64 @@ export function MintActions({
 
   return (
     <div>
-      <div className="text-xl font-medium">Mint summary</div>
-      <div>
-        {totalSelected} {picksText}
+      <div className="text-xl font-medium mb-4">Mint summary</div>
+      <div className="border-b border-neutral-700 pb-3">
+        {Object.keys(selectedTiers).map((tierId) => {
+          const tier = tiers?.[parseInt(tierId)];
+          const image = tier?.teamImage;
+          const name = tier?.teamName;
+          const count = selectedTiers?.[tierId].count;
+          return (
+            <div key={tierId}>
+              {image ? (
+                <div className="flex gap-4 justify-between mb-4">
+                  <div className="flex gap-4">
+                    <div className="rounded-lg border border-neutral-700 relative">
+                      <Image
+                        src={image}
+                        crossOrigin="anonymous"
+                        alt="NFT"
+                        width={80}
+                        className="rounded-lg"
+                        height={80}
+                      />
+                      <div className="absolute text-sm shadow-md font-medium rounded-full bg-neutral-800 border border-neutral-700 flex items-center h-6 w-6 justify-center -top-2 -right-2">
+                        {selectedTiers?.[tierId].count}
+                      </div>
+                    </div>
+                    <div>Tier {name}</div>
+                  </div>
+                  <div>
+                    <EthAmount amountWei={tier.price.mul(count)} />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
       </div>
+      <div className="my-6">
+        <div className="flex justify-between">
+          <span className="text-neutral-300">NFTs to mint</span>
+          <span className="text-lg font-medium">{totalSelected}</span>
+        </div>
 
-      <div>{cost} ETH</div>
+        <div className="flex justify-between">
+          <span className="text-neutral-300">Total cost</span>
+          <EthAmount className="text-lg font-medium" amountWei={costWei} />
+        </div>
 
-      <div className="flex gap-2 items-center">
-        <input
-          type="checkbox"
-          name="claimVotes"
-          id="claimVotes"
-          checked={claimVotes}
-          onChange={(e) => setClaimVotes(e.target.checked)}
-        />
-        <label htmlFor="claimVotes">Claim votes</label>
+        <div className="flex gap-2 items-center mt-4">
+          <input
+            type="checkbox"
+            name="claimVotes"
+            id="claimVotes"
+            checked={claimVotes}
+            onChange={(e) => setClaimVotes(e.target.checked)}
+          />
+          <label htmlFor="claimVotes">Claim votes</label>
+        </div>
       </div>
-
       <Button
         loading={isLoading}
         size="lg"
