@@ -81,39 +81,41 @@ export function MintActions({
     <div>
       <div className="text-xl font-medium mb-4">Mint summary</div>
       <div className="border-b border-neutral-700 pb-3">
-        {Object.keys(selectedTiers).map((tierId) => {
-          const tier = tiers?.[parseInt(tierId)];
-          const image = tier?.teamImage;
-          const name = tier?.teamName;
-          const count = selectedTiers?.[tierId].count;
-          return (
-            <div key={tierId}>
-              {image ? (
-                <div className="flex gap-4 justify-between mb-4">
-                  <div className="flex gap-4">
-                    <div className="rounded-lg border border-neutral-700 relative">
-                      <Image
-                        src={image}
-                        crossOrigin="anonymous"
-                        alt="NFT"
-                        width={80}
-                        className="rounded-lg"
-                        height={80}
-                      />
-                      <div className="absolute text-sm shadow-md font-medium rounded-full bg-neutral-800 border border-neutral-700 flex items-center h-6 w-6 justify-center -top-2 -right-2">
-                        {selectedTiers?.[tierId].count}
+        {Object.keys(selectedTiers)
+          .filter((tierId) => selectedTiers[tierId].count > 0)
+          .map((tierId) => {
+            const tier = tiers?.[parseInt(tierId)];
+            const image = tier?.teamImage;
+            const name = tier?.teamName;
+            const count = selectedTiers?.[tierId].count;
+            return (
+              <div key={tierId}>
+                {image ? (
+                  <div className="flex gap-4 justify-between mb-4">
+                    <div className="flex gap-4">
+                      <div className="rounded-lg border border-neutral-700 relative">
+                        <Image
+                          src={image}
+                          crossOrigin="anonymous"
+                          alt="NFT"
+                          width={80}
+                          className="rounded-lg"
+                          height={80}
+                        />
+                        <div className="absolute text-sm shadow-md font-medium rounded-full bg-neutral-800 border border-neutral-700 flex items-center h-6 w-6 justify-center -top-2 -right-2">
+                          {selectedTiers?.[tierId].count}
+                        </div>
                       </div>
+                      <div>Tier {name}</div>
                     </div>
-                    <div>Tier {name}</div>
+                    <div>
+                      <EthAmount amountWei={tier.price.mul(count)} />
+                    </div>
                   </div>
-                  <div>
-                    <EthAmount amountWei={tier.price.mul(count)} />
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          );
-        })}
+                ) : null}
+              </div>
+            );
+          })}
       </div>
       <div className="my-6">
         <div className="flex justify-between">
