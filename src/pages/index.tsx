@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is an on-chain gaming and governance experiment. Make your picks, load the pot and win."
+          content="Defifa is an onchain gaming and governance experiment. Make your picks, load the pot and win."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
             Money Games with Friends
           </h1>
           <div className="text-center max-w-2xl mx-auto mb-12 text-lg">
-            <p>Defifa is an on-chain gaming and governance experiment.</p>
+            <p>Defifa is an onchain gaming and governance experiment.</p>
             <p>Make your picks, load the pot, and win.</p>
           </div>
 

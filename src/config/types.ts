@@ -14,7 +14,7 @@ export interface DefifaConfig {
   JBController: ContractData;
   JBSingleTokenPaymentTerminalStore: {
     interface: ContractInterface;
-  }; // address read on-chain per game
+  }; // address read onchain per game
   JBETHPaymentTerminal: ContractData;
   DefifaDelegate: ContractData;
   DefifaGovernor: ContractData;

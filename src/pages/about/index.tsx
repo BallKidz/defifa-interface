@@ -18,14 +18,14 @@ const Explanation = () => {
       </div>
       <div className="mx-auto max-w-4xl" style={{ textIndent: 50 }}>
         <p className="my-4">
-          Defifa allows anyone to create an on-chain prediction game for sports,
+          Defifa allows anyone to create an onchain prediction game for sports,
           elections, world events, or anything else. A game's creator represents
           different predictions as NFTs – people buy those NFTs to load a shared
           pot, and the people who minted the right NFTs get more of the pot when
           the game is finished.
         </p>
         <p className="my-4">
-          Which NFTs are "right" is decided by on-chain voting. Once a game
+          Which NFTs are "right" is decided by onchain voting. Once a game
           finishes, anyone can submit scores to determine how much of the pot
           will go to the NFTs for each prediction. At least 50% of the NFTs for
           at least 50% of the predictions have to approve a set of scores –
@@ -91,7 +91,7 @@ const Explanation = () => {
           <Link href="https://discord.gg/hrZnvs65Nh" passHref>
             <a className="underline hover:font-bold">community DAO</a>
           </Link>
-          . Defifa games take place on-chain, making them independent,
+          . Defifa games take place onchain, making them independent,
           transparent, and uncensorable. We can't delete or modify your game.
         </p>
 

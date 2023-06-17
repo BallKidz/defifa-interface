@@ -79,7 +79,7 @@ export interface JB721TierParams {
   price: BigNumber;
 }
 
-// Tiers as they are stored on-chain.
+// Tiers as they are stored onchain.
 export type JB721Tier = JB721TierParams & {
   id: BigNumber;
   remainingQuantity?: BigNumber;
