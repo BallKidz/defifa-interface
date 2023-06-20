@@ -6,6 +6,7 @@ import { twJoin } from "tailwind-merge";
 import { ActivityContent } from "../ActivityContent/ActivityContent";
 import { useGameMints } from "../PlayContent/MintPhase/useGameMints";
 import Container from "components/layout/Container";
+import { GamePlayerPowerLevel } from "components/LeaderBoard/GamePivot/GamePlayerPowerLevel";
 
 function useGamePlayers() {
   const { gameId } = useGameContext();
@@ -17,7 +18,7 @@ function useGamePlayers() {
 }
 
 export function StatsContent() {
-  const [currentTab, setCurrentTab] = useState<"players" | "activity">(
+  const [currentTab, setCurrentTab] = useState<"players" | "activity" | "power">(
     "activity"
   );
   const players = useGamePlayers();
@@ -44,15 +45,27 @@ export function StatsContent() {
         >
           <a onClick={() => setCurrentTab("players")}>Players</a>
         </li>
+        <li
+          className={twJoin(
+            currentTab === "power"
+              ? "bg-neutral-900 text-neutral-50 rounded-md"
+              : "text-neutral-400",
+            "cursor-pointer hover:text-neutral-300 px-3 py-1"
+          )}
+        >
+          <a onClick={() => setCurrentTab("power")}>Power Levels</a>
+        </li>
       </ul>
       {currentTab === "players"
         ? players.map((player) => (
-            <div key={player} className="text-sm">
-              <EthAddress withEnsAvatar address={player} />
-            </div>
-          ))
+          <div key={player} className="text-sm">
+            <EthAddress withEnsAvatar address={player} />
+          </div>
+        ))
         : null}
       {currentTab === "activity" ? <ActivityContent /> : null}
+      {currentTab === "power" ? <GamePlayerPowerLevel /> : null}
+
     </Container>
   );
 }

@@ -320,7 +320,7 @@ const DeployerCreate = () => {
         <Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent(intentText)}
           ${encodeURIComponent(gameUrl)}&embeds`}>
           <div>
-            <Button size="m">Share on Farcaster</Button>
+            <Button size="md">Share on Farcaster</Button>
           </div>
         </Link>
       </div>

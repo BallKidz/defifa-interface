@@ -68,7 +68,7 @@ function ActivityItem({
   return <MintsLeaderBoard LeaderBoardMetric={LeaderBoardMetric} />;
 }
 
-export function TopPlayerContent() {
+export function TopPlayersContent() {
   const { data: owners, isLoading } = useTopPlayers();
   const leaders = owners?.owners;
 
