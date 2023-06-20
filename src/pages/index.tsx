@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Footer from "../components/layout/Footer";
 import Description from "../components/Arcade/Description";
+
 const Home: NextPage = () => {
   return (
     <>
