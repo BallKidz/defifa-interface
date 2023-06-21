@@ -14,6 +14,10 @@ export function useMintSelection() {
     0
   );
 
+  function clearSelection() {
+    setSelectedTiers({});
+  }
+
   function incrementTierSelection(tierId: string) {
     setSelectedTiers((prev) => {
       const prevCount = prev?.[tierId]?.count ?? 0;
@@ -48,5 +52,6 @@ export function useMintSelection() {
     totalSelected,
     incrementTierSelection,
     decrementTierSelection,
+    clearSelection,
   };
 }

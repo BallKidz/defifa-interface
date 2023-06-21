@@ -15,7 +15,7 @@ import { twMerge } from "tailwind-merge";
 function GameButton({ game }: { game: any }) {
   return (
     <Link href={`/game/${game.gameId}`}>
-      <a className="px-6 py-1 border-r border-neutral-800 max-w-[130px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
+      <a className="hover:text-neutral-300 px-6 py-1 border-r border-neutral-800 max-w-[200px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
         {game.name ?? game.gameId}
       </a>
     </Link>
@@ -44,7 +44,7 @@ export function GameDashboard() {
       </Head>
 
       <div className="bg-gradient-to-b from-slate-950 to-black">
-        <div className="border-b border-neutral-900 text-sm text-neutral-400">
+        <div className="border-b border-neutral-900 text-xs text-neutral-400">
           <Container>
             <div className="flex overflow-auto">
               <div className="px-6 py-1 border-r border-neutral-800 shrink-0">

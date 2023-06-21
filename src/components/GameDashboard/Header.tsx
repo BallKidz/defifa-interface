@@ -23,19 +23,25 @@ function GameStats() {
   if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
 
   return (
-    <div className="flex gap-6  items-center">
-      <div className="flex gap-1 flex-col items-end">
-        <span className="uppercase text-sm">in pot</span>
-        <span className="font-medium flex items-center gap-1 text-2xl text-lime-400">
-          {treasuryAmount ? <EthAmount amountWei={treasuryAmount} /> : null}
-        </span>
+    <div className="flex gap-6 items-center">
+      <div className="border-4 border-lime-600 border-dotted rounded-2xl px-4 py-3">
+        <div className="font-medium flex items-baseline gap-3 text-lime-400">
+          {treasuryAmount ? (
+            <EthAmount
+              amountWei={treasuryAmount}
+              className="text-4xl leading-none"
+              iconClassName="h-7 w-7"
+            />
+          ) : null}
+          <span className="uppercase text-xs leading-none">in pot</span>
+        </div>
       </div>
-      <div className="flex gap-1 flex-col items-end">
+      {/* <div className="flex gap-1 flex-col items-end">
         <span className="uppercase text-sm">Mints</span>
         <span className="font-medium flex items-center gap-1 text-2xl">
           {totalSupply?.toNumber()}
         </span>
-      </div>
+      </div> */}
       {/* <div>
         <span className="font-bold">6</span> players
       </div> */}
@@ -52,7 +58,7 @@ export function Header() {
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
-    <header className="flex justify-between items-center pt-4 pb-2 pr-10 flex-wrap gap-6">
+    <header className="flex justify-between items-center pt-4 pb-2 flex-wrap gap-6">
       <div className="flex gap-6 items-center">
         <div className="text-5xl border border-gray-900 p-4 rounded-lg bg-gray-950 font-sans">
           🕹️

@@ -6,13 +6,15 @@ import { twMerge } from "tailwind-merge";
 export function EthAmount({
   amountWei,
   className,
+  iconClassName,
 }: {
   amountWei: BigNumberish;
   className?: string;
+  iconClassName?: string;
 }) {
   return (
     <span className={twMerge("inline-flex gap-2 items-center", className)}>
-      <EthLogo /> {formatEther(amountWei)}
+      <EthLogo className={iconClassName} /> {formatEther(amountWei)}
     </span>
   );
 }

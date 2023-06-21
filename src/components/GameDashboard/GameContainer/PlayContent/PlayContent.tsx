@@ -33,7 +33,7 @@ export function PlayContent() {
   return (
     <Container>
       <div className="py-3 col-span-2">
-        <div className="mb-6">
+        <div className="my-6">
           {currentPhase === DefifaGamePhase.MINT ||
           currentPhase === DefifaGamePhase.REFUND ||
           currentPhase === DefifaGamePhase.SCORING ||

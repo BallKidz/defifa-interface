@@ -78,26 +78,26 @@ export function PhaseDetails() {
       ) : null}
       <div className="flex md:justify-between flex-col md:flex-row items-center gap-4">
         <div className="flex items-center gap-3">
-          <span className="h-[7px] w-[7px] bg-lime-400 shadow-glowGreen rounded-full"></span>
-          <div className="text-lg">{currentPhaseText}</div>
+          <span className="h-[10px] w-[10px] bg-lime-400 shadow-glowGreen rounded-full"></span>
+          <div className="text-2xl">{currentPhaseText}</div>
           {(currentPhase === DefifaGamePhase.MINT ||
             currentPhase === DefifaGamePhase.REFUND) &&
           !currentFundingCycleLoading &&
           timeRemainingText &&
           !waitingForBlock ? (
             <div className="bg-rose-700 shadow-glowPink rounded-md px-2.5">
-              {timeRemainingText}
+               {timeRemainingText}
             </div>
           ) : null}
         </div>
 
-        <Button
+        {/* <Button
           category="tertiary"
           className="hidden md:block text-sm text-neutral-300"
           onClick={() => modal.setIsOpen(true)}
         >
           <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How to play
-        </Button>
+        </Button> */}
       </div>
       {/* 
       {currentPhase === DefifaGamePhase.MINT ||
