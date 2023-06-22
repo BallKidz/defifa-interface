@@ -106,7 +106,7 @@ export function MintActions({
                           {selectedTiers?.[tierId].count}
                         </div>
                       </div>
-                      <div>Tier {name}</div>
+                      <div>{name}</div>
                     </div>
                     <div>
                       <EthAmount amountWei={tier.price.mul(count)} />
@@ -119,12 +119,12 @@ export function MintActions({
       </div>
       <div className="my-6">
         <div className="flex justify-between">
-          <span className="text-neutral-300">NFTs to mint</span>
+          <span className="text-neutral-300">NFTs</span>
           <span className="text-lg font-medium">{totalSelected}</span>
         </div>
 
         <div className="flex justify-between">
-          <span className="text-neutral-300">Total cost</span>
+          <span className="text-neutral-300">Total</span>
           <EthAmount className="text-lg font-medium" amountWei={costWei} />
         </div>
 

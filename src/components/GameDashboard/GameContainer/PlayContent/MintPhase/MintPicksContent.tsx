@@ -67,12 +67,13 @@ export function MintPicksContent() {
           Clear
         </Button>
       </div>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 max-h-[550px] overflow-auto pt-2">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 pt-2">
         {tiersLoading || currentFundingCycleLoading ? (
           <span>...</span>
         ) : (
           tiers?.map((t) => (
             <MintCard
+              title={t.teamName}
               price={t.price}
               tierId={t.id}
               key={t.id}
@@ -86,7 +87,6 @@ export function MintPicksContent() {
           ))
         )}
       </div>
-      <div className="mt-5">Stats</div>
     </ActionContainer>
   );
 }

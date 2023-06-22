@@ -8,12 +8,14 @@ export function RedeemCard({
   tokenIds,
   overflow,
   amountRedeemed,
+  title,
   ...props
 }: {
+  title: string;
   overflow: BigNumber;
   amountRedeemed: BigNumber;
   tokenIds: string[];
-} & Omit<PickCardProps, "extra" | "selectionLimit">) {
+} & Omit<PickCardProps, "extra">) {
   const { currentFundingCycle } = useGameContext();
   const tokenRedemptionValue = useTokenRedemptionValue({
     dataSource: currentFundingCycle?.metadata.dataSource,
@@ -24,6 +26,7 @@ export function RedeemCard({
 
   return (
     <PickCard
+      title={title}
       extra={
         <span className="items-center flex gap-2">
           <EthAmount amountWei={tokenRedemptionValue} /> each
