@@ -48,6 +48,13 @@ const Footer = () => {
               </a>
             </Link>
           </li>
+          <li>
+            <Link href="https://warpcast.com/Defifa420" passHref>
+              <a className={LINK_CLASS} target="_blank">
+                Farcaster
+              </a>
+            </Link>
+          </li>
         </ul>
 
         <ul className="flex flex-col gap-2">
@@ -75,6 +82,7 @@ const Footer = () => {
               </a>
             </Link>
           </li>
+
         </ul>
       </div>
     </footer>

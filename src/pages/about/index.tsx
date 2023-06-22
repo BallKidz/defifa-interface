@@ -119,7 +119,6 @@ const About: NextPage = () => {
         <Navbar />
         <Explanation />
       </Container>
-
       <Footer />
     </>
   );

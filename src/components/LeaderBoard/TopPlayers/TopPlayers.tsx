@@ -108,12 +108,12 @@ export function TopPlayersContent() {
     );
 
   return (
-    <div
-      className={
-        "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform"
-      }
-    >
-      <Container className="mb-4">
+    <div className="p-4">
+      <div
+        className={
+          "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform"
+        }
+      >
         <div className="border-2 border-pink-500 rounded-lg shadow-md p-6">
           <h2 className="text-2xl mb-4 text-center">Top Players</h2>
           <table>
@@ -138,7 +138,7 @@ export function TopPlayersContent() {
             </tbody>
           </table>
         </div>
-      </Container>
+      </div>
     </div>
   );
 }
