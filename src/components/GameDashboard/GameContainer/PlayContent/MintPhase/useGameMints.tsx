@@ -24,11 +24,11 @@ export function useGameMints(gameId: number) {
   return useQuery(
     ["game-mints", gameId],
     async () => {
-      const res = await request(subgraph, query, {
+      const res: { contracts?: { mintedTokens?: any[] }[] } = await request(subgraph, query, {
         gameId: gameId.toString(),
       });
 
-      return res?.contracts?.[0]?.mintedTokens ?? [];
+      return res?.contracts?.[0]?.mintedTokens || [];
     },
     {
       enabled: !!gameId,

@@ -10,6 +10,7 @@ import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
 import styles from "./index.module.css";
 import { EthAddress } from "components/UI/EthAddress";
+import { IDefifa_DAO_PROTOCOL_FEE } from "constants/constants";
 
 export function RulesContent() {
   const { metadata, gameId, nfts } = useGameContext();
@@ -125,27 +126,22 @@ export function RulesContent() {
       </div>
       <div className="border-t border-neutral-800 pt-4 mb-5">
         <div className="flex items-center">
-          <span className="text-pink-500">Mint Fees:</span>
-          {metadata?.seller_fee_basis_points === 0 ? (
-            <span className="ml-2">No fees are collected</span>
-          ) : (
-            <>
-              {/* <EthAddress address={metadata?.fee_recipient} /> */}
-              <EthAddress address={tokenBeneficiary?.toString()} />
-              <span className="ml-2">
-                collects a {metadata?.seller_fee_basis_points}% fee on each pick
-                minted.
-              </span>
-            </>
-          )}
+          <p>
+            <span className="text-pink-500">Protocol support:</span>
+            <span className="ml-2">
+              {IDefifa_DAO_PROTOCOL_FEE * 100}% of the pot buys each player $DEFIFA governance tokens.
+            </span>
+          </p>
         </div>
         <div>
           <div className="flex items-center">
-            <span className="text-pink-500">Reserved Mints:</span>
-            {nftRewardTiers?.filter((tier) => tier.reservedRate.toNumber() > 0)
-              .length === 0 ? (
-              <p className="ml-2">No reserve tokens are minted in this game</p>
-            ) : null}
+            <p>
+              <span className="text-pink-500">Reserved Mints:</span>
+              {nftRewardTiers?.filter((tier) => tier.reservedRate.toNumber() > 0)
+                .length === 0 ? (
+                <span className="ml-2">No reserve tokens are minted in this game. Reserve mints are used to fund artists and creators.</span>
+              ) : null}
+            </p>
           </div>
           {nftRewardTiers &&
             nftRewardTiers?.filter((tier) => tier?.reservedRate.toNumber() > 0)
@@ -185,6 +181,6 @@ export function RulesContent() {
             )}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

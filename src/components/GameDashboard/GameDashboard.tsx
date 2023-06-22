@@ -38,7 +38,7 @@ export function GameDashboard() {
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is an on-chain gaming and governance experiment. Make your picks, load the pot and win."
+          content="Defifa is an onchain gaming and governance experiment. Make your picks, load the pot and win."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -48,7 +48,7 @@ export function GameDashboard() {
           <Container>
             <div className="flex overflow-auto">
               <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
-                <Link href="/">All games</Link>
+                <Link href="/arcade">All games</Link>
               </div>
               {games?.map((g) => (
                 <GameButton key={g.gameId} game={g} />
@@ -59,12 +59,14 @@ export function GameDashboard() {
 
         <div className="border-b border-neutral-900 py-2">
           <Container className="flex justify-between">
-            <Image
-              src="/assets/defifa_spinner.gif"
-              height={26}
-              width={45}
-              alt="logo"
-            />
+            <Link href="/">
+              <Image
+                src="/assets/defifa_spinner.gif"
+                height={26}
+                width={45}
+                alt="logo"
+              />
+            </Link>
             <div className="flex gap-6 items-center">
               <Link href="/about">
                 <a className="flex items-center gap-2 text-neutral-300 text-sm">
