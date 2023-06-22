@@ -1,5 +1,4 @@
 import Footer from 'components/layout/Footer';
-import Navbar from 'components/layout/NavbarHome';
 import Head from 'next/head';
 import Link from 'next/link';
 import React from 'react';
@@ -8,9 +7,35 @@ import { TopPlayersContent } from 'components/LeaderBoard/TopPlayers/TopPlayers'
 import { TopHoldrsContent } from 'components/LeaderBoard/TopHodlrs/TopHodlrs';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
-// Card component
-const Card = ({ title, description, image, stylePlus }) => {
+interface GameTypesData {
+  title: string;
+  description: string;
+  image: string;
+}
+interface FeatureData {
+  title: string;
+  description: string;
+  image: string;
+}
+interface CreateGameData {
+  title: string;
+  description: string;
+  image: string;
+}
+interface SocialProofData {
+  avatarSrc: string;
+  quote: string;
+  author: string;
 
+}
+interface CardProps {
+  title: string;
+  description: string;
+  image: string;
+  stylePlus?: string;
+}
+// Card component
+const Card: React.FC<CardProps> = ({ title, description, image, stylePlus }) => {
   return (
     <div className={`max-w-sm rounded overflow-hidden shadow-lg ${stylePlus}`}>
       <Image className="w-full" src={image} alt={title} width={300} height={300} />
@@ -21,8 +46,13 @@ const Card = ({ title, description, image, stylePlus }) => {
     </div>
   );
 };
-// Testimonial Component
-const Testimonial = ({ quote, author, avatarSrc }) => {
+interface TestimonialProps {
+  quote: string;
+  author: string;
+  avatarSrc: string;
+}
+
+const Testimonial: React.FC<TestimonialProps> = ({ quote, author, avatarSrc }) => {
   return (
     <div className="p-4 relative">
       <div className="mb-4 text-white relative">
@@ -45,12 +75,10 @@ const Testimonial = ({ quote, author, avatarSrc }) => {
   );
 };
 
-
-
 // Home page component
 const HomePage = () => {
   // Sample data for the gallery
-  const gameTypesData = [
+  const gameTypesData: GameTypesData[] = [
     {
       title: 'Sports with a Twist',
       description: "Forget about conventional rules and fair play. Bring chaos, hilarity, and questionable tactics to the arena. Get ready for a rollercoaster of unpredictable moments!",
@@ -73,7 +101,7 @@ const HomePage = () => {
     },
     // Add more Game objects as needed
   ];
-  const featuresData = [
+  const featuresData: FeatureData[] = [
     {
       title: 'Social Gaming',
       description: 'Trash talk your friends and foes in the live chat.',
@@ -91,7 +119,7 @@ const HomePage = () => {
     },
     // Add more Feature objects as needed
   ];
-  const createGameData = [
+  const createGameData: CreateGameData[] = [
     {
       title: 'Put Fun back into Fundraising',
       description: "Screw boring bake sales! Raise funds for your cause while partying like there's no tomorrow.",
@@ -109,7 +137,7 @@ const HomePage = () => {
     },
     // Add more Feature objects as needed
   ];
-  const socialProofData = [
+  const socialProofData: SocialProofData[] = [
     {
       quote: "Attention all gamers! Banny has discovered a gaming site that will blow your socks off like that last blunt blow my mind. It's time to level up, dominate the leaderboards, and leave your mark in gaming history!",
       author: "Juicebox Banny",

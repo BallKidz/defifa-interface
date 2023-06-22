@@ -70,7 +70,7 @@ function ActivityItem({
 
 export function TopPlayersContent() {
   const { data: owners, isLoading } = useTopPlayers();
-  const leaders = owners?.owners;
+  const leaders = (owners as { owners?: any })?.owners;
 
   if (isLoading) {
     return <Container className="text-center">...</Container>;

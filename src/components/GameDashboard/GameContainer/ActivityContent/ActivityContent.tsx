@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { EthAddress } from "components/UI/EthAddress";
 import Container from "components/layout/Container";
 import { constants } from "ethers";
@@ -41,6 +42,7 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
           {!transferEvent.from.id && <div>{transferEvent.from.id}</div>}
 
           <div>
+            <span className="text-lg">&#x2191;</span>
             Minted {transferEvent.token.metadata.name}{" "}
             {moment(parseInt(transferEvent.timestamp) * 1000).fromNow()}
           </div>
@@ -60,35 +62,34 @@ function RedeemEvent({ transferEvent }: { transferEvent: TransferEvent }) {
 
 function PayEvent({ transferEvent }: { transferEvent: TransferEvent }) {
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
+  console.log(transferEvent);
   return (
-    <div className="border-b border-solid border-neutral-900 overflow-hidden text-xs py-2">
-      <div className="flex gap-2 items-center justify-between">
+    <div className="border-b border-solid border-neutral-900 overflow-hidden text-s py-2">
+      <div className="flex items-center justify-between">
+        <span className="text-2xl">&#x2191;</span> {/* Increased text size */}
+        <div className="rounded-lg ml-4 border-lime-900 border inline-flex overflow-hidden p-1">
+          <Image
+            className="rounded-md"
+            src={transferEvent.token.metadata.image}
+            crossOrigin="anonymous"
+            alt="Team"
+            width={60}
+            height={60}
+          />
+        </div>
+        <span className="ml-4">Minted by {/* {transferEvent.token.metadata.name} */}</span>
         {transferEvent.to.id && (
           <EthAddress
             withEnsAvatar
-            avatarClassName="h-4 w-4"
+            avatarClassName="h-10 w-10"
             address={transferEvent.to.id}
           />
         )}
-        <span className="text-neutral-500">{time}</span>
+        <span className="text-pink-500 ml-4">{time}</span>
       </div>
-
-      <div className="mb-1">
-        Minted tier {transferEvent.token.metadata.name}
-      </div>
-
-      {/* <div className="rounded-lg ml-11 border-pink-900 border inline-flex overflow-hidden p-1">
-        <Image
-          className="rounded-md"
-          src={transferEvent.token.metadata.image}
-          crossOrigin="anonymous"
-          alt="Team"
-          width={200}
-          height={200}
-        />
-      </div> */}
     </div>
   );
+
 }
 
 function ActivityItem({ transferEvent }: { transferEvent: TransferEvent }) {
@@ -104,8 +105,8 @@ function ActivityItem({ transferEvent }: { transferEvent: TransferEvent }) {
 
 export function ActivityContent() {
   const { data: activity, isLoading } = useGameActivity();
-
-  const transfers = activity?.transfers;
+  const transfers = (activity as { transfers?: any })?.transfers;
+  //const transfers = activity?.transfers;
   if (isLoading) {
     return <div>...</div>;
   }
@@ -113,50 +114,66 @@ export function ActivityContent() {
   if (!transfers || transfers.length === 0) {
     return <div>No activity yet.</div>;
   }
-  const reformattedArray: ActivityEvent[] = transfers.map(
-    (obj: TransferEvent) => {
-      const activityEvent = { ...obj };
-      const fromId = activityEvent.from.id;
-      const toId = activityEvent.to.id;
 
-      if (toId === constants.AddressZero) {
-        (activityEvent as ActivityEvent).action = "Redeem";
-        (activityEvent as ActivityEvent).nonZeroId = fromId;
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-      } else if (fromId === constants.AddressZero) {
-        (activityEvent as ActivityEvent).action = "Mint";
-        (activityEvent as ActivityEvent).nonZeroId = toId;
-      }
-
-      obj.tier = Math.floor(
-        parseInt(obj.token.number) / DEFAULT_NFT_MAX_SUPPLY
-      );
-
-      return obj;
+  const reformattedArray: ActivityEvent[] = transfers.map((obj: TransferEvent) => {
+    const activityEvent = { ...obj } as ActivityEvent; // Typecast activityEvent as ActivityEvent
+    const fromId = activityEvent.from.id;
+    const toId = activityEvent.to.id;
+    const tiers = [...new Set([activityEvent.tier])]; // Use activityEvent.tier directly
+    console.log(tiers);
+    if (toId === constants.AddressZero) {
+      (activityEvent as ActivityEvent).action = "Redeem";
+      (activityEvent as ActivityEvent).nonZeroId = fromId;
+    } else if (fromId === constants.AddressZero) {
+      (activityEvent as ActivityEvent).action = "Mint";
+      (activityEvent as ActivityEvent).nonZeroId = toId;
     }
+
+    obj.tier = Math.floor(parseInt(obj.token.number) / DEFAULT_NFT_MAX_SUPPLY);
+
+    return obj;
+  });
+  const uniqueActionTiers = Array.from(new Set(reformattedArray.map(transferEvent => `${transferEvent.action}-${transferEvent.tier}`)));
+
+  const columns: Record<string, number> = {};
+  reformattedArray.forEach((transferEvent) => {
+    const { action, nonZeroId } = transferEvent as ActivityEvent;
+    if (action && nonZeroId) {
+      columns[action] = columns[action] ? columns[action] + 1 : 1;
+      columns[nonZeroId] = columns[nonZeroId] ? columns[nonZeroId] + 1 : 1;
+    }
+  });
+
+  const sortedArray = reformattedArray.sort(
+    (a, b) => parseInt(a.timestamp) - parseInt(b.timestamp)
   );
+  let runningTotal = 0;
 
   return (
-    <div className="flex flex-col max-w-3xl mx-auto">
-      {reformattedArray
-        .sort((a, b) => {
-          if (a.nonZeroId === b.nonZeroId) {
-            return parseInt(a.token.number) - parseInt(b.token.number);
-          }
-          return a.nonZeroId < b.nonZeroId ? -1 : 1;
-        })
-        .map((transferEvent) => {
-          const transferEventWithTier = {
-            ...transferEvent,
-          };
-
-          return (
-            <ActivityItem
-              key={transferEvent.transactionHash + transferEvent.token.number}
-              transferEvent={transferEventWithTier}
-            />
-          );
-        })}
+    <div >
+      <table>
+        <tbody>
+          {reformattedArray
+            .sort((a, b) => parseInt(a.timestamp) - parseInt(b.timestamp))
+            .map((transferEvent) => {
+              const transferEventWithTier = {
+                ...transferEvent,
+              };
+              console.log(transferEventWithTier);
+              /*   if (transferDirection === 'up') {
+                  runningTotal += tier;
+                } else if (transferDirection === 'down') {
+                  runningTotal -= tier;
+                } */
+              return (
+                <ActivityItem
+                  key={transferEvent.transactionHash + transferEvent.token.number}
+                  transferEvent={transferEventWithTier}
+                />
+              );
+            })}
+        </tbody>
+      </table>
     </div>
   );
 }

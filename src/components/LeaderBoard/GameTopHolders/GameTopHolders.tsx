@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useGameTopHolders } from "./useGameTopHolders";
 import { twMerge } from "tailwind-merge";
 import { min } from "lodash";
+import { Key } from "react";
 
 interface Contract {
   gameId: string;
@@ -29,12 +30,13 @@ export function GameTopHoldersContent(gameId: { gameId: string }) {
   console.log("GameTopHoldersContent gameId", gameId)
   const { data: ResponseData, isLoading } = useGameTopHolders(gameId.gameId);
   console.log("GameTopHoldersContent contracts", ResponseData)
-  const contracts = ResponseData?.contracts;
+  const contracts = (ResponseData as { contracts?: any })?.contracts;
+
   if (isLoading) {
     return <Container className="text-center">...</Container>;
   } else {
-    const flatArray = contracts.flatMap((contract) =>
-      contract.mintedTokens.flatMap((token) => ({
+    const flatArray = contracts.flatMap((contract: { mintedTokens: any[]; }) =>
+      contract.mintedTokens.flatMap((token: { id: string; owner: { id: any; }; }) => ({
         tokenId: token.id,
         ownerId: token.owner.id,
         tier: token.id.split("-")[1],
@@ -67,23 +69,27 @@ export function GameTopHoldersContent(gameId: { gameId: string }) {
               </tr>
             </thead>
             <tbody>
-              {contracts.map((contract, index) => (
+              {contracts.map((contract: { gameId: Key | null | undefined; mintedTokens: any[] }, index: any) => (
                 <tr key={contract.gameId}>
                   <td className="text-center">
                     <div className="flex items-center justify-center">
                       <div className="relative w-16 h-16">
                         {contract.mintedTokens.length > 0 && (
                           <div className="absolute inset-0">
-                            {contract.mintedTokens.map((token, index) => (
-                              <div key={token.id} className="ml-[-10px]">
-                                <EthAddress
-                                  address={token.owner.id}
-                                  className="font-medium"
-                                  withEnsAvatar
-                                />
-                                {Math.floor(parseInt(token.id.substring(token.id.indexOf("-") + 1)) / DEFAULT_NFT_MAX_SUPPLY)}
-                              </div>
-                            ))}
+                            {contract.mintedTokens.map((token: { id: Key | null | undefined; owner: { id: string | undefined } }, index: any) => {
+                              const tokenId = token.id as string; // Type assertion
+
+                              return (
+                                <div key={tokenId} className="ml-[-10px]">
+                                  <EthAddress
+                                    address={token.owner?.id}
+                                    className="font-medium"
+                                    withEnsAvatar
+                                  />
+                                  {Math.floor(parseInt(tokenId.substring(tokenId.indexOf("-") + 1) || "0") / DEFAULT_NFT_MAX_SUPPLY)}
+                                </div>
+                              );
+                            })}
                           </div>
                         )}
                       </div>
@@ -98,8 +104,8 @@ export function GameTopHoldersContent(gameId: { gameId: string }) {
                   </td>
                 </tr>
               ))}
-
             </tbody>
+
           </table>
         </div>
       </Container>

@@ -69,7 +69,7 @@ function ActivityItem({
 
 export function TopHoldrsContent() {
   const { data: owners, isLoading } = useTopHodlrs();
-  const leaders = owners?.owners;
+  const leaders = (owners as { owners?: any })?.owners;
 
   if (isLoading) {
     return <Container className="text-center">...</Container>;
