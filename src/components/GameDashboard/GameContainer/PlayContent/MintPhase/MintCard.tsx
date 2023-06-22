@@ -8,8 +8,10 @@ export function MintCard({
   playerCount,
   tierId,
   price,
+  title,
   ...props
 }: {
+  title: string;
   mintedCount: number;
   playerCount?: number;
   tierId: number;
@@ -26,26 +28,24 @@ export function MintCard({
 
   return (
     <PickCard
+      title={title}
       extra={
         <>
-          <div className="mb-1 mt-1 font-medium text-pink-500">
+          <div className="mb-1 mt-1 text-left font-medium text-pink-500">
             <EthAmount amountWei={price} />
           </div>
           <div className="text-xs">
+            <div className="flex justify-between">
+              <span className="text-neutral-300">
+                {supplyPortion}% of all mints
+              </span>
+            </div>
+
             {typeof playerCount !== "undefined" ? (
               <div className="flex justify-between">
-                <span className="text-neutral-300">Players</span>
-                <span className="font-medium">{playerCount}</span>
+                <span className="text-neutral-300">{playerCount} owners</span>
               </div>
             ) : null}
-            <div className="flex justify-between">
-              <span className="text-neutral-300">Mints</span>
-              <span className="font-medium">{mintedCount}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-neutral-300">% of all mints</span>
-              <span className="font-medium">{supplyPortion}%</span>
-            </div>
           </div>
         </>
       }

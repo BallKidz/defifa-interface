@@ -96,6 +96,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
         {pickedNfts?.map((t) => (
           <RedeemCard
+            title={t.teamName}
             key={t.id}
             tokenIds={mintedTokens
               ?.filter((token) => token.number.startsWith(t.id.toString()))
