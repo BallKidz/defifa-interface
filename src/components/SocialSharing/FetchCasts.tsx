@@ -11,7 +11,7 @@ export function FetchCasts() {
 
             try {
                 const castsResult = await client.getCastsByFid({ fid: 1463 });
-                setCasts(castsResult);
+                //setCasts(castsResult);
             } catch (error) {
                 console.error('Failed to fetch casts:', error);
             } finally {

@@ -109,12 +109,12 @@ const HomePage = () => {
     },
     {
       title: 'Digital Collectables',
-      description: 'Collect NFTs and show off your skills.',
+      description: 'Collect Cards and show off your skills.',
       image: '/assets/banny_shoes.png',
     },
     {
       title: 'Play to Earn',
-      description: 'Receive governance tokens for playing.',
+      description: 'Receive governance tokens for creating and playing games.',
       image: '/assets/banny_lfg.png',
     },
     // Add more Feature objects as needed
@@ -127,12 +127,12 @@ const HomePage = () => {
     },
     {
       title: 'Increase Community Engagement',
-      description: "Other fundraisers be like: 'Please donate!' Our money games have communities buzzing like a beehive on steroids.",
+      description: "Other fundraisers be like: 'Please donate!' Your money games will the community buzzing like a beehive on steroids.",
       image: '/assets/banny_love.png',
     },
     {
       title: 'Be The Entrepreneur',
-      description: 'Forget the corporate ladder. Climb the ranks of entrepreneurship with Defifa money games and hodl those tokens!',
+      description: 'Forget the corporate ladder. Climb the ranks of entrepreneurship with Defifa money games and stack those tokens!',
       image: '/assets/banny_yes.png',
     },
     // Add more Feature objects as needed
@@ -175,7 +175,7 @@ const HomePage = () => {
       <div>
         <div className="relative">
           {/* Search Affordance */}
-          <div className="absolute top-0 right-0 p-4">
+          <div className="absolute top-4 right-4">
             <Link href="/arcade">
               <a className="text-sm flex gap-2 items-center font-medium hover:underline">
                 Enter arcade <ArrowRightIcon className="h-4 w-4" />
@@ -183,11 +183,21 @@ const HomePage = () => {
             </Link>
           </div>
           {/* TODO use Image */}
-          <img
-            className="w-full h-auto"
+          <Image
+            className="w-full"
             src="/assets/Defifa_hero1_.png"
             alt="Hero Image"
+            layout="responsive"
+            width={997}
+            height={608}
           />
+          <div className="absolute top-4 right-4">
+            <Link href="/arcade">
+              <a className="text-sm flex gap-2 items-center font-medium hover:underline">
+                Enter arcade <ArrowRightIcon className="h-4 w-4" />
+              </a>
+            </Link>
+          </div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl font-bold">
             Money Games With Friends
           </div>
@@ -228,7 +238,7 @@ const HomePage = () => {
         </div>
 
         {/* Leaderboard Section */}
-        <div className="mt-4 flex grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-4">
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
           <TopPlayersContent />
           {/* Social Proof Section */}
           <div className="container mx-auto mt-8">
