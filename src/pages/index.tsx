@@ -127,7 +127,7 @@ const HomePage = () => {
     },
     {
       title: 'Increase Community Engagement',
-      description: "Other fundraisers be like: 'Please donate!' Your money games will the community buzzing like a beehive on steroids.",
+      description: "Other fundraisers be like: 'Please donate!' Your money games will have the community buzzing like a beehive on steroids.",
       image: '/assets/banny_love.png',
     },
     {
