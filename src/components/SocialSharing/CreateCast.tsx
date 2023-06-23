@@ -6,7 +6,7 @@ export async function FetchCasts(isConnected: boolean, base64SignedMessage: stri
     if (isConnected === false) {
         const message = Message.decode(Buffer.from(base64SignedMessage, 'base64'));
         const messageObject = { data: message }; // Create an object with the expected shape
-        client.submitMessage(messageObject);
+        //client.submitMessage(messageObject);
     }
 }
 
