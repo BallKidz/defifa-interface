@@ -11,8 +11,7 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 interface SocialMediaFeedProps {
     channel?: string; // Make the channel prop optional by using `?`
-}
-;
+};
 
 const SocialMediaFeed = ({ channel }: SocialMediaFeedProps) => {
     let parentUrl: string;
@@ -73,7 +72,6 @@ const SocialMediaFeed = ({ channel }: SocialMediaFeedProps) => {
 
         fetchUserDetails();
     }, [casts]);
-
 
 
     useEffect(() => {
@@ -292,27 +290,3 @@ const SocialMediaFeed = ({ channel }: SocialMediaFeedProps) => {
     );
 }
 export default SocialMediaFeed;
-
-
-/*
-useEffect(() => {
-        const delay = 3000; // 3 seconds
-
-        const delayedFunction = () => {
-            // Function to be executed after the delay
-            console.log('Delayed function called!');
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const { casts, loading } = useFetchCastsUrl(parentUrl);
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-            const [updatedCasts, setUpdatedCasts] = useState(casts);
-        };
-
-        // Start the timer
-        const timeoutId = setTimeout(delayedFunction, delay);
-
-        // Clean up the timer when the component unmounts or the effect re-runs
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, []);
-*/
