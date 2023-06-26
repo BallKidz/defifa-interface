@@ -306,7 +306,7 @@ const DeployerCreate = () => {
     console.log(transactionData);
     const gameId = BigNumber.from(transactionData.logs[2].topics[3]).toNumber();
     const gameUrl = `http://defifa.net/game/${gameId}`;
-    const intentText = `Let's play a money! ${formValues.name}. ${formValues.rules} `;
+    const intentText = `Let's play a money game! ${formValues.name}. ${formValues.rules} `;
 
     return (
       <div className="text-center">
@@ -332,7 +332,7 @@ const DeployerCreate = () => {
       <h1 className="text-2xl mb-8 mt-8">Create your Game</h1>
 
       <h2 className="text-lg mb-3">
-        {step === 1 ? "Game details" : "Game NFTs"}
+        {step === 1 ? "Game details" : "Team NFTs"}
       </h2>
       <form onSubmit={handleSubmit}>
         {step === 1 && (
@@ -390,7 +390,7 @@ const DeployerCreate = () => {
               />
 
               <span className="text-xs text-neutral-400 mt-1">
-                Must be later than: now + mint duration + refund duration.
+                Must be later than: now + buying duration + refund duration.
               </span>
             </div>
             <div className={styles.formGroup}>
@@ -398,7 +398,7 @@ const DeployerCreate = () => {
                 className="text-sm leading-6 mb-1"
                 htmlFor="mintPeriodDuration"
               >
-                Mint duration
+                Buying duration
               </label>
               <Input
                 type="number"
@@ -432,7 +432,7 @@ const DeployerCreate = () => {
                 required
               />
               <span className="text-xs text-neutral-400 mt-1">
-                Hours allowed for refunds. Takes place between minting and game
+                Hours allowed for refunds. Takes place between buying and game
                 time.
               </span>
             </div>

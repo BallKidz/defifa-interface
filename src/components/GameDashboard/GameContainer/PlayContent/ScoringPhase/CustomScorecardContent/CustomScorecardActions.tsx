@@ -65,7 +65,7 @@ export function CustomScorecardActions({
         loading={isLoading}
         disabled={totalScorePercentage !== 100}
       >
-        Submit scorecard
+        Submit scores
       </Button>
     </div>
   );

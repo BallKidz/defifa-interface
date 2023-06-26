@@ -38,7 +38,7 @@ const ArcadeWrapper = () => {
         <meta property="og:image" content="https://i.imgur.com/lvkXgnx.png" />
         <meta
           name="description"
-          content="Defifa is an onchain gaming and governance experiment. Make your picks, load the pot and win."
+          content="Defifa is an onchain gaming and governance experiment. Join a team, load the pot and win."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

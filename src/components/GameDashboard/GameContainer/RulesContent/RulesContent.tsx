@@ -65,16 +65,15 @@ export function RulesContent() {
   return (
     <div>
       <p className="mb-5">
-        Mint NFTs to buy in. Your ETH is added to the pot; the pot is split
-        between NFT holders when the game finishes. When minting is over, vote
-        on the game's outcome. The final outcome determines how the pot is
-        split.
+        Join a team by buying its NFT (which adds your ETH to a shared pot). The
+        winning teams get more of the pot when the game ends.
       </p>
 
       <p className="mb-5">
-        Vote on the game's final outcome. The first Scorecard to reach quorum
-        and be approved is the final outcome. The final outcome determines each
-        NFT's redemption value.
+        Once NFT buying closes, anyone can score the contest to determine how
+        much of the pot goes to each team. At least 50% of teams need to approve
+        a set of scores by majority vote – otherwise, everyone can reclaim their
+        ETH from the pot.
       </p>
 
       <div className="mb-5">
@@ -84,43 +83,44 @@ export function RulesContent() {
       </div>
       <div className="border-t border-neutral-800 pt-4 mb-5 flex flex-col gap-2">
         <div>
-          <span className="text-pink-500">Phase 1: </span>Minting (mints open,
+          <span className="text-pink-500">Phase 1: </span>Buy (NFT buying open,
           refunds open)
           <span className={pillStyle(mintPeriodDuration.phase)}>
             {fillPill(mintPeriodDuration.phase)}
           </span>
         </div>
         <div>
-          <span className="text-pink-500">Phase 2: </span>Refund (mints closed)
+          <span className="text-pink-500">Phase 2: </span>Refund (NFT buying closed)
           <span className={pillStyle(refundPeriodDuration.phase)}>
             {fillPill(refundPeriodDuration.phase)}
           </span>
         </div>
         <div>
           <div>
-            <span className="text-pink-500">Phase 3: </span>SCORING (refunds
+            <span className="text-pink-500">Phase 3: </span>Score (refunds
             closed)
             <span className={pillStyle(start.phase)}>
               {fillPill(start.phase)}
             </span>
           </div>
           <div>
-            Anyone may submit a scorecard. Scorecards must be ratified by a
-            majority of the Players.
+            Anyone can score the game. At least 50% of teams need to approve a set of
+          scores by majority vote – otherwise, everyone can reclaim their ETH
+          from the pot.
           </div>
         </div>
       </div>
       <div>
         <div className="border-t border-neutral-800 pt-4 mb-5">
           <p>
-            <span className="text-pink-500">Winners: </span>Claim prize anytime
-            after a scorecard has been ratified. Redeeming a player card will
+            <span className="text-pink-500">Winners: </span>Claim rewards at any time
+            once a set of scores has been approved. Redeeming an NFT will
             burn it and transfer you its share of the pot.
           </p>
           <p>
             <span className="text-pink-500">No Contest: </span>
             This occurs when nobody queues the next game phase. Players may
-            redeemed or keep their playing cards.
+            redeem or keep their NFTs.
           </p>
         </div>
       </div>
@@ -129,7 +129,8 @@ export function RulesContent() {
           <p>
             <span className="text-pink-500">Protocol support:</span>
             <span className="ml-2">
-              {IDefifa_DAO_PROTOCOL_FEE * 100}% of the pot buys each player $DEFIFA governance tokens.
+              {IDefifa_DAO_PROTOCOL_FEE * 100}% of the pot buys each player
+              Defifa's governance tokens.
             </span>
           </p>
         </div>
@@ -137,9 +138,12 @@ export function RulesContent() {
           <div className="flex items-center">
             <p>
               <span className="text-pink-500">Reserved Mints:</span>
-              {nftRewardTiers?.filter((tier) => tier.reservedRate.toNumber() > 0)
-                .length === 0 ? (
-                <span className="ml-2">No reserve tokens are minted in this game. Reserve mints are used to fund artists and creators.</span>
+              {nftRewardTiers?.filter(
+                (tier) => tier.reservedRate.toNumber() > 0
+              ).length === 0 ? (
+                <span className="ml-2">
+                  No NFTs are being reserved for this game's creator.
+                </span>
               ) : null}
             </p>
           </div>
@@ -171,7 +175,7 @@ export function RulesContent() {
                           <span className="ml-2">
                             will receive{" "}
                             {(1 / (tier.reservedRate.toNumber() + 1)) * 100}% of
-                            this pick's tokens.
+                            this team's NFTs.
                           </span>
                         </div>
                       </div>
@@ -181,6 +185,6 @@ export function RulesContent() {
             )}
         </div>
       </div>
-    </div >
+    </div>
   );
 }
