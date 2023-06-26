@@ -34,8 +34,6 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
     tiers: [],
     splits: [],
     token: ETH_TOKEN_ADDRESS,
-    ballkidzFeeProjectTokenAccount: BALLKIDZ_MULTISIG_ADDRESS,
-    ballkidzFeeProjectTokenAllocator: constants.AddressZero,
     defaultAttestationDelegate: BALLKIDZ_MULTISIG_ADDRESS,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",
