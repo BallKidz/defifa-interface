@@ -38,7 +38,7 @@ function HodlrsLeaderBoard({
 }) {
   return (
     <tr>
-      <td>{LeaderBoardMetric.rowNumber}</td> {/* Display the row number */}
+      <td>{LeaderBoardMetric.rowNumber}</td>
       <td>
         <div className="flex items-center gap-3">
           <EthAddress
@@ -109,18 +109,14 @@ export function TopHoldrsContent() {
 
   return (
     <div className="p-4">
-      <div
-        className={
-          "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform"
-        }
-      >
-        <div className=" border-2 border-pink-500 rounded-lg shadow-md p-6">
+      <div className="relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform">
+        <div className="border-2 border-pink-500 rounded-lg shadow-md p-6">
           <h2 className="text-2xl mb-4 text-center">Top Hodlrs</h2>
           <table>
             <thead>
               <tr>
                 <th>Rank</th>
-                <th></th>
+                <th>{""}</th>
                 <th>Prize Claims</th>
               </tr>
             </thead>

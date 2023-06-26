@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { TopPlayersContent } from 'components/LeaderBoard/TopPlayers/TopPlayers';
 import { TopHoldrsContent } from 'components/LeaderBoard/TopHodlrs/TopHodlrs';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+// import { FarcasterSignIn } from 'components/SocialSharing/FarcasterSignIn';
 
 interface GameTypesData {
   title: string;
@@ -26,7 +27,6 @@ interface SocialProofData {
   avatarSrc: string;
   quote: string;
   author: string;
-
 }
 interface CardProps {
   title: string;
@@ -198,6 +198,9 @@ const HomePage = () => {
               </a>
             </Link>
           </div>
+          {/*          <div className="absolute top-14 right-10">
+            <FarcasterSignIn />
+          </div> */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl font-bold">
             Money Games With Friends
           </div>

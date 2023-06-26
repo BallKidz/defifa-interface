@@ -54,9 +54,7 @@ export function GameTopHoldersContent(gameId: { gameId: string }) {
   }
 
   return (
-    <div
-
-    >
+    <div>
       <Container className="mb-4">
         <div className=" border-2 border-pink-500 rounded-lg shadow-md p-6">
           <h2 className="text-2xl mb-4 text-center">Game Top Holders</h2>

@@ -39,7 +39,7 @@ function MintsLeaderBoard({
 }) {
   return (
     <tr>
-      <td>{LeaderBoardMetric.rowNumber}</td> {/* Display the row number */}
+      <td>{LeaderBoardMetric.rowNumber}</td>
       <td>
         <div className="flex items-center gap-3">
           <EthAddress
@@ -120,7 +120,7 @@ export function TopPlayersContent() {
             <thead>
               <tr>
                 <th>Rank</th>
-                <th></th>
+                <th>{""}</th>
                 <th>Games Played</th>
               </tr>
             </thead>
@@ -133,7 +133,6 @@ export function TopPlayersContent() {
                     rowNumber: index + 1,
                   }}
                 />
-                // <MintsLeaderBoard key={LeaderBoardMetric.id} LeaderBoardMetric={LeaderBoardMetric} />
               ))}
             </tbody>
           </table>

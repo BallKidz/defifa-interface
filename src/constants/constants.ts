@@ -8,3 +8,5 @@ export const BALLKIDZ_MULTISIG_ADDRESS =
 export const JUICEBOX_PROJECT_METADATA_DOMAIN = 0;
 export const IDefifaDelegate_INTERFACE_ID = "0xf6de42df";
 export const IDefifa_DAO_PROTOCOL_FEE = 0.1;
+export const FarcasterHub = "https://galaxy.ditti.xyz:2285";
+export const FarcasterAppName = "Defifa";
