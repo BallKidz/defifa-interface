@@ -6,7 +6,7 @@ export function ActionContainer({
   renderActions?: () => React.ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-12 items-start relative">
+    <div className="grid grid-cols-3 gap-8 items-start relative">
       <div className="mb-12 col-span-2">{children}</div>
       {renderActions ? (
         <div className="sticky top-4 right-0">

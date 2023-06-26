@@ -1,5 +1,5 @@
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
+import { ActionContainer } from "components/Game/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import { EthAddress } from "components/UI/EthAddress";
 import { Pill } from "components/UI/Pill";

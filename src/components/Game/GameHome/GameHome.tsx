@@ -1,30 +1,28 @@
-import Navbar from "../layout/Navbar";
-import Info from "../layout/Navbar/Info";
 import Container from "components/layout/Container";
-import ArcadeLoad from "./TurnOn";
-import ArcadeDescription from "./Description";
-import Footer from "components/layout/Footer";
-import { Header } from "components/Game/GameHome/Header";
-import Head from "next/head";
-import Link from "next/link";
+import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
 import { useAllGames } from "hooks/useAllGames";
-import { useState } from "react";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import Wallet from "components/layout/Navbar/Wallet";
+import Head from "next/head";
 import Image from "next/image";
-import { FarcasterSignIn } from "components/SocialSharing/FarcasterSignIn";
+import Link from "next/link";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+
+import Button from "components/UI/Button";
+import { useRouter } from "next/router";
+import { Header } from "./Header";
+import { ActivityContent } from "../GameDashboard/GameContainer/ActivityContent/ActivityContent";
 
 function GameButton({ game }: { game: any }) {
   return (
     <Link href={`/game/${game.gameId}`}>
-      <a className="px-6 py-1 border-r border-neutral-800 max-w-[130px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
+      <a className="hover:text-neutral-300 px-6 py-1 border-r border-neutral-800 max-w-[200px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
         {game.name ?? game.gameId}
       </a>
     </Link>
   );
 }
-const ArcadeWrapper = () => {
+
+export function GameHome() {
   const { metadata } = useGameContext();
   const { data: games } = useAllGames();
   const title = metadata?.name
@@ -42,8 +40,20 @@ const ArcadeWrapper = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="bg-gradient-to-b from-slate-950 to-black">
 
+      <div className="bg-gradient-to-b from-slate-950 to-black">
+        <div className="border-b border-neutral-900 text-xs text-neutral-400">
+          <Container>
+            <div className="flex overflow-auto">
+              <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
+                <Link href="/arcade">All games</Link>
+              </div>
+              {games?.map((g) => (
+                <GameButton key={g.gameId} game={g} />
+              ))}
+            </div>
+          </Container>
+        </div>
 
         <div className="border-b border-neutral-900 py-2">
           <Container className="flex justify-between">
@@ -62,25 +72,29 @@ const ArcadeWrapper = () => {
                   works
                 </a>
               </Link>
-              {/* <FarcasterSignIn /> */}
               <Wallet />
             </div>
           </Container>
         </div>
-        <Container className="mb-8">
+
+        <Container className="my-8">
+          <Header />
         </Container>
 
-        <nav className="border-b border-neutral-900 pb-2">
+        <div className="bg-neutral-950 py-10">
           <Container>
-            <h1>Play Money Games With Friends</h1>
-            <ArcadeDescription />
-            <ArcadeLoad />
-            <Footer />
+            <div className="grid grid-cols-3">
+              <div className="col-span-2">
+                <h2 className="text-xl">Rules</h2>
+                {metadata?.description}
+              </div>
+              <div className="bg-neutral-900 rounded-lg p-4">
+                <ActivityContent />
+              </div>
+            </div>
           </Container>
-        </nav>
+        </div>
       </div>
     </>
   );
-};
-
-export default ArcadeWrapper;
+}
