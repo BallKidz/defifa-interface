@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getHubRpcClient } from '@farcaster/hub-web';
 // import { FarcasterDittiHub } from "../../constants/constants";
-import { FarcasterHub } from "../../constants/constants";
+import { FarcasterAppName, FarcasterHub } from "../../constants/constants";
 import { useSigner, useToken } from '@farsign/hooks';
-
-const FarcasterAppName = "Defifa";
 
 export function useFetchCastsUrl(url: string) {
   const [token] = useToken(FarcasterAppName);

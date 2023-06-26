@@ -11,6 +11,7 @@ import Button from "components/UI/Button";
 import { useRouter } from "next/router";
 import { Header } from "./Header";
 import { ActivityContent } from "../GameDashboard/GameContainer/ActivityContent/ActivityContent";
+import SocialMediaFeed from "components/SocialSharing/CastStreamWidget";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -23,8 +24,10 @@ function GameButton({ game }: { game: any }) {
 }
 
 export function GameHome() {
-  const { metadata } = useGameContext();
+  const { metadata, currentFundingCycle } = useGameContext();
   const { data: games } = useAllGames();
+  const dataSource = currentFundingCycle?.metadata.dataSource;
+  console.log("dataSource", dataSource);
   const title = metadata?.name
     ? `${metadata.name} | Defifa`
     : "Money Games with Friends | Defifa";
@@ -88,7 +91,11 @@ export function GameHome() {
                 <h2 className="text-xl">Rules</h2>
                 {metadata?.description}
               </div>
-              <div className="bg-neutral-900 rounded-lg p-4">
+              {dataSource !== undefined ? (
+                <SocialMediaFeed channel={dataSource} />
+              ) : (
+                <div>Loading live chat...</div>
+              )}              <div className="bg-neutral-900 rounded-lg p-4">
                 <ActivityContent />
               </div>
             </div>
