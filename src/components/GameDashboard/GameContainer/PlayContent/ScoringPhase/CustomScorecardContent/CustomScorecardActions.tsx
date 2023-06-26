@@ -50,7 +50,7 @@ export function CustomScorecardActions({
     ) ?? 0;
 
   return (
-    <div className="flex justify-between items-center w-full">
+    <div>
       <div className="flex gap-2 items-center">
         {totalScorePercentage.toString()}% allocated
         {totalScorePercentage === 100 ? (
@@ -64,6 +64,7 @@ export function CustomScorecardActions({
         onClick={() => write?.()}
         loading={isLoading}
         disabled={totalScorePercentage !== 100}
+        className="w-full mt-5"
       >
         Submit scorecard
       </Button>
