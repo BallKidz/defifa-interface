@@ -304,7 +304,7 @@ const DeployerCreate = () => {
 
   if (isSuccess && transactionData) {
     console.log(transactionData);
-    const gameId = BigNumber.from(transactionData.logs[2].topics[3]).toNumber();
+    const gameId = BigNumber.from(transactionData.logs[2].topics[1]).toNumber();
     const gameUrl = `http://defifa.net/game/${gameId}`;
     const intentText = `Let's play a money game! ${formValues.name}. ${formValues.rules} `;
 
@@ -317,8 +317,12 @@ const DeployerCreate = () => {
           </div>
         </Link>
         <div className="text-xs mt-3">Game #{gameId}</div>
-        <Link href={`https://warpcast.com/~/compose?text=${encodeURIComponent(intentText)}
-          ${encodeURIComponent(gameUrl)}&embeds`}>
+        <Link
+          href={`https://warpcast.com/~/compose?text=${encodeURIComponent(
+            intentText
+          )}
+          ${encodeURIComponent(gameUrl)}&embeds`}
+        >
           <div>
             <Button size="md">Share on Farcaster</Button>
           </div>
@@ -566,23 +570,23 @@ const DeployerCreate = () => {
                       {formValues.tiers.some(
                         (tier) => tier.reservedRate > 0
                       ) && (
-                          <p>
-                            For every{" "}
-                            {
-                              formValues.tiers.find((t) => t.reservedRate)
-                                ?.reservedRate
-                            }{" "}
-                            NFTs minted, 1 goes to{" "}
-                            {tier.reservedTokenBeneficiary
-                              ? truncateAddress(
+                        <p>
+                          For every{" "}
+                          {
+                            formValues.tiers.find((t) => t.reservedRate)
+                              ?.reservedRate
+                          }{" "}
+                          NFTs minted, 1 goes to{" "}
+                          {tier.reservedTokenBeneficiary
+                            ? truncateAddress(
                                 formValues.tiers[0].reservedTokenBeneficiary,
                                 3,
                                 3
                               )
-                              : "not you"}
-                            !
-                          </p>
-                        )}
+                            : "not you"}
+                          !
+                        </p>
+                      )}
                     </div>
 
                     <div className={styles.tierIcons}>

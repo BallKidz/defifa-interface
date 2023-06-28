@@ -1,4 +1,4 @@
-import { ActionContainer } from "components/GameDashboard/GameContainer/ActionContainer/ActionContainer";
+import { ActionContainer } from "components/Game/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import { Input } from "components/UI/Input";
 import { useGameContext } from "contexts/GameContext";
 import Image from "next/image";

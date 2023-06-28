@@ -33,20 +33,6 @@ export function PlayContent() {
   return (
     <Container>
       <div className="py-3 col-span-2">
-        <div className="my-6">
-          {currentPhase === DefifaGamePhase.MINT ||
-          currentPhase === DefifaGamePhase.REFUND ||
-          currentPhase === DefifaGamePhase.SCORING ||
-          currentPhase === DefifaGamePhase.COMPLETE ? (
-            <PhaseDetails />
-          ) : null}
-          {currentPhase === DefifaGamePhase.NO_CONTEST ||
-          currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
-            <div className="text-center text-orange-500 uppercase text-2xl">
-              No contest
-            </div>
-          ) : null}
-        </div>
         <CurrentContent />
       </div>
     </Container>

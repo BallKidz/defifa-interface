@@ -9,7 +9,7 @@ import { constants } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { DefifaLaunchProjectData } from "types/defifa";
 
-const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
+const DEFAULT_MINT_DURATION_SECONDS = 60 * 60 * 24 * 7; // 1 hour
 const DEFAULT_REFUND_DURATION_SECONDS = 60 * 0; // 1 hour
 const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
 
@@ -34,8 +34,6 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
     tiers: [],
     splits: [],
     token: ETH_TOKEN_ADDRESS,
-    ballkidzFeeProjectTokenAccount: BALLKIDZ_MULTISIG_ADDRESS,
-    ballkidzFeeProjectTokenAllocator: constants.AddressZero,
     defaultAttestationDelegate: BALLKIDZ_MULTISIG_ADDRESS,
     defaultTokenUriResolver: constants.AddressZero,
     contractUri: "",

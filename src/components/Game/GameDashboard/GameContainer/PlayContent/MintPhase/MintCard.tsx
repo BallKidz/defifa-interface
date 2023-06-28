@@ -37,15 +37,9 @@ export function MintCard({
           <div className="text-xs">
             <div className="flex justify-between">
               <span className="text-neutral-300">
-                {supplyPortion}% of all mints
+                {totalSupply?.toNumber()} mints ({supplyPortion}%)
               </span>
             </div>
-
-            {typeof playerCount !== "undefined" ? (
-              <div className="flex justify-between">
-                <span className="text-neutral-300">{playerCount} owners</span>
-              </div>
-            ) : null}
           </div>
         </>
       }

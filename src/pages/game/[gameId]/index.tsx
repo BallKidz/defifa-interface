@@ -1,4 +1,4 @@
-import { GameDashboard } from "components/GameDashboard/GameDashboard";
+import { GameHome } from "components/Game/GameHome/GameHome";
 import GameContextProvider from "contexts/GameContext/GameContextProvider";
 import { useRouter } from "next/router";
 
@@ -10,7 +10,7 @@ export default function GamePage() {
 
   return (
     <GameContextProvider gameId={parseInt(gameId as string, 10)}>
-      <GameDashboard />
+      <GameHome />
     </GameContextProvider>
   );
 }

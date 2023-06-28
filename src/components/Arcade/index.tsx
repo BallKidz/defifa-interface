@@ -4,7 +4,7 @@ import Container from "components/layout/Container";
 import ArcadeLoad from "./TurnOn";
 import ArcadeDescription from "./Description";
 import Footer from "components/layout/Footer";
-import { Header } from "components/GameDashboard/Header";
+import { Header } from "components/Game/GameHome/Header";
 import Head from "next/head";
 import Link from "next/link";
 import { useGameContext } from "contexts/GameContext";

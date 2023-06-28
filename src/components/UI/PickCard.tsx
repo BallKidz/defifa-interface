@@ -1,6 +1,7 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
+import Button from "./Button";
 
 export interface PickCardProps {
   title: string;
@@ -29,62 +30,63 @@ export function PickCard({
     typeof selectionLimit !== "undefined" && selectedCount >= selectionLimit;
 
   return (
-    <button
+    <div
       className={twMerge(
-        "relative border-2 bg-[#181424] p-5 border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl max-w-[500px] mx-auto overflow-hidden hover:shadow-glowPink hover:border-pink-900",
+        "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl max-w-[500px] mx-auto overflow-hidden hover:shadow-glowPink hover:border-pink-900",
         isSelected
           ? "border-pink-700 hover:border-pink-800 shadow-glowPink"
           : ""
       )}
-      role="button"
-      onClick={onIncrement}
-      disabled={disabled || limitReached}
     >
-      <div className="text-lg text-left">{title}</div>
+      <div className="px-5 pt-5 mb-2">
+        <div className="text-lg text-left">{title}</div>
 
-      <div className="rounded-md overflow-hidden border-black p-2 shadow-inner border-2">
-        <Image
-          src={imageSrc}
-          crossOrigin="anonymous"
-          alt="Team"
-          width={500}
-          height={500}
-        />
+        <div className="rounded-md overflow-hidden border-black p-2 shadow-inner border-2">
+          <Image
+            src={imageSrc}
+            crossOrigin="anonymous"
+            alt="Team"
+            width={500}
+            height={500}
+          />
+        </div>
+
+        <div className="mt-4">{extra}</div>
       </div>
 
-      <div className="p-3 bottom-14 right-0 absolute z-10">
-        {isSelected ? (
-          <div className="flex gap-2 items-center">
-            <p>{selectedCount}</p>
-            <button
-              className="rounded-full disabled:cursor-not-allowed font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600 bg-pink-600 hover:bg-pink-500 text-neutral-50"
-              onClick={(ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-                onIncrement?.();
-              }}
-              disabled={
-                typeof selectionLimit !== "undefined" &&
-                selectedCount >= selectionLimit
-              }
-            >
-              <PlusIcon className="h-4 w-4" />
-            </button>
-            <button
-              className="rounded-full font-medium px-2 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600 bg-pink-600 hover:bg-pink-500 text-neutral-50"
-              onClick={(ev) => {
-                ev.preventDefault();
-                ev.stopPropagation();
-                onDecrement?.();
-              }}
-            >
-              <MinusIcon className="h-4 w-4" />
-            </button>
-          </div>
-        ) : null}
-      </div>
+      {isSelected ? (
+        <div className="flex justify-between">
+          <Button
+            onClick={onDecrement}
+            className="rounded-none flex-1 flex justify-center items-center bg-pink-700 hover:bg-pink-600 transition-colors py-3"
+          >
+            <MinusIcon className="h-5 w-5" />
+          </Button>
 
-      <div className="mt-4">{extra}</div>
-    </button>
+          <span className="font-medium px-6 border-x border-pink-800 bg-pink-700 flex justify-center items-center">
+            {selectedCount}
+          </span>
+
+          <Button
+            onClick={onIncrement}
+            disabled={
+              typeof selectionLimit !== "undefined" &&
+              selectedCount >= selectionLimit
+            }
+            className="flex-1 bg-pink-700 hover:bg-pink-600 transition-colors rounded-none flex justify-center items-center py-3"
+          >
+            <PlusIcon className="h-5 w-5" />
+          </Button>
+        </div>
+      ) : (
+        <Button
+          onClick={onIncrement}
+          disabled={disabled || limitReached}
+          className="rounded-none group-hover:opacity-100 opacity-0 w-full py-3"
+        >
+          Add
+        </Button>
+      )}
+    </div>
   );
 }

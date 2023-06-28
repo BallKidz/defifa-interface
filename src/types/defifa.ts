@@ -27,8 +27,6 @@ export interface DefifaLaunchProjectData {
   refundPeriodDuration: number;
   start: number;
   splits: JBGroupedSplits<JBSplitGroup>[];
-  ballkidzFeeProjectTokenAccount: EthereumAddress;
-  ballkidzFeeProjectTokenAllocator: EthereumAddress;
   attestationStartTime: number;
   attestationGracePeriod: number; // seconds
   defaultAttestationDelegate: EthereumAddress;
