@@ -70,7 +70,7 @@ export function MintActions({
     return (
       <div>
         <div className="text-xl font-medium">Mint summary</div>
-        <div>← Buy an NFT to join a team.</div>
+        <div>← Mint an NFT to join a team.</div>
       </div>
     );
   }

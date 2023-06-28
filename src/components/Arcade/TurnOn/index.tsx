@@ -24,7 +24,7 @@ const AllGames = () => {
                 Phase
               </th>
               <th className="font-normal text-sm py-3 hidden md:table-cell">
-                Pool Size
+                Pot Size
               </th>
               <th className="font-normal text-sm py-3 hidden md:table-cell">
                 Actions

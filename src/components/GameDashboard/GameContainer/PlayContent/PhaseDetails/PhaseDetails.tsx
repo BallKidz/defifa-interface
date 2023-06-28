@@ -19,7 +19,7 @@ const phaseText = (phase: DefifaGamePhase) => {
     case DefifaGamePhase.COUNTDOWN:
       return "Countdown";
     case DefifaGamePhase.MINT:
-      return "Buying open";
+      return "Minting open";
     case DefifaGamePhase.REFUND:
       return "Refunds open";
     case DefifaGamePhase.COMPLETE:

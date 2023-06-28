@@ -14,7 +14,7 @@ const phaseText = (phase?: DefifaGamePhase) => {
     case DefifaGamePhase.COUNTDOWN:
       return "Countdown";
     case DefifaGamePhase.MINT:
-      return "Buying open";
+      return "Minting open";
     case DefifaGamePhase.REFUND:
       return "Refunds open";
     case DefifaGamePhase.COMPLETE:
@@ -33,9 +33,9 @@ const phaseText = (phase?: DefifaGamePhase) => {
 const availableActionsText = (phase?: DefifaGamePhase) => {
   switch (phase) {
     case DefifaGamePhase.COUNTDOWN:
-      return "Buying soon";
+      return "Minting soon";
     case DefifaGamePhase.MINT:
-      return "Buy | Refund";
+      return "Mint | Refund";
     case DefifaGamePhase.REFUND:
       return "Keep | Refund";
     case DefifaGamePhase.COMPLETE:
@@ -45,7 +45,7 @@ const availableActionsText = (phase?: DefifaGamePhase) => {
     case DefifaGamePhase.NO_CONTEST_INEVITABLE:
       return "Keep | Refund";
     case DefifaGamePhase.SCORING:
-      return "Score & Attest";
+      return "Score";
     default:
       return "Keep";
   }
@@ -69,7 +69,7 @@ export const GameRow: FC<{ game: Game }> = ({ game }) => {
         </td>
         <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
           {currentPhase === DefifaGamePhase.MINT ? (
-            <span>{`Buy until ${date.toLocaleString()}`}</span>
+            <span>{`Mint until ${date.toLocaleString()}`}</span>
           ) : currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
             <span>{"Referee no show"}</span>
           ) : currentPhase === DefifaGamePhase.NO_CONTEST ? (

@@ -65,15 +65,14 @@ export function RulesContent() {
   return (
     <div>
       <p className="mb-5">
-        Join a team by buying its NFT (which adds your ETH to a shared pot). The
+        Join a team by minting its NFT (which adds your ETH to a shared pot). The
         winning teams get more of the pot when the game ends.
       </p>
 
       <p className="mb-5">
-        Once NFT buying closes, anyone can score the contest to determine how
+        Once NFT minting closes, anyone can score the contest to determine how
         much of the pot goes to each team. At least 50% of teams need to approve
-        a set of scores by majority vote – otherwise, everyone can reclaim their
-        ETH from the pot.
+        a set of scores by majority vote – otherwise, the ETH stays in the pot.
       </p>
 
       <div className="mb-5">
@@ -83,14 +82,15 @@ export function RulesContent() {
       </div>
       <div className="border-t border-neutral-800 pt-4 mb-5 flex flex-col gap-2">
         <div>
-          <span className="text-pink-500">Phase 1: </span>Buy (NFT buying open,
+          <span className="text-pink-500">Phase 1: </span>Mint (minting open,
           refunds open)
           <span className={pillStyle(mintPeriodDuration.phase)}>
             {fillPill(mintPeriodDuration.phase)}
           </span>
         </div>
         <div>
-          <span className="text-pink-500">Phase 2: </span>Refund (NFT buying closed)
+          <span className="text-pink-500">Phase 2: </span>Refund (minting
+          closed)
           <span className={pillStyle(refundPeriodDuration.phase)}>
             {fillPill(refundPeriodDuration.phase)}
           </span>
@@ -104,18 +104,18 @@ export function RulesContent() {
             </span>
           </div>
           <div>
-            Anyone can score the game. At least 50% of teams need to approve a set of
-          scores by majority vote – otherwise, everyone can reclaim their ETH
-          from the pot.
+            Anyone can score the game. At least 50% of teams need to approve a
+            set of scores by majority vote – otherwise, the ETH stays in the
+            pot.
           </div>
         </div>
       </div>
       <div>
         <div className="border-t border-neutral-800 pt-4 mb-5">
           <p>
-            <span className="text-pink-500">Winners: </span>Claim rewards at any time
-            once a set of scores has been approved. Redeeming an NFT will
-            burn it and transfer you its share of the pot.
+            <span className="text-pink-500">Winners: </span>Claim rewards at any
+            time once a set of scores has been approved. Redeeming an NFT will
+            burn it and transfer its share of the pot to you.
           </p>
           <p>
             <span className="text-pink-500">No Contest: </span>
@@ -129,8 +129,8 @@ export function RulesContent() {
           <p>
             <span className="text-pink-500">Protocol support:</span>
             <span className="ml-2">
-              {IDefifa_DAO_PROTOCOL_FEE * 100}% of the pot buys each player
-              Defifa's governance tokens.
+              {IDefifa_DAO_PROTOCOL_FEE * 100}% of the pot buys Defifa's
+              governance tokens for this game's players.
             </span>
           </p>
         </div>
@@ -142,7 +142,7 @@ export function RulesContent() {
                 (tier) => tier.reservedRate.toNumber() > 0
               ).length === 0 ? (
                 <span className="ml-2">
-                  No NFTs are being reserved for this game's creator.
+                  No NFTs are being reserved by this game's creator.
                 </span>
               ) : null}
             </p>

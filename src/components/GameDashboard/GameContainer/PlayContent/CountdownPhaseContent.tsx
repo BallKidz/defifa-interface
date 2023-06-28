@@ -23,13 +23,13 @@ export function CountdownPhaseContent() {
     <div className="flex justify-center">
       {timeRemaining ? (
         <div className="text-center">
-          <div className="mb-1">Buying live in</div>
+          <div className="mb-1">Minting opens in</div>
           <div className="text-4xl" style={{ color: "#EB007B" }}>
             {timeRemaining}
           </div>
         </div>
       ) : (
-        <span>Buying starting now, waiting for next block...</span>
+        <span>Minting starting now, waiting for next block...</span>
       )}
     </div>
   );

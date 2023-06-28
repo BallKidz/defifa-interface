@@ -53,16 +53,15 @@ const ArcadeDescription = () => {
             Defifa allows anyone to create an onchain prediction game for
             sports, elections, world events, or anything else. A game's creator
             sets up teams (representing the sports teams, political candidates,
-            or world event outcomes) which anyone can join by buying a team's
-            NFTs. Buying NFTs loads a shared reward pot, and the winning teams
+            or world event outcomes) which anyone can join by minting a team's
+            NFTs. Minting NFTs loads a shared reward pot, and the winning teams
             get more of that pot when the game ends.
           </p>
           <p className="mb-4">
-            Which teams "win" is determined by onchain voting. Once NFT buying
+            Which teams "win" is determined by onchain voting. Once NFT minting
             closes, anyone can score the contest to determine how much of the
             pot goes to each team. At least 50% of teams need to approve a set
-            of scores by majority vote – otherwise, everyone can reclaim their
-            ETH from the pot.
+            of scores by majority vote – otherwise, the ETH stays in the pot.
           </p>
           <p className="mb-4">
             Everything runs onchain, making Defifa games decentralized,

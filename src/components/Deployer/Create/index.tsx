@@ -390,7 +390,7 @@ const DeployerCreate = () => {
               />
 
               <span className="text-xs text-neutral-400 mt-1">
-                Must be later than: now + buying duration + refund duration.
+                Must be later than: now + minting duration + refund duration.
               </span>
             </div>
             <div className={styles.formGroup}>
@@ -398,7 +398,7 @@ const DeployerCreate = () => {
                 className="text-sm leading-6 mb-1"
                 htmlFor="mintPeriodDuration"
               >
-                Buying duration
+                Minting duration
               </label>
               <Input
                 type="number"
@@ -432,8 +432,7 @@ const DeployerCreate = () => {
                 required
               />
               <span className="text-xs text-neutral-400 mt-1">
-                Hours allowed for refunds. Takes place between buying and game
-                time.
+                Hours allowed for refunds. Takes place between minting and scoring.
               </span>
             </div>
 
