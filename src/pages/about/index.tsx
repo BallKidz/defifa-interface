@@ -32,8 +32,8 @@ const Explanation = () => {
           scores by majority vote – otherwise, the ETH stays in the pot.
         </p>
         <p className="my-4">
-          Everything runs onchain, making Defifa games decentralized,
-          uncensorable, and unstoppable. No third parties needed.
+          Everything runs onchain, making Defifa games uncensorable and
+          permissionless. No third parties needed.
         </p>
       </div>
 
@@ -62,10 +62,10 @@ const Explanation = () => {
             their ETH from the pot. <b>This stage is optional.</b>
           </li>
           <li className="my-2">
-            <b>4. Score:</b> Once a game ends, anyone can score the game's
-            results to determine how much of the pot will go to each team. At
-            least 50% of teams need to approve a set of scores by majority vote
-            – otherwise, ETH stays in the pot.
+            <b>4. Score:</b> Anyone can score the game's results to determine
+            how much of the pot will go to each team. At least 50% of teams need
+            to approve a set of scores by majority vote – otherwise, the ETH
+            stays in the pot.
           </li>
           <li className="my-2">
             <b>5. Earn:</b> Once scores are approved, people can burn their NFTs
@@ -84,8 +84,8 @@ const Explanation = () => {
         </p>
         <p className="my-4" style={{ textIndent: 50 }}>
           Defifa allows anyone to make prediction games without relying on third
-          parties. By using onchain voting, Defifa can stay decentralized,
-          uncensorable, and permissionless.
+          parties. By using onchain voting, Defifa can stay uncensorable and
+          permissionless.
         </p>
 
         <p className="my-4 font-bold italic text-center text-lg">

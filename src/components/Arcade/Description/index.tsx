@@ -64,8 +64,8 @@ const ArcadeDescription = () => {
             of scores by majority vote – otherwise, the ETH stays in the pot.
           </p>
           <p className="mb-4">
-            Everything runs onchain, making Defifa games decentralized,
-            uncensorable, and unstoppable. No third parties needed.
+            Everything runs onchain, making Defifa games uncensorable and
+            permissionless. No third parties needed.
           </p>
           <p className="text-center text-lg">
             <em>
