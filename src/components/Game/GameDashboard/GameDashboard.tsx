@@ -8,7 +8,7 @@ import Link from "next/link";
 import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
 import { Header } from "./Header";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-
+import { QueueNextPhaseBanner } from "./GameContainer/PlayContent/PhaseDetails/QueueNextPhaseBanner";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -77,6 +77,10 @@ export function GameDashboard() {
 
         <Container className="mb-8">
           <Header />
+        </Container>
+
+        <Container className="mb-8">
+          <QueueNextPhaseBanner />
         </Container>
 
         <PlayContent />
