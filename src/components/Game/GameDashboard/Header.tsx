@@ -1,13 +1,11 @@
 import Button from "components/UI/Button";
 import { EthAmount } from "components/UI/EthAmount";
-import { EthLogo } from "components/UI/EthLogo";
-import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
-import { formatEther } from "ethers/lib/utils";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useCurrentPhaseTitle } from "./GameContainer/PlayContent/useCurrentPhaseTitle";
 
 function GameStats() {
   const {
@@ -57,6 +55,7 @@ export function Header() {
     metadata,
     loading: { metadataLoading },
   } = useGameContext();
+  const currentPhaseTitle = useCurrentPhaseTitle();
 
   const router = useRouter();
   const exitPath = router.asPath.replace("/play", "");
@@ -68,7 +67,12 @@ export function Header() {
       <div className="mt-3 mb-8">
         <Link href={exitPath}>
           <a>
-            <Button size="sm" category="tertiary" variant="default" className="mb-1">
+            <Button
+              size="sm"
+              category="tertiary"
+              variant="default"
+              className="mb-1"
+            >
               ← Exit
             </Button>
           </a>
@@ -82,7 +86,7 @@ export function Header() {
       <div className="flex justify-between">
         <div>
           <div>
-            <h1 className="text-3xl font-medium">Minting</h1>
+            <h1 className="text-3xl font-medium">{currentPhaseTitle}</h1>
             <div className="mt-2 max-w-3xl hidden md:block">
               <span>Rules:</span> {metadata?.description}
             </div>
