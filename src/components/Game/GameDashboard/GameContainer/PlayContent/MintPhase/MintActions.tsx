@@ -10,6 +10,7 @@ import { useState } from "react";
 import { toastSuccess } from "utils/toast";
 import { useAccount } from "wagmi";
 import { TierSelection } from "./useMintSelection";
+import { PhaseTimer } from "../PhaseTimer";
 
 export function MintActions({
   selectedTiers,

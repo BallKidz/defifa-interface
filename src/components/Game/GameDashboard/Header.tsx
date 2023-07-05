@@ -6,6 +6,7 @@ import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance"
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCurrentPhaseTitle } from "./GameContainer/PlayContent/useCurrentPhaseTitle";
+import { PhaseTimer } from "./GameContainer/PlayContent/PhaseTimer";
 
 function GameStats() {
   const {
@@ -86,7 +87,15 @@ export function Header() {
       <div className="flex justify-between">
         <div>
           <div>
-            <h1 className="text-3xl font-medium">{currentPhaseTitle}</h1>
+            <div className="flex gap-4 items-center">
+              <span className="h-[10px] w-[10px] bg-lime-400 shadow-glowGreen rounded-full"></span>
+
+              <h1 className="text-3xl font-medium">
+                <span>{currentPhaseTitle}</span>
+              </h1>
+
+              <PhaseTimer />
+            </div>
             <div className="mt-2 max-w-3xl hidden md:block">
               <span>Rules:</span> {metadata?.description}
             </div>

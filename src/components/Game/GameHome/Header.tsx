@@ -87,7 +87,7 @@ export function Header() {
         <Link href={playPath}>
           <a>
             <Button className="w-full" size="lg">
-              Explore and mint →
+              Play now →
             </Button>
           </a>
         </Link>
