@@ -65,24 +65,15 @@ export function Header() {
 
   return (
     <header>
-      <div className="mt-3 mb-8">
+      <nav className="mt-3 mb-4 flex gap-2 text-sm">
         <Link href={exitPath}>
-          <a>
-            <Button
-              size="sm"
-              category="tertiary"
-              variant="default"
-              className="mb-1"
-            >
-              ← Exit
-            </Button>
-          </a>
+          <a className="text-neutral-200">← {metadata?.name}</a>
         </Link>
-
-        <div className="text-sm text-neutral-300 font-light">
-          Playing {metadata?.name}
-        </div>
-      </div>
+        /
+        <Link href={exitPath}>
+          <a>Play</a>
+        </Link>
+      </nav>
 
       <div className="flex justify-between">
         <div>

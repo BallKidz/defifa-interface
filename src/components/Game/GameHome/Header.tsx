@@ -9,6 +9,7 @@ import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance"
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Card } from "./Card";
+import { useCurrentPhaseTitle } from "../GameDashboard/GameContainer/PlayContent/useCurrentPhaseTitle";
 
 function GameStats() {
   const {
@@ -62,6 +63,7 @@ export function Header() {
 
   const router = useRouter();
   const playPath = router.asPath + "/play";
+  const phaseTitle = useCurrentPhaseTitle();
 
   if (metadataLoading) return <div className="text-center">...</div>;
 
@@ -82,10 +84,11 @@ export function Header() {
         </div>
       </div>
       <div className="flex flex-col gap-3 justify-center items-center">
+        {phaseTitle}
         <GameStats />
 
         <Link href={playPath}>
-          <a>
+          <a className="w-full">
             <Button className="w-full" size="lg">
               Play now →
             </Button>
