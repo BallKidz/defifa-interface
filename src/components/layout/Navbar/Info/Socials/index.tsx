@@ -1,4 +1,3 @@
-import { FarcasterSignIn } from "components/SocialSharing/FarcasterSignIn";
 import Link from "next/link";
 
 const NavbarLinks = () => {
@@ -14,7 +13,6 @@ const NavbarLinks = () => {
 
   return (
     <div className="flex gap-8">
-      {/* <FarcasterSignIn /> */}
     </div>
   );
 };

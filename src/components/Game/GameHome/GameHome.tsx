@@ -11,6 +11,7 @@ import Button from "components/UI/Button";
 import { useRouter } from "next/router";
 import { Header } from "./Header";
 import { ActivityContent } from "../GameDashboard/GameContainer/ActivityContent/ActivityContent";
+import Chat from "components/Chat/Chat";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -80,20 +81,21 @@ export function GameHome() {
         <Container className="my-8">
           <Header />
         </Container>
-
         <div className="bg-neutral-950 py-10">
           <Container>
-            <div className="grid grid-cols-3">
-              <div className="col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
                 <h2 className="text-xl">Rules</h2>
                 {metadata?.description}
               </div>
+              <Chat />
               <div className="bg-neutral-900 rounded-lg p-4">
                 <ActivityContent />
               </div>
             </div>
           </Container>
         </div>
+
       </div>
     </>
   );
