@@ -8,8 +8,7 @@ import Link from "next/link";
 import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
 import { Header } from "./Header";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import { QueueNextPhaseBanner } from "./GameContainer/PlayContent/QueueNextPhaseBanner/QueueNextPhaseBanner"; import Chat from "components/Chat/Chat";
-
+import { QueueNextPhaseBanner } from "./GameContainer/PlayContent/QueueNextPhaseBanner/QueueNextPhaseBanner";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -83,9 +82,7 @@ export function GameDashboard() {
         <Container className="mb-8">
           <QueueNextPhaseBanner />
         </Container>
-
         <PlayContent />
-        <Chat />
 
       </div>
     </>
