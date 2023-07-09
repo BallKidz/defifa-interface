@@ -8,3 +8,7 @@ export const BALLKIDZ_MULTISIG_ADDRESS =
 export const JUICEBOX_PROJECT_METADATA_DOMAIN = 0;
 export const IDefifaDelegate_INTERFACE_ID = "0xf6de42df";
 export const IDefifa_DAO_PROTOCOL_FEE = 0.1;
+export const FarcasterAppName = "defifa"; // used by farsing to identify the app. Change this to your app name
+export const DefaultChannel = "https://defifa.net"; // no trailing slash, all lowercase
+// export const DefaultChannel = "chain://eip155:1/erc721:0xa45662638e9f3bbb7a6fecb4b17853b7ba0f3a60";
+export const FarcasterHub = "https://galaxy.ditti.xyz:2285";

@@ -13,7 +13,6 @@ import { useState } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import Wallet from "components/layout/Navbar/Wallet";
 import Image from "next/image";
-import { FarcasterSignIn } from "components/SocialSharing/FarcasterSignIn";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -62,7 +61,6 @@ const ArcadeWrapper = () => {
                   works
                 </a>
               </Link>
-              {/* <FarcasterSignIn /> */}
               <Wallet />
             </div>
           </Container>

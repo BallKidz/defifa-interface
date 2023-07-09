@@ -82,8 +82,8 @@ export function GameDashboard() {
         <Container className="mb-8">
           <QueueNextPhaseBanner />
         </Container>
-
         <PlayContent />
+
       </div>
     </>
   );
