@@ -40,8 +40,8 @@ export function CustomScorecardContent() {
       ) : (
         <>
           <p className="mb-5 text-sm text-neutral-300">
-            Give points to each NFT and submit your own scorecard. Points
-            determine each NFT's final redemption value.
+            Give points to each team and submit your scores. Points
+            determine how much of the pot goes to each team.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
             {tiers?.map((t) => (

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
 
 const ArcadeDescription = () => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   useEffect(() => {
     // Check if toggle state exists in local storage on page load
-    const storedToggleState = localStorage.getItem('toggleState');
+    const storedToggleState = localStorage.getItem("toggleState");
     if (storedToggleState) {
       setIsExpanded(JSON.parse(storedToggleState));
     }
@@ -16,68 +17,61 @@ const ArcadeDescription = () => {
     setIsExpanded(!isExpanded);
 
     // Store the toggle state in local storage
-    localStorage.setItem('toggleState', JSON.stringify(newToggleState));
+    localStorage.setItem("toggleState", JSON.stringify(newToggleState));
   };
-
 
   return (
     <div>
-      <div
-        className="flex items-center cursor-pointer"
-        onClick={toggleCard}
-      >
+      <div className="flex items-center cursor-pointer" onClick={toggleCard}>
         <div className="relative">
           <input
             type="checkbox"
             className="sr-only"
             checked={isExpanded}
-            onChange={() => { }}
+            onChange={() => {}}
           />
           <div className="w-10 h-4 bg-neutral-300 rounded-full shadow-inner"></div>
           <div
-            className={`${isExpanded ? 'translate-x-6 bg-pink-500' : 'translate-x-0 bg-pink-500'
-              } absolute top-0 left-0 w-4 h-4 transform rounded-full transition-transform`}
+            className={`${
+              isExpanded
+                ? "translate-x-6 bg-pink-500"
+                : "translate-x-0 bg-pink-500"
+            } absolute top-0 left-0 w-4 h-4 transform rounded-full transition-transform`}
           ></div>
         </div>
-        <span className="ml-2 text-sm font-medium text-neutral-700">
-          {isExpanded ? 'hide' : 'Learn how to play'}
+        <span className="ml-2 text-sm font-medium">
+          {isExpanded ? "hide" : "Learn how to play"}
         </span>
       </div>
       {isExpanded && (
         <div className="border border-pink-500 rounded-lg shadow p-4">
-          <ol className="space-y-4 mt-4">
-            <li>
-              <h2 className="text-xl font-bold mb-2">Play:</h2>
-              <p className="mb-4">
-                Select a game, review its rules and pick the outcomes you think may happen.
-                This fills the game pot. A portion may be reserved to support artists and creators.
-              </p>
-            </li>
-            <li>
-              <h2 className="text-xl font-bold mb-2">Score:</h2>
-              <p className="mb-4">
-                The first scorecard ratified determines how the pot is split. Scorecards are proposed by anyone.
-                50% of the picks made for an outcome are needed to allocate that outcome's 1 vote to a scorecard.
-                Once a scorecard has 50% of the outcomes attesting it, it may be ratified. Delegate your picks to a
-                trusted referee.
-              </p>
-            </li>
-            <li>
-              <h2 className="text-xl font-bold mb-2">Earn:</h2>
-              <p className="mb-4">
-                The pot backs the value of the winning picks and may also fund the creators. Scorecard ratification
-                determines which players may redeem their picks for their share of the pot. Creators and players earn
-                Defifa tokens.
-              </p>
-            </li>
-            <li>
-              <h2 className="text-xl font-bold mb-2">COMING SOON - Create:</h2>
-              <p className="mb-4">
-                Name your game and the outcomes, define the payout rules, set game times and prices to
-                play, reserve some of the pot if you want, then invite your friends.
-              </p>
-            </li>
-          </ol>
+          <p className="text-center max-w-3xl mx-auto text-lg mb-4">
+            Select a game, review its rules, and join a team to fill the game
+            pot. The winning teams get more of the pot when the game ends.
+          </p>
+          <p className="mb-4">
+            Defifa allows anyone to create an onchain prediction game for
+            sports, elections, world events, or anything else. A game's creator
+            sets up teams (representing the sports teams, political candidates,
+            or world event outcomes) which anyone can join by minting a team's
+            NFTs. Minting NFTs loads a shared reward pot, and the winning teams
+            get more of that pot when the game ends.
+          </p>
+          <p className="mb-4">
+            Which teams "win" is determined by onchain voting. Once NFT minting
+            closes, anyone can score the contest to determine how much of the
+            pot goes to each team. At least 50% of teams need to approve a set
+            of scores by majority vote – otherwise, the ETH stays in the pot.
+          </p>
+          <p className="mb-4">
+            Everything runs onchain, making Defifa games uncensorable and
+            permissionless. No third parties needed.
+          </p>
+          <p className="text-center text-lg">
+            <em>
+              <Link href="/about">Learn more &gt;</Link>
+            </em>
+          </p>
         </div>
       )}
     </div>

@@ -23,7 +23,7 @@ export function ScoringPhaseContent() {
             )}
             onClick={() => setSelectedTab("scorecards")}
           >
-            Scorecards
+            Scores
           </a>
         </li>
         <li>
@@ -36,7 +36,7 @@ export function ScoringPhaseContent() {
             )}
             onClick={() => setSelectedTab("customscorecard")}
           >
-            Submit scorecard
+            Submit scores
           </a>
         </li>
         <li>
@@ -62,4 +62,4 @@ export function ScoringPhaseContent() {
       )}
     </div>
   );
-}
+live}

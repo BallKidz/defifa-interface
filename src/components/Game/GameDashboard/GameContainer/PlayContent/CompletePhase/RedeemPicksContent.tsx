@@ -63,7 +63,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   if (!isConnected) {
     return (
       <Container>
-        <div>Connect your wallet to see your picks.</div>
+        <div>Connect your wallet to see your NFTs.</div>
       </Container>
     );
   }
@@ -79,8 +79,8 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   if (mintedTokens.length === 0) {
     return (
       <Container>
-        <div>You haven't minted yet.</div>
-        <div className="text-xs">(or, your mints haven't been indexed yet)</div>
+        <div>You haven't minted any NFTs yet.</div>
+        <div className="text-xs">(or, your NFTs haven't been indexed yet)</div>
       </Container>
     );
   }

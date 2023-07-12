@@ -14,22 +14,26 @@ const Explanation = () => {
 
       <div className="text-center max-w-2xl mx-auto mb-6 text-lg">
         <p>Defifa is an onchain gaming and governance experiment.</p>
-        <p>Make your picks, load the pot, and win.</p>
+        <p>Join a team, load the pot, and win.</p>
       </div>
       <div className="mx-auto max-w-4xl" style={{ textIndent: 50 }}>
         <p className="my-4">
           Defifa allows anyone to create an onchain prediction game for sports,
-          elections, world events, or anything else. A game's creator represents
-          different predictions as NFTs – people buy those NFTs to load a shared
-          pot, and the people who minted the right NFTs get more of the pot when
-          the game is finished.
+          elections, world events, or anything else. A game's creator sets up
+          teams (representing the sports teams, political candidates, or world
+          event outcomes) which anyone can join by minting a team's NFTs.
+          Minting NFTs loads a shared reward pot, and the winning teams get more
+          of that pot when the game ends.
         </p>
         <p className="my-4">
-          Which NFTs are "right" is decided by onchain voting. Once a game
-          finishes, anyone can submit scores to determine how much of the pot
-          will go to the NFTs for each prediction. At least 50% of the NFTs for
-          at least 50% of the predictions have to approve a set of scores –
-          otherwise, people can reclaim their ETH from the pot.
+          Which teams "win" is determined by onchain voting. Once NFT minting
+          closes, anyone can score the contest to determine how much of the pot
+          goes to each team. At least 50% of teams need to approve a set of
+          scores by majority vote – otherwise, the ETH stays in the pot.
+        </p>
+        <p className="my-4">
+          Everything runs onchain, making Defifa games uncensorable and
+          permissionless. No third parties needed.
         </p>
       </div>
 
@@ -37,50 +41,78 @@ const Explanation = () => {
         Game Stages
       </h2>
       <div className="mx-auto max-w-4xl" style={{ textIndent: 50 }}>
-        <p className="my-4">A Defifa game happens in four stages:</p>
+        <p className="my-4">A Defifa game happens in five stages:</p>
 
         <ol>
           <li className="my-2">
-            <b>1. Create:</b> Anyone can create a Defifa game. Game creators
-            represent different predictions as NFTs, decide the price of each
-            NFT, and set the game's schedule. Game creators also have the option
-            to reserve a percentage of the final pot or a percentage of the NFTs
-            for their team, for NFT artists, or for someone else.
+            <b>1. Create:</b> Anyone can create a Defifa game. Game creators set
+            up teams, set the prices of each team's NFT, and set the game's
+            schedule. Game creators can choose to reserve a percentage of the
+            pot or a percentage of the NFTs for the recipients of their
+            choosing.
           </li>
           <li className="my-2">
-            <b>2. Mint:</b> People make their predictions by minting NFTs – one
-            person can mint multiple NFTs corresponding to multiple predictions.
-            After an amount of time set by the game's creator, NFT minting
-            closes.
+            <b>2. Mint:</b> People can join teams by minting their NFTs. One
+            person can mint multiple NFTs from multiple teams. After an amount
+            of time set by the game's creator, minting closes.
           </li>
           <li className="my-2">
-            <b>3. Score:</b> Once a game finishes, anyone can score the game's
-            results to determine how much of the pot will go to each
-            prediction's NFTs. At least 50% of the NFTs for at least 50% of the
-            predictions have to vote for a set of scores – otherwise, people can
-            reclaim their ETH from the pot.
+            <b>3. Refunds:</b> A refund window opens if the game's creator set
+            one up. During this window, anyone can redeem their NFT to reclaim
+            their ETH from the pot. <b>This stage is optional.</b>
           </li>
           <li className="my-2">
-            <b>4. Earn:</b> If a set of scores is approved, people will be able
-            to burn their NFTs to claim their share of the rewards based on
-            their predictions.
+            <b>4. Score:</b> Anyone can score the game's results to determine
+            how much of the pot will go to each team. At least 50% of teams need
+            to approve a set of scores by majority vote – otherwise, the ETH
+            stays in the pot.
+          </li>
+          <li className="my-2">
+            <b>5. Earn:</b> Once scores are approved, people can burn their NFTs
+            to claim a portion of their team's ETH from the pot. They also get a
+            portion of any Defifa/Juicebox governance tokens earned by the game.
           </li>
         </ol>
       </div>
 
-      <h2 className="text-4xl md:text-4xl text-center font-medium mt-12 mb-6">FAQ</h2>
+      <h2 className="text-4xl md:text-4xl text-center font-medium mt-12 mb-6">
+        FAQ
+      </h2>
       <div className="mx-auto max-w-4xl mb-16">
+        <p className="my-4 font-bold italic text-center text-lg">
+          Why do we need to vote?
+        </p>
+        <p className="my-4" style={{ textIndent: 50 }}>
+          Defifa allows anyone to make prediction games without relying on third
+          parties. By using onchain voting, Defifa can stay uncensorable and
+          permissionless.
+        </p>
+
+        <p className="my-4 font-bold italic text-center text-lg">
+          How can I prevent voter manipulation?
+        </p>
+        <p className="my-4" style={{ textIndent: 50 }}>
+          Game participants can mitigate voter manipulation risk by delegating
+          their votes to trustworthy scorers. Game creators can mitigate voter
+          manipulation risk by properly balancing incentives when creating
+          games. In general, risk decreases as a game has more trustworthy
+          participants, larger teams, and more evenly distributed rewards.
+        </p>
+
         <p className="my-4 font-bold italic text-center text-lg">
           What does Defifa cost?
         </p>
         <p className="my-4" style={{ textIndent: 50 }}>
-          Defifa offers a free protocol for creators to bring their games to life.
-          When a game's scorecard is ratified, {IDefifa_DAO_PROTOCOL_FEE * 100}% of pot goes into the Defifa treasury,
-          which is managed by the community of players, developers, and supporters. This ensures a sustainable
-          ecosystem where players have a say in the governance and growth of Defifa.
-          Visit the{" "}<Link href="https://juicebox.money/@defifa" passHref>
-            <a className="underline hover:font-bold">Defifa DAO Juicebox</a>
-          </Link>{" "}for more information.
+          When scores are approved, {IDefifa_DAO_PROTOCOL_FEE * 100}% of the pot
+          goes into the Defifa treasury, and the game's participants receive
+          Defifa's governance token in return. Defifa is managed by a community
+          of players, developers, and supporters, and the treasury ensures a
+          sustainable ecosystem where players have a say in the governance and
+          growth of Defifa. See{" "}
+          <Link href="https://juicebox.money/@defifa" passHref>
+            <a className="underline hover:font-bold">Defifa's Juicebox</a>
+          </Link>{" "}
+          to learn more.
         </p>
 
         <p className="my-4 font-bold italic text-center text-lg">
@@ -92,7 +124,7 @@ const Explanation = () => {
             <a className="underline hover:font-bold">community DAO</a>
           </Link>
           . Defifa games take place onchain, making them independent,
-          transparent, and uncensorable. We can't delete or modify your game.
+          transparent, and uncensorable. Nobody can delete or modify your game.
         </p>
 
         <p className="my-4 font-bold italic text-center text-lg">

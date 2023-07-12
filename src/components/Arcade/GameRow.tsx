@@ -45,7 +45,7 @@ const availableActionsText = (phase?: DefifaGamePhase) => {
     case DefifaGamePhase.NO_CONTEST_INEVITABLE:
       return "Keep | Refund";
     case DefifaGamePhase.SCORING:
-      return "Score & Attest";
+      return "Score";
     default:
       return "Keep";
   }

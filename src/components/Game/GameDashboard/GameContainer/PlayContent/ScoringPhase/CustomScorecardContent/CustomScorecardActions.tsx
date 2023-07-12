@@ -66,7 +66,7 @@ export function CustomScorecardActions({
         disabled={totalScorePercentage !== 100}
         className="w-full mt-5"
       >
-        Submit scorecard
+        Submit scores
       </Button>
     </div>
   );
