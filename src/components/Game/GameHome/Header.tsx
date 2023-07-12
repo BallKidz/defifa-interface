@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Card } from "./Card";
 import { useCurrentPhaseTitle } from "../GameDashboard/GameContainer/PlayContent/useCurrentPhaseTitle";
+import FourItemsDisplay from "./FourItemsDisplay";
 
 function GameStats() {
   const {
@@ -41,15 +42,6 @@ function GameStats() {
           <span className="uppercase text-xs leading-none">in pot</span>
         </div>
       </div>
-      {/* <div className="flex gap-1 flex-col items-end">
-        <span className="uppercase text-sm">Mints</span>
-        <span className="font-medium flex items-center gap-1 text-2xl">
-          {totalSupply?.toNumber()}
-        </span>
-      </div> */}
-      {/* <div>
-        <span className="font-bold">6</span> players
-      </div> */}
     </div>
   );
 }
@@ -74,13 +66,7 @@ export function Header() {
           {metadata?.name}
         </h1>
         <div className="flex gap-4">
-          {tiers?.map((tier) => (
-            <Card
-              key={tier.id}
-              title={tier.teamName}
-              imageSrc={tier.teamImage}
-            />
-          ))}
+          <FourItemsDisplay />
         </div>
       </div>
       <div className="flex flex-col gap-3 justify-center items-center">
