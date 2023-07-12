@@ -1,13 +1,12 @@
 import Button from "components/UI/Button";
 import { EthAmount } from "components/UI/EthAmount";
-import { EthLogo } from "components/UI/EthLogo";
-import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
-import { formatEther } from "ethers/lib/utils";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useCurrentPhaseTitle } from "./GameContainer/PlayContent/useCurrentPhaseTitle";
+import { PhaseTimer } from "./GameContainer/PlayContent/PhaseTimer";
 
 function GameStats() {
   const {
@@ -57,6 +56,7 @@ export function Header() {
     metadata,
     loading: { metadataLoading },
   } = useGameContext();
+  const currentPhaseTitle = useCurrentPhaseTitle();
 
   const router = useRouter();
   const exitPath = router.asPath.replace("/play", "");
@@ -65,24 +65,28 @@ export function Header() {
 
   return (
     <header>
-      <div className="mt-3 mb-8">
+      <nav className="mt-3 mb-4 flex gap-2 text-sm">
         <Link href={exitPath}>
-          <a>
-            <Button size="sm" category="tertiary" variant="default" className="mb-1">
-              ← Exit
-            </Button>
-          </a>
+          <a className="text-neutral-200">← {metadata?.name}</a>
         </Link>
-
-        <div className="text-sm text-neutral-300 font-light">
-          Playing {metadata?.name}
-        </div>
-      </div>
+        /
+        <Link href={exitPath}>
+          <a>Play</a>
+        </Link>
+      </nav>
 
       <div className="flex justify-between">
         <div>
           <div>
-            <h1 className="text-3xl font-medium">Minting</h1>
+            <div className="flex gap-4 items-center">
+              <span className="h-[10px] w-[10px] bg-lime-400 shadow-glowGreen rounded-full"></span>
+
+              <h1 className="text-3xl font-medium">
+                <span>{currentPhaseTitle}</span>
+              </h1>
+
+              <PhaseTimer />
+            </div>
             <div className="mt-2 max-w-3xl hidden md:block">
               <span>Rules:</span> {metadata?.description}
             </div>
