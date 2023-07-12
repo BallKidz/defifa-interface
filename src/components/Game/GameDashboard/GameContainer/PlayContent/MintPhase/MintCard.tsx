@@ -26,6 +26,8 @@ export function MintCard({
       ? ((mintedCount / totalSupply?.toNumber()) * 100).toFixed(0)
       : 0;
 
+  const mintText = mintedCount === 1 ? "mint" : "mints";
+
   return (
     <PickCard
       title={title}
@@ -37,7 +39,7 @@ export function MintCard({
           <div className="text-xs">
             <div className="flex justify-between">
               <span className="text-neutral-300">
-                {totalSupply?.toNumber()} mints ({supplyPortion}%)
+                {mintedCount} {mintText} ({supplyPortion}%)
               </span>
             </div>
           </div>

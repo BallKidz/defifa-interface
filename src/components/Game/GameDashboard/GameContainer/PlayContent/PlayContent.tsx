@@ -4,7 +4,6 @@ import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { CompletePhaseContent } from "./CompletePhase/CompletePhaseContent";
 import { CountdownPhaseContent } from "./CountdownPhaseContent";
 import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
-import { PhaseDetails } from "./PhaseDetails/PhaseDetails";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
 

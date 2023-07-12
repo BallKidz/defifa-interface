@@ -10,6 +10,8 @@ import { SetStateAction, useState } from "react";
 import { useGameTopHolders } from "../GameTopHolders/useGameTopHolders";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 const PlotlyRenderers = createPlotlyRenderers(createPlotlyRenderers);
 interface Contract {
@@ -32,7 +34,7 @@ interface ResponseData {
 
 export function GamePlayerPowerLevel() {
     const [pivottableState, setPivottableState] = useState({});
-    const { gameId } = useGameContext();
+    const { gameId, metadata } = useGameContext();
     const { data, isLoading } = useGameTopHolders(gameId.toString()) as {
         data: ResponseData;
         isLoading: boolean;
@@ -61,17 +63,37 @@ export function GamePlayerPowerLevel() {
     console.log('game pivot', flatArray);
 
     return (
-        <><h2>Player Power Level {gameId}</h2>
-            <PivotTableUI
-                data={flatArray}
-                controlsHidden={true}
-                aggregatorName="Sum as Fraction of Columns"
-                rows={["Players"]}
-                cols={["Picks"]}
-                vals={["Mints"]}
-                rendererName={"Table"}
-                onChange={(s: SetStateAction<{}>) => setPivottableState(s)}
-                renderers={{ ...TableRenderers, ...PlotlyRenderers }}
-                {...pivottableState} /></>
+        <div className="border-2 border-pink-700 rounded-lg">
+            <div className="bg-pink-700 text-white text-md font-medium px-4 py-2 flex flex-col">
+                <span className="order-1">Player Power</span>
+                <span className="order-2">Rules</span>
+            </div>
+            <div className="min-height overflow-y-auto p-4">
+                <p className="text-sm mb-4">{metadata?.description}</p>
+                <PivotTableUI
+                    data={flatArray}
+                    controlsHidden={true}
+                    aggregatorName="Sum as Fraction of Columns"
+                    rows={["Players"]}
+                    cols={["Picks"]}
+                    vals={["Mints"]}
+                    rendererName={"Table"}
+                    onChange={(s: SetStateAction<{}>) => setPivottableState(s)}
+                    renderers={{ ...TableRenderers, ...PlotlyRenderers }}
+                    {...pivottableState} />
+                <p className="text-lime-300 px-4 py-2 text-sm mt-4">
+                    <Link href="/about">
+                        <a className="flex items-start">
+                            <ExclamationCircleIcon className="h-8 w-8 inline mt-1 mr-4" />
+                            This game is self-reported. You are relying on the honesty
+                            of the other players to abide by the rules. The table above
+                            depicts which players have the most power in the game.
+                            Ask yourself, "Who is the most powerful player and should I trust them?".
+                        </a>
+                    </Link>
+                </p>
+
+            </div>
+        </div >
     );
 }

@@ -38,10 +38,10 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ title, description, image, stylePlus }) => {
   return (
     <div className={`max-w-sm rounded overflow-hidden shadow-lg ${stylePlus}`}>
-      <Image className="w-full" src={image} alt={title} width={300} height={300} />
+      {/* <Image className="w-full" src={image} alt={title} width={300} height={300} /> */}
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2">{title}</div>
-        <p className="text-white text-base">{description}</p>
+        <p className="text-white text-base" dangerouslySetInnerHTML={{ __html: description }}></p>
       </div>
     </div>
   );
@@ -132,7 +132,7 @@ const HomePage = () => {
     },
     {
       title: 'Be The Entrepreneur',
-      description: 'Forget the corporate ladder. Climb the ranks of entrepreneurship with Defifa money games and stack those tokens!',
+      description: 'Forget the corporate ladder. Climb the ranks of <a href="https://jango.eth.limo/9E01E72C-6028-48B7-AD04-F25393307132/" class="text-lime-500">Retailism</a> with Defifa money games and stack those tokens!',
       image: '/assets/banny_yes.png',
     },
     // Add more Feature objects as needed
@@ -205,9 +205,9 @@ const HomePage = () => {
 
         {/* Features Section */}
         <div className="text-center mt-8">
-          <Link href="/about">
+          <Link href="/arcade">
             <button className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
-              Learn how to play
+              Discover new games
             </button>
           </Link>
         </div>
@@ -230,9 +230,9 @@ const HomePage = () => {
           </div>
         </div>
         <div className="text-center mt-8">
-          <Link href="/arcade">
+          <Link href="/about">
             <button className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded">
-              Discover new games
+              Learn how to play
             </button>
           </Link>
         </div>
