@@ -11,6 +11,9 @@ import { toastSuccess } from "utils/toast";
 import { useAccount } from "wagmi";
 import { TierSelection } from "./useMintSelection";
 import { PhaseTimer } from "../PhaseTimer";
+import { Tooltip } from "antd";
+import Link from "next/link";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 export function MintActions({
   selectedTiers,
@@ -137,7 +140,14 @@ export function MintActions({
             checked={claimVotes}
             onChange={(e) => setClaimVotes(e.target.checked)}
           />
-          <label htmlFor="claimVotes">Claim votes</label>
+          <label htmlFor="claimVotes">Claim voting power</label>
+          <Tooltip title="The game is self-reported. Claim voting power to have a say in how the pot is split. Unchecking will delegate your say to an account of the game deployers choosing.">
+            <span>
+              <Link href="/about" className="text-lime-500">
+                <QuestionMarkCircleIcon className="h-5 w-5" />
+              </Link>
+            </span>
+          </Tooltip>
         </div>
       </div>
       <Button

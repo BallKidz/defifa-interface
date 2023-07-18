@@ -175,49 +175,56 @@ export function ScorecardsContent() {
   }
 
   return (
-    <ActionContainer
-      renderActions={
-        selectedScorecard
-          ? () => <ScorecardActions selectedScorecard={selectedScorecard} />
-          : undefined
-      }
-    >
-      <div className="flex gap-8">
-        <div className="mb-3 flex flex-col">
-          <span className="uppercase text-xs">Your Votes</span>
-          <span className="text-lg">
-            {formatNumber(votes?.toNumber())} votes
-          </span>
+    <>
+      <Tooltip title="Select a scorecard that best suits your needs and objectives, while keeping
+        in mind the stated rules and the implicit agreement you embraced upon
+        entering the game.">
+        <QuestionMarkCircleIcon className="h-4 w-4 inline" />
+      </Tooltip>
+      <ActionContainer
+        renderActions={
+          selectedScorecard
+            ? () => <ScorecardActions selectedScorecard={selectedScorecard} />
+            : undefined
+        }
+      >
+        <div className="flex gap-8">
+          <div className="mb-3 flex flex-col">
+            <span className="uppercase text-xs">Your Votes</span>
+            <span className="text-lg">
+              {formatNumber(votes?.toNumber())} votes
+            </span>
+          </div>
+          <div className="mb-3 flex flex-col">
+            <span className="uppercase text-xs">Quorum</span>
+            <span className="text-lg">
+              {formatNumber(quorum?.toNumber())} votes
+            </span>
+          </div>
         </div>
-        <div className="mb-3 flex flex-col">
-          <span className="uppercase text-xs">Quorum</span>
-          <span className="text-lg">
-            {formatNumber(quorum?.toNumber())} votes
-          </span>
-        </div>
-      </div>
 
-      {!scorecards || scorecards.length === 0 ? (
-        <div className="mt-5 text-neutral-300">
-          <p>No scorecards submitted yet.</p> Anyone can submit a scorecard.
-          <div className="text-xs mb-5 mt-1">
-            (or, some scorecards haven't been indexed yet)
+        {!scorecards || scorecards.length === 0 ? (
+          <div className="mt-5 text-neutral-300">
+            <p>No scorecards submitted yet.</p> Anyone may submit a scorecard.
+            <div className="text-xs mb-5 mt-1">
+              (or, some scorecards haven't been indexed yet)
+            </div>
           </div>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {scorecards?.map((scorecard) => (
-              <ScorecardRow
-                key={scorecard.id.toString()}
-                scorecard={scorecard}
-                onClick={() => setSelectedScorecard(scorecard)}
-                gameQuroum={quorum}
-              />
-            ))}
-          </div>
-        </>
-      )}
-    </ActionContainer>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {scorecards?.map((scorecard) => (
+                <ScorecardRow
+                  key={scorecard.id.toString()}
+                  scorecard={scorecard}
+                  onClick={() => setSelectedScorecard(scorecard)}
+                  gameQuroum={quorum}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </ActionContainer>
+    </>
   );
 }

@@ -62,4 +62,4 @@ export function ScoringPhaseContent() {
       )}
     </div>
   );
-live}
+}
