@@ -65,13 +65,13 @@ export function Header() {
 
   return (
     <header>
-      <nav className="mt-3 mb-4 flex gap-2 text-sm">
+      <nav className="mt-6 mb-6 flex gap-2 text-sm">
         <Link href={exitPath}>
           <a className="text-neutral-200">← {metadata?.name}</a>
         </Link>
         /
         <Link href={exitPath}>
-          <a>Play</a>
+          <a className="font-medium">Play</a>
         </Link>
       </nav>
 
