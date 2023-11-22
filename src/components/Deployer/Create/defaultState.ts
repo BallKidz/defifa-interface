@@ -9,9 +9,9 @@ import { constants } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { DefifaLaunchProjectData } from "types/defifa";
 
-const DEFAULT_MINT_DURATION_SECONDS = 60 * 60; // 1 hour
-const DEFAULT_REFUND_DURATION_SECONDS = 60 * 0; // 1 hour
-const GAME_START_BUFFER_SECONDS = 60 * 1; // 1 minute
+const DEFAULT_MINT_DURATION_SECONDS = 60 * 60 * 48; // 48 hours
+const DEFAULT_REFUND_DURATION_SECONDS = 60 * 0; // 0 hour
+const GAME_START_BUFFER_SECONDS = 60 * 5; // 1 minute
 
 export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
   const chainData = getChainData();

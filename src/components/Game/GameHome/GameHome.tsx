@@ -75,7 +75,7 @@ export function GameHome() {
             </div>
           </Container>
         </div>
-        <Container className="my-8">
+        <Container className="my-16">
           <Header />
         </Container>
         <div className="bg-neutral-950 py-10">
@@ -84,7 +84,7 @@ export function GameHome() {
               <div className="col-span-2 rounded-lg">
                 <GamePlayerPowerLevel />
               </div>
-              <Chat />
+              {/* <Chat /> */}
             </div>
           </Container>
         </div>
