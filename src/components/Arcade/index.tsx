@@ -1,18 +1,14 @@
-import Navbar from "../layout/Navbar";
-import Info from "../layout/Navbar/Info";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import Container from "components/layout/Container";
-import ArcadeLoad from "./TurnOn";
-import ArcadeDescription from "./Description";
 import Footer from "components/layout/Footer";
-import { Header } from "components/Game/GameHome/Header";
-import Head from "next/head";
-import Link from "next/link";
+import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
 import { useAllGames } from "hooks/useAllGames";
-import { useState } from "react";
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
-import Wallet from "components/layout/Navbar/Wallet";
+import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
+import ArcadeDescription from "./Description";
+import ArcadeLoad from "./TurnOn";
 
 function GameButton({ game }: { game: any }) {
   return (
@@ -42,8 +38,6 @@ const ArcadeWrapper = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="bg-gradient-to-b from-slate-950 to-black">
-
-
         <div className="border-b border-neutral-900 py-2">
           <Container className="flex justify-between">
             <Link href="/">
@@ -65,17 +59,13 @@ const ArcadeWrapper = () => {
             </div>
           </Container>
         </div>
-        <Container className="mb-8">
-        </Container>
 
-        <nav className="border-b border-neutral-900 pb-2">
-          <Container>
-            <h1>Play Money Games With Friends</h1>
-            <ArcadeDescription />
-            <ArcadeLoad />
-            <Footer />
-          </Container>
-        </nav>
+        <Container>
+          <h1>Play Money Games With Friends</h1>
+          <ArcadeDescription />
+          <ArcadeLoad />
+        </Container>
+        <Footer />
       </div>
     </>
   );
