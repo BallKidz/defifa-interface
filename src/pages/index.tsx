@@ -7,6 +7,8 @@ import { TopPlayersContent } from "components/LeaderBoard/TopPlayers/TopPlayers"
 import { TopHoldrsContent } from "components/LeaderBoard/TopHodlrs/TopHodlrs";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
+import Navbar from "components/layout/Navbar";
+import Container from "components/layout/Container";
 
 interface GameTypesData {
   title: string;
@@ -204,21 +206,24 @@ const HomePage = () => {
       </Head>
 
       <main>
-        <h1 className="text-5xl md:text-7xl font-medium text-center mt-40 px-5 leading-normal">
-          Money Games With Friends
-        </h1>
-        <p className="text-2xl text-center mt-8">
-          Prediction games for anything, onchain. May the best strategy win.
-        </p>
+        <Container>
+          <Navbar />
+          <div className="pt-24 pb-52 px-10 text-center">
+            <h1 className="text-5xl md:text-7xl font-medium text-center !leading-snug">
+              Money Games With Friends
+            </h1>
+            <p className="text-2xl text-center mt-4 mb-12">
+              Prediction games for anything, onchain. May the best strategy win.
+            </p>
 
-        {/* Features Section */}
-        <div className="text-center mt-12 mb-24">
-          <Link href="/arcade">
-            <Button size="lg">
-              Enter arcade <ArrowRightIcon className="h-4 w-4 ml-2 inline-block" />
-            </Button>
-          </Link>
-        </div>
+            <Link href="/arcade">
+              <Button size="lg">
+                Enter arcade{" "}
+                <ArrowRightIcon className="h-4 w-4 ml-2 inline-block" />
+              </Button>
+            </Link>
+          </div>
+        </Container>
 
         <div className="container mx-auto">
           {/* <h1 className="text-4xl text-center my-8">Features text</h1> */}

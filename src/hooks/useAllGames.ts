@@ -24,6 +24,7 @@ export function useAllGames() {
 
   return useQuery("allGames", async () => {
     const res = await request<{ contracts: Game[] }>(graphUrl, allGamesQuery);
+    console.log(res);
     return res.contracts;
   });
 }

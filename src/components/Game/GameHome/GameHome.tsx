@@ -45,7 +45,7 @@ export function GameHome() {
         <div className="border-b border-neutral-900 text-sm text-neutral-400">
           <Container>
             <div className="flex overflow-auto">
-              <div className="px-6 py-1 border-r border-neutral-800">
+              <div className="px-6 py-1 border-r border-neutral-800 whitespace-nowrap">
                 <Link href="/arcade">All games</Link>
               </div>
               {games?.map((g) => (
@@ -67,7 +67,8 @@ export function GameHome() {
             <div className="flex gap-6 items-center">
               <Link href="/about">
                 <a className="flex items-center gap-2 text-neutral-300 text-sm">
-                  <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How it works
+                  <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How it
+                  works
                 </a>
               </Link>
               <Wallet />
@@ -86,8 +87,8 @@ export function GameHome() {
               <Chat />
             </div>
           </Container>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
-  )
+  );
 }
