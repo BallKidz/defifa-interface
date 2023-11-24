@@ -8,6 +8,7 @@ import {
   DefifaTierRedemptionWeight,
   DefifaTierRedemptionWeightParams,
 } from "types/defifa";
+import { useState } from "react";
 
 function useTierRedemptionWeights(
   scorecardPercentages: ScorecardPercentages
@@ -30,10 +31,15 @@ function useTierRedemptionWeights(
 
 export function CustomScorecardActions({
   scorecardPercentages,
+  resetScorecardPercentages,
+  onSubmit,
 }: {
   scorecardPercentages: ScorecardPercentages;
+  resetScorecardPercentages: () => void;
+  onSubmit: () => void;
 }) {
   const { governor, gameId } = useGameContext();
+  const [submitted, setSubmitted] = useState(false);
 
   const tierRedemptionWeights = useTierRedemptionWeights(scorecardPercentages);
 
@@ -49,6 +55,12 @@ export function CustomScorecardActions({
       0
     ) ?? 0;
 
+  const handleButtonClick = () => {
+    write?.();
+    resetScorecardPercentages();
+    onSubmit();
+  };
+
   return (
     <div>
       <div className="flex gap-2 items-center">
@@ -61,13 +73,13 @@ export function CustomScorecardActions({
         <span className="text-red-500">Can't allocate more than 100%</span>
       ) : null}
       <Button
-        onClick={() => write?.()}
+        onClick={handleButtonClick}
         loading={isLoading}
         disabled={totalScorePercentage !== 100}
         className="w-full mt-5"
       >
         Submit scores
       </Button>
-    </div>
+    </div >
   );
 }
