@@ -1,7 +1,7 @@
 export const etherscanLink = (
   type: "tx" | "address",
   hash: string,
-  network: "goerli" | "mainnet" = "goerli"
+  network: "sepolia" | "mainnet" = "sepolia"
 ) => {
   let subdomain = "";
   if (network !== "mainnet") {

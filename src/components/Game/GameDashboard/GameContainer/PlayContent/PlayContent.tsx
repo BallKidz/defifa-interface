@@ -6,6 +6,7 @@ import { CountdownPhaseContent } from "./CountdownPhaseContent";
 import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
+import { NoContestPhaseContent } from "./NoContestPhase/NoContestPhaseContent";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
@@ -13,8 +14,8 @@ const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.REFUND]: RefundPhaseContent,
   [DefifaGamePhase.SCORING]: ScoringPhaseContent,
   [DefifaGamePhase.COMPLETE]: CompletePhaseContent,
-  [DefifaGamePhase.NO_CONTEST]: RefundPhaseContent,
-  [DefifaGamePhase.NO_CONTEST_INEVITABLE]: RefundPhaseContent,
+  [DefifaGamePhase.NO_CONTEST]: NoContestPhaseContent,
+  [DefifaGamePhase.NO_CONTEST_INEVITABLE]: NoContestPhaseContent,
 };
 
 export function PlayContent() {

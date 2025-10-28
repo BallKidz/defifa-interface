@@ -18,6 +18,7 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
     decrementTierSelection,
     selectedTiers,
     totalSelected,
+    clearSelection,
   } = useMintSelection();
 
   const mintedTokens = picks?.contracts?.[0]?.mintedTokens ?? [];
@@ -71,8 +72,7 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
   if (mintedTokens.length === 0) {
     return (
       <Container>
-        <div>You haven't minted any NFTs yet.</div>
-        <div className="text-xs">(or, your NFTs haven't been indexed yet)</div>
+        <div>You haven't minted any positions.</div>
       </Container>
     );
   }
@@ -81,7 +81,7 @@ export function RefundPicksContent({ disabled }: { disabled?: boolean }) {
     <ActionContainer
       renderActions={
         totalSelected && !disabled
-          ? () => <RefundActions tokenIdsToRedeem={tokenIdsToRedeem} />
+          ? () => <RefundActions tokenIdsToRedeem={tokenIdsToRedeem} onSuccess={clearSelection} />
           : undefined
       }
     >

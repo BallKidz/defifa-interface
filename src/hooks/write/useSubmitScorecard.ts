@@ -1,38 +1,104 @@
 import { useChainData } from "hooks/useChainData";
+import { useGameChainValidation } from "hooks/useChainValidation";
 import {
   DefifaTierRedemptionWeight,
   DefifaTierRedemptionWeightParams,
 } from "types/defifa";
 import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useWriteContract,
+  useWaitForTransactionReceipt,
 } from "wagmi";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Abi } from "viem";
 
 export function useSubmitScorecard(
   gameId: number,
   _tierWeights: DefifaTierRedemptionWeightParams[],
-  governorAddress: string | undefined
+  governorAddress: string | undefined,
+  onSuccess?: () => void
 ) {
   const { chainData } = useChainData();
+  const queryClient = useQueryClient();
+  
+  // Validate chain for game transactions
+  const chainValidation = useGameChainValidation(chainData.chainId);
 
-  const { config } = usePrepareContractWrite({
-    addressOrName: governorAddress ?? "",
-    contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "submitScorecardFor",
-    args: [gameId, _tierWeights],
-    chainId: chainData.chainId,
-    enabled: Boolean(
-      _tierWeights && _tierWeights.length > 0 && governorAddress
-    ),
-  });
+  const { data: hash, writeContract, error, isError } = useWriteContract();
 
-  const { data, write, error, isError } = useContractWrite(config);
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  // Handle success with useEffect
+  useEffect(() => {
+    if (isSuccess && hash) {
+      // Invalidate scorecards cache to show new scorecard immediately
+      queryClient.invalidateQueries({ queryKey: ["scorecards", gameId] });
+      
+      onSuccess?.();
+    }
+  }, [isSuccess, hash, onSuccess, queryClient, gameId]);
+
+  const write = async () => {
+    console.log("🔥 useSubmitScorecard write called:", {
+      gameId,
+      governorAddress,
+      tierWeights: _tierWeights,
+      tierWeightsLength: _tierWeights?.length,
+      hasGovernorAddress: !!governorAddress,
+      chainData: !!chainData
+    });
+
+    // Check chain validation first
+    if (!chainValidation.isValid) {
+      if (chainValidation.needsSwitch) {
+        try {
+          await chainValidation.switchChain();
+          // Wait a moment for chain switch to complete
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        } catch (error) {
+          console.error('Failed to switch chain:', error);
+          return;
+        }
+      } else {
+        console.error('Chain validation failed:', chainValidation.error);
+        return;
+      }
+    }
+
+    if (_tierWeights && _tierWeights.length > 0 && governorAddress) {
+      // Convert BigNumber to string for contract call
+      const validatedTierWeights = _tierWeights.map((weight) => {
+        return {
+          id: weight.id,
+          cashOutWeight: weight.redemptionWeight.toString()
+        };
+      });
+      
+      console.log("🔥 Submitting scorecard with:", {
+        address: governorAddress,
+        functionName: "submitScorecardFor",
+        args: [gameId, validatedTierWeights],
+        chainId: chainData.chainId
+      });
+      
+      writeContract({
+        address: governorAddress as `0x${string}`,
+        abi: chainData.DefifaGovernor.interface as any,
+        functionName: "submitScorecardFor",
+        args: [gameId, validatedTierWeights],
+        chainId: chainData.chainId,
+      });
+    } else {
+      console.log("🔥 useSubmitScorecard write blocked:", {
+        hasTierWeights: !!_tierWeights,
+        tierWeightsLength: _tierWeights?.length,
+        hasGovernorAddress: !!governorAddress
+      });
+    }
+  };
 
   return {
-    data,
+    data: hash,
     write,
     isLoading,
     isSuccess,

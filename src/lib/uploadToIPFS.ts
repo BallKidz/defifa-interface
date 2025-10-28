@@ -1,17 +1,27 @@
-import { create } from "ipfs-http-client";
-// TODO: Move this to a .env file and add it to .gitignore
-const projectId = "2NdpbtprhXeb7h0SvsLPnX19Z00";
-const projectSecret = "3477ef4dc95aeb5da2903d62e535d05c";
-const authorization = "Basic " + btoa(projectId + ":" + projectSecret);
+// Use Juicebox's IPFS proxy API instead of direct Infura access
+// This avoids needing to manage IPFS credentials
+const JUICEBOX_IPFS_API = "https://api.juicebox.money/api/ipfs/file";
 
-const ipfs = create({
-  host: "ipfs.infura.io",
-  port: 5001,
-  protocol: "https",
-  headers: {
-    authorization: authorization,
-  },
-});
+export type InfuraPinResponse = {
+  Hash: string;
+};
+
+const pinFile = async (file: File | Blob | string): Promise<InfuraPinResponse> => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(JUICEBOX_IPFS_API, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+
+  const data: InfuraPinResponse = await res.json();
+  return data;
+};
 
 export async function uploadToIPFS(file: File) {
   if (!file) {
@@ -20,8 +30,8 @@ export async function uploadToIPFS(file: File) {
   }
 
   try {
-    const { path } = await ipfs.add(file);
-    return path;
+    const result = await pinFile(file);
+    return result.Hash;
   } catch (error) {
     console.error("Error uploading file:", error);
   }
@@ -29,16 +39,15 @@ export async function uploadToIPFS(file: File) {
 
 export async function uploadJsonToIpfs(jsonData: { [k: string]: unknown }) {
   try {
-    // Convert the JSON data to a Buffer
-    const buffer = Buffer.from(JSON.stringify(jsonData));
+    // Convert JSON to Blob
+    const jsonString = JSON.stringify(jsonData);
+    const blob = new Blob([jsonString], { type: "application/json" });
 
-    // Add the JSON file to IPFS
-    const result = await ipfs.add(buffer);
+    // Upload to IPFS via Juicebox API
+    const result = await pinFile(blob);
 
-    // Get the CID of the uploaded JSON file
-    const cid = result.path;
-
-    return cid;
+    // Return the CID
+    return result.Hash;
   } catch (error) {
     console.error("Error uploading JSON file to IPFS:", error);
   }

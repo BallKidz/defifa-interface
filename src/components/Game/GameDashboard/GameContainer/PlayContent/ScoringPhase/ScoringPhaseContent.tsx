@@ -16,14 +16,14 @@ export function ScoringPhaseContent() {
         <li>
           <a
             className={twJoin(
-              selectedTab === "scorecards"
+              selectedTab === "mypicks"
                 ? "bg-neutral-800 text-neutral-50 rounded-md"
                 : "text-neutral-400",
               "cursor-pointer hover:text-neutral-300 px-4 py-2"
             )}
-            onClick={() => setSelectedTab("scorecards")}
+            onClick={() => setSelectedTab("mypicks")}
           >
-            Scores
+            My Positions
           </a>
         </li>
         <li>
@@ -36,20 +36,20 @@ export function ScoringPhaseContent() {
             )}
             onClick={() => setSelectedTab("customscorecard")}
           >
-            Submit scores
+            Scorecards
           </a>
         </li>
         <li>
           <a
             className={twJoin(
-              selectedTab === "mypicks"
+              selectedTab === "scorecards"
                 ? "bg-neutral-800 text-neutral-50 rounded-md"
                 : "text-neutral-400",
               "cursor-pointer hover:text-neutral-300 px-4 py-2"
             )}
-            onClick={() => setSelectedTab("mypicks")}
+            onClick={() => setSelectedTab("scorecards")}
           >
-            My NFTs
+            Vote On Outcome
           </a>
         </li>
       </ul>
@@ -62,4 +62,4 @@ export function ScoringPhaseContent() {
       )}
     </div>
   );
-live}
+}

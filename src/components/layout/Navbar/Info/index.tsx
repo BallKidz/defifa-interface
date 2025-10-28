@@ -4,15 +4,16 @@ import { Logo } from "../Logo";
 import Wallet from "../Wallet";
 import Socials from "./Socials";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
 
 const Info = () => {
+  const { isInMiniApp } = useFarcasterContext();
+
   return (
     <div className="flex flex-col md:flex-row justify-between w-full items-center">
       <div className="flex gap-8 items-center">
         <Link href="/">
-          <a>
-            <Logo />
-          </a>
+          <Logo />
         </Link>
 
         <Socials />
@@ -24,7 +25,8 @@ const Info = () => {
         </Link> */}
       </div>
 
-      <Wallet />
+      {/* Only show wallet when not in Mini App context */}
+      {!isInMiniApp && <Wallet />}
     </div>
   );
 };

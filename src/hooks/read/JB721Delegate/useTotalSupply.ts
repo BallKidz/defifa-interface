@@ -1,24 +1,43 @@
 import { BigNumber, constants } from "ethers";
+import { getChainData } from "config";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useTotalSupply(
-  dataSourceAddress: string | undefined
+  dataSourceAddress: string | undefined,
+  chainIdOverride?: number
 ) {
-  const { chainData } = useChainData();
+  const { chainData: connectedChainData } = useChainData();
+  
+  const targetChainId = chainIdOverride || connectedChainData.chainId;
+  const chainData = chainIdOverride ? getChainData(chainIdOverride) : connectedChainData;
 
-  const JBTiered721DelegateStore = chainData.JBTiered721DelegateStore;
   const hasDataSource = Boolean(
     dataSourceAddress && dataSourceAddress !== constants.AddressZero
   );
 
-  const res = useContractRead({
-    addressOrName: JBTiered721DelegateStore?.address ?? "",
-    contractInterface: JBTiered721DelegateStore?.interface ?? "",
+  // First, get the store address from the DefifaDelegate contract
+  const { data: storeAddress } = useReadContract({
+    address: dataSourceAddress as `0x${string}`,
+    abi: chainData.DefifaDelegate.interface as Abi,
+    functionName: "store",
+    chainId: targetChainId,
+    query: {
+      enabled: hasDataSource,
+    },
+  });
+
+  // Now query the total supply from that store
+  const res = useReadContract({
+    address: (storeAddress?.toString() ?? "") as `0x${string}`,
+    abi: chainData.JBTiered721DelegateStore.interface as Abi,
     functionName: "totalSupplyOf",
-    args: dataSourceAddress,
-    chainId: chainData.chainId,
-    enabled: hasDataSource,
+    args: hasDataSource && storeAddress ? [dataSourceAddress as `0x${string}`] : undefined,
+    chainId: targetChainId,
+    query: {
+      enabled: hasDataSource && !!storeAddress,
+    },
   });
 
   return {

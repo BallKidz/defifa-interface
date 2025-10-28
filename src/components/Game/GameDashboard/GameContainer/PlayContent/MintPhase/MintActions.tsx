@@ -2,10 +2,10 @@ import Button from "components/UI/Button";
 import { EthAmount } from "components/UI/EthAmount";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
-import { BigNumber, constants } from "ethers";
+import { constants } from "ethers";
 import { usePay } from "hooks/write/usePay";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toastSuccess } from "utils/toast";
 import { useAccount } from "wagmi";
@@ -33,18 +33,21 @@ export function MintActions({
     tiers?.reduce((acc, curr) => {
       const tierId = curr.id.toString();
       const count = selectedTiers?.[tierId]?.count ?? 0;
-      return acc.add(curr.price.mul(count));
-    }, BigNumber.from(0)) ?? BigNumber.from(0);
+      return acc + (curr.price * BigInt(count));
+    }, 0n) ?? 0n;
 
-  const tierIdsToMint = Object.keys(selectedTiers ?? {}).reduce(
-    (acc: number[], tierId) => {
-      const tiers = Array(selectedTiers?.[tierId].count).fill(
-        parseInt(tierId)
-      ) as number[];
-      return [...acc, ...tiers];
-    },
-    []
-  );
+  // Build tierIdsToMint array from selected tiers
+  // IMPORTANT: Must be sorted in ascending order for DefifaDelegate v5 (BAD_TIER_ORDER check)
+  const tierIdsToMint = Object.keys(selectedTiers ?? {})
+    .map(Number) // Convert string keys to numbers
+    .sort((a, b) => a - b) // Sort tier IDs ascending
+    .reduce(
+      (acc: number[], tierId) => {
+        const tiers = Array(selectedTiers?.[tierId].count).fill(tierId) as number[];
+        return [...acc, ...tiers];
+      },
+      []
+    );
 
   const { write, isLoading, isSuccess, isError } = usePay({
     amount: costWei.toString(),
@@ -61,7 +64,7 @@ export function MintActions({
     onSuccess() {
       toastSuccess("Mint complete");
 
-      router.reload();
+      window.location.reload();
     },
   });
 
@@ -110,7 +113,7 @@ export function MintActions({
                       <div>{name}</div>
                     </div>
                     <div>
-                      <EthAmount amountWei={tier.price.mul(count)} />
+                      <EthAmount amountWei={tier.price * BigInt(count)} />
                     </div>
                   </div>
                 ) : null}

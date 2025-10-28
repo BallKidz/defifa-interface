@@ -1,55 +1,60 @@
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useGameContext } from "contexts/GameContext";
 import { useChainData } from "hooks/useChainData";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { toastError, toastSuccess } from "utils/toast";
 import {
   useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useWriteContract,
+  useWaitForTransactionReceipt,
 } from "wagmi";
+import { Abi } from "viem";
 
 export function useQueueNextPhase(simulate = false) {
   const { address, connector, isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
   const { gameId } = useGameContext();
   const { chainData } = useChainData();
   const router = useRouter();
 
-  const { config, error: err } = usePrepareContractWrite({
-    addressOrName: chainData.DefifaDeployer.address,
-    contractInterface: chainData.DefifaDeployer.interface,
-    functionName: "queueNextPhaseOf",
-    args: [gameId],
-    chainId: chainData.chainId,
+  const { data: hash, writeContract, error, isError } = useWriteContract();
+
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({
+    hash,
   });
 
-  const { data, write, error, isError } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-    onSuccess() {
-      toastSuccess("Next phase queued");
-      router.reload();
-    },
-    onError: (error) => {
-      toastError("Failed to queue next phase");
-      console.error(error);
-    },
-  });
+  // Handle success
+  if (isSuccess && hash) {
+    toastSuccess("Next phase queued");
+    window.location.reload();
+  }
 
   return {
-    data,
+    data: hash,
     write: () => {
       if (!isConnected) {
-        openConnectModal!();
+        return; // Let the UI handle showing connect modal
       }
-      write?.();
+      
+      // TODO: The queueing functionality is not yet implemented in the deployed contracts
+      // Available functions in DefifaDeployer: baseProtocolFeeDivisor, baseProtocolProjectId, 
+      // controller, currentGamePhaseOf, currentGamePotOf, defifaFeeDivisor, defifaProjectId,
+      // delegateCodeOrigin, fulfillCommitmentsOf, fulfilledCommitmentsOf, governor, 
+      // launchGameWith, nextPhaseNeedsQueueing, onERC721Received, registry, splitGroup, 
+      // timesFor, tokenOf, tokenUriResolver
+      
+      toastError("Queue Next Phase functionality is not yet available in the deployed contracts. This feature is coming soon!");
+      
+      // Placeholder - this will need to be updated when the contract function is available
+      // writeContract({
+      //   address: chainData.DefifaDeployer.address as `0x${string}`,
+      //   abi: chainData.DefifaDeployer.interface as Abi,
+      //   functionName: "queueNextPhaseOf", // Function doesn't exist yet
+      //   args: [gameId],
+      //   chainId: chainData.chainId,
+      // });
     },
-    isLoading,
-    isSuccess,
-    error,
-    isError,
+    isLoading: false, // Always false since we're not making a real call
+    isSuccess: false,
+    error: null,
+    isError: false,
   };
 }

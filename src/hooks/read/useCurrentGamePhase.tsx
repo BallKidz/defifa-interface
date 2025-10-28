@@ -1,5 +1,7 @@
+import { getChainData } from "config";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export enum DefifaGamePhase {
   COUNTDOWN,
@@ -11,16 +13,22 @@ export enum DefifaGamePhase {
   NO_CONTEST,
 }
 
-export function useCurrentGamePhase(gameId: number) {
-  const { chainData } = useChainData();
+export function useCurrentGamePhase(gameId: number, chainIdOverride?: number) {
+  const { chainData: connectedChainData } = useChainData();
+  
+  // Use the provided chainId if available, otherwise use the connected wallet's chain
+  const targetChainId = chainIdOverride || connectedChainData.chainId;
+  const chainData = chainIdOverride ? getChainData(chainIdOverride) : connectedChainData;
 
-  const res = useContractRead({
-    addressOrName: chainData.DefifaDeployer.address,
-    contractInterface: chainData.DefifaDeployer.interface,
+  const res = useReadContract({
+    address: chainData.DefifaDeployer.address as `0x${string}`,
+    abi: chainData.DefifaDeployer.interface as Abi,
     functionName: "currentGamePhaseOf",
-    args: gameId,
-    chainId: chainData.chainId,
-    watch: true,
+    args: [BigInt(gameId)],
+    chainId: targetChainId,
+    query: {
+      refetchInterval: 30000, // Poll every 30 seconds to reduce subgraph load
+    },
   });
 
   return {

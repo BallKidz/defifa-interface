@@ -1,6 +1,7 @@
 import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useMaxTiers(dataSourceAddress: string | undefined) {
   const { chainData } = useChainData();
@@ -11,12 +12,14 @@ export function useMaxTiers(dataSourceAddress: string | undefined) {
     dataSourceAddress && dataSourceAddress !== constants.AddressZero
   );
 
-  return useContractRead({
-    addressOrName: JBTiered721DelegateStore?.address ?? "",
-    contractInterface: JBTiered721DelegateStore?.interface ?? "",
+  return useReadContract({
+    address: JBTiered721DelegateStore?.address as `0x${string}`,
+    abi: JBTiered721DelegateStore?.interface as Abi,
     functionName: "maxTierIdOf",
-    enabled: hasDataSource,
-    args: hasDataSource ? [dataSourceAddress] : null,
+    args: hasDataSource ? [dataSourceAddress] : undefined,
     chainId: chainData.chainId,
+    query: {
+      enabled: hasDataSource,
+    },
   });
 }

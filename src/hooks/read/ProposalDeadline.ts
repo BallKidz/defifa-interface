@@ -1,12 +1,13 @@
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useProposalDeadline(scorecardId: number, governor: string) {
   const { chainData } = useChainData();
 
-  return useContractRead({
-    addressOrName: governor,
-    contractInterface: chainData.DefifaGovernor.interface,
+  return useReadContract({
+    address: governor as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
     functionName: "proposalDeadline",
     args: [scorecardId],
     chainId: chainData.chainId,

@@ -5,9 +5,9 @@ import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
 import { formatEther } from "ethers/lib/utils";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
-import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
+import { useGamePotBalance } from "hooks/read/useGamePotBalance";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { Card } from "./Card";
 import { useCurrentPhaseTitle } from "../GameDashboard/GameContainer/PlayContent/useCurrentPhaseTitle";
 import FourItemsDisplay from "./FourItemsDisplay";
@@ -19,9 +19,9 @@ function GameStats() {
   } = useGameContext();
   const { gameId } = useGameContext();
   const { data: treasuryAmount, isLoading: isTerminalLoading } =
-    usePaymentTerminalBalance(gameId);
+    useGamePotBalance(gameId);
 
-  const mintText = totalSupply?.toNumber() === 1 ? "mint" : "mints";
+  const mintText = totalSupply && Number(totalSupply) === 1 ? "mint" : "mints";
 
   if (isTerminalLoading || !totalSupply)
     return <div className="text-center">...</div>;
@@ -54,15 +54,19 @@ export function Header() {
   } = useGameContext();
 
   const router = useRouter();
-  const playPath = router.asPath + "/play";
+  const pathname = usePathname();
+  // Build play path - pathname already includes the network prefix (e.g., /game/sep:33)
+  const playPath = (pathname || "") + "/play";
   const phaseTitle = useCurrentPhaseTitle();
+  
+  console.log("Header playPath:", playPath); // Debug log
 
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
     <div className="grid grid-cols-3 gap-8">
       <div className="col-span-2">
-        <h1 className="text-3xl mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
+        <h1 className="text-3xl font-medium mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
           {metadata?.name}
         </h1>
         <div className="flex gap-4">
@@ -73,12 +77,10 @@ export function Header() {
         {phaseTitle}
         <GameStats />
 
-        <Link href={playPath}>
-          <a className="w-full">
-            <Button className="w-full" size="lg">
-              Play now →
-            </Button>
-          </a>
+        <Link href={playPath} className="w-full">
+          <Button className="w-full" size="lg">
+            Enter Game →
+          </Button>
         </Link>
       </div>
     </div>

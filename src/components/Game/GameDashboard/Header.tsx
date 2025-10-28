@@ -2,9 +2,9 @@ import Button from "components/UI/Button";
 import { EthAmount } from "components/UI/EthAmount";
 import { useGameContext } from "contexts/GameContext";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
-import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
+import { useGamePotBalance } from "hooks/read/useGamePotBalance";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 import { useCurrentPhaseTitle } from "./GameContainer/PlayContent/useCurrentPhaseTitle";
 import { PhaseTimer } from "./GameContainer/PlayContent/PhaseTimer";
 
@@ -15,9 +15,9 @@ function GameStats() {
   } = useGameContext();
   const { gameId } = useGameContext();
   const { data: treasuryAmount, isLoading: isTerminalLoading } =
-    usePaymentTerminalBalance(gameId);
+    useGamePotBalance(gameId);
 
-  const mintText = totalSupply?.toNumber() === 1 ? "mint" : "mints";
+  const mintText = totalSupply && Number(totalSupply) === 1 ? "mint" : "mints";
 
   if (isTerminalLoading || !totalSupply)
     return <div className="text-center">...</div>;
@@ -59,19 +59,20 @@ export function Header() {
   const currentPhaseTitle = useCurrentPhaseTitle();
 
   const router = useRouter();
-  const exitPath = router.asPath.replace("/play", "");
+  const pathname = usePathname();
+  const exitPath = pathname?.replace("/play", "") || "";
 
   if (metadataLoading) return <div className="text-center">...</div>;
 
   return (
     <header>
-      <nav className="mt-3 mb-4 flex gap-2 text-sm">
-        <Link href={exitPath}>
-          <a className="text-neutral-200">← {metadata?.name}</a>
+      <nav className="mt-6 mb-6 flex gap-2 text-sm">
+        <Link href={exitPath} className="text-neutral-200">
+          ← {metadata?.name}
         </Link>
         /
-        <Link href={exitPath}>
-          <a>Play</a>
+        <Link href={exitPath} className="font-medium">
+          Play
         </Link>
       </nav>
 

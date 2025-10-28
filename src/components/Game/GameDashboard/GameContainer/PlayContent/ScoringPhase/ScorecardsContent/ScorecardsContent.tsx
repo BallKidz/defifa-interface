@@ -1,11 +1,9 @@
-import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { ActionContainer } from "components/Game/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import Button from "components/UI/Button";
 import { EthAddress } from "components/UI/EthAddress";
 import { Pill } from "components/UI/Pill";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
-import { BigNumber } from "ethers";
 import { useProposalVotes } from "hooks/read/ProposalVotes";
 import { useScorecardState } from "hooks/read/ScorecardState";
 import { useGameQuorum } from "hooks/read/useGameQuorum";
@@ -13,11 +11,13 @@ import { useAccountVotes } from "hooks/read/useGetVotes";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
+import { useTierAttestationUnits } from "hooks/read/useTierAttestationUnits";
+import { useGameNFTAddress } from "hooks/read/useGameNFTAddress";
 import { useState } from "react";
 import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 import { formatNumber } from "utils/format/formatNumber";
-import { Tooltip } from 'antd';
+import { Tooltip } from 'components/UI/Tooltip';
 
 const stateText = (state: DefifaScorecardState) => {
   switch (state) {
@@ -28,9 +28,9 @@ const stateText = (state: DefifaScorecardState) => {
     case DefifaScorecardState.DEFEATED:
       return "Defeated";
     case DefifaScorecardState.SUCCEEDED:
-      return "Quorum reached";
+      return "Quorum";
     case DefifaScorecardState.RATIFIED:
-      return "Locked in";
+      return "Locked";
     default:
       return "Unknown";
   }
@@ -42,32 +42,36 @@ function ScorecardRow({
   onClick,
 }: {
   scorecard: Scorecard;
-  gameQuroum: BigNumber;
+  gameQuroum: bigint;
   onClick?: () => void;
 }) {
   const { governor, nfts, gameId } = useGameContext();
-
   const { data: proposalVotes } = useProposalVotes(
     gameId,
-    scorecard.id,
+    scorecard.scorecardId,
     governor
   );
 
+  const mappedTierWeights = scorecard.tierWeights.map((weight) => ({
+    id: weight.tierId, // Use tierId, not the composite id
+    redemptionWeight: weight.redemptionWeight,
+  }));
+
+
   const { write, isLoading } = useRatifyScorecard(
     gameId,
-    scorecard.tierWeights.map((weight) => ({
-      id: weight.tierId,
-      redemptionWeight: weight.redemptionWeight,
-    })),
+    scorecard.scorecardId,
+    mappedTierWeights,
     governor
   );
   const { data: proposalState } = useScorecardState(
     gameId,
-    scorecard.id,
+    scorecard.scorecardId,
     governor
   );
-
-  const votesRemaining = gameQuroum?.sub(proposalVotes ?? BigNumber.from(0));
+  const votesRemaining = gameQuroum && proposalVotes 
+    ? gameQuroum - BigInt(proposalVotes.toString()) 
+    : gameQuroum;
 
   return (
     <div className="border border-neutral-800 shadow-glowWhite rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
@@ -109,18 +113,22 @@ function ScorecardRow({
 
         <div className="flex justify-between mb-1 text-sm">
           <span className="text-neutral-300">Total Votes</span>
-          <span>{formatNumber(proposalVotes?.toNumber())}</span>
+          <span>{formatNumber(proposalVotes ? Number(proposalVotes) : 0)}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-neutral-300">Votes needed</span>
-          <span>{formatNumber(Math.max(votesRemaining?.toNumber(), 0))}</span>
+          <span>{formatNumber(Math.max(votesRemaining ? Number(votesRemaining) : 0, 0))}</span>
         </div>
       </div>
 
       <div className="flex border-t border-neutral-700">
         <Button
           disabled={proposalState !== DefifaScorecardState.SUCCEEDED}
-          onClick={() => write?.()}
+          onClick={() => {
+            if (write) {
+              write();
+            }
+          }}
           className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-neutral-800 rounded-none"
           category="secondary"
         >
@@ -140,35 +148,85 @@ function ScorecardRow({
 
 function ScorecardActions({
   selectedScorecard,
+  onSuccess,
 }: {
   selectedScorecard: Scorecard;
+  onSuccess?: () => void;
 }) {
   const { governor, gameId } = useGameContext();
-  const { write, isLoading } = useAttestToScorecard(
+  const { write, isLoading, error, isError } = useAttestToScorecard(
     gameId,
-    selectedScorecard.id,
+    selectedScorecard.scorecardId,
+    governor,
+    onSuccess
+  );
+  
+  const { data: scorecardState } = useScorecardState(
+    gameId,
+    selectedScorecard.scorecardId,
     governor
   );
+
+  const handleVote = () => {
+    if (write) {
+      write();
+    }
+  };
+
+  // Check if scorecard is in a votable state (ACTIVE or SUCCEEDED)
+  const canVote = scorecardState === DefifaScorecardState.ACTIVE || 
+                  scorecardState === DefifaScorecardState.SUCCEEDED;
+
 
   return (
     <div className="flex justify-between items-center w-full">
       <Tooltip title={selectedScorecard.id.toString()}>
-        <div className="flex gap-2 items-center truncate">{selectedScorecard.id.toString().substring(0, 6)}...</div>
+        <div className="flex gap-2 items-center truncate">
+          {/* {selectedScorecard.scorecardId.toString().substring(0, 6)}... */}
+          {scorecardState !== undefined && stateText(scorecardState) && (
+            <Pill size="sm">{stateText(scorecardState)}</Pill>
+          )}
+        </div>
       </Tooltip>
 
-      <Button loading={isLoading} onClick={() => write?.()}>
-        Vote for scorecard
-      </Button>
+      <div className="flex flex-col items-end">
+        <Button 
+          loading={isLoading} 
+          onClick={handleVote}
+          disabled={!write || !canVote}
+        >
+          {isLoading ? "Voting..." : "Vote for scorecard"}
+        </Button>
+        {!canVote && scorecardState !== undefined && (
+          <span className="text-yellow-500 text-xs mt-1">
+            Scorecard is {stateText(scorecardState)?.toLowerCase() || 'not votable'}
+          </span>
+        )}
+        {isError && error && (
+          <span className="text-red-500 text-xs mt-1">
+            Error: {error.message}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
 
 export function ScorecardsContent() {
   const [selectedScorecard, setSelectedScorecard] = useState<Scorecard>();
-  const { gameId, governor } = useGameContext();
+  const { gameId, governor, currentPhase, nfts } = useGameContext();
   const { data: scorecards, isLoading } = useScorecards(gameId);
   const { data: votes } = useAccountVotes(gameId, governor);
   const { data: quorum } = useGameQuorum(gameId, governor);
+
+  function handleVoteSuccess() {
+    // Clear the selected scorecard (shopping cart)
+    setSelectedScorecard(undefined);
+  }
+  
+  // Get the proper NFT contract address from subgraph
+  const { nftAddress } = useGameNFTAddress(gameId);
+
 
   if (isLoading) {
     return <Container>...</Container>;
@@ -178,7 +236,7 @@ export function ScorecardsContent() {
     <ActionContainer
       renderActions={
         selectedScorecard
-          ? () => <ScorecardActions selectedScorecard={selectedScorecard} />
+          ? () => <ScorecardActions selectedScorecard={selectedScorecard} onSuccess={handleVoteSuccess} />
           : undefined
       }
     >
@@ -186,33 +244,31 @@ export function ScorecardsContent() {
         <div className="mb-3 flex flex-col">
           <span className="uppercase text-xs">Your Votes</span>
           <span className="text-lg">
-            {formatNumber(votes?.toNumber())} votes
+            {formatNumber(votes ? Number(votes) : 0)} votes
           </span>
         </div>
-        <div className="mb-3 flex flex-col">
-          <span className="uppercase text-xs">Quorum</span>
-          <span className="text-lg">
-            {formatNumber(quorum?.toNumber())} votes
-          </span>
-        </div>
-      </div>
+            <div className="mb-3 flex flex-col">
+              <span className="uppercase text-xs">Quorum</span>
+              <span className="text-lg">
+                {formatNumber(quorum ? Number(quorum) : 0)} votes
+              </span>
+            </div>
+          </div>
+
 
       {!scorecards || scorecards.length === 0 ? (
         <div className="mt-5 text-neutral-300">
           <p>No scorecards submitted yet.</p> Anyone can submit a scorecard.
-          <div className="text-xs mb-5 mt-1">
-            (or, some scorecards haven't been indexed yet)
-          </div>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {scorecards?.map((scorecard) => (
+            {scorecards?.map((scorecard: Scorecard) => (
               <ScorecardRow
                 key={scorecard.id.toString()}
                 scorecard={scorecard}
                 onClick={() => setSelectedScorecard(scorecard)}
-                gameQuroum={quorum}
+                gameQuroum={quorum ? BigInt(quorum.toString()) : BigInt(0)}
               />
             ))}
           </div>

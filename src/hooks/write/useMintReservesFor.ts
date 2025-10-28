@@ -1,45 +1,41 @@
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useWriteContract,
+  useWaitForTransactionReceipt,
 } from "wagmi";
 import { useOutstandingNumber } from "../read/OutStandingReservedTokens";
 import { useChainData } from "../useChainData";
+import { Abi } from "viem";
 
 export function useMintReservesFor(
   simulate = false,
   dataSourceAddress: string
 ) {
   const { isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
   const { chainData } = useChainData();
   const outStanding = useOutstandingNumber();
-
-  const { config, error: err } = usePrepareContractWrite({
-    addressOrName: dataSourceAddress,
-    contractInterface: chainData.DefifaDelegate.interface,
-    functionName: "mintReservesFor((uint256,uint256)[])",
-    args: [outStanding],
-    chainId: chainData.chainId,
-  });
 
   const filteredOutstanding = outStanding.filter((item) => {
     return item.count > 0;
   });
 
-  const { data, write, error, isError } = useContractWrite(config);
+  const { data: hash, writeContract, error, isError } = useWriteContract();
 
-  const { isLoading, isSuccess } = useWaitForTransaction({ hash: data?.hash });
+  const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
 
   return {
-    data,
+    data: hash,
     write: () => {
       if (!isConnected) {
-        openConnectModal!();
+        return; // Let the UI handle showing connect modal
       } else {
-        write?.();
+        writeContract({
+          address: dataSourceAddress as `0x${string}`,
+          abi: chainData.DefifaDelegate.interface as Abi,
+          functionName: "mintReservesFor((uint256,uint256)[])",
+          args: [outStanding],
+          chainId: chainData.chainId,
+        });
       }
     },
     isLoading,

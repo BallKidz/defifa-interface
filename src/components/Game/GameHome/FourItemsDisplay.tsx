@@ -15,9 +15,16 @@ const FourItemsDisplay = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % (tiers?.length || 1));
     };
 
+    console.log("FourItemsDisplay - tiers:", tiers);
+
     if (!tiers) {
+        console.log("FourItemsDisplay - No tiers available");
         // Handle the case when tiers is null
-        return null; // or return a loading/error component
+        return (
+            <div className="text-center text-neutral-400 py-8">
+                {metadataLoading ? "Loading NFTs..." : "No NFTs available"}
+            </div>
+        );
     }
 
     const displayedItems = [...tiers]
@@ -29,13 +36,19 @@ const FourItemsDisplay = () => {
             key: index,
         }));
 
+    console.log("FourItemsDisplay - displayedItems:", displayedItems.map(t => ({
+        id: t.id,
+        teamName: t.teamName,
+        hasImage: !!t.teamImage
+    })));
+
     return (
         <div>
-            <div className="flex justify-between">
+            <div className="flex gap-4 flex-wrap">
                 {displayedItems?.map((tier) => (
                     <Card
                         key={tier.key}
-                        title={tier?.teamName || ""}
+                        title={tier?.teamName || `Team ${tier.id}`}
                         imageSrc={tier?.teamImage || ""}
                     />
                 ))}

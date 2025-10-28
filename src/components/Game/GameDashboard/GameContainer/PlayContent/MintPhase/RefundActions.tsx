@@ -3,13 +3,16 @@ import { useRedeemTokensOf } from "hooks/write/useRedeemTokensOf";
 
 export function RefundActions({
   tokenIdsToRedeem,
+  onSuccess,
 }: {
   tokenIdsToRedeem: string[];
+  onSuccess?: () => void;
 }) {
   const totalSelected = tokenIdsToRedeem?.length ?? 0;
 
   const { write, isLoading } = useRedeemTokensOf({
     tokenIds: tokenIdsToRedeem,
+    onSuccess,
   });
 
   const picksText = totalSelected === 1 ? "pick" : "picks";

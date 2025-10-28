@@ -19,6 +19,12 @@ export const fromWad4 = (wadValue?: BigNumberish) => {
   return formattedResult;
 };
 
+export const fromWad6 = (wadValue?: BigNumberish) => {
+  const result = formatUnits(wadValue ?? "0");
+  const formattedResult = parseFloat(result).toFixed(6);
+  return formattedResult;
+};
+
 export const formatNumber = (value: number | undefined): string => {
   return typeof value === "undefined"
     ? ""

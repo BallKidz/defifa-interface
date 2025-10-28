@@ -11,6 +11,7 @@ export interface DefifaConfig {
 
   JBProjects: ContractData;
   JBTiered721DelegateStore: ContractData;
+  JBRulesets: ContractData;
   JBController: ContractData;
   JBSingleTokenPaymentTerminalStore: {
     interface: ContractInterface;
@@ -19,6 +20,7 @@ export interface DefifaConfig {
   DefifaDelegate: ContractData;
   DefifaGovernor: ContractData;
   DefifaDeployer: ContractData;
+  DefifaTokenUriResolver: ContractData;
 
   subgraph: string;
 }

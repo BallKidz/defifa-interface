@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react";
-import { BigNumber, ethers } from "ethers";
-import { useProvider } from "wagmi";
+import { ethers } from "ethers";
+import { usePublicClient } from "wagmi";
 import { useChainData } from "../useChainData";
 import { DefifaConfig } from "config/types";
+import { Abi } from "viem";
 
 export function useOutstandingNumber() {
-  const provider = useProvider();
+  const publicClient = usePublicClient();
   const { chainData } = useChainData();
+  
+  // Convert publicClient to ethers provider for backward compatibility
+  const provider = publicClient ? new ethers.providers.JsonRpcProvider(
+    publicClient.transport.url || `https://eth.llamarpc.com`,
+    publicClient.chain?.id
+  ) : null;
 
   const [outstandingNumbers, setOutstandingNumbers] = useState<
     JBTiered721MintReservesForTiersData[]
   >([{ tierId: 0, count: 0 }]);
 
   useEffect(() => {
-    getOutstandingNumberForAllTiers(provider, chainData).then((data) => {
-      setOutstandingNumbers(data);
-    });
+    if (provider) {
+      getOutstandingNumberForAllTiers(provider, chainData).then((data) => {
+        setOutstandingNumbers(data);
+      });
+    }
   }, [provider, chainData]);
 
   return outstandingNumbers;
@@ -39,12 +48,12 @@ export function getOutstandingNumberForAllTiers(
   const outstandingNumberForAllTiers = Promise.all(
     tiers.map(async (tier) => {
       try {
-        const num: BigNumber =
+        const num =
           await contract.numberOfReservedTokensOutstandingFor(
             dataSourceAddress,
             tier
           );
-        const res = { tierId: tier, count: num.toNumber() };
+        const res = { tierId: tier, count: Number(num) };
 
         return res;
       } catch (error) {

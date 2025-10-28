@@ -3,7 +3,7 @@ import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
 import { useAmountRedeemed } from "hooks/read/useAmountRedeemed";
-import { usePaymentTerminalOverflow } from "hooks/read/usePaymentTerminalOverflow";
+import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { useAccount } from "wagmi";
 import { ActionContainer } from "../../ActionContainer/ActionContainer";
 import { useMintSelection } from "../MintPhase/useMintSelection";
@@ -16,7 +16,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   const { nfts, gameId, currentFundingCycle } = useGameContext();
 
   const { data: picks, isLoading: picksLoading } = useMyMints();
-  const { data: overflow } = usePaymentTerminalOverflow(gameId);
+  const { data: overflow } = usePaymentTerminalBalance(gameId);
   const { data: amountRedeemed } = useAmountRedeemed(
     currentFundingCycle?.metadata.dataSource
   );
@@ -42,6 +42,16 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
     },
     {}
   );
+
+  console.log("🔥 RedeemPicksContent debug", {
+    mintedTokens,
+    mintedTokensLength: mintedTokens.length,
+    pickCounts,
+    DEFAULT_NFT_MAX_SUPPLY,
+    nfts: nfts?.tiers,
+    overflow: overflow?.toString(),
+    amountRedeemed: amountRedeemed?.toString()
+  });
 
   const pickedNfts = nfts.tiers?.filter((nft) =>
     Object.keys(pickCounts).includes(nft.id.toString())
@@ -79,7 +89,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   if (mintedTokens.length === 0) {
     return (
       <Container>
-        <div>You haven't minted any NFTs yet.</div>
+        <div>You haven't minted any positions.</div>
         <div className="text-xs">(or, your NFTs haven't been indexed yet)</div>
       </Container>
     );

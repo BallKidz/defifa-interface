@@ -24,13 +24,39 @@ export function RedeemCard({
     amountRedeemed,
   });
 
+  console.log("🔥 RedeemCard debug", {
+    title,
+    tokenIds,
+    tokenIdsLength: tokenIds.length,
+    firstTokenId: tokenIds[0],
+    dataSource: currentFundingCycle?.metadata.dataSource,
+    overflow: overflow?.toString(),
+    amountRedeemed: amountRedeemed?.toString(),
+    tokenRedemptionValue: tokenRedemptionValue?.toString(),
+    tokenRedemptionValueInEth: tokenRedemptionValue ? (parseFloat(tokenRedemptionValue.toString()) / 1e18).toFixed(10) : "0",
+    isZero: tokenRedemptionValue ? tokenRedemptionValue.isZero() : true
+  });
+
   return (
     <PickCard
       title={title}
       extra={
-        <span className="items-center flex gap-2">
-          <EthAmount amountWei={tokenRedemptionValue} /> each
-        </span>
+        <div className="flex flex-col gap-1">
+          <div className="text-xs text-neutral-400">
+            {tokenIds.length} NFT{tokenIds.length > 1 ? "s" : ""}
+          </div>
+          {tokenRedemptionValue && !tokenRedemptionValue.isZero() ? (
+            <div className="flex items-center gap-2">
+              <EthAmount amountWei={tokenRedemptionValue} className="text-sm" />
+              <span className="text-xs text-neutral-400">each</span>
+            </div>
+          ) : (
+            <div className="text-sm text-neutral-500 flex items-center gap-2">
+              <span className="w-3 h-3 bg-neutral-600 rounded-full"></span>
+              <span>No value (0% in scorecard)</span>
+            </div>
+          )}
+        </div>
       }
       selectionLimit={tokenIds.length}
       {...props}
