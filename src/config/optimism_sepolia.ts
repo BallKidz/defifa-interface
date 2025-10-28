@@ -1,8 +1,8 @@
-// Import ABIs from deployment artifacts (official v5 Optimism Sepolia deployments)
-import DefifaDelegate from "../../../defifa-collection-deployer-v5/deployments/defifa-v5/optimism_sepolia/DefifaDelegate.json";
-import DefifaDeployer from "../../../defifa-collection-deployer-v5/deployments/defifa-v5/optimism_sepolia/DefifaDeployer.json";
-import DefifaGovernor from "../../../defifa-collection-deployer-v5/deployments/defifa-v5/optimism_sepolia/DefifaGovernor.json";
-import DefifaTokenUriResolver from "../../../defifa-collection-deployer-v5/deployments/defifa-v5/optimism_sepolia/DefifaTokenUriResolver.json";
+// Import ABIs from shared ABI files (same across all chains)
+import DefifaDelegate from "../abis/DefifaDelegate.json";
+import DefifaDeployer from "../abis/DefifaDeployer.json";
+import DefifaGovernor from "../abis/DefifaGovernor.json";
+import DefifaTokenUriResolver from "../abis/DefifaTokenUriResolver.json";
 import { optimismSepolia } from "viem/chains";
 import { DefifaConfig } from "./types";
 import { EthereumAddress } from "types/defifa";

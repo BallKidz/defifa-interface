@@ -13,7 +13,6 @@
     },
     "dependencies": {
         "@apollo/client": "^3.7.1",
-        "defifa-collection-deployer-v5": "github:BallKidz/defifa-collection-deployer-v5#refactor/nana-v5",
         "@farcaster/hub-web": "^0.3.6",
         "@farcaster/miniapp-sdk": "^0.2.1",
         "@farcaster/miniapp-wagmi-connector": "^1.1.0",
