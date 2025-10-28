@@ -14,6 +14,10 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "jbm.infura-ipfs.io",
+      },
+      {
+        protocol: "https",
         hostname: "*.ipfs.dweb.link",
       },
       {
