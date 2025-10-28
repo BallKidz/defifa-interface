@@ -25,6 +25,7 @@ const nextConfig = {
         hostname: "gateway.pinata.cloud",
       },
     ],
+    unoptimized: true, // Disable Next.js image optimization for IPFS images
   },
 };
 
