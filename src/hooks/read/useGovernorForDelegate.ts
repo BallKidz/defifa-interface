@@ -2,7 +2,7 @@ import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
 import { useReadContract } from "wagmi";
 import { Abi } from "viem";
-import DefifaDelegate from "../../../../defifa-collection-deployer-v5/deployments/defifa-v5/sepolia/DefifaDelegate.json";
+import DefifaDelegate from "../../abis/DefifaDelegate.json";
 
 export function useGovernorForDelegate(dataSource: string | undefined) {
   const { chainData } = useChainData();
