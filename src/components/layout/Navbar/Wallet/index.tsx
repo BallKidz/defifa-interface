@@ -1,43 +1,46 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ConnectKitButton } from "connectkit";
 import Button from "components/UI/Button";
+import { MiniAppWallet } from "./MiniAppWallet";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
 
 const Wallet = () => {
+  const { isInMiniApp } = useFarcasterContext();
+
+  // If we're in a Mini App, use the Mini App wallet component
+  if (isInMiniApp === true) {
+    return <MiniAppWallet />;
+  }
+
+  // For web users, use ConnectKit's ConnectKitButton with custom styling
   return (
-    <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        mounted,
-      }) => {
-        const ready = mounted;
-        const connected = ready && account && chain;
+    <ConnectKitButton.Custom>
+      {({ isConnected, isConnecting, show, hide, address, ensName, chain }) => {
+        const ready = true; // ConnectKit is always ready
+        const connected = ready && isConnected && address && chain;
 
         return (
           <div
-            {...(!ready && {
+            {...(!ready ? {
               "aria-hidden": true,
               style: {
                 opacity: 0,
                 pointerEvents: "none",
                 userSelect: "none",
               },
-            })}
+            } : {})}
           >
             {(() => {
               if (!connected) {
                 return (
-                  <Button onClick={openConnectModal} category="secondary">
+                  <Button onClick={show} category="secondary">
                     Connect
                   </Button>
                 );
               }
 
-              if (chain.unsupported) {
+              if (chain?.unsupported) {
                 return (
-                  <Button onClick={openChainModal} category="secondary">
+                  <Button onClick={show} category="secondary">
                     Wrong network
                   </Button>
                 );
@@ -45,18 +48,18 @@ const Wallet = () => {
 
               return (
                 <Button
-                  onClick={openAccountModal}
+                  onClick={show}
                   category="secondary"
                   className="w-full"
                 >
-                  {account.ensName ?? account.displayName}
+                  {ensName ?? `${address?.slice(0, 6)}...${address?.slice(-4)}`}
                 </Button>
               );
             })()}
           </div>
         );
       }}
-    </ConnectButton.Custom>
+    </ConnectKitButton.Custom>
   );
 };
 

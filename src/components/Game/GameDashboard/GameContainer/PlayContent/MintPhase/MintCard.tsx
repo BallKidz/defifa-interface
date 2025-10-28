@@ -1,7 +1,6 @@
 import { EthAmount } from "components/UI/EthAmount";
 import { PickCard, PickCardProps } from "components/UI/PickCard";
 import { useGameContext } from "contexts/GameContext";
-import { BigNumber } from "ethers";
 
 export function MintCard({
   mintedCount,
@@ -15,7 +14,7 @@ export function MintCard({
   mintedCount: number;
   playerCount?: number;
   tierId: number;
-  price: BigNumber;
+  price: bigint;
 } & Omit<PickCardProps, "extra">) {
   const {
     nfts: { totalSupply, tiers: nfts },
@@ -23,7 +22,7 @@ export function MintCard({
 
   const supplyPortion =
     mintedCount > 0 && totalSupply
-      ? ((mintedCount / totalSupply?.toNumber()) * 100).toFixed(0)
+      ? ((mintedCount / Number(totalSupply)) * 100).toFixed(0)
       : 0;
 
   const mintText = mintedCount === 1 ? "mint" : "mints";

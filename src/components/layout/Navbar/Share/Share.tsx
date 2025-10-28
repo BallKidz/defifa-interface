@@ -6,7 +6,6 @@ const CopyURLToClipboard = () => {
     navigator.clipboard
       .writeText(currentURL)
       .then(() => {
-        console.log("URL copied to clipboard:", currentURL);
         // You can show a success message or perform additional actions here
       })
       .catch((error) => {

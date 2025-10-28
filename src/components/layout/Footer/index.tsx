@@ -28,58 +28,45 @@ const Footer = () => {
 
         <ul className="flex flex-col gap-2">
           <li>
-            <Link href="https://wc2022.defifa.net" passHref>
-              <a className={LINK_CLASS} target="_blank">
-                Past games
-              </a>
+            <Link href="https://wc2022.defifa.net" className={LINK_CLASS} target="_blank">
+              Past games
             </Link>
           </li>
           <li>
-            <Link href="https://juicebox.money/@defifa" passHref>
-              <a className={LINK_CLASS} target="_blank">
-                Juicebox
-              </a>
+            <Link href="https://juicebox.money/@defifa" className={LINK_CLASS} target="_blank">
+              Juicebox
             </Link>
           </li>
           <li>
-            <Link href="https://github.com/ballkidz" passHref>
-              <a className={LINK_CLASS} target="_blank">
-                Code
-              </a>
+            <Link href="https://github.com/ballkidz" className={LINK_CLASS} target="_blank">
+              Code
             </Link>
           </li>
           <li>
-            <Link href="https://warpcast.com/Defifa420" passHref>
-              <a className={LINK_CLASS} target="_blank">
-                Farcaster
-              </a>
+            <Link href="https://warpcast.com/Defifa420" className={LINK_CLASS} target="_blank">
+              Farcaster
             </Link>
           </li>
         </ul>
 
         <ul className="flex flex-col gap-2">
           <li>
-            <Link href="https://discord.gg/hrZnvs65Nh" passHref>
-              <a className={LINK_CLASS} target="_blank">
-                Discord
-              </a>
+            <Link href="https://discord.gg/hrZnvs65Nh" className={LINK_CLASS} target="_blank">
+              Discord
             </Link>
           </li>
           <li>
             <Link
               href="https://opensea.io/collection/defifa-american-football-playoffs-2023"
-              passHref
+              className={LINK_CLASS}
+              target="_blank"
             >
-              <a className={LINK_CLASS} target="_blank">
-                OpenSea
-              </a>
+              OpenSea
             </Link>
           </li>
           <li>
-            <Link href="https://twitter.com/Defifa420" passHref>
-              <a className={LINK_CLASS} target="_blank">
-                Twitter
-              </a>
+            <Link href="https://twitter.com/Defifa420" className={LINK_CLASS} target="_blank">
+              Twitter
             </Link>
           </li>
 

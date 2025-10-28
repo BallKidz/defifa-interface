@@ -20,8 +20,14 @@ export function useTokenRedemptionValue({
 
   // clone of contract algo
   // https://github.com/BallKidz/defifa-collection-deployer/blob/main/contracts/DefifaDelegate.sol#L454-L456
-  return overflow
-    .add(amountRedeemed)
+  const overflowBN = BigNumber.from(overflow || 0);
+  const amountRedeemedBN = BigNumber.from(amountRedeemed || 0);
+  
+  const result = overflowBN
+    .add(amountRedeemedBN)
     .mul(redemptionWeight ?? BigNumber.from(0))
     .div(TOTAL_REDEMPTION_WEIGHT);
+
+
+  return result;
 }

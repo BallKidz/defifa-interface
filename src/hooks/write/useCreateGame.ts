@@ -1,55 +1,54 @@
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { constants } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { useChainData } from "hooks/useChainData";
+import { useChainValidation } from "hooks/useChainValidation";
+import { getChainData } from "config";
 import { DefifaLaunchProjectData } from "types/defifa";
 import {
   useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useWriteContract,
+  useWaitForTransactionReceipt,
 } from "wagmi";
+import { Abi } from "viem";
 
-export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
-  const { isConnected } = useAccount();
-  const { openConnectModal } = useConnectModal();
+export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData, targetChainId?: number) {
+  const { isConnected, chainId: walletChainId } = useAccount();
   const { chainData } = useChainData();
+  
+  // Use targetChainId if provided, otherwise use current wallet chain
+  const deploymentChainId = targetChainId || chainData.chainId;
+  const deploymentChainData = targetChainId ? getChainData(targetChainId) : chainData;
+  
+  // Validate chain for deployment
+  const chainValidation = useChainValidation(deploymentChainId);
 
   const defaultTokenUriResolver =
     _launchProjectData?.defaultTokenUriResolver || constants.AddressZero;
+  
+  // Destructure to remove 'rules' field which is only for IPFS metadata, not the contract
   const preparedLaunchProjectData = _launchProjectData
-    ? {
-        ..._launchProjectData,
-        defaultTokenUriResolver,
-        tiers: _launchProjectData.tiers.map((tier) => ({
-          ...tier,
-          price: parseEther(tier.price),
-        })),
-      }
+    ? (() => {
+        const { rules, ...contractData } = _launchProjectData;
+        return {
+          ...contractData,
+          defaultTokenUriResolver,
+          tiers: _launchProjectData.tiers.map((tier) => ({
+            ...tier,
+            price: parseEther(tier.price),
+          })),
+        };
+      })()
     : undefined;
 
-  const {
-    config,
-    error: prepareContractWriteError,
-    isError: isPrepareContractWriteError,
-  } = usePrepareContractWrite({
-    addressOrName: chainData.DefifaDeployer.address,
-    contractInterface: chainData.DefifaDeployer.interface,
-    functionName: "launchGameWith",
-    args: [preparedLaunchProjectData],
-    chainId: chainData.chainId,
-  });
-  if (isPrepareContractWriteError) {
-    console.error(
-      "useCreateGame::usePrepareContractWriteError::error",
-      prepareContractWriteError,
-      preparedLaunchProjectData
-    );
-  }
+  const { 
+    data: hash, 
+    writeContract, 
+    error, 
+    isError 
+  } = useWriteContract();
 
-  const { data, write, error, isError } = useContractWrite(config);
   if (isError) {
-    console.error("useCreateGame::useContractWrite::error", error);
+    console.error("useCreateGame::useWriteContract::error", error);
   }
 
   const {
@@ -58,7 +57,8 @@ export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
     isError: isWaitForTransactionError,
     error: waitForTransactionError,
     data: transactionData,
-  } = useWaitForTransaction({ hash: data?.hash });
+  } = useWaitForTransactionReceipt({ hash });
+  
   if (isWaitForTransactionError) {
     console.error(
       "useCreateGame::useWaitForTransaction::error",
@@ -66,19 +66,55 @@ export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData) {
     );
   }
 
-  const handleWrite = () => {
+  const handleWrite = async () => {
     if (!isConnected) {
-      openConnectModal!();
-    } else {
-      console.log("useCreateGame::payload", preparedLaunchProjectData);
-      console.log("useCreateGame::Contract call:", config);
-      console.log("useCreateGame::Contract call data:", data);
-      write?.();
+      return; // Let the UI handle showing connect modal
     }
+
+    // Check chain validation first
+    if (!chainValidation.isValid) {
+      if (chainValidation.needsSwitch) {
+        try {
+          await chainValidation.switchChain();
+          // Wait a moment for chain switch to complete
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        } catch (error) {
+          console.error('Failed to switch chain:', error);
+          return;
+        }
+      } else {
+        console.error('Chain validation failed:', chainValidation.error);
+        return;
+      }
+    }
+
+    console.log("useCreateGame::payload", preparedLaunchProjectData);
+    console.log("useCreateGame::deploymentChainData", deploymentChainData);
+    console.log("useCreateGame::deploymentChainId", deploymentChainId);
+    console.log("useCreateGame::walletChainId", walletChainId);
+    console.log("useCreateGame::terminal", preparedLaunchProjectData?.terminal);
+    console.log("useCreateGame::store", preparedLaunchProjectData?.store);
+    console.log("useCreateGame::defaultAttestationDelegate", preparedLaunchProjectData?.defaultAttestationDelegate);
+    
+    // Force reasonable gas limits for testnets
+    const gasLimit = deploymentChainId === 11155111 ? 3000000n : // Sepolia: 3M gas
+                     deploymentChainId === 84532 ? 2000000n :    // Base Sepolia: 2M gas  
+                     5000000n; // Default: 5M gas
+    
+    console.log("useCreateGame::gasLimit", gasLimit, "for chainId", deploymentChainId);
+    
+    writeContract({
+      address: deploymentChainData.DefifaDeployer.address as `0x${string}`,
+      abi: deploymentChainData.DefifaDeployer.interface as any,
+      functionName: "launchGameWith",
+      args: [preparedLaunchProjectData as any],
+      chainId: deploymentChainId,
+      gas: gasLimit, // Force reasonable gas limit
+    });
   };
 
   return {
-    data,
+    data: hash,
     transactionData,
     write: handleWrite,
     isLoading,

@@ -6,7 +6,14 @@ const ipfsGatewayUrl = (cid: string | undefined = "", hostname: string) => {
 };
 
 // get ipfs url when host is localhost or production
-export const getIpfsUrl = (cid: string | undefined): string => {
+export const getIpfsUrl = (cidOrUri: string | undefined): string => {
+  if (!cidOrUri) return "";
+  
+  // Strip ipfs:// prefix if present
+  const cid = cidOrUri.startsWith("ipfs://") 
+    ? cidOrUri.replace("ipfs://", "") 
+    : cidOrUri;
+  
   if (window.location.hostname === "localhost") {
     return ipfsGatewayUrl(cid, "ipfs.io");
   } else {

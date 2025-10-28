@@ -21,11 +21,13 @@ const Button = ({
   variant = "confirm",
   size = "md",
   loading = false,
+  success = false,
   ...props
 }: {
   category?: "primary" | "secondary" | "tertiary";
   variant?: "default" | "confirm";
   loading?: boolean;
+  success?: boolean;
   size?: "sm" | "md" | "lg";
 } & DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -56,7 +58,21 @@ const Button = ({
       )}
       disabled={loading || props.disabled}
     >
-      {loading ? "..." : children}
+      {loading ? (
+        <div className="flex items-center">
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+          processing
+        </div>
+      ) : success ? (
+        <div className="flex items-center text-green-400">
+          <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          {children}
+        </div>
+      ) : (
+        children
+      )}
     </button>
   );
 };

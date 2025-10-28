@@ -16,12 +16,23 @@ function useTierRedemptionWeights(
     nfts: { tiers },
   } = useGameContext();
 
-  const weights = tiers?.map((tier) => {
+  // Only include tiers that have valid percentage values
+  const weights = tiers?.filter((tier) => {
+    const percentage = scorecardPercentages[tier.id.toString()];
+    return percentage !== undefined && 
+           percentage !== null && 
+           typeof percentage === 'number' && 
+           !isNaN(percentage) && 
+           percentage > 0;
+  }).map((tier) => {
+    const percentage = scorecardPercentages[tier.id.toString()] ?? 0;
+    
+    // Ensure percentage is a valid number
+    const validPercentage = typeof percentage === 'number' && !isNaN(percentage) ? percentage : 0;
+    
     return {
       id: tier.id,
-      redemptionWeight: percentageToRedemptionWeight(
-        scorecardPercentages[tier.id.toString()] ?? 0
-      ),
+      redemptionWeight: percentageToRedemptionWeight(validPercentage),
     };
   });
 
@@ -30,24 +41,30 @@ function useTierRedemptionWeights(
 
 export function CustomScorecardActions({
   scorecardPercentages,
+  onSuccess,
 }: {
   scorecardPercentages: ScorecardPercentages;
+  onSuccess?: () => void;
 }) {
   const { governor, gameId } = useGameContext();
 
   const tierRedemptionWeights = useTierRedemptionWeights(scorecardPercentages);
 
-  const { write, isLoading } = useSubmitScorecard(
+  const { write, isLoading, error, isError } = useSubmitScorecard(
     gameId,
     tierRedemptionWeights,
-    governor
+    governor,
+    onSuccess
   );
+
+
 
   const totalScorePercentage =
     Object.values(scorecardPercentages).reduce(
       (acc, curr) => (acc ?? 0) + (curr ?? 0),
       0
     ) ?? 0;
+
 
   return (
     <div>
@@ -60,13 +77,23 @@ export function CustomScorecardActions({
       {totalScorePercentage > 100 ? (
         <span className="text-red-500">Can't allocate more than 100%</span>
       ) : null}
+      {isError && error ? (
+        <span className="text-red-500 text-sm">Error: {error.message}</span>
+      ) : null}
       <Button
-        onClick={() => write?.()}
+        onClick={() => {
+          if (write) {
+            write();
+          }
+        }}
         loading={isLoading}
-        disabled={totalScorePercentage !== 100}
+        disabled={totalScorePercentage !== 100 || !write}
         className="w-full mt-5"
       >
-        Submit scores
+        {totalScorePercentage !== 100 
+          ? `Submit scores (${totalScorePercentage}% allocated)` 
+          : "Submit scores"
+        }
       </Button>
     </div>
   );

@@ -3,7 +3,7 @@ import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { useDefaultTokenBeneficiary } from "hooks/read/DefaultTokenBeneficiary";
 import { useDeployerDates } from "hooks/read/DeployerDates";
-import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
+import { useDefifaTiers } from "hooks/read/useDefifaTiers";
 import { useMaxTiers } from "hooks/read/MaxTiers";
 import { useTierBeneficiaries } from "hooks/read/TierBeneficiaries";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
@@ -23,13 +23,13 @@ export function RulesContent() {
   const { data: maxTiers } = useMaxTiers(currentFc?.metadata.dataSource);
   const tierBeneficiary = useTierBeneficiaries(
     currentFc?.metadata.dataSource,
-    maxTiers?.toNumber()
+    maxTiers ? Number(maxTiers) : 0
   );
-  const currentFcNumber = currentFc?.fundingCycle.number.toNumber();
+  const currentFcNumber = currentFc?.fundingCycle.number ? Number(currentFc.fundingCycle.number) : undefined;
   const tokenBeneficiary = useDefaultTokenBeneficiary(
     currentFc?.metadata.dataSource
   );
-  const { data: nftRewardTiers } = useTiersOf(currentFc?.metadata.dataSource);
+  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource);
   const { data: gameMetadata } = useGameMetadata(gameId);
 
   const fillPill = (phase: number) => {
@@ -139,7 +139,7 @@ export function RulesContent() {
             <p>
               <span className="text-pink-500">Reserved Mints:</span>
               {nftRewardTiers?.filter(
-                (tier) => tier.reservedRate.toNumber() > 0
+                (tier) => Number(tier.reservedRate) > 0
               ).length === 0 ? (
                 <span className="ml-2">
                   No NFTs are being reserved by this game's creator.
@@ -148,24 +148,24 @@ export function RulesContent() {
             </p>
           </div>
           {nftRewardTiers &&
-            nftRewardTiers?.filter((tier) => tier?.reservedRate.toNumber() > 0)
+            nftRewardTiers?.filter((tier) => Number(tier?.reservedRate) > 0)
               .length > 0 && (
               <div className="flex flex-wrap">
                 {nftRewardTiers
-                  ?.filter((tier) => tier.reservedRate.toNumber() > 0)
+                  ?.filter((tier) => Number(tier.reservedRate) > 0)
                   .map((tier, index) => {
                     const matchingTier = nfts?.tiers?.find(
-                      (t) => t.id === tier.id.toNumber()
+                      (t) => t.id === Number(tier.id)
                     );
                     const imageSrc = matchingTier ? matchingTier.teamImage : "";
 
                     return (
                       <div
-                        key={tier.id.toNumber()}
+                        key={Number(tier.id)}
                         className="border-t border-pink-800 pt-4 mb-5"
                       >
                         {/* <Image src={imageSrc} width={100} height={100} alt="" /> */}
-                        <p>Pick: {tier.id.toNumber()}</p>
+                        <p>Pick: {Number(tier.id)}</p>
                         <div className="flex items-center">
                           <span>
                             <EthAddress
@@ -174,7 +174,7 @@ export function RulesContent() {
                           </span>
                           <span className="ml-2">
                             will receive{" "}
-                            {(1 / (tier.reservedRate.toNumber() + 1)) * 100}% of
+                            {(1 / (Number(tier.reservedRate) + 1)) * 100}% of
                             this team's NFTs.
                           </span>
                         </div>

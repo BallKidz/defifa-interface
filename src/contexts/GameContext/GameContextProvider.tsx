@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { GameContext } from "./GameContext";
 import { useCurrentGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
-import { useTiersOf } from "hooks/read/JB721Delegate/useTiersOf";
+import { useDefifaTiers as useDefifaTiersHook } from "hooks/read/useDefifaTiers";
 import { useDefifaTiers } from "hooks/useDefifaTiers";
 import { useTotalSupply } from "hooks/read/JB721Delegate/useTotalSupply";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
@@ -11,27 +11,48 @@ import { useChainData } from "hooks/useChainData";
 
 export default function GameContextProvider({
   gameId,
+  chainId,
   children,
 }: PropsWithChildren<{
   gameId: number;
+  chainId?: number;
 }>) {
+  // Use the provided chainId to fetch data from the correct network
+  if (chainId) {
+    console.log(`GameContextProvider: Viewing game ${gameId} on chain ${chainId}`);
+  }
+  
   const { data: currentPhase, isLoading: currentPhaseLoading } =
-    useCurrentGamePhase(gameId);
+    useCurrentGamePhase(gameId, chainId);
   const { data: currentFundingCycle, isLoading: currentFundingCycleLoading } =
-    useProjectCurrentFundingCycle(gameId);
+    useProjectCurrentFundingCycle(gameId, chainId);
   const { data: metadata, isLoading: metadataLoading } =
-    useGameMetadata(gameId);
+    useGameMetadata(gameId, chainId);
   const dataSource = currentFundingCycle?.metadata.dataSource;
 
-  const { data: totalSupply } = useTotalSupply(dataSource);
-  const { data: tiersOf, isLoading: tiersOfLoading } = useTiersOf(dataSource);
-  const { data: tiers, isLoading: tiersLoading } = useDefifaTiers(
-    tiersOf ?? []
+
+  const { data: totalSupply } = useTotalSupply(dataSource, chainId);
+  
+  // Fetch tiers using Defifa v5 approach (query individual tiers from store)
+  const { data: tiersOf, isLoading: tiersOfLoading, error: tiersOfError } = useDefifaTiersHook(dataSource, chainId);
+  
+  
+  // Transform tier data for UI consumption by calling tokenURI on the NFT contract
+  // dataSource is the NFT delegate address
+  const { data: tiers, isLoading: tiersLoading, error: tiersError } = useDefifaTiers(
+    tiersOf ?? [],
+    dataSource // Pass the NFT address to call tokenURI
   );
 
   const { chainData } = useChainData();
 
-  const governor = chainData.DefifaGovernor.address;
+  // Get the actual governor address for this specific game from the delegate contract
+  const { data: governorFromDelegate } = useGovernorForDelegate(dataSource);
+  
+  // Fallback to hardcoded governor address if delegate lookup fails
+  const governor = governorFromDelegate || chainData.DefifaGovernor.address;
+
+  // Removed debug logs to prevent rate limiting
 
   const context = {
     gameId,

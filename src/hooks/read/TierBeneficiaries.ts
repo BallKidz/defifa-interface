@@ -1,6 +1,7 @@
 import { constants } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useTierBeneficiaries(
   dataSourceAddress: string | undefined,
@@ -14,12 +15,14 @@ export function useTierBeneficiaries(
     dataSourceAddress && dataSourceAddress !== constants.AddressZero
   );
 
-  return useContractRead({
-    addressOrName: JBTiered721DelegateStore?.address ?? "",
-    contractInterface: JBTiered721DelegateStore?.interface ?? "",
+  return useReadContract({
+    address: JBTiered721DelegateStore?.address as `0x${string}`,
+    abi: JBTiered721DelegateStore?.interface as Abi,
     functionName: "reservedTokenBeneficiaryOf",
-    enabled: hasDataSource,
-    args: hasDataSource ? [dataSourceAddress, maxTiers] : null,
+    query: {
+      enabled: hasDataSource,
+    },
+    args: hasDataSource ? [dataSourceAddress, maxTiers] : undefined,
     chainId: chainData.chainId,
   });
 }

@@ -1,9 +1,11 @@
 import { getChainData } from "config";
-import { useNetwork } from "wagmi";
+import { useChainId, useChains } from "wagmi";
 
 export function useChainData() {
-  const network = useNetwork();
-  const chainData = getChainData(network?.chain?.id);
+  const chainId = useChainId();
+  const chains = useChains();
+  const chain = chains.find(c => c.id === chainId);
+  const chainData = getChainData(chainId);
 
-  return { chainData, network };
+  return { chainData, network: { chain } };
 }

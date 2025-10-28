@@ -1,6 +1,6 @@
 import request, { gql } from "graphql-request";
 import { useChainData } from "hooks/useChainData";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export function useGameTopHolders(gameId: string) {
   const {
@@ -22,7 +22,10 @@ export function useGameTopHolders(gameId: string) {
     }
   `;
 
-  return useQuery(["gameTopHolders", gameId], () => {
-    return request(subgraph, query, { gameId });
+  return useQuery({
+    queryKey: ["gameTopHolders", gameId],
+    queryFn: () => {
+      return request(subgraph, query, { gameId });
+    },
   });
 }

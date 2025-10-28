@@ -1,15 +1,18 @@
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useRedemptionWeightIsSet(dataSource: string | undefined) {
   const { chainData } = useChainData();
 
-  const res = useContractRead({
-    addressOrName: dataSource ?? "",
-    contractInterface: chainData.DefifaDelegate.interface,
+  const res = useReadContract({
+    address: (dataSource ?? "") as `0x${string}`,
+    abi: chainData.DefifaDelegate.interface as Abi,
     functionName: "redemptionWeightIsSet",
     chainId: chainData.chainId,
-    enabled: !!dataSource,
+    query: {
+      enabled: !!dataSource,
+    },
   });
 
   return {

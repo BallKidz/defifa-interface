@@ -1,3 +1,5 @@
+'use client'
+
 import Container from "components/layout/Container";
 import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
@@ -9,13 +11,17 @@ import { PlayContent } from "./GameContainer/PlayContent/PlayContent";
 import { Header } from "./Header";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import { QueueNextPhaseBanner } from "./GameContainer/PlayContent/QueueNextPhaseBanner/QueueNextPhaseBanner";
+import { useChainData } from "hooks/useChainData";
+import { buildGamePath } from "lib/networks";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
 
 function GameButton({ game }: { game: any }) {
+  const { chainData } = useChainData();
+  const gameRoute = buildGamePath(chainData.chainId, game.gameId);
+  
   return (
-    <Link href={`/game/${game.gameId}`}>
-      <a className="hover:text-neutral-300 px-6 py-1 border-r border-neutral-800 max-w-[200px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
-        {game.name ?? game.gameId}
-      </a>
+    <Link href={gameRoute} className="hover:text-neutral-300 px-6 py-1 border-r border-neutral-800 max-w-[200px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
+      {game.name ?? game.gameId}
     </Link>
   );
 }
@@ -23,6 +29,7 @@ function GameButton({ game }: { game: any }) {
 export function GameDashboard() {
   const { metadata } = useGameContext();
   const { data: games } = useAllGames();
+  const { isInMiniApp } = useFarcasterContext();
   const title = metadata?.name
     ? `${metadata.name} | Defifa`
     : "Money Games with Friends | Defifa";
@@ -42,7 +49,7 @@ export function GameDashboard() {
       <div className="bg-gradient-to-b from-slate-950 to-black">
         <div className="border-b border-neutral-900 text-xs text-neutral-400">
           <Container>
-            <div className="flex overflow-auto">
+            <div className="flex overflow-x-auto scrollbar-hide">
               <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
                 <Link href="/arcade">All games</Link>
               </div>
@@ -64,13 +71,12 @@ export function GameDashboard() {
               />
             </Link>
             <div className="flex gap-6 items-center">
-              <Link href="/about">
-                <a className="flex items-center gap-2 text-neutral-300 text-sm">
-                  <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How it
-                  works
-                </a>
+              <Link href="/about" className="flex items-center gap-2 text-neutral-300 text-sm">
+                <QuestionMarkCircleIcon className="h-4 w-4 inline" /> How it
+                works
               </Link>
-              <Wallet />
+              {/* Only show wallet when not in Mini App context */}
+              {!isInMiniApp && <Wallet />}
             </div>
           </Container>
         </div>

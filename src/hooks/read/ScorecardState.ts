@@ -1,23 +1,26 @@
 import { DefifaScorecardState } from "types/defifa";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useScorecardState(
   gameId: number,
-  scorecardId: number,
+  scorecardId: bigint,
   governorAddress: string | undefined
 ) {
   const { chainData } = useChainData();
 
-  const res = useContractRead({
-    addressOrName: governorAddress ?? "",
-    contractInterface: chainData.DefifaGovernor.interface,
+  const res = useReadContract({
+    address: governorAddress as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
     functionName: "stateOf",
     args: [gameId, scorecardId],
     chainId: chainData.chainId,
-    enabled: !!governorAddress,
+    query: {
+      enabled: !!governorAddress && !!gameId && !!scorecardId,
+    },
   });
-
+  
   return {
     ...res,
     data: res.data as unknown as DefifaScorecardState,

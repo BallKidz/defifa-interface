@@ -1,6 +1,7 @@
 import request, { gql } from "graphql-request";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useChainData } from "./useChainData";
+import { getChainData } from "config";
 
 const allGamesQuery = gql`
   query myTeamsQuery {
@@ -18,13 +19,18 @@ export interface Game {
   address: string;
 }
 
-export function useAllGames() {
+export function useAllGames(chainIdOverride?: number) {
   const { chainData } = useChainData();
-  const graphUrl = chainData.subgraph;
+  const targetChainId = chainIdOverride || chainData.chainId;
+  const targetChainData = chainIdOverride ? getChainData(chainIdOverride) : chainData;
+  const graphUrl = targetChainData.subgraph;
 
-  return useQuery("allGames", async () => {
-    const res = await request<{ contracts: Game[] }>(graphUrl, allGamesQuery);
-    console.log(res);
-    return res.contracts;
+  return useQuery({
+    queryKey: ["allGames", targetChainId],
+    queryFn: async () => {
+      const res = await request<{ contracts: Game[] }>(graphUrl, allGamesQuery);
+      console.log(res);
+      return res.contracts;
+    },
   });
 }

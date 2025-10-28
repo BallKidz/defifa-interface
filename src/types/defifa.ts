@@ -16,13 +16,19 @@ export interface DefifaTierParams {
 
 export type EthereumAddress = `0x${string}`;
 
+export interface JBAccountingContext {
+  token: string;
+  decimals: number;
+  currency: number;
+}
+
 export interface DefifaLaunchProjectData {
   name: string;
-  projectMetadata: JBProjectMetadataParams;
+  projectUri: string;
   contractUri: string;
   baseUri: string;
   tiers: DefifaTierParams[];
-  token: string;
+  token: JBAccountingContext;
   mintPeriodDuration: number;
   refundPeriodDuration: number;
   start: number;
@@ -80,5 +86,5 @@ export interface DefifaTier {
   remainingQuantity: number;
   initialQuantity: number;
   minted: number;
-  price: BigNumber;
+  price: bigint;
 }

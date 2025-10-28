@@ -1,14 +1,15 @@
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useFetchSvgs(tokenId: string, dataSource: string) {
   const { chainData } = useChainData();
 
-  return useContractRead({
-    addressOrName: dataSource,
-    contractInterface: chainData.DefifaDelegate.interface,
+  return useReadContract({
+    address: dataSource as `0x${string}`,
+    abi: chainData.DefifaDelegate.interface as Abi,
     functionName: "tokenURI",
-    args: tokenId ? [tokenId] : null,
+    args: tokenId ? [tokenId] : undefined,
     chainId: chainData.chainId,
   });
 }

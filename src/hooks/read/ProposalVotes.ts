@@ -1,21 +1,26 @@
 import { BigNumber } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function useProposalVotes(
   gameId: number,
-  scorecardId: number,
+  scorecardId: bigint,
   governor: string | undefined
 ) {
   const { chainData } = useChainData();
 
-  const res = useContractRead({
-    addressOrName: governor ?? "",
-    contractInterface: chainData.DefifaGovernor.interface,
+  const res = useReadContract({
+    address: governor as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
     functionName: "attestationCountOf",
     args: [gameId, scorecardId],
     chainId: chainData.chainId,
-    enabled: Boolean(governor && scorecardId),
+    query: {
+      enabled: Boolean(governor && scorecardId),
+      refetchInterval: 3 * 1000, // Refetch every 3 seconds for competitive lock-in timing
+      staleTime: 1 * 1000, // Cache for 1 second to ensure fresh data
+    },
   });
 
   return {

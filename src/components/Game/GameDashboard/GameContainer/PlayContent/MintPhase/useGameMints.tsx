@@ -1,6 +1,6 @@
 import request, { gql } from "graphql-request";
 import { useChainData } from "hooks/useChainData";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const query = gql`
   query gameMintsQuery($gameId: String!) {
@@ -21,17 +21,19 @@ export function useGameMints(gameId: number) {
     chainData: { subgraph },
   } = useChainData();
 
-  return useQuery(
-    ["game-mints", gameId],
-    async () => {
+  return useQuery({
+    queryKey: ["game-mints", gameId],
+    queryFn: async () => {
       const res: { contracts?: { mintedTokens?: any[] }[] } = await request(subgraph, query, {
         gameId: gameId.toString(),
       });
 
       return res?.contracts?.[0]?.mintedTokens || [];
     },
-    {
-      enabled: !!gameId,
-    }
-  );
+    enabled: !!gameId,
+    // Simple 5-second polling - no complex caching
+    refetchInterval: 5 * 1000, // 5 seconds
+    refetchIntervalInBackground: true,
+    staleTime: 0, // Always consider data stale
+  });
 }

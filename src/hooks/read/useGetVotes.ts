@@ -1,20 +1,86 @@
 import { useChainData } from "hooks/useChainData";
-import { useAccount, useBlockNumber, useContractRead } from "wagmi";
+import { useAccount, useBlockNumber, useReadContract, useBlock } from "wagmi";
+import { Abi } from "viem";
 
 export function useAccountVotes(gameId: number, governor: string | undefined) {
   const { address } = useAccount();
   const { chainData } = useChainData();
-  const { data: block } = useBlockNumber({
-    watch: false,
-    staleTime: 60 * 60 * 5,
+  const { data: blockNumber } = useBlockNumber({
+    watch: true, // Enable watching for fresh data
+    query: {
+      refetchInterval: 5 * 1000, // 5 seconds
+      staleTime: 0, // Always consider data stale
+    },
   });
 
-  return useContractRead({
-    addressOrName: governor ?? "",
-    contractInterface: chainData.DefifaGovernor.interface,
-    functionName: "getAttestationWeight",
-    args: block ? [gameId, address, block - 1] : null,
-    chainId: chainData.chainId,
-    enabled: !!governor,
+  // Get the actual block to access its timestamp
+  const { data: block } = useBlock({
+    blockNumber: blockNumber,
+    query: {
+      enabled: !!blockNumber,
+      refetchInterval: 5 * 1000, // 5 seconds
+      staleTime: 0, // Always consider data stale
+    },
   });
+
+  // Extract timestamp from the block (this is the actual unix timestamp)
+  const timestamp = block?.timestamp;
+
+  const result = useReadContract({
+    address: governor as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
+    functionName: "getAttestationWeight",
+    args: timestamp ? [gameId, address, timestamp] : undefined,
+    chainId: chainData.chainId,
+    query: {
+      enabled: !!governor && !!timestamp && !!address,
+      refetchInterval: 5 * 1000, // 5 seconds
+      staleTime: 0, // Always consider data stale
+    },
+  });
+
+  // Also check if the game is initialized
+  const { data: attestationStartTime, error: attestationError, isLoading: attestationLoading } = useReadContract({
+    address: governor as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
+    functionName: "attestationStartTimeOf",
+    args: [gameId],
+    chainId: chainData.chainId,
+    query: {
+      enabled: !!governor,
+      refetchInterval: 5 * 1000, // 5 seconds
+      staleTime: 0, // Always consider data stale
+    },
+  });
+
+  // Check the owner of the governor contract
+  const { data: governorOwner, error: ownerError, isLoading: ownerLoading } = useReadContract({
+    address: governor as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
+    functionName: "owner",
+    args: [],
+    chainId: chainData.chainId,
+    query: {
+      enabled: !!governor,
+      refetchInterval: 5 * 1000, // 5 seconds
+      staleTime: 0, // Always consider data stale
+    },
+  });
+
+  // Check if the game is already initialized by looking at attestationGracePeriodOf
+  const { data: attestationGracePeriod } = useReadContract({
+    address: governor as `0x${string}`,
+    abi: chainData.DefifaGovernor.interface as Abi,
+    functionName: "attestationGracePeriodOf",
+    args: [gameId],
+    chainId: chainData.chainId,
+    query: {
+      enabled: !!governor,
+      refetchInterval: 5 * 1000, // 5 seconds
+      staleTime: 0, // Always consider data stale
+    },
+  });
+
+
+  return result;
 }

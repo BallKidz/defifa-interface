@@ -8,6 +8,10 @@ import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
  * @returns redemption weight.
  */
 export function percentageToRedemptionWeight(percentage: number): BigNumber {
+  if (percentage === undefined || percentage === null || isNaN(percentage)) {
+    return BigNumber.from(0);
+  }
+  
   return !percentage
     ? BigNumber.from(0)
     : BigNumber.from(percentage).mul(TOTAL_REDEMPTION_WEIGHT).div(100);
@@ -21,12 +25,12 @@ export function percentageToRedemptionWeight(percentage: number): BigNumber {
 export function redemptionWeightToPercentage(
   redemptionWeight: BigNumberish
 ): number {
-  return BigNumber.from(redemptionWeight).eq(0)
+  const weight = BigInt(redemptionWeight.toString());
+  const totalWeight = BigInt(TOTAL_REDEMPTION_WEIGHT.toString());
+  
+  return weight === 0n
     ? 0
-    : BigNumber.from(redemptionWeight)
-        .mul(100)
-        .div(TOTAL_REDEMPTION_WEIGHT)
-        .toNumber();
+    : Number((weight * 100n) / totalWeight);
 }
 
 export function tokenNumberToTierId(tokenNumber: string) {

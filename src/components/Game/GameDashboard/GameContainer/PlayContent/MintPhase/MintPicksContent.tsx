@@ -6,7 +6,6 @@ import { MintCard } from "./MintCard";
 import { useMintSelection } from "./useMintSelection";
 import { useGameMints } from "./useGameMints";
 import { tokenNumberToTierId } from "utils/defifa";
-import Button from "components/UI/Button";
 
 function usePlayersInTiers(gameMints: any[] | undefined) {
   return gameMints?.reduce((acc, token) => {
@@ -35,7 +34,6 @@ export function MintPicksContent() {
   const {
     incrementTierSelection,
     decrementTierSelection,
-    clearSelection,
     selectedTiers,
     totalSelected,
   } = useMintSelection();
@@ -44,30 +42,7 @@ export function MintPicksContent() {
     <ActionContainer
       renderActions={() => <MintActions selectedTiers={selectedTiers} />}
     >
-      <div>
-        <Button
-          category="tertiary"
-          variant="default"
-          onClick={() => {
-            const allTierIds = tiers?.map((t) => t.id.toString());
-            allTierIds?.forEach((tierId) => {
-              incrementTierSelection(tierId);
-            });
-          }}
-        >
-          Select all
-        </Button>
-        <Button
-          category="tertiary"
-          variant="default"
-          onClick={() => {
-            clearSelection();
-          }}
-        >
-          Clear
-        </Button>
-      </div>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 pt-2">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4 pt-2">
         {tiersLoading || currentFundingCycleLoading ? (
           <span>...</span>
         ) : (

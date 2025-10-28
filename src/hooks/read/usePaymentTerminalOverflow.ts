@@ -1,25 +1,28 @@
 import { BigNumber } from "ethers";
 import { useChainData } from "hooks/useChainData";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { Abi } from "viem";
 
 export function usePaymentTerminalOverflow(gameId: number) {
   const { chainData } = useChainData();
   const { JBETHPaymentTerminal, JBSingleTokenPaymentTerminalStore } = chainData;
 
   // get the eth terminal's store
-  const { data: storeAddress } = useContractRead({
-    addressOrName: JBETHPaymentTerminal.address,
-    contractInterface: JBETHPaymentTerminal.interface,
+  const { data: storeAddress } = useReadContract({
+    address: JBETHPaymentTerminal.address as `0x${string}`,
+    abi: JBETHPaymentTerminal.interface as Abi,
     functionName: "store",
     args: [],
   });
 
-  const res = useContractRead({
-    addressOrName: storeAddress?.toString() ?? "",
-    contractInterface: JBSingleTokenPaymentTerminalStore.interface,
+  const res = useReadContract({
+    address: (storeAddress?.toString() ?? "") as `0x${string}`,
+    abi: JBSingleTokenPaymentTerminalStore.interface as Abi,
     functionName: "currentOverflowOf",
-    args: gameId ? [JBETHPaymentTerminal.address, gameId] : null,
-    enabled: !!storeAddress,
+    args: gameId ? [JBETHPaymentTerminal.address, gameId] : undefined,
+    query: {
+      enabled: !!storeAddress,
+    },
   });
 
   return {
