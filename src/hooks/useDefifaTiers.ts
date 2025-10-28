@@ -114,8 +114,8 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                   
                   return {
                     id: Number(tier.id),
-                    description: metadata.description || (tier as any).name || `Tier ${Number(tier.id)}`,
-                    teamName: metadata.tierName || (tier as any).name || `Tier ${Number(tier.id)}`,
+                    description: metadata.description || (tier as any).name,
+                    teamName: metadata.tierName || (tier as any).name,
                     teamImage: teamImage,
                     maxSupply: maxSupply,
                     price: BigInt(tier.price.toString()),
@@ -148,8 +148,8 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                           
                           return {
                             id: Number(tier.id),
-                            description: fallbackMetadata.description || (tier as any).name || `Tier ${Number(tier.id)}`,
-                            teamName: tierName,
+                            description: fallbackMetadata.description || (tier as any).name,
+                            teamName: tierName || (tier as any).name,
                             teamImage: teamImage,
                             maxSupply: maxSupply,
                             price: BigInt(tier.price.toString()),
@@ -162,8 +162,8 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                     console.log(`🔍 Tier ${tier.id} tokenURI points directly to image`);
                     return {
                       id: Number(tier.id),
-                      description: (tier as any).name || `Tier ${Number(tier.id)}`,
-                      teamName: (tier as any).name || `Tier ${Number(tier.id)}`,
+                      description: (tier as any).name,
+                      teamName: (tier as any).name,
                       teamImage: metadataUrl, // Use the URL directly as image
                       maxSupply: maxSupply,
                       price: BigInt(tier.price.toString()),
@@ -178,8 +178,8 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                 console.log(`🔍 Tier ${tier.id} tokenURI is direct image (not JSON):`, error);
                 return {
                   id: Number(tier.id),
-                  description: (tier as any).name || `Tier ${Number(tier.id)}`,
-                  teamName: (tier as any).name || `Tier ${Number(tier.id)}`,
+                  description: (tier as any).name,
+                  teamName: (tier as any).name,
                   teamImage: metadataUrl,
                   maxSupply: maxSupply,
                   price: BigInt(tier.price.toString()),
@@ -197,8 +197,8 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
           // Fallback: use tier name only
           return {
             id: Number(tier.id),
-            description: (tier as any).name || `Tier ${Number(tier.id)}`,
-            teamName: (tier as any).name || `Tier ${Number(tier.id)}`,
+            description: (tier as any).name,
+            teamName: (tier as any).name,
             teamImage: "",
             maxSupply: maxSupply,
             price: BigInt(tier.price.toString()),

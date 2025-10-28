@@ -509,7 +509,7 @@ export function useDefifaTiers(
     return {
       ...tier,
       id: BigInt(index + 1),
-      name: tierName || `Tier ${index + 1}`,
+      name: tierName || tier.name,
     };
   }) : undefined;
 
