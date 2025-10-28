@@ -115,7 +115,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                   return {
                     id: Number(tier.id),
                     description: metadata.description || (tier as any).name,
-                    teamName: metadata.tierName || (tier as any).name,
+                    teamName: (tier as any).name || metadata.tierName,
                     teamImage: teamImage,
                     maxSupply: maxSupply,
                     price: BigInt(tier.price.toString()),
@@ -149,7 +149,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                           return {
                             id: Number(tier.id),
                             description: fallbackMetadata.description || (tier as any).name,
-                            teamName: tierName || (tier as any).name,
+                            teamName: (tier as any).name || tierName,
                             teamImage: teamImage,
                             maxSupply: maxSupply,
                             price: BigInt(tier.price.toString()),
