@@ -79,14 +79,6 @@ export function usePay({
   }, [isSuccess, hash, onSuccess]);
 
   const write = async () => {
-    console.log("🔥 usePay write called", {
-      hasTokenIds,
-      metadata,
-      tierIdsToMint: metadata.tierIdsToMint,
-      args,
-      amount,
-      token
-    });
     
     // Check chain validation first
     if (!chainValidation.isValid) {
@@ -132,11 +124,6 @@ function encodePayMetadata(metadata: PayMetadata, delegateAddress?: string, code
   // Ensure tierIdsToMint are properly sorted and converted to uint16
   const sortedTierIds = [...metadata.tierIdsToMint].sort((a, b) => a - b);
   
-  console.log("🔥 encodePayMetadata debug", {
-    originalTierIds: metadata.tierIdsToMint,
-    sortedTierIds,
-    votingDelegate: metadata._votingDelegate
-  });
   
   const tierMintData = ethers.utils.defaultAbiCoder.encode(
     ["address", "uint16[]"],

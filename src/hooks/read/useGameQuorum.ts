@@ -19,12 +19,6 @@ export function useGameQuorum(gameId: number, governor: string | undefined) {
     },
   });
 
-  // Essential debug only
-  console.log("🔍 Quorum:", {
-    gameId,
-    quorum: res.data ? Number(res.data) : 0,
-    error: res.error?.message || null
-  });
 
   return {
     ...res,

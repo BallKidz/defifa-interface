@@ -27,9 +27,7 @@ interface ResponseData {
 }
 
 export function GameTopHoldersContent(gameId: { gameId: string }) {
-  console.log("GameTopHoldersContent gameId", gameId)
   const { data: ResponseData, isLoading } = useGameTopHolders(gameId.gameId);
-  console.log("GameTopHoldersContent contracts", ResponseData)
   const contracts = (ResponseData as { contracts?: any })?.contracts;
 
   if (isLoading) {
@@ -42,7 +40,6 @@ export function GameTopHoldersContent(gameId: { gameId: string }) {
         tier: token.id.split("-")[1],
       }))
     );
-    console.log('flatArray', flatArray);
 
   }
   if (isLoading) {

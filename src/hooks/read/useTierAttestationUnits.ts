@@ -17,16 +17,6 @@ export function useTierAttestationUnits(
     },
   });
 
-  console.log("🔥 useTierAttestationUnits called", {
-    gameId,
-    nftAddress,
-    tierId,
-    address,
-    block,
-    enabled: !!nftAddress,
-    chainData: !!chainData,
-    defifaDelegate: !!chainData?.DefifaDelegate
-  });
 
   // Get user's attestation units for this tier
   const { data: userAttestationUnits, error: userAttestationError } = useReadContract({
@@ -83,16 +73,6 @@ export function useTierAttestationUnits(
     },
   });
 
-  console.log("🔥 Tier attestation units debug", {
-    tierId,
-    userAttestationUnits: userAttestationUnits ? Number(userAttestationUnits) : null,
-    totalAttestationUnits: totalAttestationUnits ? Number(totalAttestationUnits) : null,
-    currentUserAttestationUnits: currentUserAttestationUnits ? Number(currentUserAttestationUnits) : null,
-    currentTotalAttestationUnits: currentTotalAttestationUnits ? Number(currentTotalAttestationUnits) : null,
-    blockNumber: block ? Number(block - 1n) : null,
-    userAttestationError,
-    totalAttestationError
-  });
 
   return {
     userAttestationUnits,

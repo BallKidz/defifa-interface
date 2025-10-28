@@ -28,19 +28,6 @@ export function useTokenRedemptionValue({
     .mul(redemptionWeight ?? BigNumber.from(0))
     .div(TOTAL_REDEMPTION_WEIGHT);
 
-  console.log("🔥 useTokenRedemptionValue calculation", {
-    tokenId,
-    dataSource,
-    overflow: overflow?.toString(),
-    amountRedeemed: amountRedeemed?.toString(),
-    redemptionWeight: redemptionWeight?.toString(),
-    TOTAL_REDEMPTION_WEIGHT: TOTAL_REDEMPTION_WEIGHT.toString(),
-    totalPool: overflowBN.add(amountRedeemedBN).toString(),
-    numerator: overflowBN.add(amountRedeemedBN).mul(redemptionWeight ?? BigNumber.from(0)).toString(),
-    result: result?.toString(),
-    resultInWei: result ? result.toString() : "0",
-    resultInEth: result ? (parseFloat(result.toString()) / 1e18).toFixed(10) : "0"
-  });
 
   return result;
 }

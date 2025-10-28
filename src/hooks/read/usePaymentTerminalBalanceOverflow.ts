@@ -15,13 +15,6 @@ export function usePaymentTerminalBalanceOverflow(gameId: number) {
     args: [],
   });
 
-  console.log("🔥 usePaymentTerminalBalanceOverflow store", {
-    gameId,
-    terminalAddress: JBETHPaymentTerminal.address,
-    storeAddress,
-    storeLoading,
-    storeError
-  });
 
   const res = useReadContract({
     address: (storeAddress?.toString() ?? "") as `0x${string}`,
@@ -33,14 +26,6 @@ export function usePaymentTerminalBalanceOverflow(gameId: number) {
     },
   });
 
-  console.log("🔥 usePaymentTerminalBalanceOverflow overflow", {
-    gameId,
-    storeAddress,
-    result: res.data,
-    error: res.error,
-    isLoading: res.isLoading,
-    args: gameId ? [JBETHPaymentTerminal.address, gameId] : undefined
-  });
 
   return {
     ...res,

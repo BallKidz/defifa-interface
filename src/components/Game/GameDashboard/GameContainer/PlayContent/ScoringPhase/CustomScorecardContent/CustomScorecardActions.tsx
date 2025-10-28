@@ -57,15 +57,6 @@ export function CustomScorecardActions({
     onSuccess
   );
 
-  console.log("🔥 CustomScorecardActions Debug:", {
-    gameId,
-    governor,
-    tierRedemptionWeights,
-    write: !!write,
-    isLoading,
-    error,
-    isError
-  });
 
 
   const totalScorePercentage =

@@ -21,14 +21,6 @@ export function useScorecardState(
     },
   });
 
-  console.log("🔥 useScorecardState", {
-    gameId,
-    scorecardId,
-    governorAddress,
-    state: data,
-    isLoading,
-    error
-  });
 
   return {
     data: data as DefifaScorecardState | undefined,

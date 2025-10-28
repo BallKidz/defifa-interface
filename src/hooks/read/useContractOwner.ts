@@ -16,14 +16,6 @@ export function useContractOwner(contractAddress: string | undefined) {
     },
   });
 
-  console.log("🔥 useContractOwner", {
-    contractAddress,
-    owner,
-    isLoading,
-    error,
-    chainId: chainData.chainId,
-    abiLength: Array.isArray(chainData.DefifaGovernor.interface) ? chainData.DefifaGovernor.interface.length : 'unknown'
-  });
 
   return { owner, isLoading, error };
 }

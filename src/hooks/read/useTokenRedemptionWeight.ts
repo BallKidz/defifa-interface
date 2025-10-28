@@ -28,27 +28,6 @@ export function useTokenRedemptionWeight(
     ? BigNumber.from(tierWeight.redemptionWeight) 
     : BigNumber.from(0);
 
-  console.log("🔥 useTokenRedemptionWeight debug", {
-    dataSource,
-    tokenId,
-    tierId,
-    gameId,
-    scorecardsCount: scorecards?.length,
-    activeScorecard: activeScorecard?.id,
-    tierWeightsCount: activeScorecard?.tierWeights?.length,
-    allTierWeights: activeScorecard?.tierWeights?.map((tw: any) => ({
-      id: tw.id,
-      tierId: tw.tierId,
-      redemptionWeight: tw.redemptionWeight?.toString()
-    })),
-    lookingForTierId: tierId,
-    tierWeight: tierWeight ? {
-      id: tierWeight.id,
-      tierId: tierWeight.tierId,
-      redemptionWeight: tierWeight.redemptionWeight?.toString()
-    } : null,
-    redemptionWeight: redemptionWeight?.toString()
-  });
 
   return {
     data: redemptionWeight,

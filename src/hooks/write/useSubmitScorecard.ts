@@ -39,14 +39,6 @@ export function useSubmitScorecard(
   }, [isSuccess, hash, onSuccess, queryClient, gameId]);
 
   const write = async () => {
-    console.log("🔥 useSubmitScorecard write called:", {
-      gameId,
-      governorAddress,
-      tierWeights: _tierWeights,
-      tierWeightsLength: _tierWeights?.length,
-      hasGovernorAddress: !!governorAddress,
-      chainData: !!chainData
-    });
 
     // Check chain validation first
     if (!chainValidation.isValid) {
@@ -74,12 +66,6 @@ export function useSubmitScorecard(
         };
       });
       
-      console.log("🔥 Submitting scorecard with:", {
-        address: governorAddress,
-        functionName: "submitScorecardFor",
-        args: [gameId, validatedTierWeights],
-        chainId: chainData.chainId
-      });
       
       writeContract({
         address: governorAddress as `0x${string}`,
@@ -89,11 +75,6 @@ export function useSubmitScorecard(
         chainId: chainData.chainId,
       });
     } else {
-      console.log("🔥 useSubmitScorecard write blocked:", {
-        hasTierWeights: !!_tierWeights,
-        tierWeightsLength: _tierWeights?.length,
-        hasGovernorAddress: !!governorAddress
-      });
     }
   };
 

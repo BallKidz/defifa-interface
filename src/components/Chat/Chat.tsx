@@ -109,7 +109,6 @@ const SocialMediaFeed = () => {
   };
 
   const sendCast = async (newPost: string, encryptedSigner: NobleEd25519Signer) => {
-    console.log('sendingCast', newPost);
     const castBody = newPost;
     const hub = getHubRpcClient(hubAddress); // works with open hub
     const request = JSON.parse(localStorage.getItem("farsign-signer-" + CLIENT_NAME)!).signerRequest;
@@ -121,7 +120,6 @@ const SocialMediaFeed = () => {
       mentions: [],
       mentionsPositions: [],
     }, { fid: request.fid, network: FarcasterNetwork.MAINNET }, (encryptedSigner as NobleEd25519Signer)))._unsafeUnwrap();
-    console.log('here we go', cast);
     hub.submitMessage(cast); // w open hub this works
     setShouldScrollToBottom(true);
     setHasUserScrolled(false);
@@ -129,7 +127,6 @@ const SocialMediaFeed = () => {
   }
 
   const fetchCastersDetails = async () => {
-    console.log('you are fetching caster details');
     const client = getHubRpcClient(hubAddress);
     const updatedData = casts
       .filter((cast) => cast.data !== undefined) // Remove rows where data is undefined

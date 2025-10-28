@@ -24,18 +24,6 @@ export function RedeemCard({
     amountRedeemed,
   });
 
-  console.log("🔥 RedeemCard debug", {
-    title,
-    tokenIds,
-    tokenIdsLength: tokenIds.length,
-    firstTokenId: tokenIds[0],
-    dataSource: currentFundingCycle?.metadata.dataSource,
-    overflow: overflow?.toString(),
-    amountRedeemed: amountRedeemed?.toString(),
-    tokenRedemptionValue: tokenRedemptionValue?.toString(),
-    tokenRedemptionValueInEth: tokenRedemptionValue ? (parseFloat(tokenRedemptionValue.toString()) / 1e18).toFixed(10) : "0",
-    isZero: tokenRedemptionValue ? tokenRedemptionValue.isZero() : true
-  });
 
   return (
     <PickCard

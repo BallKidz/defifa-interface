@@ -17,14 +17,6 @@ export function useContractTest(governorAddress: string | undefined) {
     },
   });
 
-  console.log("🔥 useContractTest", {
-    governorAddress,
-    chainId: chainData.chainId,
-    controller,
-    controllerLoading,
-    controllerError,
-    abiLength: Array.isArray(chainData.DefifaGovernor.interface) ? chainData.DefifaGovernor.interface.length : 'unknown'
-  });
 
   return {
     controller,

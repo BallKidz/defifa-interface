@@ -36,21 +36,8 @@ export function useAttestToScorecard(
   }, [isSuccess, hash, onSuccess, queryClient, gameId]);
 
   const write = () => {
-    console.log("🔥 useAttestToScorecard write called", {
-      governorAddress,
-      scorecardId,
-      gameId,
-      chainData: !!chainData,
-      scorecardIdType: typeof scorecardId
-    });
     
     if (governorAddress && scorecardId && gameId) {
-      console.log("🔥 Calling writeContract with:", {
-        address: governorAddress,
-        functionName: "attestToScorecardFrom",
-        args: [gameId, scorecardId],
-        chainId: chainData.chainId
-      });
       
       try {
         writeContract({
@@ -60,7 +47,6 @@ export function useAttestToScorecard(
           args: [gameId, scorecardId],
           chainId: chainData.chainId,
         });
-        console.log("🔥 writeContract called successfully");
       } catch (err) {
         console.error("🔥 Error calling writeContract:", err);
       }

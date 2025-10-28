@@ -49,20 +49,6 @@ export function usePaymentTerminalBalance(gameId: number, chainIdOverride?: numb
     },
   });
 
-  console.log("🔥 POT BALANCE:", {
-    gameId,
-    terminalAddress: JBETHPaymentTerminal.address,
-    accountingContexts,
-    result: res.data,
-    error: res.error,
-    isLoading: res.isLoading,
-    args: gameId && accountingContexts ? [
-      BigInt(gameId),
-      accountingContexts,
-      18n,
-      1n,
-    ] : undefined
-  });
 
   return {
     ...res,

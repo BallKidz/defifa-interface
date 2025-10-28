@@ -11,26 +11,12 @@ export function useInitializeGame(
 ) {
   const { chainData } = useChainData();
 
-  console.log("🔥 useInitializeGame called", {
-    gameId,
-    governorAddress,
-    chainData: !!chainData
-  });
 
   const { data: hash, writeContract, error, isError } = useWriteContract();
 
   const { isLoading, isSuccess, error: receiptError } = useWaitForTransactionReceipt({ hash });
 
   const write = () => {
-    console.log("🔥 Initializing game", {
-      gameId,
-      governorAddress,
-      attestationStartTime: Math.floor(Date.now() / 1000), // Current timestamp
-      attestationGracePeriod: 0, // No grace period for fast attestation
-      chainId: chainData.chainId,
-      abiLength: Array.isArray(chainData.DefifaGovernor.interface) ? chainData.DefifaGovernor.interface.length : 'unknown',
-      hasInitializeGameFunction: Array.isArray(chainData.DefifaGovernor.interface) ? chainData.DefifaGovernor.interface.some((item: any) => item.name === "initializeGame") : false
-    });
     
     if (governorAddress) {
       try {
@@ -53,14 +39,6 @@ export function useInitializeGame(
     }
   };
 
-  console.log("🔥 useInitializeGame result", {
-    hash,
-    isLoading,
-    isSuccess,
-    error,
-    isError,
-    receiptError
-  });
 
   return {
     data: hash,

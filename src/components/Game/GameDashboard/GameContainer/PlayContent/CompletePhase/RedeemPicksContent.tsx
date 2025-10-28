@@ -43,15 +43,6 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
     {}
   );
 
-  console.log("🔥 RedeemPicksContent debug", {
-    mintedTokens,
-    mintedTokensLength: mintedTokens.length,
-    pickCounts,
-    DEFAULT_NFT_MAX_SUPPLY,
-    nfts: nfts?.tiers,
-    overflow: overflow?.toString(),
-    amountRedeemed: amountRedeemed?.toString()
-  });
 
   const pickedNfts = nfts.tiers?.filter((nft) =>
     Object.keys(pickCounts).includes(nft.id.toString())

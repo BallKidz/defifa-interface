@@ -81,16 +81,6 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
     },
   });
 
-  // Essential debug info only
-  console.log("🔍 Voting Debug:", {
-    gameId,
-    governor: governor ? governor.slice(0, 8) + "..." : "undefined",
-    timestamp: timestamp ? Number(timestamp) : null,
-    blockNumber: blockNumber ? Number(blockNumber) : null,
-    attestationStartTime: attestationStartTime ? Number(attestationStartTime) : null,
-    votingPower: result.data ? Number(result.data) : 0,
-    error: result.error?.message || null
-  });
 
   return result;
 }

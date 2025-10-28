@@ -59,20 +59,6 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
   }, [isSuccess, hash, onSuccess]);
 
   const write = async () => {
-    console.log("🔥 useRedeemTokensOf write called", {
-      hasTokenIds,
-      tokenIds,
-      tokenIdsLength: tokenIds.length,
-      args,
-      gameId,
-      tokenToReclaim: args[3],
-      metadata: args[6],
-      holder: args[0],
-      projectId: args[1],
-      cashOutCount: args[2],
-      minTokensReclaimed: args[4],
-      beneficiary: args[5]
-    });
     
     // Check chain validation first
     if (!chainValidation.isValid) {
@@ -92,12 +78,6 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
     }
     
     if (hasTokenIds) {
-      console.log("🔥 Calling cashOutTokensOf with:", {
-        address: JBETHPaymentTerminal.address,
-        functionName: "cashOutTokensOf",
-        args: args,
-        gas: 15000000n
-      });
       
       writeContract({
         address: JBETHPaymentTerminal.address as `0x${string}`,
@@ -123,11 +103,6 @@ function encodeRedeemMetadata(tokenIds: string[], defifaDelegateAddress?: string
   // The contract expects JBMetadataResolver format with "cashOut" purpose
   // We need to use the proper JBMetadataResolver.getId() format
   
-  console.log("🔥 encodeRedeemMetadata debug", {
-    tokenIds,
-    tokenIdsLength: tokenIds.length,
-    defifaDelegateAddress
-  });
 
   // Convert string tokenIds to numbers for ABI encoding
   const numericTokenIds = tokenIds.map(id => parseInt(id, 10));
@@ -152,12 +127,6 @@ function encodeRedeemMetadata(tokenIds: string[], defifaDelegateAddress?: string
   // Take first 4 bytes as bytes4
   const metadataId = `0x${Array.from(xorResult.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join('')}`;
 
-  console.log("🔥 JBMetadataResolver debug", {
-    purposeHash,
-    targetBytes: Array.from(targetBytes),
-    metadataId,
-    tokenIdsData
-  });
 
   // Build JBMetadataResolver format manually (packed format, not ABI encoding):
   // 32B reserved | lookup table (id:offset pairs, padded to 32B) | data (padded to 32B each)
@@ -182,10 +151,6 @@ function encodeRedeemMetadata(tokenIds: string[], defifaDelegateAddress?: string
   // Concatenate all parts
   const metadata = ethers.utils.hexConcat([reserved, paddedLookupTable, paddedData]);
 
-  console.log("🔥 Final JBMetadataResolver metadata", {
-    metadata,
-    numericTokenIds
-  });
 
   return metadata;
 }

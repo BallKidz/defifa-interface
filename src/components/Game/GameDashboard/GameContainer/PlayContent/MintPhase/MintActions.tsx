@@ -79,7 +79,6 @@ export function MintActions({
     );
   }
 
-  console.log(selectedTiers, tiers);
 
   return (
     <div>

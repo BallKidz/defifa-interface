@@ -31,12 +31,6 @@ export function useGameNFTAddress(gameId: number) {
     refetchInterval: false, // Don't auto-refetch
   });
 
-  console.log("🔥 useGameNFTAddress", {
-    gameId,
-    nftAddress,
-    isLoading,
-    error
-  });
 
   return { nftAddress, isLoading, error };
 }
