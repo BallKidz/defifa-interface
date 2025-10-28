@@ -213,19 +213,6 @@ const HomePage = () => {
           </Link>
         </div>
       </Container>
-      
-      <div className="text-center mt-8">
-        <Link href="/about" className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded inline-block">
-          Learn how to play
-        </Link>
-      </div>
-
-      {/* Leaderboard Section */}
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
-        <TopPlayersContent />
-        <TopHoldrsContent />
-      </div>
-
     </main>
   );
 };
