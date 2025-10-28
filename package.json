@@ -48,11 +48,15 @@
         "viem": "^2.38.3",
         "wagmi": "^2.10.2"
     },
+    "engines": {
+        "node": ">=22.0.0",
+        "npm": ">=10.0.0"
+    },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.3",
         "@types/bs58": "^4.0.1",
         "@types/lodash": "^4.14.188",
-        "@types/node": "^18.16.19",
+        "@types/node": "^22.0.0",
         "@types/react": "^18.3.1",
         "@types/react-datepicker": "^4.11.2",
         "@types/react-dom": "^18.3.1",
