@@ -9,6 +9,7 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { keccak256, toBytes } from "viem";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 
@@ -24,6 +25,7 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
     chainData,
   } = useChainData();
   const { gameId, currentFundingCycle } = useGameContext();
+  const queryClient = useQueryClient();
   
   // Validate chain for game transactions
   const chainValidation = useGameChainValidation(chainData.chainId);
@@ -52,11 +54,15 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
   // Handle success with useEffect
   useEffect(() => {
     if (isSuccess && hash) {
-      // No manual cache invalidation needed - 5-second polling handles updates
+      // Invalidate user's NFT holdings cache to show redeemed NFTs immediately
+      queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
+      // Also invalidate game mint counts for immediate UI update
+      queryClient.invalidateQueries({ queryKey: ["game-mints", gameId] });
+      
       onSuccess?.();
       toastSuccess("Successfully redeemed NFTs for ETH");
     }
-  }, [isSuccess, hash, onSuccess]);
+  }, [isSuccess, hash, onSuccess, queryClient, address, gameId]);
 
   const write = async () => {
     

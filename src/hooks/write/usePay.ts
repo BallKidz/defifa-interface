@@ -9,6 +9,7 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { keccak256, concat, toBytes, Abi } from "viem";
 
 interface PayParams {
@@ -41,6 +42,7 @@ export function usePay({
     chainData: { JBETHPaymentTerminal, DefifaDelegate },
     chainData,
   } = useChainData();
+  const queryClient = useQueryClient();
   
   // Validate chain for game transactions
   const chainValidation = useGameChainValidation(chainData.chainId);
@@ -72,11 +74,15 @@ export function usePay({
   // Handle success with useEffect
   useEffect(() => {
     if (isSuccess && hash) {
-      // No manual cache invalidation needed - 5-second polling handles updates
+      // Invalidate user's NFT holdings cache to show minted NFTs immediately
+      queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
+      // Also invalidate game mint counts for immediate UI update
+      queryClient.invalidateQueries({ queryKey: ["game-mints", gameId] });
+      
       toastSuccess("Mint complete");
       onSuccess?.();
     }
-  }, [isSuccess, hash, onSuccess]);
+  }, [isSuccess, hash, onSuccess, queryClient, address, gameId]);
 
   const write = async () => {
     
