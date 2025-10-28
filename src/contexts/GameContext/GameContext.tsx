@@ -29,7 +29,7 @@ type GameContextType = {
   };
 };
 
-export const GameContext = createContext<GameContextType>({
+const defaultContextValue: GameContextType = {
   gameId: 1,
   metadata: undefined,
   currentPhase: DefifaGamePhase.COUNTDOWN,
@@ -47,7 +47,10 @@ export const GameContext = createContext<GameContextType>({
       tiersLoading: true,
     },
   },
-});
+};
+
+
+export const GameContext = createContext<GameContextType>(defaultContextValue);
 
 export function useGameContext() {
   const ctx = useContext(GameContext);

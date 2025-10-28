@@ -58,6 +58,8 @@ export function useRedeemTokensOf({ tokenIds, onSuccess }: RedeemParams) {
       queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
       // Also invalidate game mint counts for immediate UI update
       queryClient.invalidateQueries({ queryKey: ["game-mints", gameId] });
+      // Invalidate tier data cache to update mintedCount after refund
+      queryClient.invalidateQueries({ queryKey: ["nft-rewards"] });
       
       onSuccess?.();
       toastSuccess("Successfully redeemed NFTs for ETH");

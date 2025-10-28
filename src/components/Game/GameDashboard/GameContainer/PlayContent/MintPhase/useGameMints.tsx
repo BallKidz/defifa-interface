@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 const query = gql`
   query gameMintsQuery($gameId: String!) {
     contracts(where: { gameId: $gameId }) {
-      mintedTokens {
+      mintedTokens(where: { owner_not: "0x0000000000000000000000000000000000000000" }) {
         id
         number
         owner {

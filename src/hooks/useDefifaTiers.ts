@@ -4,19 +4,33 @@ import { DefifaTier } from "types/defifa";
 import { JB721Tier } from "types/juicebox";
 import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 import { parseTierMetadata, ParsedTierMetadata } from "utils/tierMetadata";
-import { useReadContracts } from "wagmi";
+import { useReadContracts, useReadContract } from "wagmi";
 import { useChainData } from "hooks/useChainData";
 import { Abi } from "viem";
+import { useGameContext } from "contexts/GameContext";
+import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
 
-export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
+export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?: number) {
   const { chainData } = useChainData();
   
   // Create a serializable key from tier IDs AND names (so query re-runs when names change)
   const tierIds = tiers?.map(t => t.id?.toString()).join(',') || '';
   const tierNames = tiers?.map(t => (t as any).name || '').join(',') || '';
+  
+  // Fetch outstanding mints from subgraph to calculate accurate minted counts
+  const { data: gameMints, isLoading: gameMintsLoading, error: gameMintsError } = useGameMints(gameId || 0);
+  
+  
+  // Calculate outstanding mints per tier (mints - refunds)
+  const outstandingMintsPerTier = gameMints?.reduce((acc: { [tierId: number]: number }, token) => {
+    const tierId = Math.floor(parseInt(token.number) / DEFAULT_NFT_MAX_SUPPLY);
+    acc[tierId] = (acc[tierId] || 0) + 1;
+    return acc;
+  }, {}) || {};
+  
   
   // For each tier, calculate the token ID (tierNumber × 1,000,000,000)
   // Use this to call tokenURI on the NFT contract
@@ -36,25 +50,12 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
     },
   });
 
-  console.log("🔍 useDefifaTiers tokenURI calls:", {
-    nftAddress,
-    tiersCount: tiers?.length,
-    tokenUris: tokenUris?.map((r, i) => ({
-      tierId: tiers[i]?.id,
-      tokenId: Number(tiers[i]?.id) * ONE_BILLION,
-      status: r.status,
-      result: r.result,
-      error: r.error
-    }))
-  });
   
   return useQuery({
-    queryKey: ["nft-rewards", nftAddress, tierIds, tierNames],
+    queryKey: ["nft-rewards", nftAddress, tierIds, tierNames, gameMints?.length || 0],
     queryFn: async () => {
-      console.log("🔍 useDefifaTiers transformation starting");
       
       if (!tiers?.length || !tokenUris?.length) {
-        console.log("🔍 No tiers or tokenURIs available");
         return;
       }
 
@@ -69,11 +70,9 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
           if (tokenUriResult?.status === "success" && tokenUriResult.result) {
             try {
               const tokenUri = tokenUriResult.result as string;
-              console.log(`🔍 Tier ${tier.id} tokenURI:`, tokenUri);
               
               // Check if this is a data URI (embedded SVG or image)
               if (tokenUri.startsWith("data:")) {
-                console.log(`🔍 Tier ${tier.id} has data URI (embedded content)`);
                 return {
                   id: Number(tier.id),
                   description: (tier as any).name || `Tier ${Number(tier.id)}`,
@@ -82,7 +81,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                   maxSupply: maxSupply,
                   price: BigInt(tier.price.toString()),
                   remainingQuantity: Number(remainingQty),
-                  minted: maxSupply - Number(remainingQty),
+                  minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
                   initialQuantity: Number(initialQty),
                 };
               }
@@ -92,19 +91,12 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                 ? getIpfsUrl(cidFromIpfsUri(tokenUri))
                 : tokenUri;
               
-              console.log(`🔍 Fetching from:`, metadataUrl);
               
               // Try to parse as NFT metadata JSON first
               try {
                 const metadata = await parseTierMetadata(tokenUri);
                 
                 if (metadata) {
-                  console.log(`🔍 Tier ${tier.id} parsed metadata:`, { 
-                    tierName: metadata.tierName, 
-                    gameName: metadata.gameName,
-                    hasImage: !!metadata.image,
-                    description: metadata.description 
-                  });
                   
                   const teamImage = metadata.image 
                     ? (metadata.image.startsWith("ipfs://") 
@@ -120,7 +112,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                     maxSupply: maxSupply,
                     price: BigInt(tier.price.toString()),
                     remainingQuantity: Number(remainingQty),
-                    minted: maxSupply - Number(remainingQty),
+                    minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
                     initialQuantity: Number(initialQty),
                   };
                 } else {
@@ -131,7 +123,6 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                   const fallbackMetadata = response.data;
                   
                         if (fallbackMetadata && typeof fallbackMetadata === 'object' && (fallbackMetadata.name || fallbackMetadata.image || fallbackMetadata.description)) {
-                          console.log(`🔍 Tier ${tier.id} fallback metadata:`, { name: fallbackMetadata.name, hasImage: !!fallbackMetadata.image });
                           
                           // Extract tier name from fallback metadata (remove game name prefix if present)
                           let tierName = fallbackMetadata.name || (tier as any).name || `Tier ${Number(tier.id)}`;
@@ -154,12 +145,11 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                             maxSupply: maxSupply,
                             price: BigInt(tier.price.toString()),
                             remainingQuantity: Number(remainingQty),
-                            minted: maxSupply - Number(remainingQty),
+                            minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
                             initialQuantity: Number(initialQty),
                           };
                         } else {
                     // Not proper metadata JSON, treat tokenURI as direct image URL
-                    console.log(`🔍 Tier ${tier.id} tokenURI points directly to image`);
                     return {
                       id: Number(tier.id),
                       description: (tier as any).name,
@@ -168,14 +158,13 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                       maxSupply: maxSupply,
                       price: BigInt(tier.price.toString()),
                       remainingQuantity: Number(remainingQty),
-                      minted: maxSupply - Number(remainingQty),
+                      minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
                       initialQuantity: Number(initialQty),
                     };
                   }
                 }
               } catch (error) {
                 // Failed to parse as JSON, assume it's a direct image URL
-                console.log(`🔍 Tier ${tier.id} tokenURI is direct image (not JSON):`, error);
                 return {
                   id: Number(tier.id),
                   description: (tier as any).name,
@@ -184,7 +173,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
                   maxSupply: maxSupply,
                   price: BigInt(tier.price.toString()),
                   remainingQuantity: Number(remainingQty),
-                  minted: maxSupply - Number(remainingQty),
+                  minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
                   initialQuantity: Number(initialQty),
                 };
               }
@@ -203,7 +192,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
             maxSupply: maxSupply,
             price: BigInt(tier.price.toString()),
             remainingQuantity: Number(remainingQty),
-            minted: maxSupply - Number(remainingQty),
+            minted: outstandingMintsPerTier[Number(tier.id)] || 0,
             initialQuantity: Number(initialQty),
           };
         })
@@ -213,7 +202,6 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string) {
         (tier) => typeof tier !== "undefined"
       ) as DefifaTier[];
 
-      console.log("🔍 Final transformed tiers:", filteredTiers);
       return filteredTiers;
     },
     enabled: Boolean(tiers?.length && tokenUris && !tokenUrisLoading),

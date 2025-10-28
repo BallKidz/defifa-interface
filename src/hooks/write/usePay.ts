@@ -78,6 +78,8 @@ export function usePay({
       queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
       // Also invalidate game mint counts for immediate UI update
       queryClient.invalidateQueries({ queryKey: ["game-mints", gameId] });
+      // Invalidate tier data cache to update mintedCount after mint
+      queryClient.invalidateQueries({ queryKey: ["nft-rewards"] });
       
       toastSuccess("Mint complete");
       onSuccess?.();

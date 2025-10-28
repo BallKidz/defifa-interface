@@ -15,6 +15,7 @@ export default function GameLayout({
 }) {
   const params = useParams();
   const { gameId: networkGameId } = params;
+  
 
   // Parse the game ID first to get the target chain
   let targetChainId: number | undefined;
@@ -33,7 +34,6 @@ export default function GameLayout({
   useEffect(() => {
     // Auto-switch immediately when route is accessed directly
     if (parsed && chainValidation.needsSwitch && !chainValidation.isSwitching && !hasAttemptedSwitch) {
-      console.log(`🔄 Auto-switching to ${parsed.network.name} (chain ${parsed.network.chainId}) for game ${parsed.gameId}`);
       setHasAttemptedSwitch(true);
       chainValidation.switchChain().catch((error) => {
         console.error('Failed to auto-switch chain:', error);

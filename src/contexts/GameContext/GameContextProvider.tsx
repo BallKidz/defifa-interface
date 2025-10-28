@@ -41,7 +41,8 @@ export default function GameContextProvider({
   // dataSource is the NFT delegate address
   const { data: tiers, isLoading: tiersLoading, error: tiersError } = useDefifaTiers(
     tiersOf ?? [],
-    dataSource // Pass the NFT address to call tokenURI
+    dataSource, // Pass the NFT address to call tokenURI
+    gameId // Pass the gameId to fetch outstanding mints
   );
 
   const { chainData } = useChainData();
@@ -74,7 +75,6 @@ export default function GameContextProvider({
     },
   };
 
-  console.log("game context", context);
 
   return (
     <GameContext.Provider value={context}>{children}</GameContext.Provider>
