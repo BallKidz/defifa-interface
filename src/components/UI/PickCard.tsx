@@ -54,9 +54,9 @@ export function PickCard({
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
               <div className="text-[#fea282] text-3xl font-bold mb-1">
-                {title.substring(0, 3).toUpperCase()}
+                {title.substring(0, 6).toUpperCase()}
               </div>
-              <div className="text-[#c0b3f1] text-xs">TEAM</div>
+              <div className="text-[#c0b3f1] text-xs">Outcome</div>
             </div>
           )}
         </div>

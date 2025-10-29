@@ -16,12 +16,14 @@ export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
 export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?: number) {
   const { chainData } = useChainData();
   
+  
   // Create a serializable key from tier IDs AND names (so query re-runs when names change)
   const tierIds = tiers?.map(t => t.id?.toString()).join(',') || '';
   const tierNames = tiers?.map(t => (t as any).name || '').join(',') || '';
   
   // Fetch outstanding mints from subgraph to calculate accurate minted counts
   const { data: gameMints, isLoading: gameMintsLoading, error: gameMintsError } = useGameMints(gameId || 0);
+  
   
   
   // Calculate outstanding mints per tier (mints - refunds)

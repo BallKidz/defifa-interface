@@ -1,5 +1,6 @@
 import { useGameContext } from "contexts/GameContext";
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
+import { requestWithAuth } from "lib/graphql";
 import { useChainData } from "hooks/useChainData";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
@@ -67,7 +68,7 @@ export function useGameActivity() {
   return useQuery({
     queryKey: ["gameActivity", gameId, nftAddress],
     queryFn: async () => {
-      const result = await request<{ transfers: TransferEvent[] }>(subgraph, query, {
+      const result = await requestWithAuth<{ transfers: TransferEvent[] }>(subgraph, query, {
         contractAddress: nftAddress?.toLowerCase(),
       });
 

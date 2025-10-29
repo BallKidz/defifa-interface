@@ -1,4 +1,5 @@
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
+import { requestWithAuth } from "lib/graphql";
 import { useChainData } from "hooks/useChainData";
 import { useQuery } from "@tanstack/react-query";
 
@@ -21,7 +22,7 @@ export function useTopPlayers() {
   return useQuery({
     queryKey: ["topPlayers"],
     queryFn: () => {
-      return request(subgraph, query);
+      return requestWithAuth(subgraph, query);
     },
   });
 }

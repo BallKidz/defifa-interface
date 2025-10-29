@@ -1,7 +1,8 @@
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
 import { DefifaTierRedemptionWeight } from "types/defifa";
 import { useQuery } from "@tanstack/react-query";
 import { useChainData } from "./useChainData";
+import { requestWithAuth } from "lib/graphql";
 
 const scorecardsQuery = gql`
   query scorecardsQuery($gameId: ID!) {
@@ -36,7 +37,7 @@ export function useScorecards(gameId: number) {
   return useQuery({
     queryKey: ["scorecards", gameId, "v1.0.1"],
     queryFn: async () => {
-      const res = await request<{ scorecards: any[] }>(
+      const res = await requestWithAuth<{ scorecards: any[] }>(
         graphUrl,
         scorecardsQuery,
         {

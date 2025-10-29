@@ -15,14 +15,19 @@ const FourItemsDisplay = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % (tiers?.length || 1));
     };
 
-    console.log("FourItemsDisplay - tiers:", tiers);
-
     if (!tiers) {
-        console.log("FourItemsDisplay - No tiers available");
         // Handle the case when tiers is null
         return (
             <div className="text-center text-neutral-400 py-8">
                 {metadataLoading ? "Loading NFTs..." : "No NFTs available"}
+            </div>
+        );
+    }
+
+    if (tiers.length === 0) {
+        return (
+            <div className="text-center text-neutral-400 py-8">
+                No NFTs available
             </div>
         );
     }

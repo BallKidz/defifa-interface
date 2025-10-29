@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAllNetworks, getMainnetNetworks } from "lib/networks";
 import { getChainData } from "config";
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
+import { requestWithAuth } from "lib/graphql";
 
 const allGamesQuery = gql`
   query myTeamsQuery {
@@ -62,7 +63,7 @@ export function useOmnichainGames(includeTestnets: boolean = false) {
             };
           }
 
-          const res = await request<{ contracts: any[] }>(
+          const res = await requestWithAuth<{ contracts: any[] }>(
             chainData.subgraph, 
             allGamesQuery
           );

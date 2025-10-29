@@ -1,8 +1,9 @@
 import { useGameContext } from "contexts/GameContext";
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
 import { useChainData } from "hooks/useChainData";
 import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
+import { requestWithAuth } from "lib/graphql";
 
 const query = gql`
   query myMintsQuery($owner: String!, $gameId: String!) {
@@ -33,7 +34,7 @@ export function useMyMints() {
   return useQuery({
     queryKey: ["picks", address, gameId],
     queryFn: () => {
-      return request<{
+      return requestWithAuth<{
         contracts: {
           mintedTokens: {
             number: string;

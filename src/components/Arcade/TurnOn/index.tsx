@@ -9,7 +9,7 @@ type SortField = 'chain' | 'gameId' | 'name';
 type SortDirection = 'asc' | 'desc';
 
 const AllGames = ({ chainId }: { chainId?: number }) => {
-  const [includeTestnets, setIncludeTestnets] = useState(false);
+  const [includeTestnets, setIncludeTestnets] = useState(true);
   const [sortField, setSortField] = useState<SortField>('gameId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   

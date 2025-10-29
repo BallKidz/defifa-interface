@@ -81,7 +81,8 @@ export const DEFIFA_CONFIG_BASE_SEPOLIA: DefifaConfig = {
     interface: DefifaTokenUriResolver.abi,
   },
   subgraph:
-    "https://api.studio.thegraph.com/query/107226/defifa-base-sepolia/version/latest",
+    "https://gateway.thegraph.com/api/subgraphs/id/HXWg6FBWY5EovDNBJNzQfbTGkmupjB2UisX3kXFbwq3n",
+    // "https://api.studio.thegraph.com/query/107226/defifa-base-sepolia/version/latest",
 };
 
 console.info("base_sepolia chain data::", DEFIFA_CONFIG_BASE_SEPOLIA);

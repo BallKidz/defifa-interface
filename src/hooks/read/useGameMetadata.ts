@@ -17,24 +17,44 @@ export function useGameMetadata(projectId: number, chainIdOverride?: number) {
   const { data: subgraphData } = useQuery({
     queryKey: ["game-delegate", projectId, targetChainId, "v1.0.1"],
     queryFn: async () => {
+      const apiKey = process.env.NEXT_PUBLIC_THEGRAPH_API_KEY;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (apiKey) {
+        headers["Authorization"] = `Bearer ${apiKey}`;
+      }
+
+      // The Graph handles BigInt comparisons as strings in where clauses
+      const query = `
+        query GetGameDelegate($gameId: String!) {
+          contracts(where: {gameId: $gameId}) {
+            id
+            address
+            gameId
+            name
+          }
+        }
+      `;
+      // Convert gameId to string for BigInt comparison
+      const variables = { gameId: projectId.toString() };
+      
+      
       const response = await fetch(chainData.subgraph, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          query: `
-            query GetGameDelegate($gameId: String!) {
-              contracts(where: {gameId: $gameId}) {
-                id
-                address
-                gameId
-                name
-              }
-            }
-          `,
-          variables: { gameId: projectId.toString() },
-        }),
+        headers,
+        body: JSON.stringify({ query, variables }),
       });
+      
+      if (!response.ok) {
+        console.error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Failed to fetch game metadata: ${response.statusText}`);
+      }
+      
       const json = await response.json();
+      
+      if (json.errors) {
+        console.error("GraphQL errors:", json.errors);
+        throw new Error(`GraphQL error: ${JSON.stringify(json.errors)}`);
+      }
       
       // Handle case where game doesn't exist in subgraph
       if (!json.data?.contracts || json.data.contracts.length === 0) {

@@ -15,9 +15,15 @@ export function useProjectCurrentFundingCycle(projectId: number, chainIdOverride
   const { data: subgraphData, isLoading: subgraphLoading, error } = useQuery({
     queryKey: ["game-delegate", projectId, targetChainId, "v1.0.1"],
     queryFn: async () => {
+      const apiKey = process.env.NEXT_PUBLIC_THEGRAPH_API_KEY;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (apiKey) {
+        headers["Authorization"] = `Bearer ${apiKey}`;
+      }
+
       const response = await fetch(chainData.subgraph, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           query: `
             query GetGameDelegate($gameId: String!) {
@@ -32,7 +38,16 @@ export function useProjectCurrentFundingCycle(projectId: number, chainIdOverride
           variables: { gameId: projectId.toString() },
         }),
       });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch game delegate: ${response.statusText}`);
+      }
+      
       const json = await response.json();
+      
+      if (json.errors) {
+        throw new Error(`GraphQL error: ${JSON.stringify(json.errors)}`);
+      }
       
       // Handle case where game doesn't exist in subgraph
       if (!json.data?.contracts || json.data.contracts.length === 0) {

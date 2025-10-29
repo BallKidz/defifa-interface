@@ -1,6 +1,7 @@
-import request, { gql } from "graphql-request";
+import { gql } from "graphql-request";
 import { useChainData } from "hooks/useChainData";
 import { useQuery } from "@tanstack/react-query";
+import { requestWithAuth } from "lib/graphql";
 
 const query = gql`
   query gameMintsQuery($gameId: String!) {
@@ -24,7 +25,7 @@ export function useGameMints(gameId: number) {
   return useQuery({
     queryKey: ["game-mints", gameId],
     queryFn: async () => {
-      const res: { contracts?: { mintedTokens?: any[] }[] } = await request(subgraph, query, {
+      const res: { contracts?: { mintedTokens?: any[] }[] } = await requestWithAuth(subgraph, query, {
         gameId: gameId.toString(),
       });
 

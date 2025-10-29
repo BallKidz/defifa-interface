@@ -31,6 +31,7 @@ export default function GameContextProvider({
   const dataSource = currentFundingCycle?.metadata.dataSource;
 
 
+
   const { data: totalSupply } = useTotalSupply(dataSource, chainId);
   
   // Fetch tiers using Defifa v5 approach (query individual tiers from store)
@@ -44,6 +45,7 @@ export default function GameContextProvider({
     dataSource, // Pass the NFT address to call tokenURI
     gameId // Pass the gameId to fetch outstanding mints
   );
+
 
   const { chainData } = useChainData();
 

@@ -74,7 +74,7 @@ function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAdd
               target.style.display = 'none';
               const parent = target.parentElement;
               if (parent) {
-                parent.innerHTML = `<div class="flex flex-col items-center justify-center h-full"><div class="text-[#fea282] text-lg font-bold">${tier}</div><div class="text-[#c0b3f1] text-xs">TIER</div></div>`;
+                parent.innerHTML = `<div class="flex flex-col items-center justify-center h-full"><div class="text-[#fea282] text-lg font-bold">${tier}</div><div class="text-[#c0b3f1] text-xs">Outcome</div></div>`;
               }
             }}
           />
@@ -96,7 +96,7 @@ function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAdd
               target.style.display = 'none';
               const parent = target.parentElement;
               if (parent) {
-                parent.innerHTML = `<div class="flex flex-col items-center justify-center h-full"><div class="text-[#fea282] text-lg font-bold">${tier}</div><div class="text-[#c0b3f1] text-xs">TIER</div></div>`;
+                parent.innerHTML = `<div class="flex flex-col items-center justify-center h-full"><div class="text-[#fea282] text-lg font-bold">${tier}</div><div class="text-[#c0b3f1] text-xs">Outcome</div></div>`;
               }
             }}
           />
