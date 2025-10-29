@@ -40,7 +40,7 @@ export function useOmnichainGames(includeTestnets: boolean = false) {
   });
   
   return useQuery({
-    queryKey: ["omnichainGames", includeTestnets, "v1.0.1"],
+    queryKey: ["omnichainGames", includeTestnets],
     queryFn: async (): Promise<OmnichainGame[]> => {
       // If no networks have working subgraphs, return empty array
       if (networks.length === 0) {
