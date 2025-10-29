@@ -48,7 +48,7 @@ function ScorecardRow({
   const { governor, nfts, gameId } = useGameContext();
   const { data: proposalVotes } = useProposalVotes(
     gameId,
-    scorecard.scorecardId,
+    scorecard.scorecardId || BigInt(0),
     governor
   );
 
@@ -60,13 +60,13 @@ function ScorecardRow({
 
   const { write, isLoading } = useRatifyScorecard(
     gameId,
-    scorecard.scorecardId,
+    scorecard.scorecardId || BigInt(0),
     mappedTierWeights,
     governor
   );
   const { data: proposalState } = useScorecardState(
     gameId,
-    scorecard.scorecardId,
+    scorecard.scorecardId || BigInt(0),
     governor
   );
   const votesRemaining = gameQuroum && proposalVotes 
