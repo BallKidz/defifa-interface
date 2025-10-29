@@ -156,14 +156,14 @@ function ScorecardActions({
   const { governor, gameId } = useGameContext();
   const { write, isLoading, error, isError } = useAttestToScorecard(
     gameId,
-    selectedScorecard.scorecardId,
+    selectedScorecard.scorecardId || BigInt(0),
     governor,
     onSuccess
   );
   
   const { data: scorecardState } = useScorecardState(
     gameId,
-    selectedScorecard.scorecardId,
+    selectedScorecard.scorecardId || BigInt(0),
     governor
   );
 
@@ -180,7 +180,7 @@ function ScorecardActions({
 
   return (
     <div className="flex justify-between items-center w-full">
-      <Tooltip title={selectedScorecard.id.toString()}>
+      <Tooltip title={selectedScorecard.id?.toString() || 'Unknown'}>
         <div className="flex gap-2 items-center truncate">
           {/* {selectedScorecard.scorecardId.toString().substring(0, 6)}... */}
           {scorecardState !== undefined && stateText(scorecardState) && (
@@ -263,9 +263,9 @@ export function ScorecardsContent() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {scorecards?.map((scorecard: Scorecard) => (
+            {scorecards?.map((scorecard: Scorecard, index: number) => (
               <ScorecardRow
-                key={scorecard.id.toString()}
+                key={scorecard.id?.toString() || `scorecard-${index}`}
                 scorecard={scorecard}
                 onClick={() => setSelectedScorecard(scorecard)}
                 gameQuroum={quorum ? BigInt(quorum.toString()) : BigInt(0)}
