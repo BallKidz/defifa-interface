@@ -82,7 +82,7 @@ export const DEFIFA_CONFIG_BASE_SEPOLIA: DefifaConfig = {
   },
   subgraph:
     "https://gateway.thegraph.com/api/subgraphs/id/HXWg6FBWY5EovDNBJNzQfbTGkmupjB2UisX3kXFbwq3n",
-    // "https://api.studio.thegraph.com/query/107226/defifa-base-sepolia/version/latest",
+    // "https://api.studio.thegraph.com/query/107226/defifa-base-sepolia/v1.0.4",
 };
 
 console.info("base_sepolia chain data::", DEFIFA_CONFIG_BASE_SEPOLIA);

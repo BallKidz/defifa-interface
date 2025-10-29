@@ -15,7 +15,7 @@ export function useGameMetadata(projectId: number, chainIdOverride?: number) {
 
   // Use the same query key as useProjectCurrentFundingCycle to share the result
   const { data: subgraphData } = useQuery({
-    queryKey: ["game-delegate", projectId, targetChainId, "v1.0.1"],
+    queryKey: ["game-delegate", projectId, targetChainId],
     queryFn: async () => {
       const apiKey = process.env.NEXT_PUBLIC_THEGRAPH_API_KEY;
       const headers: Record<string, string> = { "Content-Type": "application/json" };

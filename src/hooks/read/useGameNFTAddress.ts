@@ -5,7 +5,7 @@ export function useGameNFTAddress(gameId: number) {
   const { chainData } = useChainData();
 
   const { data: nftAddress, isLoading, error } = useQuery({
-    queryKey: ["game-nft-address", gameId, "v1.0.1"],
+    queryKey: ["game-nft-address", gameId],
     queryFn: async () => {
       const apiKey = process.env.NEXT_PUBLIC_THEGRAPH_API_KEY;
       const headers: Record<string, string> = { "Content-Type": "application/json" };

@@ -13,7 +13,7 @@ export function useProjectCurrentFundingCycle(projectId: number, chainIdOverride
 
   // Query the subgraph to get the delegate (NFT contract) address for this game
   const { data: subgraphData, isLoading: subgraphLoading, error } = useQuery({
-    queryKey: ["game-delegate", projectId, targetChainId, "v1.0.1"],
+    queryKey: ["game-delegate", projectId, targetChainId],
     queryFn: async () => {
       const apiKey = process.env.NEXT_PUBLIC_THEGRAPH_API_KEY;
       const headers: Record<string, string> = { "Content-Type": "application/json" };

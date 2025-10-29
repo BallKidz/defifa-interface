@@ -18,7 +18,7 @@ export function useProposalVotes(
     chainId: chainData.chainId,
     query: {
       enabled: Boolean(governor && scorecardId),
-      refetchInterval: 3 * 1000, // Refetch every 3 seconds for competitive lock-in timing
+      refetchInterval: 30 * 1000, // Refetch every 15 seconds to reduce RPC load
       staleTime: 1 * 1000, // Cache for 1 second to ensure fresh data
     },
   });

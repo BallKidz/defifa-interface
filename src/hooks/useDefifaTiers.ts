@@ -208,7 +208,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
     },
     enabled: Boolean(tiers?.length && tokenUris && !tokenUrisLoading),
     // Simple 5-second polling - no complex caching
-    refetchInterval: 5 * 1000, // 5 seconds
+    refetchInterval: 10 * 1000, // 30 seconds to reduce RPC load
     refetchIntervalInBackground: true,
     staleTime: 0, // Always consider data stale
   });

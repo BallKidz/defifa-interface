@@ -8,7 +8,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
   const { data: blockNumber } = useBlockNumber({
     watch: true, // Enable watching for fresh data
     query: {
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -18,7 +18,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
     blockNumber: blockNumber,
     query: {
       enabled: !!blockNumber,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -34,7 +34,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
     chainId: chainData.chainId,
     query: {
       enabled: !!governor && !!timestamp && !!address,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -48,7 +48,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
     chainId: chainData.chainId,
     query: {
       enabled: !!governor,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -62,7 +62,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
     chainId: chainData.chainId,
     query: {
       enabled: !!governor,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -76,7 +76,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
     chainId: chainData.chainId,
     query: {
       enabled: !!governor,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });

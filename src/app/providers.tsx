@@ -40,12 +40,12 @@ const chains = [
 
 const transports = {
   [sepolia.id]: fallback([
-    http(`https://sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
     http("https://eth-sepolia.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
   [optimismSepolia.id]: fallback([
-    http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
     http("https://opt-sepolia.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://optimism-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
   [baseSepolia.id]: fallback([
     http("https://base-sepolia.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
@@ -54,25 +54,25 @@ const transports = {
     ),
   ]),
   [arbitrumSepolia.id]: fallback([
-    http(`https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
     http("https://arb-sepolia.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
   [mainnet.id]: fallback([
-    http(`https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
     http("https://eth-mainnet.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
   [optimism.id]: fallback([
-    http(`https://optimism-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
     http("https://opt-mainnet.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://optimism-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
   [base.id]: fallback([
-    http(`https://base-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
-    http(`https://api.developer.coinbase.com/rpc/v1/base/${process.env.NEXT_PUBLIC_BASE_ID || "defifa-temp"}`),
     http("https://base-mainnet.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://api.developer.coinbase.com/rpc/v1/base/${process.env.NEXT_PUBLIC_BASE_ID || "defifa-temp"}`),
+    http(`https://base-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
   [arbitrum.id]: fallback([
-    http(`https://arbitrum-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
     http("https://arb-mainnet.g.alchemy.com/v2/Y7igjs135LhJTJbYavxq9WlhuAZQVn03"),
+    http(`https://arbitrum-mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_ID || "0f1ad790aeba4625b4d967858d7c33d0"}`),
   ]),
 };
 

@@ -12,7 +12,7 @@ export function useTierAttestationUnits(
   const { data: block } = useBlockNumber({
     watch: true, // Enable watching for fresh data
     query: {
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -27,7 +27,7 @@ export function useTierAttestationUnits(
     chainId: chainData.chainId,
     query: {
       enabled: !!nftAddress,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -41,7 +41,7 @@ export function useTierAttestationUnits(
     chainId: chainData.chainId,
     query: {
       enabled: !!nftAddress,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -55,7 +55,7 @@ export function useTierAttestationUnits(
     chainId: chainData.chainId,
     query: {
       enabled: !!nftAddress,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
@@ -68,7 +68,7 @@ export function useTierAttestationUnits(
     chainId: chainData.chainId,
     query: {
       enabled: !!nftAddress,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });

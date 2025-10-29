@@ -82,7 +82,7 @@ export const DEFIFA_CONFIG_ARBITRUM_SEPOLIA: DefifaConfig = {
   },
   subgraph:
     "https://gateway.thegraph.com/api/subgraphs/id/29dybYCDWEKMoF4diGm3z1B86voZ2Z5DsAZZaVSRBp4k",
-    // "https://api.studio.thegraph.com/query/107226/defifa-arbitrum-sepolia/version/latest",
+    // "https://api.studio.thegraph.com/query/107226/defifa-arbitrum-sepolia/v1.0.4",
 };
 
 console.info("arbitrum_sepolia chain data::", DEFIFA_CONFIG_ARBITRUM_SEPOLIA);

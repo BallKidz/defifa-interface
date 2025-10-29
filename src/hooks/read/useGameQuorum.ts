@@ -14,7 +14,7 @@ export function useGameQuorum(gameId: number, governor: string | undefined) {
     chainId: chainData.chainId,
     query: {
       enabled: !!governor,
-      refetchInterval: 5 * 1000, // 5 seconds
+      refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
     },
   });
