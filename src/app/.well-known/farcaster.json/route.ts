@@ -3,12 +3,21 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://defifa.net'
   
+  // Use different account associations based on the domain
+  const isDefifaDomain = baseUrl.includes('defifa.net')
+  
+  const accountAssociation = isDefifaDomain ? {
+    header: "eyJmaWQiOjQxNjMsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhEZjA4N0I3MjQxNzRBM0U0ZUQyMzM4QzA3OTgxOTM5MzJFODUxRjFiIn0",
+    payload: "eyJkb21haW4iOiIxMjdjNjcyOTIzMjQubmdyb2suYXBwIn0",
+    signature: "vVvm8DkE+BYn2yBTQ4zz5FPu+uU90n3fT0YsfzdZ6VM2ESCrdKHfjhHipIObSXBeqXxezSEJFZiZKiFP/MDKzRs="
+  } : {
+    header: "eyJmaWQiOjQxNjMsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhEZjA4N0I3MjQxNzRBM0U0ZUQyMzM4QzA3OTgxOTM5MzJFODUxRjFiIn0",
+    payload: "eyJkb21haW4iOiJqdWljZS1kZWZpZmEtaW50ZXJmYWNlLWRlZmlmYS1iYWxsa2lkei52ZXJjZWwuYXBwIn0",
+    signature: "noVttL00j5LJkV2sIIDXRc35Houjf0OAnDC4+Zu/rSZvQSybmRyDOZ0WYnL12iGSdCPcLm3i8/eW198paSJJURs="
+  }
+  
   const manifest = {
-    accountAssociation: {
-      header: "eyJmaWQiOjQxNjMsInR5cGUiOiJhdXRoIiwia2V5IjoiMHhEZjA4N0I3MjQxNzRBM0U0ZUQyMzM4QzA3OTgxOTM5MzJFODUxRjFiIn0",
-      payload: "eyJkb21haW4iOiIxMjdjNjcyOTIzMjQubmdyb2suYXBwIn0",
-      signature: "vVvm8DkE+BYn2yBTQ4zz5FPu+uU90n3fT0YsfzdZ6VM2ESCrdKHfjhHipIObSXBeqXxezSEJFZiZKiFP/MDKzRs="
-    },
+    accountAssociation,
     miniapp: {
       version: "1",
       name: "Defifa",
