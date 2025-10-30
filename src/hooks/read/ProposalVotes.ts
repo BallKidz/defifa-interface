@@ -20,7 +20,6 @@ export function useProposalVotes(
       enabled: Boolean(governor && scorecardId),
       refetchInterval: 30 * 1000, // Refetch every 15 seconds to reduce RPC load
       staleTime: 1 * 1000, // Cache for 1 second to ensure fresh data
-      keepPreviousData: true,
     },
   });
 

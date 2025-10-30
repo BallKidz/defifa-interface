@@ -535,43 +535,44 @@ const DeployerCreate = () => {
       return;
     }
 
-    let newValue: string | number = value;
+    if (name === "price") {
+      setTierGeneralValues((prevState) => ({
+        ...prevState,
+        price: value,
+      }));
+      setTier((prevTier) => ({
+        ...prevTier,
+        price: value,
+      }));
+      if (formValues.tiers && formValues.tiers.length > 0) {
+        setFormValues((prevState) => ({
+          ...prevState,
+          tiers: prevState.tiers.map((tier) => ({
+            ...tier,
+            price: value,
+          })),
+        }));
+      }
+      return;
+    }
+
     if (name === "reservedRate") {
-      newValue = value === "" ? 0 : Number(value);
+      const parsed = value === "" ? 0 : Number(value);
+      setTierGeneralValues((prevState) => ({
+        ...prevState,
+        reservedRate: parsed,
+      }));
+      setTier((prevTier) => ({
+        ...prevTier,
+        reservedRate: parsed,
+      }));
+      return;
     }
 
     setTierGeneralValues((prevState) => ({
       ...prevState,
-      [name]: newValue,
+      [name]: value,
     }));
-
-    if (name === "price" && formValues.tiers && formValues.tiers.length > 0) {
-      setFormValues((prevState) => {
-        const updatedTiers = prevState.tiers.map((tier) => ({
-          ...tier,
-          [name]: newValue,
-        }));
-
-        return {
-          ...prevState,
-          tiers: updatedTiers,
-        };
-      });
-    }
-
-    if (name === "price") {
-      setTier((prevTier) => ({
-        ...prevTier,
-        price: newValue as string,
-      }));
-    }
-
-    if (name === "reservedRate") {
-      setTier((prevTier) => ({
-        ...prevTier,
-        reservedRate: newValue as number,
-      }));
-    }
   };
 
   const onAddNFT = () => {

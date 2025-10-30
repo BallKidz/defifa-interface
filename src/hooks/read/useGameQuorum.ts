@@ -16,7 +16,6 @@ export function useGameQuorum(gameId: number, governor: string | undefined) {
       enabled: !!governor,
       refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
-      keepPreviousData: true,
     },
   });
 

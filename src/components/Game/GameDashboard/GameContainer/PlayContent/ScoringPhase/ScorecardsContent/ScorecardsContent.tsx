@@ -13,7 +13,8 @@ import { useAttestToScorecard } from "hooks/write/useAttestToScorecard";
 import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useTierAttestationUnits } from "hooks/read/useTierAttestationUnits";
 import { useGameNFTAddress } from "hooks/read/useGameNFTAddress";
-import { useState } from "react";
+import { BigNumber } from "ethers";
+import { useEffect, useState } from "react";
 import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 import { formatNumber } from "utils/format/formatNumber";
@@ -51,6 +52,9 @@ function ScorecardRow({
     scorecard.scorecardId || BigInt(0),
     governor
   );
+  const [displayProposalVotes, setDisplayProposalVotes] = useState<BigNumber | undefined>(
+    proposalVotes
+  );
 
   const mappedTierWeights = scorecard.tierWeights.map((weight) => ({
     id: weight.tierId, // Use tierId, not the composite id
@@ -69,9 +73,17 @@ function ScorecardRow({
     scorecard.scorecardId || BigInt(0),
     governor
   );
-  const votesRemaining = gameQuroum && proposalVotes 
-    ? gameQuroum - BigInt(proposalVotes.toString()) 
+  useEffect(() => {
+    if (proposalVotes !== undefined) {
+      setDisplayProposalVotes(proposalVotes);
+    }
+  }, [proposalVotes]);
+
+  const votesValue = displayProposalVotes ?? proposalVotes;
+  const votesRemaining = gameQuroum && votesValue
+    ? gameQuroum - BigInt(votesValue.toString())
     : gameQuroum;
+  const votesDisplayNumber = votesValue ? Number(votesValue.toString()) : 0;
 
   return (
     <div className="border border-neutral-800 shadow-glowWhite rounded-lg mb-5 overflow-hidden flex flex-col justify-between">
@@ -113,7 +125,7 @@ function ScorecardRow({
 
         <div className="flex justify-between mb-1 text-sm">
           <span className="text-neutral-300">Total Votes</span>
-          <span>{formatNumber(proposalVotes ? Number(proposalVotes) : 0)}</span>
+          <span>{formatNumber(votesDisplayNumber)}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-neutral-300">Votes needed</span>
@@ -218,14 +230,37 @@ export function ScorecardsContent() {
   const { data: scorecards, isLoading } = useScorecards(gameId);
   const { data: votes } = useAccountVotes(gameId, governor);
   const { data: quorum } = useGameQuorum(gameId, governor);
+  const votesBigNumber = votes as BigNumber | undefined;
+  const quorumBigNumber = quorum as BigNumber | undefined;
+  const [displayVotes, setDisplayVotes] = useState<BigNumber | undefined>(votesBigNumber);
+  const [displayQuorum, setDisplayQuorum] = useState<BigNumber | undefined>(quorumBigNumber);
 
   function handleVoteSuccess() {
     // Clear the selected scorecard (shopping cart)
     setSelectedScorecard(undefined);
   }
+
+  useEffect(() => {
+    if (votesBigNumber !== undefined) {
+      setDisplayVotes(votesBigNumber);
+    }
+  }, [votesBigNumber]);
+
+  useEffect(() => {
+    if (quorumBigNumber !== undefined) {
+      setDisplayQuorum(quorumBigNumber);
+    }
+  }, [quorumBigNumber]);
   
   // Get the proper NFT contract address from subgraph
   const { nftAddress } = useGameNFTAddress(gameId);
+
+  const votesNumber = (displayVotes ?? votesBigNumber)
+    ? Number((displayVotes ?? votesBigNumber)!.toString())
+    : 0;
+  const quorumNumber = (displayQuorum ?? quorumBigNumber)
+    ? Number((displayQuorum ?? quorumBigNumber)!.toString())
+    : 0;
 
 
   if (isLoading) {
@@ -244,13 +279,13 @@ export function ScorecardsContent() {
         <div className="mb-3 flex flex-col">
           <span className="uppercase text-xs">Your Votes</span>
           <span className="text-lg">
-            {formatNumber(votes ? Number(votes) : 0)} votes
+            {formatNumber(votesNumber)} votes
           </span>
         </div>
             <div className="mb-3 flex flex-col">
               <span className="uppercase text-xs">Quorum</span>
               <span className="text-lg">
-                {formatNumber(quorum ? Number(quorum) : 0)} votes
+                {formatNumber(quorumNumber)} votes
               </span>
             </div>
           </div>
