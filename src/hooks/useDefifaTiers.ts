@@ -67,6 +67,32 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
           const initialQty = (tier as any).initialSupply ?? tier.initialQuantity ?? BigInt(DEFAULT_NFT_MAX_SUPPLY);
           const remainingQty = (tier as any).remainingSupply ?? tier.remainingQuantity ?? initialQty;
           const maxSupply = initialQty === BigInt(DEFAULT_NFT_MAX_SUPPLY) ? DEFAULT_NFT_MAX_SUPPLY : Number(initialQty);
+          const reserveFrequencyRaw = (tier as any).reserveFrequency;
+          const reserveFrequency =
+            typeof reserveFrequencyRaw === "number"
+              ? reserveFrequencyRaw
+              : typeof reserveFrequencyRaw === "bigint"
+              ? Number(reserveFrequencyRaw)
+              : Number(reserveFrequencyRaw ?? 0);
+          const reserveBeneficiaryRaw = (tier as any).reserveBeneficiary;
+          const reserveBeneficiary =
+            typeof reserveBeneficiaryRaw === "string"
+              ? reserveBeneficiaryRaw
+              : undefined;
+          const mintedCount =
+            outstandingMintsPerTier[Number(tier.id)] ??
+            (maxSupply - Number(remainingQty));
+
+          const baseTier = {
+            id: Number(tier.id),
+            maxSupply,
+            price: BigInt(tier.price.toString()),
+            remainingQuantity: Number(remainingQty),
+            minted: mintedCount,
+            initialQuantity: Number(initialQty),
+            reserveFrequency,
+            reserveBeneficiary,
+          };
 
           // If tokenURI call succeeded, fetch and parse the metadata
           if (tokenUriResult?.status === "success" && tokenUriResult.result) {
@@ -76,15 +102,10 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
               // Check if this is a data URI (embedded SVG or image)
               if (tokenUri.startsWith("data:")) {
                 return {
-                  id: Number(tier.id),
+                  ...baseTier,
                   description: (tier as any).name || `Tier ${Number(tier.id)}`,
                   teamName: (tier as any).name || `Tier ${Number(tier.id)}`,
                   teamImage: tokenUri, // Use data URI directly
-                  maxSupply: maxSupply,
-                  price: BigInt(tier.price.toString()),
-                  remainingQuantity: Number(remainingQty),
-                  minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
-                  initialQuantity: Number(initialQty),
                 };
               }
               
@@ -107,15 +128,10 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
                     : "";
                   
                   return {
-                    id: Number(tier.id),
+                    ...baseTier,
                     description: metadata.description || (tier as any).name,
                     teamName: (tier as any).name || metadata.tierName,
                     teamImage: teamImage,
-                    maxSupply: maxSupply,
-                    price: BigInt(tier.price.toString()),
-                    remainingQuantity: Number(remainingQty),
-                    minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
-                    initialQuantity: Number(initialQty),
                   };
                 } else {
                   // Failed to parse metadata, try fallback JSON parsing
@@ -140,43 +156,28 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
                             : "";
                           
                           return {
-                            id: Number(tier.id),
+                            ...baseTier,
                             description: fallbackMetadata.description || (tier as any).name,
                             teamName: (tier as any).name || tierName,
                             teamImage: teamImage,
-                            maxSupply: maxSupply,
-                            price: BigInt(tier.price.toString()),
-                            remainingQuantity: Number(remainingQty),
-                            minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
-                            initialQuantity: Number(initialQty),
                           };
                         } else {
                     // Not proper metadata JSON, treat tokenURI as direct image URL
                     return {
-                      id: Number(tier.id),
+                      ...baseTier,
                       description: (tier as any).name,
                       teamName: (tier as any).name,
                       teamImage: metadataUrl, // Use the URL directly as image
-                      maxSupply: maxSupply,
-                      price: BigInt(tier.price.toString()),
-                      remainingQuantity: Number(remainingQty),
-                      minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
-                      initialQuantity: Number(initialQty),
                     };
                   }
                 }
               } catch (error) {
                 // Failed to parse as JSON, assume it's a direct image URL
                 return {
-                  id: Number(tier.id),
+                  ...baseTier,
                   description: (tier as any).name,
                   teamName: (tier as any).name,
                   teamImage: metadataUrl,
-                  maxSupply: maxSupply,
-                  price: BigInt(tier.price.toString()),
-                  remainingQuantity: Number(remainingQty),
-                  minted: outstandingMintsPerTier[Number(tier.id)] ?? (maxSupply - Number(remainingQty)),
-                  initialQuantity: Number(initialQty),
                 };
               }
             } catch (error) {
@@ -187,15 +188,10 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
 
           // Fallback: use tier name only
           return {
-            id: Number(tier.id),
+            ...baseTier,
             description: (tier as any).name,
             teamName: (tier as any).name,
             teamImage: "",
-            maxSupply: maxSupply,
-            price: BigInt(tier.price.toString()),
-            remainingQuantity: Number(remainingQty),
-            minted: outstandingMintsPerTier[Number(tier.id)] || 0,
-            initialQuantity: Number(initialQty),
           };
         })
       );

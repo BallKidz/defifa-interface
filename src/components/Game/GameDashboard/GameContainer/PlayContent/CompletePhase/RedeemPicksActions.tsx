@@ -17,7 +17,7 @@ export function RedeemPicksActions({
   return (
     <div className="flex justify-between items-center">
       <div>
-        {totalSelected} {picksText} to redeem
+        {totalSelected} {picksText} to exchange
       </div>
 
       <Button loading={isLoading} size="lg" onClick={() => write?.()}>

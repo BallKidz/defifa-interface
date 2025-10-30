@@ -4,7 +4,7 @@ import Content from "components/Deployer/Content";
 import Button from "components/UI/Button";
 import { EthSymbol } from "components/UI/EthSymbol/EthSymbol";
 import { Input } from "components/UI/Input";
-import { BigNumber, constants } from "ethers";
+import { constants } from "ethers";
 import { useCreateGame } from "hooks/write/useCreateGame";
 import { useChainData } from "hooks/useChainData";
 import { useSwitchChain } from "wagmi";
@@ -42,6 +42,63 @@ const getNetworkName = (chainId: number): string => {
   }
 };
 
+const defaultTierTemplate = createDefaultTierData();
+
+const normalizeTierInput = (
+  tier: DefifaTierParams,
+  defaults?: Partial<DefifaTierParams>
+): DefifaTierParams => {
+  const priceSource =
+    tier.price && tier.price !== ""
+      ? tier.price
+      : (defaults?.price as string) || defaultTierTemplate.price;
+  const price = priceSource?.toString() ?? defaultTierTemplate.price;
+
+  const reservedRateInput =
+    tier.reservedRate ??
+    (typeof defaults?.reservedRate === "number"
+      ? defaults.reservedRate
+      : undefined) ??
+    0;
+  const reservedRate = Math.max(
+    0,
+    Math.floor(Number(reservedRateInput) || 0)
+  );
+
+  const defaultBeneficiaryRaw =
+    (defaults?.reservedTokenBeneficiary
+      ? (defaults.reservedTokenBeneficiary as string).trim()
+      : "") || "";
+  const rawBeneficiary =
+    (tier.reservedTokenBeneficiary || "").trim();
+
+  let shouldUseDefault = tier.shouldUseReservedTokenBeneficiaryAsDefault;
+  let resolvedBeneficiary: string;
+
+  if (shouldUseDefault === true) {
+    resolvedBeneficiary = constants.AddressZero;
+  } else if (rawBeneficiary) {
+    resolvedBeneficiary = rawBeneficiary;
+    shouldUseDefault = false;
+  } else if (defaultBeneficiaryRaw) {
+    resolvedBeneficiary = defaultBeneficiaryRaw;
+    shouldUseDefault = false;
+  } else {
+    resolvedBeneficiary = constants.AddressZero;
+    shouldUseDefault = true;
+  }
+
+  const finalShouldUseDefault = Boolean(shouldUseDefault);
+
+  return {
+    ...tier,
+    price,
+    reservedRate,
+    reservedTokenBeneficiary: resolvedBeneficiary,
+    shouldUseReservedTokenBeneficiaryAsDefault: finalShouldUseDefault,
+  };
+};
+
 // Helper function to get block explorer URL for a transaction
 const getBlockExplorerUrl = (chainId: number, txHash: string): string => {
   switch (chainId) {
@@ -62,7 +119,11 @@ const DeployerCreate = () => {
     createDefaultLaunchProjectData()
   );
 
-  const [tier, setTier] = useState<DefifaTierParams>(createDefaultTierData());
+  const [tier, setTier] = useState<DefifaTierParams>(() => ({
+    ...createDefaultTierData(),
+    reservedTokenBeneficiary: "",
+    shouldUseReservedTokenBeneficiaryAsDefault: true,
+  }));
   const [editedTier, setEditedTier] = useState<DefifaTierParams | null>(null);
   const [tierGeneralValues, setTierGeneralValues] =
     useState<Partial<DefifaTierParams>>({});
@@ -347,7 +408,7 @@ const DeployerCreate = () => {
   };
 
   const handleTierChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
 
     if (name === "encodedIPFSUri") {
       setIsUploading(true);
@@ -391,15 +452,45 @@ const DeployerCreate = () => {
       } finally {
         setIsUploading(false);
       }
-    } else {
+      return;
+    }
+
+    if (type === "checkbox") {
       setTier((prevState) => ({
         ...prevState,
-        [name]:
-          name === "price" || name === "reservedRate" || name === "royaltyRate"
-            ? parseFloat(value)
-            : value,
+        [name]: checked,
+        ...(name === "shouldUseReservedTokenBeneficiaryAsDefault" && checked
+          ? { reservedTokenBeneficiary: "" }
+          : {}),
       }));
+      return;
     }
+
+    if (name === "reservedRate") {
+      setTier((prevState) => ({
+        ...prevState,
+        reservedRate: value === "" ? 0 : Number(value),
+      }));
+      return;
+    }
+
+    if (name === "reservedTokenBeneficiary") {
+      const trimmed = value.trim();
+      setTier((prevState) => ({
+        ...prevState,
+        reservedTokenBeneficiary: trimmed,
+        shouldUseReservedTokenBeneficiaryAsDefault: trimmed === "",
+      }));
+      return;
+    }
+
+    setTier((prevState) => ({
+      ...prevState,
+      [name]:
+        name === "price" || name === "royaltyRate"
+          ? value
+          : value,
+    }));
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -429,42 +520,37 @@ const DeployerCreate = () => {
   const handleTierGeneralValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    let newValue = value;
+    if (name === "reservedTokenBeneficiary") {
+      const trimmed = value.trim();
+      setTierGeneralValues((prevState) => ({
+        ...prevState,
+        reservedTokenBeneficiary: trimmed,
+        shouldUseReservedTokenBeneficiaryAsDefault: trimmed === "",
+      }));
+      setTier((prevTier) => ({
+        ...prevTier,
+        reservedTokenBeneficiary: trimmed,
+        shouldUseReservedTokenBeneficiaryAsDefault: trimmed === "",
+      }));
+      return;
+    }
+
+    let newValue: string | number = value;
+    if (name === "reservedRate") {
+      newValue = value === "" ? 0 : Number(value);
+    }
 
     setTierGeneralValues((prevState) => ({
       ...prevState,
       [name]: newValue,
     }));
 
-    // Update all tiers in the tiers array if it exists
-    if (formValues.tiers && formValues.tiers.length > 0) {
+    if (name === "price" && formValues.tiers && formValues.tiers.length > 0) {
       setFormValues((prevState) => {
-        const shouldUpdatePreviousTiers =
-          name === "reservedRate" || name === "reservedTokenBeneficiary";
-
-        const updatedTiers = prevState.tiers.map((tier, index) => {
-          if (shouldUpdatePreviousTiers) {
-            if (index === 0) {
-              return {
-                ...tier,
-                [name]: newValue,
-                shouldUseReservedTokenBeneficiaryAsDefault: false,
-              };
-            } else {
-              return {
-                ...tier,
-                reservedRate: 0,
-                reservedTokenBeneficiary: constants.AddressZero,
-                shouldUseReservedTokenBeneficiaryAsDefault: true,
-              };
-            }
-          } else {
-            return {
-              ...tier,
-              [name]: newValue,
-            };
-          }
-        });
+        const updatedTiers = prevState.tiers.map((tier) => ({
+          ...tier,
+          [name]: newValue,
+        }));
 
         return {
           ...prevState,
@@ -472,31 +558,65 @@ const DeployerCreate = () => {
         };
       });
     }
+
+    if (name === "price") {
+      setTier((prevTier) => ({
+        ...prevTier,
+        price: newValue as string,
+      }));
+    }
+
+    if (name === "reservedRate") {
+      setTier((prevTier) => ({
+        ...prevTier,
+        reservedRate: newValue as number,
+      }));
+    }
   };
 
   const onAddNFT = () => {
-    const mergedTier = {
-      ...tier,
-      ...tierGeneralValues,
-    };
-
-    // Check if there's at least one tier with reservedRate and reservedTokenBeneficiary set
-    const hasReservedRateTier = formValues.tiers.some(
-      (t) => t.reservedRate && t.reservedTokenBeneficiary
+    const preparedTier = normalizeTierInput(
+      {
+        ...tier,
+        price:
+          tier.price && tier.price !== ""
+            ? tier.price
+            : (tierGeneralValues.price as string) || tier.price,
+        reservedRate:
+          tier.reservedRate ??
+          (typeof tierGeneralValues.reservedRate === "number"
+            ? tierGeneralValues.reservedRate
+            : undefined),
+        reservedTokenBeneficiary:
+          tier.reservedTokenBeneficiary ||
+          (tierGeneralValues.reservedTokenBeneficiary as string) ||
+          "",
+      },
+      tierGeneralValues
     );
-
-    if (hasReservedRateTier) {
-      mergedTier.reservedRate = 0;
-      mergedTier.reservedTokenBeneficiary = constants.AddressZero;
-      mergedTier.shouldUseReservedTokenBeneficiaryAsDefault = true;
-    }
 
     setFormValues((prevValues) => ({
       ...prevValues,
-      tiers: mergedTier ? [...prevValues.tiers, mergedTier] : prevValues.tiers,
+      tiers: [...prevValues.tiers, preparedTier],
     }));
 
-    setTier(createDefaultTierData());
+    const baseTier = createDefaultTierData();
+    const generalReservedRate =
+      typeof tierGeneralValues.reservedRate === "number"
+        ? tierGeneralValues.reservedRate
+        : 0;
+    const generalBeneficiary =
+      (tierGeneralValues.reservedTokenBeneficiary as string) || "";
+
+    setTier({
+      ...baseTier,
+      price:
+        (tierGeneralValues.price as string) ??
+        baseTier.price,
+      reservedRate: generalReservedRate,
+      reservedTokenBeneficiary: generalBeneficiary,
+      shouldUseReservedTokenBeneficiaryAsDefault: generalBeneficiary === "",
+    });
 
     setImageUri("");
 
@@ -513,9 +633,14 @@ const DeployerCreate = () => {
   const onSubmitEditedTier = (index: number) => {
     if (editedTier) {
       setFormValues((prevValues) => {
-        const updatedTiers = prevValues.tiers.map((tier, i) =>
-          i === index ? editedTier : tier
-        );
+        const updatedTiers = prevValues.tiers.map((tier, i) => {
+          if (i !== index) return tier;
+          const merged = {
+            ...tier,
+            ...editedTier,
+          };
+          return normalizeTierInput(merged, tierGeneralValues);
+        });
 
         return {
           ...prevValues,
@@ -556,6 +681,90 @@ const DeployerCreate = () => {
                 name="encodedIPFSUri"
                 id="encodedIPFSUri"
               />
+            </div>
+            <div className={styles.formGroup}>
+              <label className="text-sm leading-6 mb-1" htmlFor="editReservedRate">
+                Reserved rate
+              </label>
+              <Input
+                type="number"
+                id="editReservedRate"
+                name="reservedRate"
+                min={0}
+                value={editedTier?.reservedRate ?? 0}
+                onChange={(e) =>
+                  setEditedTier((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          reservedRate:
+                            e.target.value === "" ? 0 : Number(e.target.value),
+                        }
+                      : prev
+                  )
+                }
+              />
+              <span className="text-xs mt-1 text-neutral-400">
+                Set 0 to disable reserved NFTs for this tier.
+              </span>
+            </div>
+            <div className={styles.formGroup}>
+              <label className="text-sm leading-6 mb-1" htmlFor="editReservedTokenBeneficiary">
+                Reserved beneficiary
+              </label>
+              <Input
+                type="text"
+                id="editReservedTokenBeneficiary"
+                name="reservedTokenBeneficiary"
+                value={
+                  editedTier?.shouldUseReservedTokenBeneficiaryAsDefault
+                    ? ""
+                    : editedTier?.reservedTokenBeneficiary || ""
+                }
+                disabled={editedTier?.shouldUseReservedTokenBeneficiaryAsDefault}
+                onChange={(e) =>
+                  setEditedTier((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          reservedTokenBeneficiary: e.target.value.trim(),
+                          shouldUseReservedTokenBeneficiaryAsDefault:
+                            e.target.value.trim() === "",
+                        }
+                      : prev
+                  )
+                }
+              />
+              <span className="text-xs mt-1 text-neutral-400">
+                Leave blank to inherit the default reserved beneficiary.
+              </span>
+            </div>
+            <div className="flex items-center gap-2 mb-4">
+              <input
+                type="checkbox"
+                id="editUseDefaultBeneficiary"
+                checked={editedTier?.shouldUseReservedTokenBeneficiaryAsDefault ?? false}
+                onChange={(e) =>
+                  setEditedTier((prev) =>
+                    prev
+                      ? {
+                          ...prev,
+                          shouldUseReservedTokenBeneficiaryAsDefault: e.target.checked,
+                          reservedTokenBeneficiary: e.target.checked
+                            ? ""
+                            : prev.reservedTokenBeneficiary,
+                        }
+                      : prev
+                  )
+                }
+                className="h-4 w-4"
+              />
+              <label
+                htmlFor="editUseDefaultBeneficiary"
+                className="text-sm text-neutral-300 select-none"
+              >
+                Use default reserved beneficiary
+              </label>
             </div>
             <div style={{ marginTop: "20px" }}>
               <Button type="button" onClick={() => onSubmitEditedTier(index)}>Submit</Button>
@@ -811,7 +1020,7 @@ const DeployerCreate = () => {
             </div>
             <div className={styles.formGroup}>
               <label className="text-sm leading-6 mb-1" htmlFor="reservedRate">
-                Reserved rate (optional)
+                Default reserved cadence (optional)
               </label>
               <Input
                 type="number"
@@ -821,12 +1030,12 @@ const DeployerCreate = () => {
                 onChange={handleTierGeneralValues}
               />
               <span className="text-xs mt-1 text-neutral-400">
-                For example: reserve 1 NFT for every X minted NFTs
+                Enter <code>X</code> to reserve 1 NFT for every <code>X</code> mints. Leave blank to skip defaults.
               </span>
             </div>
             <div className={styles.formGroup}>
               <label className="text-sm leading-6 mb-1" htmlFor="reservedRate">
-                Reserved rate beneficiary address allocation
+                Default reserved beneficiary (optional)
               </label>
               <Input
                 type="text"
@@ -836,11 +1045,19 @@ const DeployerCreate = () => {
                 onChange={handleTierGeneralValues}
               />
               <span className="text-xs mt-1 text-neutral-400">
-                ETH address that will receive the reserved NFTs
+                Any tier that opts into the default cadence will send reserved NFTs to this address.
               </span>
             </div>
+            <div className="rounded-md border border-neutral-700 bg-neutral-900/40 p-4 text-sm text-neutral-300">
+              <p className="font-medium text-pink-400">How defaults work</p>
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-neutral-400">
+                <li>Defaults are just templates. Each new tier starts with these values.</li>
+                <li>You can change the cadence or address for any tier when adding/editing it.</li>
+                <li>Leave defaults blank if you plan to configure only specific tiers manually.</li>
+              </ul>
+            </div>
             <div className="border border-neutral-800">
-              <Content title="Add NFT" createIcon open={addNftOpen}>
+              <Content title="Add team tier" createIcon open={addNftOpen}>
                 <div className="p-5">
                   <div className={styles.formGroup}>
                     <label className="text-sm leading-6 mb-1" htmlFor="name">
@@ -874,9 +1091,9 @@ const DeployerCreate = () => {
                         file:cursor-pointer"
                     />
                     {isUploading && (
-                      <div className="text-sm text-neutral-400 mt-2">
-                        Uploading to IPFS...
-                      </div>
+            <div className="text-sm text-neutral-400 mt-2">
+              Uploading to IPFS...
+            </div>
                     )}
                     {!isUploading && imageUri && (
                       <div
@@ -912,9 +1129,63 @@ const DeployerCreate = () => {
                     </span>
                   </div>
 
+                  <div className={styles.formGroup}>
+                    <label className="text-sm leading-6 mb-1" htmlFor="tierReservedRate">
+                      Reserved cadence for this tier
+                    </label>
+                    <Input
+                      type="number"
+                      id="tierReservedRate"
+                      name="reservedRate"
+                      value={tier?.reservedRate ?? 0}
+                      min={0}
+                      onChange={handleTierChange}
+                    />
+                    <span className="text-xs mt-1 text-neutral-400">
+                      Set to <code>0</code> to disable reserved mints for this tier.
+                    </span>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className="text-sm leading-6 mb-1" htmlFor="tierReservedBeneficiary">
+                      Reserved beneficiary for this tier
+                    </label>
+                    <Input
+                      type="text"
+                      id="tierReservedBeneficiary"
+                      name="reservedTokenBeneficiary"
+                      value={
+                        tier?.shouldUseReservedTokenBeneficiaryAsDefault
+                          ? ""
+                          : tier?.reservedTokenBeneficiary || ""
+                      }
+                      onChange={handleTierChange}
+                      disabled={tier?.shouldUseReservedTokenBeneficiaryAsDefault}
+                      placeholder="0x..."
+                    />
+                    <span className="text-xs mt-1 text-neutral-400">
+                      Leave blank (or check the box below) to inherit the default beneficiary.
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <input
+                      type="checkbox"
+                      id="tierUseDefaultBeneficiary"
+                      name="shouldUseReservedTokenBeneficiaryAsDefault"
+                      checked={tier?.shouldUseReservedTokenBeneficiaryAsDefault ?? false}
+                      onChange={handleTierChange}
+                      className="h-4 w-4"
+                    />
+                    <label
+                      htmlFor="tierUseDefaultBeneficiary"
+                      className="text-sm text-neutral-300 select-none"
+                    >
+                      Use default reserved beneficiary
+                    </label>
+                  </div>
+
                   <div style={{ marginTop: "20px" }}>
                     <Button type="button" onClick={onAddNFT} disabled={isUploading}>
-                      Add NFT
+                      Save tier
                     </Button>
                   </div>
                 </div>
@@ -923,7 +1194,7 @@ const DeployerCreate = () => {
 
             {formValues.tiers.length > 0 && (
               <div className={styles.tiersListContainer}>
-                <p>Your NFTs</p>
+                <p>Your team tiers</p>
                 {formValues.tiers.map((tier, index) => (
                   <div key={index} className={styles.tier}>
                     <div className={styles.tierDetails}>
@@ -932,32 +1203,27 @@ const DeployerCreate = () => {
                         Price: <EthSymbol />
                         {tier.price}
                       </p>
-                      {formValues.tiers.some(
-                        (tier) => tier.reservedRate > 0
-                      ) && (
+                      {tier.reservedRate > 0 ? (
                         <p>
-                          For every{" "}
-                          {
-                            formValues.tiers.find((t) => t.reservedRate)
-                              ?.reservedRate
-                          }{" "}
-                          NFTs minted, 1 goes to{" "}
-                          {tier.reservedTokenBeneficiary
-                            ? truncateAddress(
-                                formValues.tiers[0].reservedTokenBeneficiary,
+                          For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
+                          {tier.shouldUseReservedTokenBeneficiaryAsDefault
+                            ? "the default reserved beneficiary"
+                            : truncateAddress(
+                                tier.reservedTokenBeneficiary ?? constants.AddressZero,
                                 3,
                                 3
-                              )
-                            : "not you"}
-                          !
+                              )}
+                          .
                         </p>
+                      ) : (
+                        <p>No reserved NFTs configured for this tier.</p>
                       )}
                     </div>
 
                     <div className={styles.tierIcons}>
-                      {/* <span role="button" onClick={() => editTier(tier, index)}>
+                      <span role="button" onClick={() => editTier(tier, index)}>
                         <PencilSquareIcon className="h-5 w-5" />
-                      </span> */}
+                      </span>
                       <span role="button" onClick={() => onRemoveTier(index)}>
                         <TrashIcon className="h-5 w-5" />
                       </span>

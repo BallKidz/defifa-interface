@@ -24,24 +24,43 @@ export function RedeemCard({
     amountRedeemed,
   });
 
+  const totalRedemptionValue =
+    tokenRedemptionValue && !tokenRedemptionValue.isZero()
+      ? tokenRedemptionValue.mul(tokenIds.length)
+      : undefined;
 
   return (
     <PickCard
       title={title}
       extra={
         <div className="flex flex-col gap-1">
-          <div className="text-xs text-neutral-400">
-            {tokenIds.length} NFT{tokenIds.length > 1 ? "s" : ""}
+          <div className="text-xs text-neutral-400 uppercase tracking-wide">
+            {tokenIds.length} NFT{tokenIds.length > 1 ? "s" : ""} held
           </div>
-          {tokenRedemptionValue && !tokenRedemptionValue.isZero() ? (
-            <div className="flex items-center gap-2">
-              <EthAmount amountWei={tokenRedemptionValue} className="text-sm" />
-              <span className="text-xs text-neutral-400">each</span>
+          {totalRedemptionValue ? (
+            <div className="flex flex-col gap-1 text-sm">
+              <div className="flex items-center gap-2">
+                <EthAmount
+                  amountWei={totalRedemptionValue}
+                  className="text-base font-medium"
+                  iconClassName="h-4 w-4"
+                />
+                <span className="text-xs text-neutral-400">total</span>
+              </div>
+              <div className="flex items-center gap-1 text-xs text-neutral-500">
+                <EthAmount
+                  amountWei={tokenRedemptionValue}
+                  className="text-xs"
+                  iconClassName="h-3 w-3"
+                  precision={6}
+                />
+                <span>per NFT</span>
+              </div>
             </div>
           ) : (
             <div className="text-sm text-neutral-500 flex items-center gap-2">
               <span className="w-3 h-3 bg-neutral-600 rounded-full"></span>
-              <span>No value (0% in scorecard)</span>
+              <span>No redemption value (0% in scorecard)</span>
             </div>
           )}
         </div>

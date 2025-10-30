@@ -27,9 +27,17 @@ export function useAttestToScorecard(
     if (isSuccess && hash) {
       // Invalidate all relevant queries to refresh data
       queryClient.invalidateQueries({ queryKey: ["scorecards", gameId] });
-      queryClient.invalidateQueries({ queryKey: ["proposalVotes"] });
-      queryClient.invalidateQueries({ queryKey: ["accountVotes"] });
-      queryClient.invalidateQueries({ queryKey: ["gameQuorum"] });
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          if (!Array.isArray(key)) return false;
+          if (key[0] !== "readContract") return false;
+          const descriptor = key[1];
+          if (!descriptor || typeof descriptor !== "object") return false;
+          const fn = (descriptor as { functionName?: string }).functionName;
+          return fn === "attestationCountOf" || fn === "getAttestationWeight" || fn === "quorum";
+        },
+      });
       
       onSuccess?.();
     }

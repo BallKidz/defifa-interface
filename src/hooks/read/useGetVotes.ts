@@ -36,6 +36,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
       enabled: !!governor && !!timestamp && !!address,
       refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
+      keepPreviousData: true,
     },
   });
 
@@ -50,6 +51,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
       enabled: !!governor,
       refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
+      keepPreviousData: true,
     },
   });
 
@@ -64,6 +66,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
       enabled: !!governor,
       refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
+      keepPreviousData: true,
     },
   });
 
@@ -78,6 +81,7 @@ export function useAccountVotes(gameId: number, governor: string | undefined) {
       enabled: !!governor,
       refetchInterval: 30 * 1000, // 30 seconds to reduce RPC load
       staleTime: 0, // Always consider data stale
+      keepPreviousData: true,
     },
   });
 

@@ -87,4 +87,6 @@ export interface DefifaTier {
   initialQuantity: number;
   minted: number;
   price: bigint;
+  reserveFrequency?: number;
+  reserveBeneficiary?: string;
 }
