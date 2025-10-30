@@ -34,26 +34,26 @@ type ActivityEvent = LeaderBoardMetric & {
 
 function MintsLeaderBoard({
   LeaderBoardMetric,
+  index = 0,
 }: {
   LeaderBoardMetric: LeaderBoardMetric;
+  index?: number;
 }) {
   return (
-    <tr>
-      <td>{LeaderBoardMetric.rowNumber}</td> {/* Display the row number */}
-      <td>
+    <tr className={`border-b border-pink-300/30 ${index % 2 === 0 ? 'bg-transparent' : 'bg-pink-50/10'}`}>
+      <td className="px-4 py-2 text-sm font-medium text-white">{LeaderBoardMetric.rowNumber}</td>
+      <td className="px-4 py-2">
         <div className="flex items-center gap-3">
           <EthAddress
             address={LeaderBoardMetric.id}
-            className="font-medium"
+            className="font-medium text-pink-100"
             withEnsAvatar
           />
         </div>
       </td>
-      <td>
+      <td className="px-4 py-2 text-center">
         <div className="flex justify-center items-center gap-3">
-          {" "}
-          {/* Center the content */}
-          {LeaderBoardMetric.uniqueGameIds}
+          <span className="text-pink-100 text-sm">{LeaderBoardMetric.uniqueGameIds}</span>
         </div>
       </td>
     </tr>
@@ -108,32 +108,30 @@ export function TopPlayersContent() {
     );
 
   return (
-    <div className="p-4">
-      <div
-        className={
-          "relative border border-neutral-800 rounded-xl max-w-[500px] mx-auto overflow-hidden hover:-translate-y-[1px] transition-transform"
-        }
-      >
-        <div className="border-2 border-pink-500 rounded-lg shadow-md p-6">
-          <h2 className="text-2xl mb-4 text-center">Top Players</h2>
-          <table>
-            <thead>
+    <div className="border-2 border-pink-700 rounded-lg">
+      <div className="bg-pink-700 text-white text-md font-medium px-4 py-2 flex flex-col">
+        <span className="order-1">Leaderboard Top Players</span>
+      </div>
+      <div className="min-height overflow-y-auto p-4">
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-transparent border border-pink-300 rounded-lg">
+            <thead className="bg-pink-100/20">
               <tr>
-                <th>Rank</th>
-                <th></th>
-                <th>Games Played</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-pink-200 uppercase tracking-wider">Rank</th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-pink-200 uppercase tracking-wider">Player</th>
+                <th className="px-4 py-2 text-center text-xs font-medium text-pink-200 uppercase tracking-wider">Games Played</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="bg-transparent divide-y divide-pink-300/30">
               {top10Array.map((LeaderBoardMetric, index) => (
                 <MintsLeaderBoard
                   key={LeaderBoardMetric.id}
+                  index={index}
                   LeaderBoardMetric={{
                     ...LeaderBoardMetric,
                     rowNumber: index + 1,
                   }}
                 />
-                // <MintsLeaderBoard key={LeaderBoardMetric.id} LeaderBoardMetric={LeaderBoardMetric} />
               ))}
             </tbody>
           </table>

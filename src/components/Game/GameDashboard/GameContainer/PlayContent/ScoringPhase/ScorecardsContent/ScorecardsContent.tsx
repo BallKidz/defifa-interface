@@ -182,7 +182,7 @@ function ScorecardActions({
     <div className="flex justify-between items-center w-full">
       <Tooltip title={selectedScorecard.id?.toString() || 'Unknown'}>
         <div className="flex gap-2 items-center truncate">
-          {/* {selectedScorecard.scorecardId.toString().substring(0, 6)}... */}
+          {/* {selectedScorecard.scorecardId.toString().substring(0, 9)}... */}
           {scorecardState !== undefined && stateText(scorecardState) && (
             <Pill size="sm">{stateText(scorecardState)}</Pill>
           )}

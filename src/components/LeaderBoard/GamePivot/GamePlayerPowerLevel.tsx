@@ -33,32 +33,39 @@ export function GamePlayerPowerLevel() {
         return <Container className="text-center">Loading...</Container>;
     }
 
-    // Process the data to create a simple table
-    const playerData = (data.contracts as Contract[]).flatMap((contract: Contract) =>
-        contract.mintedTokens.map((token: MintedToken) => ({
-            player: `${token.owner.id.slice(0, 4)}...${token.owner.id.slice(-3)}`,
-            mints: parseInt(token.id.split("-")[1]),
-            picks: Math.floor(parseInt(token.id.split("-")[1]) / DEFAULT_NFT_MAX_SUPPLY),
-            balance: token.owner.balance,
-        }))
-    );
+    // Filter contracts to only include the current game
+    const currentGameContract = data.contracts.find((contract: Contract) => contract.gameId === gameId.toString());
+    
+    if (!currentGameContract) {
+        return <Container className="text-center">No data found for this game.</Container>;
+    }
+
+    // Process the data to create a simple table - only for the current game
+    const playerData = currentGameContract.mintedTokens.map((token: MintedToken) => ({
+        player: `${token.owner.id.slice(0, 4)}...${token.owner.id.slice(-3)}`,
+        playerAddress: token.owner.id,
+        tokenNumber: parseInt(token.id.split("-")[1]),
+        tierId: Math.floor(parseInt(token.id.split("-")[1]) / DEFAULT_NFT_MAX_SUPPLY),
+    }));
 
     // Group by player and sum their data
     const playerStats = playerData.reduce((acc, item) => {
-        if (!acc[item.player]) {
-            acc[item.player] = {
+        if (!acc[item.playerAddress]) {
+            acc[item.playerAddress] = {
                 player: item.player,
-                totalMints: 0,
-                totalPicks: 0,
-                balance: item.balance,
+                playerAddress: item.playerAddress,
+                totalTokens: 0, // Total number of NFTs owned
+                totalMints: 0, // Sum of all token numbers (for display purposes)
+                gameBalance: 0, // Same as totalTokens - count of tokens in this specific game
             };
         }
-        acc[item.player].totalMints += item.mints;
-        acc[item.player].totalPicks += item.picks;
+        acc[item.playerAddress].totalTokens += 1; // Each token counts as +1
+        acc[item.playerAddress].totalMints += item.tokenNumber; // Sum of token numbers
+        acc[item.playerAddress].gameBalance += 1; // Count each token as +1 to balance
         return acc;
-    }, {} as Record<string, { player: string; totalMints: number; totalPicks: number; balance: string }>);
+    }, {} as Record<string, { player: string; playerAddress: string; totalTokens: number; totalMints: number; gameBalance: number }>);
 
-    const sortedPlayers = Object.values(playerStats).sort((a, b) => b.totalMints - a.totalMints);
+    const sortedPlayers = Object.values(playerStats).sort((a, b) => b.totalTokens - a.totalTokens);
 
     return (
         <div className="border-2 border-pink-700 rounded-lg">
@@ -70,29 +77,21 @@ export function GamePlayerPowerLevel() {
                 <p className="text-sm mb-4">{metadata?.description}</p>
                 
                 <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200 rounded-lg">
-                        <thead className="bg-gray-50">
+                    <table className="min-w-full bg-transparent border border-pink-300 rounded-lg">
+                        <thead className="bg-pink-100/20">
                             <tr>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Player</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Mints</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Picks</th>
-                                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-pink-200 uppercase tracking-wider">Player</th>
+                                <th className="px-4 py-2 text-left text-xs font-medium text-pink-200 uppercase tracking-wider">Balance</th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-transparent divide-y divide-pink-300/30">
                             {sortedPlayers.map((player, index) => (
-                                <tr key={player.player} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <tr key={player.player} className={index % 2 === 0 ? 'bg-transparent' : 'bg-pink-50/10'}>
+                                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-white">
                                         {player.player}
                                     </td>
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-                                        {player.totalMints}
-                                    </td>
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-                                        {player.totalPicks}
-                                    </td>
-                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-                                        {player.balance}
+                                    <td className="px-4 py-2 whitespace-nowrap text-sm text-pink-100">
+                                        {player.gameBalance}
                                     </td>
                                 </tr>
                             ))}

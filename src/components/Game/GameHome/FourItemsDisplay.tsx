@@ -35,7 +35,7 @@ const FourItemsDisplay = () => {
     const displayedItems = [...tiers]
         .slice(currentIndex)
         .concat(tiers.slice(0, currentIndex))
-        .slice(0, 4)
+        .slice(0, 9)
         .map((tier, index) => ({
             ...tier,
             key: index,
