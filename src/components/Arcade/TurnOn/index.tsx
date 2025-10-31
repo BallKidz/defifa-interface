@@ -175,13 +175,31 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
                   )}
                 </div>
               </th>
-              <th className="font-normal text-sm py-3 hidden md:table-cell">
+              <th
+                className={
+                  isInMiniApp
+                    ? "font-normal text-sm py-3"
+                    : "font-normal text-sm py-3 hidden md:table-cell"
+                }
+              >
                 Phase
               </th>
-              <th className="font-normal text-sm py-3 hidden md:table-cell">
+              <th
+                className={
+                  isInMiniApp
+                    ? "font-normal text-sm py-3"
+                    : "font-normal text-sm py-3 hidden md:table-cell"
+                }
+              >
                 Pot Size
               </th>
-              <th className="font-normal text-sm py-3 hidden md:table-cell">
+              <th
+                className={
+                  isInMiniApp
+                    ? "font-normal text-sm py-3"
+                    : "font-normal text-sm py-3 hidden md:table-cell"
+                }
+              >
                 Actions
               </th>
             </tr>

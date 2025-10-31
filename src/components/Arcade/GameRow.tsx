@@ -11,6 +11,7 @@ import { buildGamePath } from "lib/networks";
 import Link from "next/link";
 import { FC } from "react";
 import { fromWad6 } from "utils/format/formatNumber";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
 
 const phaseText = (phase?: DefifaGamePhase) => {
@@ -62,6 +63,7 @@ const availableActionsText = (phase?: DefifaGamePhase, mintedCount?: number) => 
 export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ game, chainId }) => {
   const { gameId, name } = game;
   const { chainData } = useChainData();
+  const { isInMiniApp } = useFarcasterContext();
   
   // For omnichain games, use the game's chainId; otherwise use the provided chainId or current chain
   const isOmnichainGame = 'chainId' in game && 'networkAbbr' in game;
@@ -103,7 +105,13 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
           <span>{name}</span>
         </Link>
       </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
+      <td
+        className={
+          isInMiniApp
+            ? "whitespace-nowrap py-4 pl-4 pr-3"
+            : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
+        }
+      >
         <Link href={gameUrl} className="block">
           {currentPhase === DefifaGamePhase.MINT ? (
             <span>{`Mint until ${date.toLocaleString()}`}</span>
@@ -117,14 +125,26 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
         </Link>
       </td>
 
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
+      <td
+        className={
+          isInMiniApp
+            ? "whitespace-nowrap py-4 pl-4 pr-3"
+            : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
+        }
+      >
         <Link href={gameUrl} className="block">
           <span data-treasury-amount={treasuryAmount?.toString() || "0"}>
             {fromWad6(treasuryAmount)} Ξ
           </span>
         </Link>
       </td>
-      <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
+      <td
+        className={
+          isInMiniApp
+            ? "whitespace-nowrap py-4 pl-4 pr-3"
+            : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
+        }
+      >
         <Link href={gameUrl} className="block">
           {availableActionsText(currentPhase, mintedCount)}
         </Link>
