@@ -1,3 +1,5 @@
+import { useFarcasterContext } from "hooks/useFarcasterContext";
+
 export function ActionContainer({
   children,
   renderActions,
@@ -5,6 +7,23 @@ export function ActionContainer({
   children: React.ReactNode;
   renderActions?: () => React.ReactNode;
 }) {
+  const { isInMiniApp } = useFarcasterContext();
+
+  if (isInMiniApp) {
+    return (
+      <div className="flex flex-col gap-6">
+        <div>{children}</div>
+        {renderActions ? (
+          <div className="w-full">
+            <div className="p-4 rounded-xl shadow-glowPink border bg-[#181424] border-neutral-800 w-full">
+              {renderActions()}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-3 gap-8 items-start relative">
       <div className="mb-12 col-span-2">{children}</div>

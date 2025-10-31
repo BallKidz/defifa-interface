@@ -4,11 +4,13 @@ import { useOmnichainGames, OmnichainGame } from "hooks/useOmnichainGames";
 import { useState, useMemo } from "react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import styles from "./TurnOn.module.css";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
 
 type SortField = 'chain' | 'gameId' | 'name';
 type SortDirection = 'asc' | 'desc';
 
 const AllGames = ({ chainId }: { chainId?: number }) => {
+  const { isInMiniApp } = useFarcasterContext();
   const [includeTestnets, setIncludeTestnets] = useState(true);
   const [sortField, setSortField] = useState<SortField>('gameId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -130,12 +132,13 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
       )}
       
       {!isLoading && !isError && games && (
-        <table className="mx-auto">
-          <thead>
-            <tr className="font-normal">
-              <th 
-                className="font-normal text-sm py-3 cursor-pointer hover:text-pink-400 transition-colors select-none"
-                onClick={() => handleSort('chain')}
+        <div className={isInMiniApp ? "overflow-x-auto -mx-4 px-4" : ""}>
+          <table className={`mx-auto ${isInMiniApp ? "w-full min-w-[640px]" : ""}`}>
+            <thead>
+              <tr className="font-normal">
+                <th 
+                  className="font-normal text-sm py-3 cursor-pointer hover:text-pink-400 transition-colors select-none"
+                  onClick={() => handleSort('chain')}
               >
                 <div className="flex items-center gap-1">
                   Chain
@@ -192,7 +195,8 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
               />
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       )}
     </>
   );
