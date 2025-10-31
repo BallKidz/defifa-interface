@@ -6,7 +6,6 @@ import { parseNetworkGameId } from "lib/networks";
 import { useChainValidation } from "hooks/useChainValidation";
 import { ChainMismatchWarning } from "components/UI/ChainMismatchWarning";
 import GameContextProvider from "contexts/GameContext/GameContextProvider";
-import Head from "next/head";
 
 export default function GameLayout({
   children,
@@ -58,10 +57,6 @@ export default function GameLayout({
 
   const { network, gameId } = parsed;
 
-  const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://defifa.net'
-  const gameImageUrl = `${baseUrl}/assets/defifa-og.png` // 1200x800 - perfect 3:2 ratio for social sharing
-  const iconUrl = `${baseUrl}/assets/defifa-icon.png` // 200x200 - splash screen
-
   // Show loading state while switching chains
   if (chainValidation.isSwitching) {
     return (
@@ -75,37 +70,6 @@ export default function GameLayout({
 
   return (
     <GameContextProvider gameId={gameId} chainId={network.chainId}>
-      <Head>
-        <meta name="fc:miniapp" content={JSON.stringify({
-          version: "1",
-          imageUrl: gameImageUrl,
-          button: {
-            title: "🎮 Play Game",
-            action: {
-              type: "launch_frame",
-              name: "Defifa",
-              url: `${baseUrl}/game/${networkGameId}`,
-              splashImageUrl: iconUrl,
-              splashBackgroundColor: "#000000"
-            }
-          }
-        })} />
-        <meta name="fc:frame" content={JSON.stringify({
-          version: "1",
-          imageUrl: gameImageUrl,
-          button: {
-            title: "🎮 Play Game",
-            action: {
-              type: "launch_frame",
-              name: "Defifa",
-              url: `${baseUrl}/game/${networkGameId}`,
-              splashImageUrl: iconUrl,
-              splashBackgroundColor: "#000000"
-            }
-          }
-        })} />
-      </Head>
-      
       {/* Only show chain mismatch warning if auto-switch failed and user is not switching */}
       {chainValidation.needsSwitch && !chainValidation.isValid && !chainValidation.isSwitching && hasAttemptedSwitch && (
         <div className="p-4">

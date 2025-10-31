@@ -3,7 +3,9 @@ import { FarcasterProvider } from '../components/FarcasterProvider'
 import { Metadata } from 'next'
 
 // Dynamic metadata based on environment
-const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://defifa.net'
+const baseUrl =
+  process.env.NEXT_PUBLIC_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://defifa.net')
 const imageUrl = `${baseUrl}/assets/defifa-og.png` // 1200x800 - perfect 3:2 ratio for social sharing
 const iconUrl = `${baseUrl}/assets/defifa-icon.png` // 200x200 - splash screen
 
