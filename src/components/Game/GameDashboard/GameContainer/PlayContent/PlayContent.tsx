@@ -21,6 +21,7 @@ const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
 export function PlayContent() {
   const {
     currentPhase,
+    nfts: { totalSupply, tiers },
     loading: { currentPhaseLoading },
   } = useGameContext();
 
@@ -28,7 +29,38 @@ export function PlayContent() {
     return <Container className="text-center">...</Container>;
   }
 
-  const CurrentContent = PHASE_CONTENT[currentPhase] ?? null;
+  const hasMints = (() => {
+    if (tiers && tiers.length > 0) {
+      return tiers.some((tier) => {
+        const minted = (tier as { minted?: number }).minted;
+        return minted !== undefined && Number(minted) > 0;
+      });
+    }
+
+    if (!totalSupply) return false;
+
+    if (
+      typeof totalSupply === "object" &&
+      "isZero" in totalSupply &&
+      typeof (totalSupply as { isZero?: unknown }).isZero === "function"
+    ) {
+      return !(totalSupply as { isZero: () => boolean }).isZero();
+    }
+
+    const numeric =
+      typeof totalSupply === "string"
+        ? Number(totalSupply)
+        : typeof totalSupply === "number"
+        ? totalSupply
+        : 0;
+    return numeric > 0;
+  })();
+  const effectivePhase =
+    currentPhase === DefifaGamePhase.SCORING && !hasMints
+      ? DefifaGamePhase.NO_CONTEST
+      : currentPhase;
+
+  const CurrentContent = PHASE_CONTENT[effectivePhase] ?? null;
 
   return (
     <Container>

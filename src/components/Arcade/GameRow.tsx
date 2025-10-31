@@ -11,6 +11,7 @@ import { buildGamePath } from "lib/networks";
 import Link from "next/link";
 import { FC } from "react";
 import { fromWad6 } from "utils/format/formatNumber";
+import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
 
 const phaseText = (phase?: DefifaGamePhase) => {
   switch (phase) {
@@ -33,7 +34,11 @@ const phaseText = (phase?: DefifaGamePhase) => {
   }
 };
 
-const availableActionsText = (phase?: DefifaGamePhase) => {
+const availableActionsText = (phase?: DefifaGamePhase, mintedCount?: number) => {
+  if (phase === DefifaGamePhase.SCORING && (mintedCount ?? 0) === 0) {
+    return "No Contest";
+  }
+
   switch (phase) {
     case DefifaGamePhase.COUNTDOWN:
       return "Minting soon";
@@ -75,6 +80,8 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
 
   // const currentDate = new Date(); // Get the current date and time
   const { data: currentPhase } = useCurrentGamePhase(gameId, targetChainId);
+  const { data: mintedTokens } = useGameMints(gameId, targetChainId);
+  const mintedCount = mintedTokens?.length;
 
   // Build game URL with network prefix (e.g., /game/sep:32)
   const gameUrl = buildGamePath(targetChainId, gameId);
@@ -119,7 +126,7 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell">
         <Link href={gameUrl} className="block">
-          {availableActionsText(currentPhase)}
+          {availableActionsText(currentPhase, mintedCount)}
         </Link>
       </td>
     </tr>
