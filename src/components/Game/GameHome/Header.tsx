@@ -69,6 +69,11 @@ export function Header() {
         <h1 className="text-3xl font-medium mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
           {metadata?.name}
         </h1>
+        {metadata?.description && (
+          <p className="text-sm text-neutral-300 max-w-2xl mb-4">
+            Rules: {metadata.description}
+          </p>
+        )}
         <div className="flex gap-4">
           <FourItemsDisplay />
         </div>

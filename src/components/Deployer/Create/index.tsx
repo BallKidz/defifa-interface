@@ -334,7 +334,7 @@ const DeployerCreate = () => {
     contractUri.description =
       formValuesIn.rules +
       " " +
-      "(find redemption value on" +
+      "(NFTs may have redemption value" +
       " " +
       contractUri.infoUri + ")";
     const contractUriCid = await uploadJsonToIpfs(contractUri);
