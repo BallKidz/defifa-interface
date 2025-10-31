@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 import { GameHome } from "components/Game/GameHome/GameHome";
 import { parseNetworkGameId } from "lib/networks";
+import { getChainData } from "config";
+import { formatEther } from "ethers/lib/utils";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 
 const defaultDescription =
   "Defifa is an onchain gaming and governance experiment. Join a team, load the pot, and win.";

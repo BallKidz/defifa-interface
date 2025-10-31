@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { EthAddress } from "components/UI/EthAddress";
 import Container from "components/layout/Container";
 import { constants } from "ethers";
@@ -11,6 +11,9 @@ import { useGameNFTAddress } from "hooks/read/useGameNFTAddress";
 import { useChainData } from "hooks/useChainData";
 import { useReadContract } from "wagmi";
 import { Abi } from "viem";
+import { formatEther } from "ethers/lib/utils";
+import { useCurrentPhaseTitle } from "../PlayContent/useCurrentPhaseTitle";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
 
 // Hook to fetch tokenURI from contract
 function useTokenURI(tokenNumber: string, nftAddress?: string) {
@@ -119,10 +122,42 @@ function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAdd
 function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent }) {
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
   const { nftAddress } = useGameNFTAddress(useGameContext().gameId);
+  const { metadata, nfts, gameId } = useGameContext();
+  const phaseTitle = useCurrentPhaseTitle();
+  const { isInMiniApp } = useFarcasterContext();
+  const firstTierPrice = nfts.tiers?.[0]?.price;
+  const formattedPrice = useMemo(() => {
+    if (!firstTierPrice) return undefined;
+
+    try {
+      const asNumber = Number(formatEther(firstTierPrice));
+      if (Number.isFinite(asNumber)) {
+        return asNumber.toLocaleString(undefined, {
+          maximumFractionDigits: 4,
+        });
+      }
+    } catch (error) {
+      console.warn("Failed to format tier price for sharing copy:", error);
+    }
+
+    return formatEther(firstTierPrice);
+  }, [firstTierPrice]);
+
+  const originFromEnv =
+    process.env.NEXT_PUBLIC_URL ||
+    (process.env.NEXT_PUBLIC_VERCEL_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : undefined);
+  const runtimeOrigin =
+    typeof window !== "undefined" ? window.location.origin : undefined;
+  const baseUrl = originFromEnv ?? runtimeOrigin;
+  const gamePath = gameId ? `/game/${gameId}` : undefined;
+  const gameUrl = baseUrl && gamePath ? `${baseUrl}${gamePath}` : undefined;
   
   const isMint = transferEvent.action === "Mint";
   const arrowIcon = isMint ? "↑" : "↓";
   const actionText = isMint ? "Mint" : "Redeem";
+  const gameName = metadata?.name ?? "this Defifa game";
   
   // Group tokens by tier and count them
   const tierCounts: { [tier: number]: number } = {};
@@ -137,30 +172,34 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
   return (
     <div className="border-b border-solid border-neutral-900 overflow-hidden text-s py-4">
       <div className="flex items-center gap-4">
-        {/* Arrow Icon */}
         <span className="text-2xl text-gray-400 w-8 text-center">{arrowIcon}</span>
-                {/* User Address */}
-                {transferEvent.nonZeroId && (
+
+        {transferEvent.nonZeroId && (
           <EthAddress
             withEnsAvatar
             avatarClassName="h-10 w-10"
             address={transferEvent.nonZeroId}
+            shareText={
+              isInMiniApp && gameUrl
+                ? `${isMint ? "Minted" : "Redeemed"} ${totalNFTs} NFT${totalNFTs > 1 ? "s" : ""} ${isMint ? "in" : "for refunds from"} ${gameName}.` +
+                  `${phaseTitle ? ` Phase: ${phaseTitle}.` : ""}` +
+                  `${formattedPrice ? ` First tier mint price: ${formattedPrice} ETH.` : ""}` +
+                  ` Check out the game: ${gameUrl}`
+                : undefined
+            }
+            shareEmbeds={isInMiniApp && gameUrl ? [gameUrl] : undefined}
           />
         )}
         
-        {/* Timestamp */}
         <span className="text-pink-500 text-sm">{time}</span>
         
-        {/* Tier Thumbnails with Count Badges */}
         <div className="flex items-center gap-2">
             
-          {/* Total Count Badge */}
           <div className="bg-lime-600 text-white text-xs px-2 py-1 rounded-full font-medium">
             {totalNFTs}
           </div>
         </div>
         
-        {/* Action Text */}
         <span className="text-gray-300 font-medium">{actionText}</span>
         
           <div className="flex gap-1">
@@ -169,7 +208,6 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
                 <NFTThumbnail tokenNumber={transferEvent.tokens.find(t => 
                   Math.floor(parseInt(t.number) / DEFAULT_NFT_MAX_SUPPLY) === tier
                 )?.number || "0"} nftAddress={nftAddress} />
-                {/* Count Badge */}
                 {tierCounts[tier] > 1 && (
                   <div className="absolute -top-1 -right-1 bg-lime-600 text-white text-xs px-1.5 py-0.5 rounded-full font-medium min-w-[18px] text-center">
                     {tierCounts[tier]}
