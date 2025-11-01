@@ -8,6 +8,7 @@ import { useFetchCastsUrl } from "hooks/read/useFetchCastsUrl";
 import { useFetchUserDetails } from "hooks/read/useFetchUserDetails";
 import { useGameContext } from "contexts/GameContext";
 import QuestionMarkCircleIcon from "@heroicons/react/24/outline/QuestionMarkCircleIcon";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 //import Image from "next/image";
 
 interface UpdatedCast extends Message {
@@ -34,6 +35,7 @@ const SocialMediaFeed = () => {
   const [token] = useToken(CLIENT_NAME);
   const [signer] = useSigner(CLIENT_NAME, token);
   const [encryptedSigner] = useEncryptedSigner(CLIENT_NAME, token);
+  const { triggerImpact, triggerSelection } = useMiniAppHaptics();
 
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
   const [shouldScrollToBottom, setShouldScrollToBottom] = useState(true);
@@ -154,12 +156,14 @@ const SocialMediaFeed = () => {
   }
 
   const handleToggleWidget = () => {
+    void triggerSelection();
     setWidgetVisibility((prevState) => !prevState);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault(); // Prevent the default behavior of inserting a new line
+      void triggerImpact("medium");
       sendCast(newPost, encryptedSigner!); // Call the sendCast function directly instead of clicking the button
     }
   };
@@ -278,7 +282,10 @@ const SocialMediaFeed = () => {
 
             <button
               className="bg-pink-700 text-white font-medium py-2 px-4 rounded-md mt-2"
-              onClick={() => sendCast(newPost, encryptedSigner!)}
+              onClick={() => {
+                void triggerImpact("medium");
+                sendCast(newPost, encryptedSigner!);
+              }}
             >
               Cast
             </button>

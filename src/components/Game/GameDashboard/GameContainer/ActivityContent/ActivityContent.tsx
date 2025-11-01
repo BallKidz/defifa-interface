@@ -1,7 +1,5 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { EthAddress } from "components/UI/EthAddress";
-import Container from "components/layout/Container";
-import { constants } from "ethers";
 import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
 import moment from "moment";
 import Image from "next/image";
@@ -14,104 +12,191 @@ import { Abi } from "viem";
 import { formatEther } from "ethers/lib/utils";
 import { useCurrentPhaseTitle } from "../PlayContent/useCurrentPhaseTitle";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
+import { buildGamePath } from "lib/networks";
+import { truncateEthAddress } from "utils/format/formatAddress";
+
+type TokenMetadata = {
+  external_link?: string;
+  image?: string;
+  name?: string;
+  description?: string;
+  [key: string]: unknown;
+};
 
 // Hook to fetch tokenURI from contract
-function useTokenURI(tokenNumber: string, nftAddress?: string) {
+function useTokenURI(tokenNumber?: string, nftAddress?: string): string | undefined {
   const { chainData } = useChainData();
+  const shouldQuery = !!nftAddress && !!tokenNumber;
   
   const { data: tokenURI } = useReadContract({
     address: nftAddress as `0x${string}`,
     abi: chainData.DefifaDelegate.interface as Abi,
     functionName: "tokenURI",
-    args: [BigInt(tokenNumber)],
+    args: [BigInt(tokenNumber ?? "0")],
     chainId: chainData.chainId,
     query: {
-      enabled: !!nftAddress && !!tokenNumber,
+      enabled: shouldQuery,
       refetchInterval: 5 * 1000, // 5 seconds
       staleTime: 0,
     },
   });
 
-  return tokenURI;
+  return shouldQuery && typeof tokenURI === "string" ? tokenURI : undefined;
+}
+
+const INFURA_GATEWAY_HOST = "jbm.infura-ipfs.io";
+const LOCAL_GATEWAY_HOST = "ipfs.io";
+
+function decodeBase64(payload: string): string {
+  if (typeof atob === "function") {
+    return atob(payload);
+  }
+  if (typeof globalThis !== "undefined") {
+    const maybeBuffer = (globalThis as {
+      Buffer?: { from(data: string, encoding: string): { toString(encoding: string): string } };
+    }).Buffer;
+    if (maybeBuffer) {
+      return maybeBuffer.from(payload, "base64").toString("utf-8");
+    }
+  }
+
+  throw new Error("Base64 decoding not supported in this environment.");
+}
+
+function resolveUriToHttp(uri?: string): string | undefined {
+  if (!uri) return undefined;
+
+  if (uri.startsWith("ipfs://")) {
+    const cid = uri.replace("ipfs://", "");
+    const hostname =
+      typeof window !== "undefined" && window.location.hostname === "localhost"
+        ? LOCAL_GATEWAY_HOST
+        : INFURA_GATEWAY_HOST;
+    return `https://${hostname}/ipfs/${cid}`;
+  }
+
+  return uri;
+}
+
+function parseDataUriMetadata(uri: string): TokenMetadata | undefined {
+  try {
+    const [, payload] = uri.split(",");
+    if (!payload) return undefined;
+    const isBase64 = uri.includes(";base64,");
+    const decoded = isBase64
+      ? decodeBase64(payload)
+      : decodeURIComponent(payload);
+    return JSON.parse(decoded);
+  } catch (error) {
+    console.warn("Failed to parse token metadata data URI:", error);
+    return undefined;
+  }
+}
+
+async function fetchTokenMetadata(tokenURI: string): Promise<TokenMetadata | undefined> {
+  if (tokenURI.startsWith("data:")) {
+    return parseDataUriMetadata(tokenURI);
+  }
+
+  const resolvedUri = resolveUriToHttp(tokenURI);
+  if (!resolvedUri) return undefined;
+
+  try {
+    const response = await fetch(resolvedUri);
+    if (!response.ok) {
+      throw new Error(`Metadata fetch failed (${response.status})`);
+    }
+    return (await response.json()) as TokenMetadata;
+  } catch (error) {
+    console.warn("Failed to fetch token metadata:", error);
+    return undefined;
+  }
+}
+
+function useTokenMetadata(tokenNumber?: string, nftAddress?: string) {
+  const tokenURI = useTokenURI(tokenNumber, nftAddress);
+  const [metadata, setMetadata] = useState<TokenMetadata | undefined>();
+  const [imageUrl, setImageUrl] = useState<string | undefined>();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!tokenNumber || !nftAddress || !tokenURI) {
+      if (!cancelled) {
+        setMetadata(undefined);
+        setImageUrl(undefined);
+      }
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    const resolvedTokenUri = tokenURI as string;
+    const resolvedFallback = resolveUriToHttp(resolvedTokenUri);
+
+    async function loadMetadata() {
+      const meta = await fetchTokenMetadata(resolvedTokenUri);
+      if (cancelled) return;
+
+      setMetadata(meta);
+
+      const mediaUrl =
+        resolveUriToHttp(meta?.external_link) ||
+        resolveUriToHttp(meta?.image) ||
+        resolvedFallback;
+      setImageUrl(mediaUrl);
+    }
+
+    loadMetadata();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [tokenNumber, nftAddress, tokenURI]);
+
+  return {
+    metadata,
+    imageUrl,
+    tokenURI,
+  };
 }
 
 // Component to display NFT thumbnail
 function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAddress?: string }) {
-  const tokenURI = useTokenURI(tokenNumber, nftAddress);
-  
-  // Extract tier from token number
+  const { imageUrl } = useTokenMetadata(tokenNumber, nftAddress);
   const tier = Math.floor(parseInt(tokenNumber) / DEFAULT_NFT_MAX_SUPPLY);
-  
-  if (tokenURI && typeof tokenURI === 'string') {
-    // Handle different URI types
-    if (tokenURI.startsWith("data:")) {
-      // Data URI (embedded SVG/image)
-      return (
-        <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [imageUrl]);
+
+  const handleError = () => {
+    setHasError(true);
+  };
+
+  if (imageUrl && !hasError) {
+    return (
+      <div className="relative h-14 w-14 rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner bg-[#0f0b16]">
+        <div className="relative h-full w-full overflow-hidden rounded-[4px]">
           <Image
-            className="w-full h-full object-cover"
-            src={tokenURI}
-            crossOrigin="anonymous"
+            fill
+            sizes="56px"
+            className="object-cover"
+            src={imageUrl}
             alt={`NFT #${tokenNumber}`}
-            width={60}
-            height={60}
+            onError={handleError}
           />
         </div>
-      );
-    } else if (tokenURI.startsWith("ipfs://")) {
-      // IPFS URI - convert to gateway URL
-      const ipfsHash = tokenURI.replace("ipfs://", "");
-      const gatewayUrl = `https://ipfs.io/ipfs/${ipfsHash}`;
-      return (
-        <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
-          <Image
-            className="w-full h-full object-cover"
-            src={gatewayUrl}
-            crossOrigin="anonymous"
-            alt={`NFT #${tokenNumber}`}
-            width={60}
-            height={60}
-            onError={(e) => {
-              // Fallback to placeholder if image fails to load
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const parent = target.parentElement;
-              if (parent) {
-                parent.innerHTML = `<div class="flex flex-col items-center justify-center h-full"><div class="text-[#fea282] text-lg font-bold">${tier}</div><div class="text-[#c0b3f1] text-xs"></div></div>`;
-              }
-            }}
-          />
-        </div>
-      );
-    } else {
-      // Direct URL
-      return (
-        <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
-          <Image
-            className="w-full h-full object-cover"
-            src={tokenURI}
-            crossOrigin="anonymous"
-            alt={`NFT #${tokenNumber}`}
-            width={60}
-            height={60}
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const parent = target.parentElement;
-              if (parent) {
-                parent.innerHTML = `<div class="flex flex-col items-center justify-center h-full"><div class="text-[#fea282] text-lg font-bold">${tier}</div><div class="text-[#c0b3f1] text-xs">Outcome</div></div>`;
-              }
-            }}
-          />
-        </div>
-      );
-    }
+      </div>
+    );
   }
-  
+
   // Fallback placeholder
   return (
-    <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
-      <div className="flex flex-col items-center justify-center h-full">
+    <div className="relative h-14 w-14 rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner bg-[#0f0b16]">
+      <div className="flex flex-col items-center justify-center h-full w-full">
         <div className="text-[#fea282] text-lg font-bold">{tier}</div>
         <div className="text-[#c0b3f1] text-xs">Outcome</div>
       </div>
@@ -121,11 +206,18 @@ function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAdd
 
 function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent }) {
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
-  const { nftAddress } = useGameNFTAddress(useGameContext().gameId);
-  const { metadata, nfts, gameId } = useGameContext();
+  const { gameId, metadata, nfts } = useGameContext();
+  const { chainData } = useChainData();
+  const { nftAddress } = useGameNFTAddress(gameId);
   const phaseTitle = useCurrentPhaseTitle();
   const { isInMiniApp } = useFarcasterContext();
+  const { triggerSelection } = useMiniAppHaptics();
   const firstTierPrice = nfts.tiers?.[0]?.price;
+  const primaryTokenNumber = transferEvent.tokens[0]?.number;
+  const { metadata: primaryMetadata, imageUrl: primaryImageUrl } = useTokenMetadata(
+    primaryTokenNumber,
+    nftAddress
+  );
   const formattedPrice = useMemo(() => {
     if (!firstTierPrice) return undefined;
 
@@ -151,13 +243,32 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
   const runtimeOrigin =
     typeof window !== "undefined" ? window.location.origin : undefined;
   const baseUrl = originFromEnv ?? runtimeOrigin;
-  const gamePath = gameId ? `/game/${gameId}` : undefined;
-  const gameUrl = baseUrl && gamePath ? `${baseUrl}${gamePath}` : undefined;
+  const gamePath = buildGamePath(chainData.chainId, gameId);
+  const gameUrl = baseUrl ? `${baseUrl}${gamePath}` : undefined;
   
   const isMint = transferEvent.action === "Mint";
-  const arrowIcon = isMint ? "↑" : "↓";
   const actionText = isMint ? "Mint" : "Redeem";
   const gameName = metadata?.name ?? "this Defifa game";
+  const shareMediaUrl = useMemo(
+    () =>
+      resolveUriToHttp(primaryMetadata?.external_link) ||
+      resolveUriToHttp(primaryImageUrl) ||
+      resolveUriToHttp(primaryMetadata?.image),
+    [primaryMetadata?.external_link, primaryMetadata?.image, primaryImageUrl]
+  );
+  const shareEmbeds = useMemo(() => {
+    if (!isInMiniApp) return undefined;
+
+    const embeds: string[] = [];
+    if (gameUrl) embeds.push(gameUrl);
+    if (shareMediaUrl && !embeds.includes(shareMediaUrl)) embeds.push(shareMediaUrl);
+
+    if (embeds.length === 0) return undefined;
+    if (embeds.length === 1) {
+      return [embeds[0]] as [string];
+    }
+    return [embeds[0], embeds[1]] as [string, string];
+  }, [gameUrl, isInMiniApp, shareMediaUrl]);
   
   // Group tokens by tier and count them
   const tierCounts: { [tier: number]: number } = {};
@@ -168,26 +279,65 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
   
   const uniqueTiers = Object.keys(tierCounts).map(Number).sort();
   const totalNFTs = transferEvent.tokens.length;
-  
-  return (
-    <div className="border-b border-solid border-neutral-900 overflow-hidden text-s py-4">
-      <div className="flex items-center gap-4">
-        <span className="text-2xl text-gray-400 w-8 text-center">{arrowIcon}</span>
+  const shareTextBuilder = useMemo(() => {
+    if (!isInMiniApp || !gameUrl) return undefined;
 
+    return ({
+      username,
+      address,
+      defaultText,
+    }: {
+      username?: string;
+      address?: string;
+      defaultText?: string;
+    }) => {
+      const mention = username
+        ? `⚡️ @${username}`
+        : address
+        ? truncateEthAddress({ address })
+        : defaultText && defaultText.length > 0
+        ? defaultText
+        : "A player";
+      const actionVerb = isMint ? "collected" : "redeemed";
+      const nftCount = `${totalNFTs} NFT${totalNFTs > 1 ? "s" : ""}`;
+      const phaseInfo = phaseTitle ? `🏆 Game Phase: ${phaseTitle}` : "";
+      const priceInfo = formattedPrice
+        ? `💰 Collect NFTs to join a teams: ${formattedPrice} ETH`
+        : "";
+
+      return `${mention} ${actionVerb} ${nftCount} ${
+        isMint ? "in" : "for refunds from"
+      } ${gameName}\n${phaseInfo}\n${priceInfo} \n\n👉 ${gameUrl}`;
+    };
+  }, [
+    isInMiniApp,
+    gameUrl,
+    isMint,
+    totalNFTs,
+    phaseTitle,
+    formattedPrice,
+    gameName,
+  ]);
+  
+  const handleRowClick = useCallback(() => {
+    void triggerSelection();
+  }, [triggerSelection]);
+
+  return (
+    <div
+      className={`border-b border-solid border-neutral-900 overflow-hidden text-s py-3 ${
+        isInMiniApp ? "min-w-[640px] flex-shrink-0" : ""
+      }`}
+      onClickCapture={handleRowClick}
+    >
+      <div className="flex items-center gap-4">
         {transferEvent.nonZeroId && (
           <EthAddress
             withEnsAvatar
             avatarClassName="h-10 w-10"
             address={transferEvent.nonZeroId}
-            shareText={
-              isInMiniApp && gameUrl
-                ? `${isMint ? "Minted" : "Redeemed"} ${totalNFTs} NFT${totalNFTs > 1 ? "s" : ""} ${isMint ? "in" : "for refunds from"} ${gameName}.` +
-                  `${phaseTitle ? ` Phase: ${phaseTitle}.` : ""}` +
-                  `${formattedPrice ? ` First tier mint price: ${formattedPrice} ETH.` : ""}` +
-                  ` Check out the game: ${gameUrl}`
-                : undefined
-            }
-            shareEmbeds={isInMiniApp && gameUrl ? [gameUrl] : undefined}
+            shareText={shareTextBuilder}
+            shareEmbeds={shareEmbeds}
           />
         )}
         
@@ -231,6 +381,7 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
 
 export function ActivityContent() {
   const { data: activity, isLoading } = useGameActivity();
+  const { isInMiniApp } = useFarcasterContext();
   const transfers = (activity as { transfers?: GroupedTransferEvent[] })?.transfers;
   
   if (isLoading) {
@@ -244,14 +395,27 @@ export function ActivityContent() {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-      <div className="space-y-2">
-        {transfers.map((transferEvent) => (
-          <ActivityRow
-            key={transferEvent.transactionHash}
-            transferEvent={transferEvent}
-          />
-        ))}
-      </div>
+      {isInMiniApp ? (
+        <div className="overflow-x-auto pb-2">
+          <div className="space-y-1 min-w-[640px]">
+            {transfers.map((transferEvent) => (
+              <ActivityRow
+                key={transferEvent.transactionHash}
+                transferEvent={transferEvent}
+              />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-1">
+          {transfers.map((transferEvent) => (
+            <ActivityRow
+              key={transferEvent.transactionHash}
+              transferEvent={transferEvent}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

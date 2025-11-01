@@ -62,8 +62,8 @@ export function Header() {
 
   if (isInMiniApp) {
     return (
-      <header className="space-y-4">
-        <nav className="mt-2 flex flex-wrap gap-2 text-xs uppercase tracking-wide text-neutral-400">
+      <header className="space-y-2">
+        <nav className="mt-1 flex flex-wrap gap-2 text-xs uppercase tracking-wide text-neutral-400">
           <Link href={exitPath} className="text-neutral-200">
             ← {metadata?.name}
           </Link>
@@ -73,7 +73,7 @@ export function Header() {
           </Link>
         </nav>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <span className="h-[8px] w-[8px] bg-lime-400 shadow-glowGreen rounded-full"></span>
             <h1 className="text-2xl font-medium">{currentPhaseTitle}</h1>

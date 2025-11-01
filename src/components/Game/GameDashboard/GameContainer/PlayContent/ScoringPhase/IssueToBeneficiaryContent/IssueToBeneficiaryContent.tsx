@@ -5,6 +5,7 @@ import { useMintSelectedReserves } from "hooks/write/useMintSelectedReserves";
 import { ActionContainer } from "components/Game/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import { ReservedTierCard } from "./ReservedTierCard";
 import { useReserveSelection } from "./useReserveSelection";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 export function IssueToBeneficiaryContent() {
   console.log('[IssueToBeneficiaryContent] Component rendering...');
@@ -32,6 +33,7 @@ export function IssueToBeneficiaryContent() {
     selectedTiers,
     dataSourceAddress || ""
   );
+  const { triggerImpact, triggerSelection } = useMiniAppHaptics();
 
   // Get the actual tiers from the game context
   const gameTiers = useMemo(
@@ -74,6 +76,7 @@ export function IssueToBeneficiaryContent() {
 
   const handleMint = () => {
     if (totalSelected > 0) {
+      void triggerImpact("medium");
       write();
     }
   };
@@ -141,7 +144,10 @@ export function IssueToBeneficiaryContent() {
             </button>
             {totalSelected > 0 && (
               <button
-                onClick={clearSelection}
+                onClick={() => {
+                  void triggerSelection();
+                  clearSelection();
+                }}
                 className="px-4 py-2 bg-neutral-600 text-white rounded-md hover:bg-neutral-700"
               >
                 Clear Selection

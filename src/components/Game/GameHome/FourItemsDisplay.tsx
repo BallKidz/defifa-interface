@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Card } from "./Card";
 import { useGameContext } from "contexts/GameContext";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 const FourItemsDisplay = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const { triggerSelection } = useMiniAppHaptics();
     const {
         metadata,
         nfts: { tiers },
@@ -12,6 +14,7 @@ const FourItemsDisplay = () => {
     } = useGameContext();
 
     const handleNext = () => {
+        void triggerSelection();
         setCurrentIndex((prevIndex) => (prevIndex + 1) % (tiers?.length || 1));
     };
 

@@ -5,12 +5,14 @@ import { useState, useMemo } from "react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import styles from "./TurnOn.module.css";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 type SortField = 'chain' | 'gameId' | 'name';
 type SortDirection = 'asc' | 'desc';
 
 const AllGames = ({ chainId }: { chainId?: number }) => {
   const { isInMiniApp } = useFarcasterContext();
+  const { triggerSelection } = useMiniAppHaptics();
   const [includeTestnets, setIncludeTestnets] = useState(true);
   const [sortField, setSortField] = useState<SortField>('gameId');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -67,6 +69,7 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
   }, [rawGames, sortField, sortDirection, isOmnichain]);
 
   const handleSort = (field: SortField) => {
+    void triggerSelection();
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -81,7 +84,10 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
         <p className="text-neutral-400 mb-4">No games found.</p>
         {isOmnichain && (
           <button 
-            onClick={() => setIncludeTestnets(!includeTestnets)}
+            onClick={() => {
+              void triggerSelection();
+              setIncludeTestnets(!includeTestnets);
+            }}
             className={`text-sm px-3 py-1 rounded transition-colors ${
               includeTestnets 
                 ? "bg-pink-500 text-white" 
@@ -104,7 +110,10 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
             Showing {games?.length || 0} games
           </div>
           <button 
-            onClick={() => setIncludeTestnets(!includeTestnets)}
+            onClick={() => {
+              void triggerSelection();
+              setIncludeTestnets(!includeTestnets);
+            }}
             className={`text-sm px-3 py-1 rounded transition-colors ${
               includeTestnets 
                 ? "bg-pink-500 text-white" 

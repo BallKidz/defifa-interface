@@ -26,6 +26,7 @@ import {
   createDefaultTierData,
 } from "./defaultState";
 import { datetimeLocalToUnix } from "./utils";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 // Helper function to get network name from chain ID
 const getNetworkName = (chainId: number): string => {
@@ -146,6 +147,7 @@ const DeployerCreate = () => {
   
   const { chainData } = useChainData();
   const { switchChain } = useSwitchChain();
+  const { triggerImpact } = useMiniAppHaptics();
 
   // Handle network switching
   const handleNetworkChange = async (newChainId: number) => {
@@ -1111,6 +1113,7 @@ const DeployerCreate = () => {
                         <button
                           type="button"
                           onClick={() => {
+                            void triggerImpact("light");
                             setTier((prevState) => ({
                               ...prevState,
                               encodedIPFSUri:

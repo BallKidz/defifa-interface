@@ -1,5 +1,13 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+'use client';
+
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  MouseEvent,
+  useCallback,
+} from "react";
 import { twMerge } from "tailwind-merge";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 const PRIMARY_BUTTON_CLASS = "bg-pink-700 hover:bg-pink-600 text-neutral-50";
 const PRIMARY_BUTTON_DISABLED_CLASS =
@@ -33,17 +41,30 @@ const Button = ({
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >) => {
+  const { triggerImpact } = useMiniAppHaptics();
+  const { onClick, className, disabled, ...restProps } = props;
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      if (!loading && !disabled) {
+        void triggerImpact("light");
+      }
+      onClick?.(event);
+    },
+    [disabled, loading, onClick, triggerImpact]
+  );
+  const isDisabled = loading || disabled;
+
   return (
     <button
-      {...props}
+      {...restProps}
       className={twMerge(
         "min-w-[70px] transition-all rounded-lg font-medium px-3 py-2 text-sm shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600 inline-flex items-center justify-center",
         category === "primary"
-          ? props.disabled
+          ? isDisabled
             ? PRIMARY_BUTTON_DISABLED_CLASS
             : PRIMARY_BUTTON_CLASS
           : category === "secondary"
-          ? props.disabled
+          ? isDisabled
             ? SECONDARY_BUTTON_DISABLED_CLASS
             : SECONDARY_BUTTON_CLASS
           : variant === "default"
@@ -54,9 +75,10 @@ const Button = ({
           : size === "lg"
           ? "px-7 py-2.5 text-md"
           : "px-3 py-2",
-        props.className
+        className
       )}
-      disabled={loading || props.disabled}
+      onClick={handleClick}
+      disabled={isDisabled}
     >
       {loading ? (
         <div className="flex items-center">

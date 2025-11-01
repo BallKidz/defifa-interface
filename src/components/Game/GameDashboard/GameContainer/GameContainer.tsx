@@ -1,8 +1,9 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, useState } from "react";
+import { ButtonHTMLAttributes, DetailedHTMLProps, MouseEvent, useState, useCallback } from "react";
 import { twJoin } from "tailwind-merge";
 import { PlayContent } from "./PlayContent/PlayContent";
 import { RulesContent } from "./RulesContent/RulesContent";
 import { ActivityContent } from "./ActivityContent/ActivityContent";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 type GameTab = "play" | "rules" | "activity";
 
@@ -13,13 +14,24 @@ function TabButton({
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >) {
+  const { triggerSelection } = useMiniAppHaptics();
+  const { onClick, ...restProps } = props;
+  const handleClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      void triggerSelection();
+      onClick?.(event);
+    },
+    [onClick, triggerSelection]
+  );
+
   return (
     <button
+      {...restProps}
       className={twJoin(
         active ? "underline" : "text-neutral-400 hover:text-neutral-200",
         "rounded-md px-4 py-2 font-medium capitalize"
       )}
-      {...props}
+      onClick={handleClick}
     >
       {props.children}
     </button>

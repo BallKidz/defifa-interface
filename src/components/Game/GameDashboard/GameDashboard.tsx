@@ -81,11 +81,11 @@ export function GameDashboard() {
           </Container>
         </div>
 
-        <Container className="mb-8">
+        <Container className={isInMiniApp ? "mb-4" : "mb-8"}>
           <Header />
         </Container>
 
-        <Container className="mb-8">
+        <Container className={isInMiniApp ? "mb-4" : "mb-8"}>
           <QueueNextPhaseBanner />
         </Container>
         <PlayContent />

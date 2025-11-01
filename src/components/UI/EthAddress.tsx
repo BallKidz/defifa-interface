@@ -1,7 +1,7 @@
 import { useEnsName } from "hooks/useEnsName";
 import { useFarcasterProfiles } from "hooks/useFarcasterProfiles";
 import Link from "next/link";
-import { MouseEventHandler, useMemo } from "react";
+import { KeyboardEventHandler, MouseEventHandler, useMemo } from "react";
 import { sdk } from "@farcaster/miniapp-sdk";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
 import { twMerge } from "tailwind-merge";
@@ -9,6 +9,13 @@ import { truncateEthAddress } from "utils/format/formatAddress";
 import EtherscanLink from "./EtherscanLink";
 import Image from "next/image";
 import { ensAvatarUrlForAddress } from "utils/ens";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
+
+type ShareTextContext = {
+  username?: string;
+  address?: string;
+  defaultText?: string;
+};
 
 interface EthAddressProps {
   className?: string;
@@ -21,7 +28,7 @@ interface EthAddressProps {
   truncateTo?: number;
   withEnsAvatar?: boolean;
   avatarClassName?: string;
-  shareText?: string;
+  shareText?: string | ((context: ShareTextContext) => string | undefined);
   shareEmbeds?: [] | [string] | [string, string];
 }
 
@@ -40,6 +47,7 @@ export function EthAddress({
   shareEmbeds,
 }: EthAddressProps) {
   const { isInMiniApp } = useFarcasterContext();
+  const { triggerSelection } = useMiniAppHaptics();
   const { data: ensName } = useEnsName(address, { enabled: !ensDisabled });
   const { data: farcasterData } = useFarcasterProfiles(
     address ? [address] : []
@@ -62,14 +70,38 @@ export function EthAddress({
   if (!formattedAddress) return null;
 
   const avatarUrl = farcasterProfile?.pfp_url;
+  const canCompose = isInMiniApp && !!farcasterProfile?.username;
 
-  const handleAvatarClick: MouseEventHandler<HTMLDivElement> = async (event) => {
-    if (!isInMiniApp || !farcasterProfile?.username) return;
+  type ComposeEvent = {
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  };
+
+  const composeCast = async (event: ComposeEvent) => {
+    if (!canCompose) return;
 
     event.preventDefault();
     event.stopPropagation();
+    void triggerSelection();
 
-    const text = shareText ?? `@${farcasterProfile.username} 👋`;
+    const defaultText = farcasterProfile?.username
+      ? `@${farcasterProfile.username} 👋`
+      : address
+      ? truncateEthAddress({ address })
+      : "";
+    const computedText =
+      typeof shareText === "function"
+        ? shareText({
+            username: farcasterProfile?.username,
+            address,
+            defaultText,
+          })
+        : shareText;
+    const text = (computedText && computedText.length > 0
+      ? computedText
+      : defaultText) || undefined;
+
+    if (!text) return;
 
     try {
       await sdk.actions.composeCast({
@@ -81,6 +113,20 @@ export function EthAddress({
     }
   };
 
+  const handleAvatarClick: MouseEventHandler<HTMLDivElement> = (event) => {
+    void composeCast(event);
+  };
+
+  const handleLabelClick: MouseEventHandler<HTMLSpanElement> = (event) => {
+    void composeCast(event);
+  };
+  const handleLabelKeyDown: KeyboardEventHandler<HTMLSpanElement> = (event) => {
+    if (!canCompose) return;
+    if (event.key === "Enter" || event.key === " ") {
+      void composeCast(event);
+    }
+  };
+
   return (
     <span className="inline-flex items-center gap-2">
       {withEnsAvatar && address && (
@@ -88,11 +134,11 @@ export function EthAddress({
           className={twMerge(
             "h-9 w-9 flex",
             avatarClassName,
-            isInMiniApp && !!farcasterProfile?.username ? "cursor-pointer" : ""
+            canCompose ? "cursor-pointer" : ""
           )}
           onClick={handleAvatarClick}
-          role={isInMiniApp && farcasterProfile?.username ? "button" : undefined}
-          tabIndex={isInMiniApp && farcasterProfile?.username ? 0 : undefined}
+          role={canCompose ? "button" : undefined}
+          tabIndex={canCompose ? 0 : undefined}
         >
           <Image
             src={avatarUrl || ensAvatarUrlForAddress(address, { size: 72 })}
@@ -104,7 +150,20 @@ export function EthAddress({
           />
         </div>
       )}
-      {linkDisabled ? (
+      {canCompose ? (
+        <span
+          className={twMerge(
+            "select-all leading-[22px] cursor-pointer text-current hover:text-bluebs-500",
+            className
+          )}
+          onClick={handleLabelClick}
+          onKeyDown={handleLabelKeyDown}
+          role="button"
+          tabIndex={0}
+        >
+          {formattedAddress}
+        </span>
+      ) : linkDisabled ? (
         <span className={twMerge("select-all leading-[22px]", className)}>
           {formattedAddress}
         </span>

@@ -9,10 +9,11 @@ import { OmnichainGame } from "hooks/useOmnichainGames";
 import { useChainData } from "hooks/useChainData";
 import { buildGamePath } from "lib/networks";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, MouseEvent, useCallback } from "react";
 import { fromWad6 } from "utils/format/formatNumber";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 const phaseText = (phase?: DefifaGamePhase) => {
   switch (phase) {
@@ -64,6 +65,7 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
   const { gameId, name } = game;
   const { chainData } = useChainData();
   const { isInMiniApp } = useFarcasterContext();
+  const { triggerSelection } = useMiniAppHaptics();
   
   // For omnichain games, use the game's chainId; otherwise use the provided chainId or current chain
   const isOmnichainGame = 'chainId' in game && 'networkAbbr' in game;
@@ -87,21 +89,27 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
 
   // Build game URL with network prefix (e.g., /game/sep:32)
   const gameUrl = buildGamePath(targetChainId, gameId);
+  const handleLinkClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      void triggerSelection();
+    },
+    [triggerSelection]
+  );
 
   return (
     <tr className="text-sm cursor-pointer hover:font-semibold">
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {isOmnichainGame ? (game as OmnichainGame).networkName : 'Current Network'}
         </Link>
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {gameId}
         </Link>
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           <span>{name}</span>
         </Link>
       </td>
@@ -112,7 +120,7 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
             : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
         }
       >
-        <Link href={gameUrl} className="block">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {currentPhase === DefifaGamePhase.MINT ? (
             <span>{`Mint until ${date.toLocaleString()}`}</span>
           ) : currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
@@ -132,7 +140,7 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
             : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
         }
       >
-        <Link href={gameUrl} className="block">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           <span data-treasury-amount={treasuryAmount?.toString() || "0"}>
             {fromWad6(treasuryAmount)} Ξ
           </span>
@@ -145,7 +153,7 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
             : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
         }
       >
-        <Link href={gameUrl} className="block">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {availableActionsText(currentPhase, mintedCount)}
         </Link>
       </td>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import Button from "components/UI/Button";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 interface Network {
   id: number;
@@ -72,8 +73,10 @@ const networks: Network[] = [
 export function NetworkPicker() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNetwork, setSelectedNetwork] = useState<Network>(networks[1]); // Default to Sepolia
+  const { triggerSelection } = useMiniAppHaptics();
 
   const handleNetworkSelect = (network: Network) => {
+    void triggerSelection();
     setSelectedNetwork(network);
     setIsOpen(false);
   };
