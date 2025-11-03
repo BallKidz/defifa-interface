@@ -5,7 +5,7 @@ import {
 import { useGameTimes } from "hooks/read/useGameTimes";
 import { useGamePotBalance } from "hooks/read/useGamePotBalance";
 import { Game } from "hooks/useAllGames";
-import { NetworkGame } from "hooks/useOmnichainGames";
+import { NetworkGame } from "hooks/useMultiNetworkGames";
 import { useChainData } from "hooks/useChainData";
 import { buildGamePath } from "lib/networks";
 import { useRouter } from "next/navigation";
@@ -107,7 +107,12 @@ export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ ga
   );
 
   // Filter out no contest games (must be after all hooks)
-  if (currentPhase === DefifaGamePhase.NO_CONTEST || currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE) {
+  // Also filter out SCORING games with 0 mints (effectively no-contest)
+  if (
+    currentPhase === DefifaGamePhase.NO_CONTEST || 
+    currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ||
+    (currentPhase === DefifaGamePhase.SCORING && (mintedCount ?? 0) === 0)
+  ) {
     return null;
   }
 

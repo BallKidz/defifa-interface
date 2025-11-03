@@ -4,7 +4,7 @@ import Footer from "components/layout/Footer";
 import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
 import { useAllGames } from "hooks/useAllGames";
-import { useOmnichainGames } from "hooks/useOmnichainGames";
+import { useMultiNetworkGames } from "hooks/useMultiNetworkGames";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
