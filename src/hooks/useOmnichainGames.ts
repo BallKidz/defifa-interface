@@ -14,7 +14,7 @@ const allGamesQuery = gql`
   }
 `;
 
-export interface OmnichainGame {
+export interface NetworkGame {
   gameId: number;
   name: string;
   address: string;
@@ -27,7 +27,7 @@ interface NetworkGamesResult {
   chainId: number;
   networkAbbr: string;
   networkName: string;
-  games: OmnichainGame[];
+  games: NetworkGame[];
   error?: string;
 }
 
@@ -42,7 +42,7 @@ export function useOmnichainGames(includeTestnets: boolean = false) {
   
   return useQuery({
     queryKey: ["omnichainGames", includeTestnets],
-    queryFn: async (): Promise<OmnichainGame[]> => {
+    queryFn: async (): Promise<NetworkGame[]> => {
       // If no networks have working subgraphs, return empty array
       if (networks.length === 0) {
         console.warn("No networks with working subgraphs found");
@@ -68,7 +68,7 @@ export function useOmnichainGames(includeTestnets: boolean = false) {
             allGamesQuery
           );
 
-          const games: OmnichainGame[] = res.contracts.map(game => ({
+          const games: NetworkGame[] = res.contracts.map(game => ({
             ...game,
             chainId: network.chainId,
             networkAbbr: network.abbreviation,
@@ -96,7 +96,7 @@ export function useOmnichainGames(includeTestnets: boolean = false) {
       const results = await Promise.allSettled(promises);
       
       // Flatten all successful results
-      const allGames: OmnichainGame[] = [];
+      const allGames: NetworkGame[] = [];
       const errors: string[] = [];
 
       results.forEach((result, index) => {

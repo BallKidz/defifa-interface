@@ -1,6 +1,6 @@
 import { GameRow } from "components/Arcade/GameRow";
 import { useAllGames } from "hooks/useAllGames";
-import { useOmnichainGames, OmnichainGame } from "hooks/useOmnichainGames";
+import { useOmnichainGames, NetworkGame } from "hooks/useOmnichainGames";
 import { useState, useMemo } from "react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import styles from "./TurnOn.module.css";
@@ -46,8 +46,8 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
       
       switch (sortField) {
         case 'chain':
-          aValue = isOmnichain ? (a as OmnichainGame).networkName : 'Current Network';
-          bValue = isOmnichain ? (b as OmnichainGame).networkName : 'Current Network';
+          aValue = isOmnichain ? (a as NetworkGame).networkName : 'Current Network';
+          bValue = isOmnichain ? (b as NetworkGame).networkName : 'Current Network';
           break;
         case 'gameId':
           // Treat gameIds as numbers for proper numeric sorting
@@ -218,7 +218,7 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
             {games.map((game) => (
               <GameRow 
                 game={game} 
-                key={isOmnichain ? `${(game as OmnichainGame).chainId}-${game.gameId}` : game.gameId} 
+                key={isOmnichain ? `${(game as NetworkGame).chainId}-${game.gameId}` : game.gameId} 
                 chainId={chainId} 
               />
             ))}

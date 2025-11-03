@@ -5,10 +5,10 @@ import {
 import { useGameTimes } from "hooks/read/useGameTimes";
 import { useGamePotBalance } from "hooks/read/useGamePotBalance";
 import { Game } from "hooks/useAllGames";
-import { OmnichainGame } from "hooks/useOmnichainGames";
+import { NetworkGame } from "hooks/useOmnichainGames";
 import { useChainData } from "hooks/useChainData";
 import { buildGamePath } from "lib/networks";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FC, MouseEvent, useCallback } from "react";
 import { fromWad6 } from "utils/format/formatNumber";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
@@ -61,15 +61,16 @@ const availableActionsText = (phase?: DefifaGamePhase, mintedCount?: number) => 
   }
 };
 
-export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ game, chainId }) => {
+export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ game, chainId }) => {
   const { gameId, name } = game;
   const { chainData } = useChainData();
   const { isInMiniApp } = useFarcasterContext();
   const { triggerSelection } = useMiniAppHaptics();
+  const router = useRouter();
   
-  // For omnichain games, use the game's chainId; otherwise use the provided chainId or current chain
-  const isOmnichainGame = 'chainId' in game && 'networkAbbr' in game;
-  const targetChainId = isOmnichainGame ? (game as OmnichainGame).chainId : (chainId || chainData.chainId);
+  // For games with network info, use the game's chainId; otherwise use the provided chainId or current chain
+  const isNetworkGame = 'chainId' in game && 'networkAbbr' in game;
+  const targetChainId = isNetworkGame ? (game as NetworkGame).chainId : (chainId || chainData.chainId);
   
   const { data: times } = useGameTimes(gameId, targetChainId);
   const date = times?.start ? new Date(times.start * 1000) : new Date();
@@ -89,11 +90,20 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
 
   // Build game URL with network prefix (e.g., /game/sep:32)
   const gameUrl = buildGamePath(targetChainId, gameId);
-  const handleLinkClick = useCallback(
-    (event: MouseEvent<HTMLAnchorElement>) => {
+  
+  // Handle row click - navigate programmatically
+  const handleRowClick = useCallback(
+    (event: MouseEvent<HTMLTableRowElement>) => {
+      // Don't navigate if clicking on a link or button
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+        return;
+      }
+      
       void triggerSelection();
+      router.push(gameUrl);
     },
-    [triggerSelection]
+    [gameUrl, router, triggerSelection]
   );
 
   // Filter out no contest games (must be after all hooks)
@@ -102,16 +112,15 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
   }
 
   return (
-    <tr className="text-sm cursor-pointer hover:font-semibold">
+    <tr 
+      className="text-sm cursor-pointer hover:font-semibold"
+      onClick={handleRowClick}
+    >
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          {gameId}
-        </Link>
+        {gameId}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          <span>{name}</span>
-        </Link>
+        <span>{name}</span>
       </td>
       <td
         className={
@@ -120,13 +129,11 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
             : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
         }
       >
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          {currentPhase === DefifaGamePhase.MINT ? (
-            <span>{`Mint until ${date.toLocaleString()}`}</span>
-          ) : (
-            <span>{phaseText(currentPhase)}</span>
-          )}
-        </Link>
+        {currentPhase === DefifaGamePhase.MINT ? (
+          <span>{`Mint until ${date.toLocaleString()}`}</span>
+        ) : (
+          <span>{phaseText(currentPhase)}</span>
+        )}
       </td>
 
       <td
@@ -136,11 +143,9 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
             : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
         }
       >
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          <span data-treasury-amount={treasuryAmount?.toString() || "0"}>
-            {fromWad6(treasuryAmount)} Ξ
-          </span>
-        </Link>
+        <span data-treasury-amount={treasuryAmount?.toString() || "0"}>
+          {fromWad6(treasuryAmount)} Ξ
+        </span>
       </td>
       <td
         className={
@@ -149,14 +154,10 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
             : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
         }
       >
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          {availableActionsText(currentPhase, mintedCount)}
-        </Link>
+        {availableActionsText(currentPhase, mintedCount)}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          {isOmnichainGame ? (game as OmnichainGame).networkName : 'Current Network'}
-        </Link>
+        {isNetworkGame ? (game as NetworkGame).networkName : 'Current Network'}
       </td>
     </tr>
   );
