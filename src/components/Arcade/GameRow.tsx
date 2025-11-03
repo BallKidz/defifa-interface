@@ -87,11 +87,6 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
   const { data: mintedTokens } = useGameMints(gameId, targetChainId);
   const mintedCount = mintedTokens?.length;
 
-  // Filter out no contest games
-  if (currentPhase === DefifaGamePhase.NO_CONTEST || currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE) {
-    return null;
-  }
-
   // Build game URL with network prefix (e.g., /game/sep:32)
   const gameUrl = buildGamePath(targetChainId, gameId);
   const handleLinkClick = useCallback(
@@ -100,6 +95,11 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
     },
     [triggerSelection]
   );
+
+  // Filter out no contest games (must be after all hooks)
+  if (currentPhase === DefifaGamePhase.NO_CONTEST || currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE) {
+    return null;
+  }
 
   return (
     <tr className="text-sm cursor-pointer hover:font-semibold">
@@ -123,10 +123,6 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
         <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {currentPhase === DefifaGamePhase.MINT ? (
             <span>{`Mint until ${date.toLocaleString()}`}</span>
-          ) : currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE ? (
-            <span>{"Referee no show"}</span>
-          ) : currentPhase === DefifaGamePhase.NO_CONTEST ? (
-            <span>{"Referee no show"}</span>
           ) : (
             <span>{phaseText(currentPhase)}</span>
           )}
