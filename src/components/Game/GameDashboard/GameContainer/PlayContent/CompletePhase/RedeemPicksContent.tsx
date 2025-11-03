@@ -1,7 +1,7 @@
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";
 import { BigNumber } from "ethers";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 import { useAmountRedeemed } from "hooks/read/useAmountRedeemed";
 import { usePaymentTerminalBalance } from "hooks/read/usePaymentTerminalBalance";
 import { useAccount } from "wagmi";

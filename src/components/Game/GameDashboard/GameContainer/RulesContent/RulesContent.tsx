@@ -29,7 +29,7 @@ export function RulesContent() {
   const tokenBeneficiary = useDefaultTokenBeneficiary(
     currentFc?.metadata.dataSource
   );
-  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource);
+  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource, undefined, gameId);
   const { data: gameMetadata } = useGameMetadata(gameId);
 
   const fillPill = (phase: number) => {

@@ -1,7 +1,7 @@
 import { EthAddress } from "components/UI/EthAddress";
 import Container from "components/layout/Container";
 import { constants } from "ethers";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 import moment from "moment";
 import Image from "next/image";
 import { useTopHodlrs } from "./useTopHodlrs";

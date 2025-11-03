@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { EthAddress } from "components/UI/EthAddress";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 import moment from "moment";
 import Image from "next/image";
 import { useGameActivity, GroupedTransferEvent } from "./useGameActivity";
@@ -28,7 +28,7 @@ type TokenMetadata = {
 function useTokenURI(tokenNumber?: string, nftAddress?: string): string | undefined {
   const { chainData } = useChainData();
   const shouldQuery = !!nftAddress && !!tokenNumber;
-  
+  console.log("🔹 useTokenURI: nftAddress=", nftAddress, "tokenNumber=", tokenNumber);
   const { data: tokenURI } = useReadContract({
     address: nftAddress as `0x${string}`,
     abi: chainData.DefifaDelegate.interface as Abi,

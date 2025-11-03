@@ -1,6 +1,6 @@
 import { TOTAL_REDEMPTION_WEIGHT } from "constants/constants";
 import { BigNumber, BigNumberish } from "ethers";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 
 /**
  * Return the redemption weight for a given percentage.
