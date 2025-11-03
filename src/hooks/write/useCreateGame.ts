@@ -97,9 +97,9 @@ export function useCreateGame(_launchProjectData?: DefifaLaunchProjectData, targ
     console.log("useCreateGame::defaultAttestationDelegate", preparedLaunchProjectData?.defaultAttestationDelegate);
     
     // Force reasonable gas limits for testnets
-    const gasLimit = deploymentChainId === 11155111 ? 3000000n : // Sepolia: 3M gas
-                     deploymentChainId === 84532 ? 2000000n :    // Base Sepolia: 2M gas  
-                     5000000n; // Default: 5M gas
+    const gasLimit = deploymentChainId === 11155111 ? 8000000n : // Sepolia: 3M gas
+                     deploymentChainId === 84532 ? 8000000n :    // Base Sepolia: 2M gas  
+                     8000000n; // Default: 5M gas
     
     console.log("useCreateGame::gasLimit", gasLimit, "for chainId", deploymentChainId);
     

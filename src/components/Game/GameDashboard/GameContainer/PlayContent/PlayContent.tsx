@@ -7,6 +7,9 @@ import { MintPhaseContent } from "./MintPhase/MintPhaseContent";
 import { RefundPhaseContent } from "./RefundPhase/RefundPhaseContent";
 import { ScoringPhaseContent } from "./ScoringPhase/ScoringPhaseContent";
 import { NoContestPhaseContent } from "./NoContestPhase/NoContestPhaseContent";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import Button from "components/UI/Button";
 
 const PHASE_CONTENT: { [k in DefifaGamePhase]: () => JSX.Element } = {
   [DefifaGamePhase.COUNTDOWN]: CountdownPhaseContent,
@@ -61,12 +64,27 @@ export function PlayContent() {
       : currentPhase;
 
   const CurrentContent = PHASE_CONTENT[effectivePhase] ?? null;
+  const params = useParams();
+  const { gameId: networkGameId } = params;
+  const decodedGameId = decodeURIComponent(networkGameId as string);
+  const scoreSquarePath = `/game/${decodedGameId}/scoresquare`;
 
   return (
-    <Container>
-      <div className="py-3 col-span-2">
-        <CurrentContent />
-      </div>
-    </Container>
+    <>
+      <Container>
+        <div className="flex justify-end mb-4">
+          <Link href={scoreSquarePath}>
+            <Button category="secondary" size="sm">
+              Score Square
+            </Button>
+          </Link>
+        </div>
+      </Container>
+      <Container>
+        <div className="py-3 col-span-2">
+          <CurrentContent />
+        </div>
+      </Container>
+    </>
   );
 }

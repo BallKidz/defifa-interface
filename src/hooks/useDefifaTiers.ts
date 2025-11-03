@@ -93,7 +93,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
             reserveFrequency,
             reserveBeneficiary,
           };
-
+          console.log("🔹 Token URI result:", tokenUriResult);  
           // If tokenURI call succeeded, fetch and parse the metadata
           if (tokenUriResult?.status === "success" && tokenUriResult.result) {
             try {
@@ -101,6 +101,7 @@ export function useDefifaTiers(tiers: JB721Tier[], nftAddress?: string, gameId?:
               
               // Check if this is a data URI (embedded SVG or image)
               if (tokenUri.startsWith("data:")) {
+                console.log("🔹 Data URI found:", tokenUri);
                 return {
                   ...baseTier,
                   description: (tier as any).name || `Tier ${Number(tier.id)}`,

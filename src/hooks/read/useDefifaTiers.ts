@@ -517,7 +517,7 @@ export function useDefifaTiers(
   if (storeError) {
     console.error(`useDefifaTiers: Error fetching store address:`, storeError);
   } else if (delegateAddress && storeAddress) {
-    console.log(`useDefifaTiers: Store address for ${delegateAddress}: ${storeAddress}`);
+    // console.log(`useDefifaTiers: Store address for ${delegateAddress}: ${storeAddress}`);
   }
 
   if (tiersError) {

@@ -183,8 +183,8 @@ const DeployerCreate = () => {
         const testData: DefifaLaunchProjectData = {
           ...createDefaultLaunchProjectData(),
           defaultAttestationDelegate: (testAddress as `0x${string}`) || constants.AddressZero,
-          name: "v5 testing",
-          rules: "Winner takes almost all. Most goals wins. Ties split pot evenly.",
+          name: "ss testing",
+          rules: "Half-time score shares 40%. Full-time score shares 60%.",
           mintPeriodDuration: mintDuration,
           refundPeriodDuration: refundDuration,
           start: gameStartTime, // Game starts in 3 min from now
