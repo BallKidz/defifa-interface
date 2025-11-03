@@ -1,4 +1,4 @@
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 import { useGameTopHolders } from "../GameTopHolders/useGameTopHolders";
 import Container from "components/layout/Container";
 import { useGameContext } from "contexts/GameContext";

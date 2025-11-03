@@ -2,8 +2,7 @@ import { PropsWithChildren } from "react";
 import { GameContext } from "./GameContext";
 import { useCurrentGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundingCycle";
-import { useDefifaTiers as useDefifaTiersHook } from "hooks/read/useDefifaTiers";
-import { useDefifaTiers } from "hooks/useDefifaTiers";
+import { useDefifaTiers } from "hooks/read/useDefifaTiers";
 import { useTotalSupply } from "hooks/read/JB721Delegate/useTotalSupply";
 import { useGameMetadata } from "hooks/read/useGameMetadata";
 import { useGovernorForDelegate } from "hooks/read/useGovernorForDelegate";
@@ -34,16 +33,11 @@ export default function GameContextProvider({
 
   const { data: totalSupply } = useTotalSupply(dataSource, chainId);
   
-  // Fetch tiers using Defifa v5 approach (query individual tiers from store)
-  const { data: tiersOf, isLoading: tiersOfLoading, error: tiersOfError } = useDefifaTiersHook(dataSource, chainId);
-  
-  
-  // Transform tier data for UI consumption by calling tokenURI on the NFT contract
-  // dataSource is the NFT delegate address
+  // Fetch and transform tiers to DefifaTier[] format (includes tokenURI metadata/images)
   const { data: tiers, isLoading: tiersLoading, error: tiersError } = useDefifaTiers(
-    tiersOf ?? [],
-    dataSource, // Pass the NFT address to call tokenURI
-    gameId // Pass the gameId to fetch outstanding mints
+    dataSource, // NFT delegate address
+    chainId,    // Chain ID override
+    gameId      // Game ID for fetching mints
   );
 
 
@@ -71,7 +65,7 @@ export default function GameContextProvider({
       metadataLoading,
       currentPhaseLoading,
       nfts: {
-        tiersLoading: tiersLoading || tiersOfLoading,
+        tiersLoading: tiersLoading,
       },
       currentFundingCycleLoading,
     },

@@ -11,6 +11,7 @@ import { useProjectCurrentFundingCycle } from "hooks/read/useProjectCurrentFundi
 import styles from "./index.module.css";
 import { EthAddress } from "components/UI/EthAddress";
 import { IDefifa_DAO_PROTOCOL_FEE } from "constants/constants";
+import { constants } from "ethers";
 
 export function RulesContent() {
   const { metadata, gameId, nfts } = useGameContext();
@@ -29,7 +30,7 @@ export function RulesContent() {
   const tokenBeneficiary = useDefaultTokenBeneficiary(
     currentFc?.metadata.dataSource
   );
-  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource);
+  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource, undefined, gameId);
   const { data: gameMetadata } = useGameMetadata(gameId);
 
   const fillPill = (phase: number) => {
@@ -139,7 +140,7 @@ export function RulesContent() {
             <p>
               <span className="text-pink-500">Reserved Mints:</span>
               {nftRewardTiers?.filter(
-                (tier) => Number(tier.reservedRate) > 0
+                (tier) => (tier.reserveFrequency ?? 0) > 0
               ).length === 0 ? (
                 <span className="ml-2">
                   No NFTs are being reserved by this game's creator.
@@ -148,11 +149,11 @@ export function RulesContent() {
             </p>
           </div>
           {nftRewardTiers &&
-            nftRewardTiers?.filter((tier) => Number(tier?.reservedRate) > 0)
+            nftRewardTiers?.filter((tier) => (tier?.reserveFrequency ?? 0) > 0)
               .length > 0 && (
               <div className="flex flex-wrap">
                 {nftRewardTiers
-                  ?.filter((tier) => Number(tier.reservedRate) > 0)
+                  ?.filter((tier) => (tier.reserveFrequency ?? 0) > 0)
                   .map((tier, index) => {
                     const matchingTier = nfts?.tiers?.find(
                       (t) => t.id === Number(tier.id)
@@ -169,12 +170,12 @@ export function RulesContent() {
                         <div className="flex items-center">
                           <span>
                             <EthAddress
-                              address={tier.reservedTokenBeneficiary}
+                              address={tier.reserveBeneficiary || constants.AddressZero}
                             />
                           </span>
                           <span className="ml-2">
                             will receive{" "}
-                            {(1 / (Number(tier.reservedRate) + 1)) * 100}% of
+                            {(1 / ((tier.reserveFrequency ?? 0) + 1)) * 100}% of
                             this team's NFTs.
                           </span>
                         </div>

@@ -1,7 +1,7 @@
 import { ActionContainer } from "components/Game/GameDashboard/GameContainer/ActionContainer/ActionContainer";
 import { Input } from "components/UI/Input";
 import { useGameContext } from "contexts/GameContext";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 import { useMyMints } from "../../MintPhase/useMyMints";
 import Image from "next/image";
 import { useState } from "react";
