@@ -87,6 +87,11 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
   const { data: mintedTokens } = useGameMints(gameId, targetChainId);
   const mintedCount = mintedTokens?.length;
 
+  // Filter out no contest games
+  if (currentPhase === DefifaGamePhase.NO_CONTEST || currentPhase === DefifaGamePhase.NO_CONTEST_INEVITABLE) {
+    return null;
+  }
+
   // Build game URL with network prefix (e.g., /game/sep:32)
   const gameUrl = buildGamePath(targetChainId, gameId);
   const handleLinkClick = useCallback(
@@ -98,11 +103,6 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
 
   return (
     <tr className="text-sm cursor-pointer hover:font-semibold">
-      <td className="whitespace-nowrap py-4 pl-4 pr-3">
-        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
-          {isOmnichainGame ? (game as OmnichainGame).networkName : 'Current Network'}
-        </Link>
-      </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
         <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {gameId}
@@ -155,6 +155,11 @@ export const GameRow: FC<{ game: Game | OmnichainGame; chainId?: number }> = ({ 
       >
         <Link href={gameUrl} className="block" onClick={handleLinkClick}>
           {availableActionsText(currentPhase, mintedCount)}
+        </Link>
+      </td>
+      <td className="whitespace-nowrap py-4 pl-4 pr-3">
+        <Link href={gameUrl} className="block" onClick={handleLinkClick}>
+          {isOmnichainGame ? (game as OmnichainGame).networkName : 'Current Network'}
         </Link>
       </td>
     </tr>

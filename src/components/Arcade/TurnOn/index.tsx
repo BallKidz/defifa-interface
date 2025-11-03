@@ -50,8 +50,9 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
           bValue = isOmnichain ? (b as OmnichainGame).networkName : 'Current Network';
           break;
         case 'gameId':
-          aValue = a.gameId;
-          bValue = b.gameId;
+          // Treat gameIds as numbers for proper numeric sorting
+          aValue = Number(a.gameId);
+          bValue = Number(b.gameId);
           break;
         case 'name':
           aValue = a.name.toLowerCase();
@@ -145,19 +146,6 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
           <table className={`mx-auto ${isInMiniApp ? "w-full min-w-[640px]" : ""}`}>
             <thead>
               <tr className="font-normal">
-                <th 
-                  className="font-normal text-sm py-3 cursor-pointer hover:text-pink-400 transition-colors select-none"
-                  onClick={() => handleSort('chain')}
-              >
-                <div className="flex items-center gap-1">
-                  Chain
-                  {sortField === 'chain' && (
-                    sortDirection === 'asc' ? 
-                      <ChevronUpIcon className="h-3 w-3" /> : 
-                      <ChevronDownIcon className="h-3 w-3" />
-                  )}
-                </div>
-              </th>
               <th 
                 className="font-normal text-sm py-3 cursor-pointer hover:text-pink-400 transition-colors select-none"
                 onClick={() => handleSort('gameId')}
@@ -210,6 +198,19 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
                 }
               >
                 Actions
+              </th>
+              <th 
+                className="font-normal text-sm py-3 cursor-pointer hover:text-pink-400 transition-colors select-none"
+                onClick={() => handleSort('chain')}
+              >
+                <div className="flex items-center gap-1">
+                  Chain
+                  {sortField === 'chain' && (
+                    sortDirection === 'asc' ? 
+                      <ChevronUpIcon className="h-3 w-3" /> : 
+                      <ChevronDownIcon className="h-3 w-3" />
+                  )}
+                </div>
               </th>
             </tr>
           </thead>
