@@ -5,167 +5,23 @@ import moment from "moment";
 import Image from "next/image";
 import { useGameActivity, GroupedTransferEvent } from "./useGameActivity";
 import { useGameContext } from "contexts/GameContext";
-import { useGameNFTAddress } from "hooks/read/useGameNFTAddress";
-import { useChainData } from "hooks/useChainData";
-import { useReadContract } from "wagmi";
-import { Abi } from "viem";
 import { formatEther } from "ethers/lib/utils";
 import { useCurrentPhaseTitle } from "../PlayContent/useCurrentPhaseTitle";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
 import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 import { buildGamePath } from "lib/networks";
 import { truncateEthAddress } from "utils/format/formatAddress";
+import { useChainData } from "hooks/useChainData";
 
-type TokenMetadata = {
-  external_link?: string;
-  image?: string;
-  name?: string;
-  description?: string;
-  [key: string]: unknown;
-};
-
-// Hook to fetch tokenURI from contract
-function useTokenURI(tokenNumber?: string, nftAddress?: string): string | undefined {
-  const { chainData } = useChainData();
-  const shouldQuery = !!nftAddress && !!tokenNumber;
-  console.log("🔹 useTokenURI: nftAddress=", nftAddress, "tokenNumber=", tokenNumber);
-  const { data: tokenURI } = useReadContract({
-    address: nftAddress as `0x${string}`,
-    abi: chainData.DefifaDelegate.interface as Abi,
-    functionName: "tokenURI",
-    args: [BigInt(tokenNumber ?? "0")],
-    chainId: chainData.chainId,
-    query: {
-      enabled: shouldQuery,
-      refetchInterval: 5 * 1000, // 5 seconds
-      staleTime: 0,
-    },
-  });
-
-  return shouldQuery && typeof tokenURI === "string" ? tokenURI : undefined;
-}
-
-const INFURA_GATEWAY_HOST = "jbm.infura-ipfs.io";
-const LOCAL_GATEWAY_HOST = "ipfs.io";
-
-function decodeBase64(payload: string): string {
-  if (typeof atob === "function") {
-    return atob(payload);
-  }
-  if (typeof globalThis !== "undefined") {
-    const maybeBuffer = (globalThis as {
-      Buffer?: { from(data: string, encoding: string): { toString(encoding: string): string } };
-    }).Buffer;
-    if (maybeBuffer) {
-      return maybeBuffer.from(payload, "base64").toString("utf-8");
-    }
-  }
-
-  throw new Error("Base64 decoding not supported in this environment.");
-}
-
-function resolveUriToHttp(uri?: string): string | undefined {
-  if (!uri) return undefined;
-
-  if (uri.startsWith("ipfs://")) {
-    const cid = uri.replace("ipfs://", "");
-    const hostname =
-      typeof window !== "undefined" && window.location.hostname === "localhost"
-        ? LOCAL_GATEWAY_HOST
-        : INFURA_GATEWAY_HOST;
-    return `https://${hostname}/ipfs/${cid}`;
-  }
-
-  return uri;
-}
-
-function parseDataUriMetadata(uri: string): TokenMetadata | undefined {
-  try {
-    const [, payload] = uri.split(",");
-    if (!payload) return undefined;
-    const isBase64 = uri.includes(";base64,");
-    const decoded = isBase64
-      ? decodeBase64(payload)
-      : decodeURIComponent(payload);
-    return JSON.parse(decoded);
-  } catch (error) {
-    console.warn("Failed to parse token metadata data URI:", error);
-    return undefined;
-  }
-}
-
-async function fetchTokenMetadata(tokenURI: string): Promise<TokenMetadata | undefined> {
-  if (tokenURI.startsWith("data:")) {
-    return parseDataUriMetadata(tokenURI);
-  }
-
-  const resolvedUri = resolveUriToHttp(tokenURI);
-  if (!resolvedUri) return undefined;
-
-  try {
-    const response = await fetch(resolvedUri);
-    if (!response.ok) {
-      throw new Error(`Metadata fetch failed (${response.status})`);
-    }
-    return (await response.json()) as TokenMetadata;
-  } catch (error) {
-    console.warn("Failed to fetch token metadata:", error);
-    return undefined;
-  }
-}
-
-function useTokenMetadata(tokenNumber?: string, nftAddress?: string) {
-  const tokenURI = useTokenURI(tokenNumber, nftAddress);
-  const [metadata, setMetadata] = useState<TokenMetadata | undefined>();
-  const [imageUrl, setImageUrl] = useState<string | undefined>();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    if (!tokenNumber || !nftAddress || !tokenURI) {
-      if (!cancelled) {
-        setMetadata(undefined);
-        setImageUrl(undefined);
-      }
-      return () => {
-        cancelled = true;
-      };
-    }
-
-    const resolvedTokenUri = tokenURI as string;
-    const resolvedFallback = resolveUriToHttp(resolvedTokenUri);
-
-    async function loadMetadata() {
-      const meta = await fetchTokenMetadata(resolvedTokenUri);
-      if (cancelled) return;
-
-      setMetadata(meta);
-
-      const mediaUrl =
-        resolveUriToHttp(meta?.external_link) ||
-        resolveUriToHttp(meta?.image) ||
-        resolvedFallback;
-      setImageUrl(mediaUrl);
-    }
-
-    loadMetadata();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [tokenNumber, nftAddress, tokenURI]);
-
-  return {
-    metadata,
-    imageUrl,
-    tokenURI,
-  };
-}
+// Note: teamImage from useDefifaTiers is already resolved (data URI or HTTP URL)
+// No additional processing needed - use it directly
 
 // Component to display NFT thumbnail
-function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAddress?: string }) {
-  const { imageUrl } = useTokenMetadata(tokenNumber, nftAddress);
-  const tier = Math.floor(parseInt(tokenNumber) / DEFAULT_NFT_MAX_SUPPLY);
+function NFTThumbnail({ tokenNumber }: { tokenNumber: string }) {
+  const { nfts } = useGameContext();
+  const tierId = Math.floor(parseInt(tokenNumber) / DEFAULT_NFT_MAX_SUPPLY);
+  const tier = nfts.tiers?.find(t => t.id === tierId);
+  const imageUrl = tier?.teamImage;
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
@@ -197,7 +53,7 @@ function NFTThumbnail({ tokenNumber, nftAddress }: { tokenNumber: string; nftAdd
   return (
     <div className="relative h-14 w-14 rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner bg-[#0f0b16]">
       <div className="flex flex-col items-center justify-center h-full w-full">
-        <div className="text-[#fea282] text-lg font-bold">{tier}</div>
+        <div className="text-[#fea282] text-lg font-bold">{tierId}</div>
         <div className="text-[#c0b3f1] text-xs">Outcome</div>
       </div>
     </div>
@@ -208,16 +64,16 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
   const time = moment(parseInt(transferEvent.timestamp) * 1000).fromNow();
   const { gameId, metadata, nfts } = useGameContext();
   const { chainData } = useChainData();
-  const { nftAddress } = useGameNFTAddress(gameId);
   const phaseTitle = useCurrentPhaseTitle();
   const { isInMiniApp } = useFarcasterContext();
   const { triggerSelection } = useMiniAppHaptics();
   const firstTierPrice = nfts.tiers?.[0]?.price;
   const primaryTokenNumber = transferEvent.tokens[0]?.number;
-  const { metadata: primaryMetadata, imageUrl: primaryImageUrl } = useTokenMetadata(
-    primaryTokenNumber,
-    nftAddress
-  );
+  
+  // Get tier image from already-parsed tier data (teamImage is already resolved by useDefifaTiers)
+  const primaryTierId = primaryTokenNumber ? Math.floor(parseInt(primaryTokenNumber) / DEFAULT_NFT_MAX_SUPPLY) : undefined;
+  const primaryTier = primaryTierId ? nfts.tiers?.find(t => t.id === primaryTierId) : undefined;
+  const primaryImageUrl = primaryTier?.teamImage;
   const formattedPrice = useMemo(() => {
     if (!firstTierPrice) return undefined;
 
@@ -250,11 +106,8 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
   const actionText = isMint ? "Mint" : "Redeem";
   const gameName = metadata?.name ?? "this Defifa game";
   const shareMediaUrl = useMemo(
-    () =>
-      resolveUriToHttp(primaryMetadata?.external_link) ||
-      resolveUriToHttp(primaryImageUrl) ||
-      resolveUriToHttp(primaryMetadata?.image),
-    [primaryMetadata?.external_link, primaryMetadata?.image, primaryImageUrl]
+    () => primaryImageUrl,
+    [primaryImageUrl]
   );
   const shareEmbeds = useMemo(() => {
     if (!isInMiniApp) return undefined;
@@ -357,7 +210,7 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
               <div key={tier} className="relative">
                 <NFTThumbnail tokenNumber={transferEvent.tokens.find(t => 
                   Math.floor(parseInt(t.number) / DEFAULT_NFT_MAX_SUPPLY) === tier
-                )?.number || "0"} nftAddress={nftAddress} />
+                )?.number || "0"} />
                 {tierCounts[tier] > 1 && (
                   <div className="absolute -top-1 -right-1 bg-lime-600 text-white text-xs px-1.5 py-0.5 rounded-full font-medium min-w-[18px] text-center">
                     {tierCounts[tier]}

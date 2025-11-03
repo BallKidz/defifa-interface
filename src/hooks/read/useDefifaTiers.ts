@@ -172,7 +172,7 @@ export function useDefifaTiers(
             reserveFrequency,
             reserveBeneficiary,
           };
-
+          console.log("🔹 useDefifaTiers: tokenUriResult=", tokenUriResult);
           // If tokenURI call succeeded, fetch and parse the metadata
           if (tokenUriResult?.status === "success" && tokenUriResult.result) {
             try {
