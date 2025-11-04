@@ -171,160 +171,166 @@ const DeployerCreate = () => {
     }
   }, [chainData.chainId]);
 
+  // Helper function to load Score Square test data
+  const loadScoreSquareTestData = (testAddress?: string) => {
+    const now = Math.floor(Date.now() / 1000);
+    const mintDuration = 60 * 2; // 2 minutes minting
+    const refundDuration = 0; // No refund
+    const gameStartBuffer = 60 * 1; // 1 minute buffer = 3 min total from now
+    const gameStartTime = now + mintDuration + refundDuration + gameStartBuffer;
+    const testData: DefifaLaunchProjectData = {
+      ...createDefaultLaunchProjectData(),
+      // Only override defaultAttestationDelegate if testAddress is explicitly provided
+      // Otherwise keep the default from createDefaultLaunchProjectData (BALLKIDZ_MULTISIG_ADDRESS)
+      ...(testAddress ? { defaultAttestationDelegate: testAddress as `0x${string}` } : {}),
+      name: "ss testing",
+      rules: "Half-time score shares 40%. Full-time score shares 60%.",
+      mintPeriodDuration: mintDuration,
+      refundPeriodDuration: refundDuration,
+      start: gameStartTime, // Game starts in 3 min from now
+      attestationStartTime: gameStartTime, // Start attestation when scoring phase begins
+      attestationGracePeriod: 0, // No grace period - fast attestation is part of the game
+      gameType: "scoresquare", // Mark as Score Square game
+      tiers: [
+        {
+          ...createDefaultTierData(),
+          name: "0-0",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "0-1",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "0-2",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "0-3",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "0-4+",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "1-0",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "1-1",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "1-2",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "1-3",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "1-4+",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "2-0",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "2-1",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "2-2",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "2-3",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "2-4+",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "3-0",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "3-1",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "3-2",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "3-3",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "3-4+",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "+4-0",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "+4-1",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "+4-2",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "+4-3",
+          price: "0.00001",
+        },
+        {
+          ...createDefaultTierData(),
+          name: "+4-4+",
+          price: "0.00001",
+        },
+      ],
+    };
+    setFormValues(testData);
+    setTierGeneralValues({ price: "0.00001" });
+    setStep(2);
+  };
+
   // Expose test data function to window for dev console testing
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      (window as any).fillTestData = (testAddress?: string) => {
-        const now = Math.floor(Date.now() / 1000);
-        const mintDuration = 60 * 2; // 2 minutes minting
-        const refundDuration = 0; // No refund
-        const gameStartBuffer = 60 * 1; // 1 minute buffer = 3 min total from now
-        const gameStartTime = now + mintDuration + refundDuration + gameStartBuffer;
-        const testData: DefifaLaunchProjectData = {
-          ...createDefaultLaunchProjectData(),
-          defaultAttestationDelegate: (testAddress as `0x${string}`) || constants.AddressZero,
-          name: "ss testing",
-          rules: "Half-time score shares 40%. Full-time score shares 60%.",
-          mintPeriodDuration: mintDuration,
-          refundPeriodDuration: refundDuration,
-          start: gameStartTime, // Game starts in 3 min from now
-          attestationStartTime: gameStartTime, // Start attestation when scoring phase begins
-          attestationGracePeriod: 0, // No grace period - fast attestation is part of the game
-          tiers: [
-            {
-              ...createDefaultTierData(),
-              name: "0-0",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "0-1",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "0-2",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "0-3",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "0-4+",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "1-0",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "1-1",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "1-2",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "1-3",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "1-4+",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "2-0",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "2-1",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "2-2",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "2-3",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "2-4+",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "3-0",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "3-1",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "3-2",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "3-3",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "3-4+",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "+4-0",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "+4-1",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "+4-2",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "+4-3",
-              price: "0.00001",
-            },
-            {
-              ...createDefaultTierData(),
-              name: "+4-4+",
-              price: "0.00001",
-            },
-          ],
-        };
-        setFormValues(testData);
-        setTierGeneralValues({ price: "0.00001" });
-        setStep(2);
-        console.log("✅ Test data loaded!", testData);
-        console.log("💡 Tip: Call fillTestData('0xYourAddress') to use your own attestation delegate");
-      };
+      (window as any).fillTestData = loadScoreSquareTestData;
+      console.log("💡 Tip: Call fillTestData('0xYourAddress') to use your own attestation delegate");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // TODO this is totally bugged, needs to be uploaded at deploy time
@@ -342,6 +348,10 @@ const DeployerCreate = () => {
     const contractUriCid = await uploadJsonToIpfs(contractUri);
     projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
     projectMetadataUri.description = formValuesIn.rules;
+    // Add gameType if specified (e.g., "scoresquare")
+    if (formValuesIn.gameType) {
+      projectMetadataUri.gameType = formValuesIn.gameType;
+    }
 
     const projectMetadataCid = await uploadJsonToIpfs(projectMetadataUri);
 
@@ -921,6 +931,31 @@ const DeployerCreate = () => {
                   required
                   placeholder="Describe the rules of the game in plain English."
                 />
+              </div>
+              <div className={styles.formGroup}>
+                <label className="flex items-center gap-2 text-sm leading-6 mb-1 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formValues.gameType === "scoresquare"}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        // Load Score Square test data when checked
+                        loadScoreSquareTestData();
+                      } else {
+                        // Clear gameType and reset to default when unchecked
+                        setFormValues((prev) => ({
+                          ...prev,
+                          gameType: undefined,
+                        }));
+                      }
+                    }}
+                    className="rounded border-neutral-600 text-indigo-600 focus:ring-indigo-600"
+                  />
+                  <span>Score Square Game</span>
+                </label>
+                <p className="text-xs text-neutral-400 mt-1">
+                  Enable this for games that use the Score Square 5×5 grid interface. Checking this will auto-fill the 25 score tiers.
+                </p>
               </div>
             </div>
 

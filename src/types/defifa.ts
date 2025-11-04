@@ -39,6 +39,7 @@ export interface DefifaLaunchProjectData {
   defaultTokenUriResolver: EthereumAddress;
   terminal: EthereumAddress;
   store: EthereumAddress;
+  gameType?: string; // Optional: "scoresquare" for Score Square games
 
   rules: string; // not used onchain
 }
@@ -50,6 +51,7 @@ export interface DefifaProjectMetadata {
   image: string;
   name: string;
   seller_fee_basis_points: number;
+  gameType?: string; // e.g., "scoresquare" for Score Square games
 }
 
 export interface DefifaTimeData {

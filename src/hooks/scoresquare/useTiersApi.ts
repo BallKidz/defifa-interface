@@ -30,7 +30,7 @@ export function useTiersApi(): TiersApi {
       // Import dynamically to avoid circular dependencies
       const { requestWithAuth } = await import("lib/graphql");
       const { gql } = await import("graphql-request");
-      const { DEFAULT_NFT_MAX_SUPPLY } = await import("hooks/useDefifaTiers");
+      const { DEFAULT_NFT_MAX_SUPPLY } = await import("hooks/read/useDefifaTiers");
 
       const query = gql`
         query ownersByTier($gameId: String!, $tierNumber: BigInt!, $tierNumberPlus: BigInt!) {

@@ -13,7 +13,15 @@ export const contractUri = {
     "This payment will be processed as participation in a Defifa collection according to standard Defifa contractual rules. Play at your own risk.",
 };
 
-export const projectMetadataUri = {
+export const projectMetadataUri: {
+  name: string;
+  description: string;
+  image: string;
+  external_link: string;
+  seller_fee_basis_points: number;
+  fee_recipient: string;
+  gameType?: string;
+} = {
   name: "Defifa: Money game 1",
   description:
     "Defifa is an NFT money game launch pad. The game's treasury will be programmed by the community to attest to the outcome set in the game rules. Redeem tokens any time after the 'final whistle' for their share of the treasury. Defifa is built on Juicebox, secured by Ethereum.",

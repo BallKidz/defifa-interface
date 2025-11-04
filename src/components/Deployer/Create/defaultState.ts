@@ -45,6 +45,7 @@ export const createDefaultLaunchProjectData = (): DefifaLaunchProjectData => {
     projectUri: "",
     terminal: chainData.JBETHPaymentTerminal.address,
     store: chainData.JBTiered721DelegateStore.address,
+    gameType: undefined, // Optional: "scoresquare" for Score Square games
   };
 };
 

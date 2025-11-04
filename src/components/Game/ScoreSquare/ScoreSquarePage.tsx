@@ -15,7 +15,7 @@ import { useTiersApi } from "hooks/scoresquare/useTiersApi";
 import { mockLiveFeed } from "utils/scoresquare";
 import { useFarcasterProfiles } from "hooks/useFarcasterProfiles";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
-import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/useDefifaTiers";
+import { DEFAULT_NFT_MAX_SUPPLY } from "hooks/read/useDefifaTiers";
 import { useGamePotBalance } from "hooks/read/useGamePotBalance";
 import { useGameTimes } from "hooks/read/useGameTimes";
 import { useCountdown } from "hooks/useCountdown";
@@ -61,8 +61,9 @@ export function ScoreSquarePage({ gameId }: ScoreSquarePageProps) {
   
   // Calculate phase end time
   let phaseEndTime: Date | undefined;
+  let mintStartTime: Date | undefined;
   if (gameTimes && !gameTimesLoading) {
-    const { start, refundPeriodDuration } = gameTimes;
+    const { start, refundPeriodDuration, mintPeriodDuration } = gameTimes;
     if (currentPhase === DefifaGamePhase.MINT) {
       // Mint phase ends when refund period starts
       const mintEnd = start - refundPeriodDuration;
@@ -70,10 +71,19 @@ export function ScoreSquarePage({ gameId }: ScoreSquarePageProps) {
     } else if (currentPhase === DefifaGamePhase.REFUND) {
       // Refund phase ends when game starts
       phaseEndTime = new Date(start * 1000);
+    } else if (currentPhase === DefifaGamePhase.COUNTDOWN) {
+      // Minting opens when countdown ends
+      mintStartTime = new Date(
+        (start - mintPeriodDuration - refundPeriodDuration) * 1000
+      );
     }
   }
   
   const { timeRemaining: timeRemainingText } = useCountdown(phaseEndTime);
+  const { timeRemaining: mintOpensInText } = useCountdown(mintStartTime);
+  
+  // Get price per mint from first tier (all tiers cost the same in Score Square games)
+  const pricePerMint = nfts?.tiers?.[0]?.price;
   
   // Fetch all game mints to verify tier mapping
   const { data: allGameMints } = useGameMints(numericGameId);
@@ -457,16 +467,50 @@ export function ScoreSquarePage({ gameId }: ScoreSquarePageProps) {
         </div>
       </div>
       
-      {/* Phase Timer */}
+      {/* Countdown to Minting Opens */}
+      {currentPhase === DefifaGamePhase.COUNTDOWN &&
+      !loading.currentPhaseLoading &&
+      !gameTimesLoading &&
+      mintOpensInText &&
+      mintStartTime ? (
+        <div className="mb-4 flex flex-col items-center gap-2">
+          <div className="text-center">
+            <div className="text-sm text-neutral-400 mb-1">Minting opens in</div>
+            <div className="text-3xl font-bold" style={{ color: "#EB007B" }}>
+              {mintOpensInText}
+            </div>
+          </div>
+          {pricePerMint && (
+            <div className="text-sm text-neutral-300">
+              <span className="text-neutral-400">Price per mint: </span>
+              <EthAmount
+                amountWei={pricePerMint}
+                className="text-sm font-medium text-lime-400"
+              />
+            </div>
+          )}
+        </div>
+      ) : null}
+      
+      {/* Phase Timer (for MINT and REFUND phases) */}
       {(currentPhase === DefifaGamePhase.MINT || currentPhase === DefifaGamePhase.REFUND) &&
       !loading.currentPhaseLoading &&
       !gameTimesLoading &&
       timeRemainingText &&
       phaseEndTime ? (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-4 flex flex-col items-center gap-2">
           <div className="bg-rose-700 shadow-glowPink rounded-md px-2.5 py-1.5">
             <span className="text-sm font-medium text-white">⏱ {timeRemainingText}</span>
           </div>
+          {pricePerMint && (
+            <div className="text-sm text-neutral-300">
+              <span className="text-neutral-400">Price per mint: </span>
+              <EthAmount
+                amountWei={pricePerMint}
+                className="text-sm font-medium text-lime-400"
+              />
+            </div>
+          )}
         </div>
       ) : null}
       
