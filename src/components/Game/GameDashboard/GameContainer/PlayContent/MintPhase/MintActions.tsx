@@ -7,7 +7,6 @@ import { usePay } from "hooks/write/usePay";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toastSuccess } from "utils/toast";
 import { useAccount } from "wagmi";
 import { TierSelection } from "./useMintSelection";
 import { PhaseTimer } from "../PhaseTimer";
@@ -62,8 +61,6 @@ export function MintActions({
       tierIdsToMint,
     },
     onSuccess() {
-      toastSuccess("Mint complete");
-
       window.location.reload();
     },
   });

@@ -8,7 +8,7 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { keccak256, concat, toBytes, Abi } from "viem";
 
@@ -43,6 +43,7 @@ export function usePay({
     chainData,
   } = useChainData();
   const queryClient = useQueryClient();
+  const successHandledRef = useRef<string | null>(null);
   
   // Validate chain for game transactions
   const chainValidation = useGameChainValidation(chainData.chainId);
@@ -73,7 +74,10 @@ export function usePay({
 
   // Handle success with useEffect
   useEffect(() => {
-    if (isSuccess && hash) {
+    if (isSuccess && hash && successHandledRef.current !== hash) {
+      // Mark this transaction as handled
+      successHandledRef.current = hash;
+      
       // Invalidate user's NFT holdings cache to show minted NFTs immediately
       queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
       // Also invalidate game mint counts for immediate UI update
@@ -84,7 +88,7 @@ export function usePay({
       toastSuccess("Mint complete");
       onSuccess?.();
     }
-  }, [isSuccess, hash, onSuccess, queryClient, address, gameId]);
+  }, [isSuccess, hash, queryClient, address, gameId, onSuccess]);
 
   const write = async () => {
     

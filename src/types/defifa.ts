@@ -41,6 +41,7 @@ export interface DefifaLaunchProjectData {
   store: EthereumAddress;
 
   rules: string; // not used onchain
+  gameType?: string; // optional game type identifier (e.g., "scoresquare")
 }
 
 export interface DefifaProjectMetadata {
