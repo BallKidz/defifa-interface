@@ -172,8 +172,9 @@ export function useDefifaTiers(
             reserveFrequency,
             reserveBeneficiary,
           };
-          console.log("🔹 useDefifaTiers: tokenUriResult=", tokenUriResult);
+          
           // If tokenURI call succeeded, fetch and parse the metadata
+          // Note: tokenURI may revert for tokens that have resolver errors eg non font not found onchain
           if (tokenUriResult?.status === "success" && tokenUriResult.result) {
             try {
               const tokenUri = tokenUriResult.result as string;

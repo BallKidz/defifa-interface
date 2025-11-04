@@ -8,7 +8,7 @@ import {
   useWriteContract,
   useWaitForTransactionReceipt,
 } from "wagmi";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Abi } from "viem";
 
@@ -21,6 +21,12 @@ export function useSubmitScorecard(
   const { chainData } = useChainData();
   const queryClient = useQueryClient();
   
+  // Store onSuccess in a ref to avoid infinite loops when it changes
+  const onSuccessRef = useRef(onSuccess);
+  useEffect(() => {
+    onSuccessRef.current = onSuccess;
+  }, [onSuccess]);
+  
   // Validate chain for game transactions
   const chainValidation = useGameChainValidation(chainData.chainId);
 
@@ -28,15 +34,15 @@ export function useSubmitScorecard(
 
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  // Handle success with useEffect
+  // Handle success with useEffect - use ref to avoid dependency on onSuccess
   useEffect(() => {
     if (isSuccess && hash) {
       // Invalidate scorecards cache to show new scorecard immediately
       queryClient.invalidateQueries({ queryKey: ["scorecards", gameId] });
       
-      onSuccess?.();
+      onSuccessRef.current?.();
     }
-  }, [isSuccess, hash, onSuccess, queryClient, gameId]);
+  }, [isSuccess, hash, queryClient, gameId]);
 
   const write = async () => {
 
