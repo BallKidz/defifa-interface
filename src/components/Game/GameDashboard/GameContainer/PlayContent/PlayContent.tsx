@@ -28,6 +28,12 @@ export function PlayContent() {
     loading: { currentPhaseLoading },
   } = useGameContext();
 
+  // Call hooks before any conditional returns
+  const params = useParams();
+  const { gameId: networkGameId } = params;
+  const decodedGameId = decodeURIComponent(networkGameId as string);
+  const scoreSquarePath = `/game/${decodedGameId}/scoresquare`;
+
   if (currentPhaseLoading) {
     return <Container className="text-center">...</Container>;
   }
@@ -64,10 +70,6 @@ export function PlayContent() {
       : currentPhase;
 
   const CurrentContent = PHASE_CONTENT[effectivePhase] ?? null;
-  const params = useParams();
-  const { gameId: networkGameId } = params;
-  const decodedGameId = decodeURIComponent(networkGameId as string);
-  const scoreSquarePath = `/game/${decodedGameId}/scoresquare`;
 
   return (
     <>
