@@ -45,7 +45,6 @@ const NetworkArcade = () => {
   useEffect(() => {
     // Auto-switch immediately when route is accessed directly
     if (chainId && chainValidation.needsSwitch && !chainValidation.isSwitching) {
-      console.log(`🔄 Auto-switching to ${getNetworkName(chainId)} for arcade`);
       chainValidation.switchChain().catch((error) => {
         console.error('Failed to auto-switch chain:', error);
       });

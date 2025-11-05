@@ -44,12 +44,6 @@ const FourItemsDisplay = () => {
             key: index,
         }));
 
-    console.log("FourItemsDisplay - displayedItems:", displayedItems.map(t => ({
-        id: t.id,
-        teamName: t.teamName,
-        hasImage: !!t.teamImage
-    })));
-
     return (
         <div>
             <div className="flex gap-4 flex-wrap">

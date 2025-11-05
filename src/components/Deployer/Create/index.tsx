@@ -284,8 +284,6 @@ const DeployerCreate = () => {
       return;
     }
 
-    console.log("IPFS upload complete!", { contractUriCid, projectMetadataCid });
-
     // Update formValues with IPFS URIs
     setFormValues((prevValues) => ({
       ...prevValues,

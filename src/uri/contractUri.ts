@@ -1,9 +1,9 @@
 export const contractUri = {
   name: "Defifa: Money games",
   infoUri: "defifa.net",
-  logoUri: "ipfs://QmRDbH19SJMPNarJjprLFNQfuSmmwYVQrCqp9r6bVZGGsq",
+  logoUri: "ipfs://QmPcC27opXahcwAphfATVyHUX579ZbgfHuEgTdaubwWqzU",
   description:
-    "Defifa is an NFT money game launch pad. The game's treasury will be programmed by the community to attest to the outcome set in the game rules. Redeem tokens any time after the 'final whistle' for their share of the treasury. Defifa is built on Juicebox, secured by Ethereum.",
+    "Defifa is an NFT money game launch pad. The game's treasury will be programmed by the community to attest to the outcome set in the game rules. Redeem NFTs any time after the 'final whistle' for their share of the treasury. Defifa is built on Juicebox, secured by Ethereum.",
   twitter: "@defifa420",
   discord: "",
   tokens: [],

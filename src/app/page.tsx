@@ -212,7 +212,6 @@ const HomePage = () => {
             </Button>
           </Link>
         </div>
-        <TopPlayersContent />
         <Footer />
       </Container>
     </main>

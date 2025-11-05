@@ -60,8 +60,6 @@ export function Header() {
   const phaseTitle = useCurrentPhaseTitle();
   const { isInMiniApp } = useFarcasterContext();
   
-  console.log("Header playPath:", playPath); // Debug log
-
   if (metadataLoading) return <div className="text-center">...</div>;
 
   if (isInMiniApp) {

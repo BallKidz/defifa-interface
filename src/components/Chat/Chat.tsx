@@ -98,7 +98,6 @@ const SocialMediaFeed = () => {
         data: UserDataAddData;
         signatureScheme: SignatureScheme.ED25519;
       };
-      //console.log('userDataAddMessage', userDataAddMessage);
       if (isUserDataAddMessage(userDataAddMessage)) {
         return userDataAddMessage.data.userDataBody.value;
       } else {

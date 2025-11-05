@@ -75,13 +75,6 @@ export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ ga
   const { data: times } = useGameTimes(gameId, targetChainId);
   const date = times?.start ? new Date(times.start * 1000) : new Date();
   const { data: treasuryAmount, isLoading: treasuryLoading, error: treasuryError } = useGamePotBalance(gameId, targetChainId);
-  
-  // Debug pot balance for arcade
-  console.log(`🏛️ Arcade Game ${gameId}:`, {
-    treasuryAmount: treasuryAmount?.toString() || "null",
-    treasuryLoading,
-    treasuryError: treasuryError?.message || null
-  });
 
   // const currentDate = new Date(); // Get the current date and time
   const { data: currentPhase } = useCurrentGamePhase(gameId, targetChainId);
