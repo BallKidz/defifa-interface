@@ -3,7 +3,7 @@ import { useGameContext } from "contexts/GameContext";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useGamePotBalance } from "hooks/read/useGamePotBalance";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useCurrentPhaseTitle } from "./GameContainer/PlayContent/useCurrentPhaseTitle";
 import { PhaseTimer } from "./GameContainer/PlayContent/PhaseTimer";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
@@ -52,14 +52,13 @@ export function Header() {
     loading: { metadataLoading },
   } = useGameContext();
   const currentPhaseTitle = useCurrentPhaseTitle();
-  const { isInMiniApp } = useFarcasterContext();
-
-  const router = useRouter();
   const pathname = usePathname();
   const exitPath = pathname?.replace("/play", "") || "";
+  const { isInMiniApp } = useFarcasterContext();
 
   if (metadataLoading) return <div className="text-center">...</div>;
 
+  // Use compact layout for miniapp or mobile, desktop layout for larger screens
   if (isInMiniApp) {
     return (
       <header className="space-y-2">
@@ -89,8 +88,8 @@ export function Header() {
   }
 
   return (
-    <header>
-      <nav className="mt-6 mb-6 flex gap-2 text-sm">
+    <header className="flex flex-col md:block">
+      <nav className="mt-1 md:mt-6 md:mb-6 flex flex-wrap gap-2 text-xs md:text-sm uppercase md:normal-case tracking-wide text-neutral-400">
         <Link href={exitPath} className="text-neutral-200">
           ← {metadata?.name}
         </Link>
@@ -100,24 +99,22 @@ export function Header() {
         </Link>
       </nav>
 
-      <div className="flex justify-between">
-        <div>
-          <div>
-            <div className="flex gap-4 items-center">
-              <span className="h-[10px] w-[10px] bg-lime-400 shadow-glowGreen rounded-full"></span>
-
-              <h1 className="text-3xl font-medium">
-                <span>{currentPhaseTitle}</span>
-              </h1>
-
-              <PhaseTimer />
+      <div className="flex flex-col md:flex-row md:justify-between gap-2 md:gap-0">
+        <div className="md:flex md:flex-col">
+          <div className="flex flex-col md:flex-row md:gap-4 md:items-center">
+            <div className="flex items-center gap-2">
+              <span className="h-[8px] md:h-[10px] w-[8px] md:w-[10px] bg-lime-400 shadow-glowGreen rounded-full"></span>
+              <h1 className="text-2xl md:text-3xl font-medium">{currentPhaseTitle}</h1>
             </div>
-            <div className="mt-2 max-w-3xl hidden md:block">
-              <span>Rules:</span> {metadata?.description}
-            </div>
+            <PhaseTimer />
+          </div>
+          <div className="mt-2 max-w-3xl hidden md:block">
+            <span>Rules:</span> {metadata?.description}
           </div>
         </div>
-        <GameStats />
+        <div className="md:block">
+          <GameStats />
+        </div>
       </div>
     </header>
   );

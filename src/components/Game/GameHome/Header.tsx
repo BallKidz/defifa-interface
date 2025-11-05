@@ -62,6 +62,7 @@ export function Header() {
   
   if (metadataLoading) return <div className="text-center">...</div>;
 
+  // Use compact layout for miniapp or mobile, desktop layout for larger screens
   if (isInMiniApp) {
     return (
       <div className="flex flex-col gap-6">
@@ -76,8 +77,6 @@ export function Header() {
           )}
         </div>
 
-        <FourItemsDisplay />
-
         <div className="flex flex-col gap-3">
           <span className="text-xs uppercase tracking-wide text-neutral-400">
             {phaseTitle}
@@ -89,35 +88,64 @@ export function Header() {
             </Button>
           </Link>
         </div>
+
+        <FourItemsDisplay />
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-3 gap-8">
-      <div className="col-span-2">
-        <h1 className="text-3xl font-medium mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
-          {metadata?.name}
-        </h1>
-        {metadata?.description && (
-          <p className="text-sm text-neutral-300 max-w-2xl mb-4">
-            Rules: {metadata.description}
-          </p>
-        )}
-        <div className="flex gap-4">
-          <FourItemsDisplay />
+    <>
+      {/* Mobile layout: name/rules first, then phase/stats/button, then tiers */}
+      <div className="flex flex-col md:hidden gap-6">
+        <div>
+          <h1 className="text-3xl font-medium [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
+            {metadata?.name}
+          </h1>
+          {metadata?.description && (
+            <p className="text-sm text-neutral-300 max-w-2xl mt-3">
+              Rules: {metadata.description}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-3">
+          <span className="text-xs uppercase tracking-wide text-neutral-400">
+            {phaseTitle}
+          </span>
+          <GameStats compact />
+          <Link href={playPath} className="w-full">
+            <Button className="w-full" size="lg">
+              Enter Game →
+            </Button>
+          </Link>
+        </div>
+        <FourItemsDisplay />
+      </div>
+
+      {/* Desktop layout: grid with original structure */}
+      <div className="hidden md:grid md:grid-cols-3 gap-8 items-start">
+        <div className="md:col-span-2">
+          <h1 className="text-3xl font-medium mb-5 [text-shadow:_0_5px_20px_rgb(250_250_250_/_10%)] max-w-prose">
+            {metadata?.name}
+          </h1>
+          {metadata?.description && (
+            <p className="text-sm text-neutral-300 max-w-2xl mb-4">
+              Rules: {metadata.description}
+            </p>
+          )}
+          <div className="flex gap-4">
+            <FourItemsDisplay />
+          </div>
+        </div>
+        <div className="flex flex-col gap-3 items-center self-start">
+          <GameStats />
+          <Link href={playPath} className="w-full">
+            <Button className="w-full" size="lg">
+              Enter Game →
+            </Button>
+          </Link>
         </div>
       </div>
-      <div className="flex flex-col gap-3 justify-center items-center">
-        {phaseTitle}
-        <GameStats />
-
-        <Link href={playPath} className="w-full">
-          <Button className="w-full" size="lg">
-            Enter Game →
-          </Button>
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }

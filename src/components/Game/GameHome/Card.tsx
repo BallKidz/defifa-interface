@@ -5,11 +5,12 @@ export function Card({ title, imageSrc }: { title: string; imageSrc: string }) {
   return (
     <div
       className={twMerge(
-        "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl w-32 overflow-hidden"
+        "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl overflow-hidden",
+        "w-[calc(50%-0.5rem)] md:w-32"
       )}
     >
       <div className="px-3 pt-3 pb-2">
-        <div className="text-sm text-left font-medium mb-2 truncate" title={title}>{title}</div>
+        <div className="text-base md:text-sm text-left font-medium mb-2 truncate" title={title}>{title}</div>
 
         <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
           {imageSrc ? (
@@ -17,9 +18,9 @@ export function Card({ title, imageSrc }: { title: string; imageSrc: string }) {
               src={imageSrc}
               crossOrigin="anonymous"
               alt={title}
-              width={120}
-              height={120}
-              className="object-cover"
+              width={140}
+              height={140}
+              className="object-cover w-full h-full md:w-auto md:h-auto"
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-full">
