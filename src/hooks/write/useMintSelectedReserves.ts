@@ -43,9 +43,10 @@ export function useMintSelectedReserves(
   useEffect(() => {
     if (isSuccess && hash) {
       // Invalidate user's NFT holdings cache to show minted NFTs immediately
+      // Note: useMyMints now derives from useGameMints, so invalidating game-mints is sufficient
       queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
-      // Also invalidate game mint counts for immediate UI update
-      queryClient.invalidateQueries({ queryKey: ["game-mints", gameId] });
+      // Invalidate game mint counts for immediate UI update (includes chainId in key)
+      queryClient.invalidateQueries({ queryKey: ["game-mints", chainData.chainId, gameId] });
       // Invalidate tier data cache to update mintedCount after mint
       queryClient.invalidateQueries({ queryKey: ["nft-rewards"] });
       // Invalidate outstanding reserves

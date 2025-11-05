@@ -76,7 +76,9 @@ export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ ga
 
   // const currentDate = new Date(); // Get the current date and time
   const { data: currentPhase } = useCurrentGamePhase(gameId, targetChainId);
-  const { data: mintedTokens } = useGameMints(gameId, targetChainId);
+  const { data: mintedTokens } = useGameMints(gameId, targetChainId, {
+    currentPhase,
+  });
   const mintedCount = mintedTokens?.length;
 
   // Build game URL with network prefix (e.g., /game/sep:32)

@@ -37,7 +37,8 @@ export default function GameContextProvider({
   const { data: tiers, isLoading: tiersLoading, error: tiersError } = useDefifaTiers(
     dataSource, // NFT delegate address
     chainId,    // Chain ID override
-    gameId      // Game ID for fetching mints
+    gameId,     // Game ID for fetching mints
+    currentPhase
   );
 
 

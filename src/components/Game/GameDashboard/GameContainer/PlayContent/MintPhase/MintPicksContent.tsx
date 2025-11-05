@@ -45,8 +45,9 @@ export function MintPicksContent() {
       nfts: { tiersLoading },
     },
     gameId,
+    currentPhase,
   } = useGameContext();
-  const { data: gameMints } = useGameMints(gameId);
+  const { data: gameMints } = useGameMints(gameId, undefined, { currentPhase });
   const playersInTiers = usePlayersInTiers(gameMints);
   const userMintsPerTier = useUserMintsPerTier();
 

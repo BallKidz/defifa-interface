@@ -3,6 +3,8 @@ import { DefifaTierRedemptionWeight } from "types/defifa";
 import { useQuery } from "@tanstack/react-query";
 import { useChainData } from "./useChainData";
 import { requestWithAuth } from "lib/graphql";
+import { useGameContext } from "contexts/GameContext";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 
 const scorecardsQuery = gql`
   query scorecardsQuery($gameId: ID!) {
@@ -34,13 +36,17 @@ export interface Scorecard {
 
 export function useScorecards(gameId: number) {
   const { chainData } = useChainData();
+  const { currentPhase } = useGameContext();
+  const shouldPoll =
+    currentPhase === DefifaGamePhase.MINT || currentPhase === DefifaGamePhase.SCORING;
   const graphUrl = chainData.subgraph;
   
   console.log(`[useScorecards] Hook called with gameId: ${gameId} (type: ${typeof gameId})`);
   console.log(`[useScorecards] Chain data:`, chainData);
+  console.log(`[useScorecards] Current phase: ${currentPhase}. Polling enabled: ${shouldPoll}`);
 
   return useQuery({
-    queryKey: ["scorecards", gameId],
+    queryKey: ["scorecards", chainData.chainId, gameId],
     queryFn: async () => {
       console.log(`[useScorecards] Fetching scorecards for gameId: ${gameId}`);
       
@@ -64,8 +70,10 @@ export function useScorecards(gameId: number) {
       
       return convertedScorecards;
     },
-    refetchInterval: 30 * 1000, // Reduced to 30-second polling to avoid rate limits
-    refetchIntervalInBackground: false, // Don't poll in background to reduce RPC calls
+    enabled: !!gameId,
+    refetchInterval: shouldPoll ? 30 * 1000 : false,
+    refetchIntervalInBackground: shouldPoll ? false : undefined,
+    refetchOnWindowFocus: shouldPoll,
     staleTime: 10 * 1000, // Consider data fresh for 10 seconds
   });
 }

@@ -1,54 +1,36 @@
 import { useGameContext } from "contexts/GameContext";
-import { gql } from "graphql-request";
-import { useChainData } from "hooks/useChainData";
-import { useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
-import { requestWithAuth } from "lib/graphql";
-
-const query = gql`
-  query myMintsQuery($owner: String!, $gameId: String!) {
-    contracts(where: { gameId: $gameId }) {
-      mintedTokens(where: { owner: $owner }) {
-        id
-        number
-        metadata {
-          description
-          id
-          identifier
-          image
-          name
-          tags
-        }
-      }
-    }
-  }
-`;
+import { useGameMints } from "./useGameMints";
+import { useMemo } from "react";
 
 export function useMyMints() {
-  const {
-    chainData: { subgraph },
-  } = useChainData();
   const { address } = useAccount();
-  const { gameId } = useGameContext();
-
-  return useQuery({
-    queryKey: ["picks", address, gameId],
-    queryFn: () => {
-      return requestWithAuth<{
-        contracts: {
-          mintedTokens: {
-            number: string;
-          }[];
-        }[];
-      }>(subgraph, query, {
-        owner: address?.toLowerCase(),
-        gameId: gameId.toString(),
-      });
-    },
-    enabled: !!address,
-    // Simple 5-second polling - no complex caching
-    refetchInterval: 5 * 1000, // 5 seconds
-    refetchIntervalInBackground: true,
-    staleTime: 0, // Always consider data stale
+  const { gameId, currentPhase } = useGameContext();
+  const { data: gameMints, isLoading, error } = useGameMints(gameId, undefined, {
+    currentPhase,
   });
+
+  // Filter game mints to only include user's mints
+  const myMints = useMemo(() => {
+    if (!address || !gameMints) {
+      return undefined;
+    }
+
+    const userMints = gameMints.filter(
+      (token: any) => token.owner.id.toLowerCase() === address.toLowerCase()
+    );
+
+    // Maintain the same structure that components expect
+    return {
+      contracts: [{
+        mintedTokens: userMints
+      }]
+    };
+  }, [address, gameMints]);
+
+  return {
+    data: myMints,
+    isLoading,
+    error,
+  };
 }

@@ -14,7 +14,7 @@ import { IDefifa_DAO_PROTOCOL_FEE } from "constants/constants";
 import { constants } from "ethers";
 
 export function RulesContent() {
-  const { metadata, gameId, nfts } = useGameContext();
+  const { metadata, gameId, nfts, currentPhase } = useGameContext();
   const { mintPeriodDuration, start, refundPeriodDuration } = useDeployerDates(
     "local",
     gameId
@@ -30,7 +30,7 @@ export function RulesContent() {
   const tokenBeneficiary = useDefaultTokenBeneficiary(
     currentFc?.metadata.dataSource
   );
-  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource, undefined, gameId);
+  const { data: nftRewardTiers } = useDefifaTiers(currentFc?.metadata.dataSource, undefined, gameId, currentPhase);
   const { data: gameMetadata } = useGameMetadata(gameId);
 
   const fillPill = (phase: number) => {

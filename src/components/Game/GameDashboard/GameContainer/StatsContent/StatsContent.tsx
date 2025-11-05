@@ -9,8 +9,8 @@ import Container from "components/layout/Container";
 import { GamePlayerPowerLevel } from "components/LeaderBoard/GamePivot/GamePlayerPowerLevel";
 
 function useGamePlayers() {
-  const { gameId } = useGameContext();
-  const { data: mints } = useGameMints(gameId);
+  const { gameId, currentPhase } = useGameContext();
+  const { data: mints } = useGameMints(gameId, undefined, { currentPhase });
   const players = Array.from(
     new Set(mints?.map((m: any) => m.owner.id) ?? [])
   ).filter((a) => a !== constants.AddressZero);
