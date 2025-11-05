@@ -59,23 +59,30 @@ export function ScorecardRow({
   );
 
   const teamNames = useMemo(() => {
-    return new Map((nfts?.tiers ?? []).map((tier) => [tier.id, tier.teamName]));
+    const map = new Map<number, string>();
+    (nfts?.tiers ?? []).forEach((tier) => {
+      map.set(Number(tier.id), tier.teamName ?? `Tier ${tier.id}`);
+    });
+    return map;
   }, [nfts?.tiers]);
 
   const tierWeightRows = useMemo(
     () =>
-      scorecard.tierWeights.map((weight) => ({
-        id: (weight.id ?? weight.tierId).toString(),
-        tierId: weight.tierId,
-        redemptionWeight: weight.redemptionWeight,
-      })),
+      scorecard.tierWeights.map((weight) => {
+        const tierId = Number(weight.tierId);
+        return {
+          id: (weight.id ?? tierId).toString(),
+          tierId,
+          redemptionWeight: weight.redemptionWeight.toString(),
+        };
+      }),
     [scorecard.tierWeights]
   );
 
   const ratifyTierWeights = useMemo(
     () =>
       scorecard.tierWeights.map((weight) => ({
-        id: weight.tierId,
+        id: Number(weight.tierId),
         redemptionWeight: weight.redemptionWeight,
       })),
     [scorecard.tierWeights]
@@ -322,22 +329,22 @@ export function TierScorecardTable({
   tierWeights: {
     id: string;
     tierId: number;
-    redemptionWeight: string | BigNumber;
+    redemptionWeight: string;
   }[];
   teamNames: Map<number, string>;
 }) {
   return (
     <div className="text-sm mb-5">
       <div className="flex justify-between font-medium border-b border-neutral-700 py-1">
-        <span>Tier</span>
+        <span>Outcome</span>
         <span>Score</span>
       </div>
       {tierWeights.map((weight) => (
         <div
-          key={weight.id.toString()}
+          key={weight.id}
           className="flex justify-between w-full border-b border-neutral-800 p-1"
         >
-          <span>{teamNames.get(weight.tierId) ?? `Pick ${weight.tierId}`}</span>
+          <span>{teamNames.get(weight.tierId) ?? `Tier ${weight.tierId}`}</span>
           <span>
             {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
           </span>
