@@ -133,7 +133,7 @@ export function CustomScorecardContent() {
               <div className="text-xs text-neutral-400 mt-1">
                 {pickCounts[t.id.toString()] ? 
                   `You own ${pickCounts[t.id.toString()]} NFT(s) for this team` :
-                  `You don't own any NFTs for this team`
+                  `You don't own this outcome`
                 }
               </div>
             </div>
