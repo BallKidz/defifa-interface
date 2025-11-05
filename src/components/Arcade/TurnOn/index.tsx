@@ -188,8 +188,8 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
       )}
       
       {!isLoading && !isLoadingPhases && !isError && games && (
-        <div className={isInMiniApp ? "overflow-x-auto -mx-4 px-4" : ""}>
-          <table className={`mx-auto ${isInMiniApp ? "w-full min-w-[640px]" : ""}`}>
+        <div className="overflow-x-auto -mx-4 px-4">
+          <table className="mx-auto w-full min-w-[640px]">
             <thead>
               <tr className="font-normal">
               <th 
@@ -218,31 +218,13 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
                   )}
                 </div>
               </th>
-              <th
-                className={
-                  isInMiniApp
-                    ? "font-normal text-sm py-3"
-                    : "font-normal text-sm py-3 hidden md:table-cell"
-                }
-              >
+              <th className="font-normal text-sm py-3">
                 Phase
               </th>
-              <th
-                className={
-                  isInMiniApp
-                    ? "font-normal text-sm py-3"
-                    : "font-normal text-sm py-3 hidden md:table-cell"
-                }
-              >
+              <th className="font-normal text-sm py-3">
                 Pot Size
               </th>
-              <th
-                className={
-                  isInMiniApp
-                    ? "font-normal text-sm py-3"
-                    : "font-normal text-sm py-3 hidden md:table-cell"
-                }
-              >
+              <th className="font-normal text-sm py-3">
                 Actions
               </th>
               <th 

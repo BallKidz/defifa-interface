@@ -11,7 +11,6 @@ import { buildGamePath } from "lib/networks";
 import { useRouter } from "next/navigation";
 import { FC, MouseEvent, useCallback } from "react";
 import { fromWad6 } from "utils/format/formatNumber";
-import { useFarcasterContext } from "hooks/useFarcasterContext";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
 import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
@@ -64,7 +63,6 @@ const availableActionsText = (phase?: DefifaGamePhase, mintedCount?: number) => 
 export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ game, chainId }) => {
   const { gameId, name } = game;
   const { chainData } = useChainData();
-  const { isInMiniApp } = useFarcasterContext();
   const { triggerSelection } = useMiniAppHaptics();
   const router = useRouter();
   
@@ -120,13 +118,7 @@ export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ ga
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
         <span>{name}</span>
       </td>
-      <td
-        className={
-          isInMiniApp
-            ? "whitespace-nowrap py-4 pl-4 pr-3"
-            : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
-        }
-      >
+      <td className="whitespace-nowrap py-4 pl-4 pr-3">
         {currentPhase === DefifaGamePhase.MINT ? (
           <span>{`Mint until ${date.toLocaleString()}`}</span>
         ) : (
@@ -134,24 +126,12 @@ export const GameRow: FC<{ game: Game | NetworkGame; chainId?: number }> = ({ ga
         )}
       </td>
 
-      <td
-        className={
-          isInMiniApp
-            ? "whitespace-nowrap py-4 pl-4 pr-3"
-            : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
-        }
-      >
+      <td className="whitespace-nowrap py-4 pl-4 pr-3">
         <span data-treasury-amount={treasuryAmount?.toString() || "0"}>
           {fromWad6(treasuryAmount)} Ξ
         </span>
       </td>
-      <td
-        className={
-          isInMiniApp
-            ? "whitespace-nowrap py-4 pl-4 pr-3"
-            : "whitespace-nowrap py-4 pl-4 pr-3 hidden md:table-cell"
-        }
-      >
+      <td className="whitespace-nowrap py-4 pl-4 pr-3">
         {availableActionsText(currentPhase, mintedCount)}
       </td>
       <td className="whitespace-nowrap py-4 pl-4 pr-3">
