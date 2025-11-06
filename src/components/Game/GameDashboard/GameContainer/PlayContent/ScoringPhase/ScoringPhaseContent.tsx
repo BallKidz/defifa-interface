@@ -1,5 +1,5 @@
 import Container from "components/layout/Container";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { CustomScorecardContent } from "./CustomScorecardContent/CustomScorecardContent";
 import { ScorecardsContent } from "./ScorecardsContent/ScorecardsContent";
@@ -7,6 +7,7 @@ import { RefundPicksContent } from "../MintPhase/RefundPicksContent";
 import { IssueToBeneficiaryContent } from "./IssueToBeneficiaryContent/IssueToBeneficiaryContent";
 import { useGameContext } from "contexts/GameContext";
 import { useOutstandingNumber } from "hooks/read/OutStandingReservedTokens";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 export function ScoringPhaseContent() {
   const [selectedTab, setSelectedTab] = useState<
@@ -26,6 +27,15 @@ export function ScoringPhaseContent() {
   } = useOutstandingNumber(dataSourceAddress, tierIds);
   const hasAnyReserves = outstandingReserves.some((item) => item.count > 0);
   const showIssueTab = outstandingLoading || outstandingFetching || hasAnyReserves;
+  const { triggerSelection } = useMiniAppHaptics();
+
+  const handleSelect = useCallback(
+    (tab: "scorecards" | "customscorecard" | "mypicks" | "issuetobeneficiary") => {
+      setSelectedTab(tab);
+      void triggerSelection();
+    },
+    [triggerSelection]
+  );
 
   useEffect(() => {
     if (!showIssueTab && selectedTab === "issuetobeneficiary") {
@@ -44,7 +54,7 @@ export function ScoringPhaseContent() {
                 : "text-neutral-400",
               "cursor-pointer hover:text-neutral-300 px-4 py-2"
             )}
-            onClick={() => setSelectedTab("mypicks")}
+            onClick={() => handleSelect("mypicks")}
           >
             My Positions
           </a>
@@ -57,7 +67,7 @@ export function ScoringPhaseContent() {
                 : "text-neutral-400",
               "cursor-pointer hover:text-neutral-300 px-4 py-2"
             )}
-            onClick={() => setSelectedTab("customscorecard")}
+            onClick={() => handleSelect("customscorecard")}
           >
             Propose a Scorecard
           </a>
@@ -70,7 +80,7 @@ export function ScoringPhaseContent() {
                 : "text-neutral-400",
               "cursor-pointer hover:text-neutral-300 px-4 py-2"
             )}
-            onClick={() => setSelectedTab("scorecards")}
+            onClick={() => handleSelect("scorecards")}
           >
             Vote on Scorecard
           </a>
@@ -84,7 +94,7 @@ export function ScoringPhaseContent() {
                   : "text-neutral-400",
                 "cursor-pointer hover:text-neutral-300 px-4 py-2"
               )}
-              onClick={() => setSelectedTab("issuetobeneficiary")}
+              onClick={() => handleSelect("issuetobeneficiary")}
             >
               Issue to Beneficiary
             </a>

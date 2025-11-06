@@ -19,6 +19,7 @@ import { TOTAL_REDEMPTION_WEIGHT } from "constants/constants";
 import { tokenNumberToTierId } from "utils/defifa";
 import { EthAddress } from "components/UI/EthAddress";
 import { EthAmount } from "components/UI/EthAmount";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 type RedeemTab = "winners" | "claim" | "scorecard";
 
@@ -41,6 +42,12 @@ function TabNav({
   const activeClass = "bg-neutral-800 text-neutral-50 rounded-md";
   const inactiveClass = "text-neutral-400 hover:text-neutral-300";
   const disabledClass = "text-neutral-600 opacity-50 cursor-not-allowed";
+  const { triggerSelection } = useMiniAppHaptics();
+
+  const handleSelect = (tab: RedeemTab) => {
+    onSelect(tab);
+    triggerSelection();
+  };
 
   const winnersClasses = [
     baseClass,
@@ -67,7 +74,7 @@ function TabNav({
         <button
           type="button"
           className={winnersClasses}
-          onClick={() => onSelect("winners")}
+          onClick={() => handleSelect("winners")}
         >
           Winners
         </button>
@@ -76,7 +83,7 @@ function TabNav({
         <button
           type="button"
           className={claimClasses}
-          onClick={() => hasClaimable && onSelect("claim")}
+          onClick={() => hasClaimable && handleSelect("claim")}
           disabled={!hasClaimable}
         >
           Cashout
@@ -86,7 +93,7 @@ function TabNav({
         <button
           type="button"
           className={scorecardClasses}
-          onClick={() => onSelect("scorecard")}
+          onClick={() => handleSelect("scorecard")}
         >
           Final scorecard
         </button>
@@ -97,34 +104,36 @@ function TabNav({
 
 function WinnersTable({ winners }: { winners: WinnerEntry[] }) {
   return (
-    <div className="border border-neutral-800 rounded-lg overflow-hidden">
-      <table className="min-w-full text-sm">
-        <thead className="bg-neutral-900 border-b border-neutral-800">
-          <tr className="text-left text-neutral-300">
-            <th className="px-4 py-2 w-16">Rank</th>
-            <th className="px-4 py-2">Player</th>
-            <th className="px-4 py-2 w-20">NFTs</th>
-            <th className="px-4 py-2 text-right">Redeemable value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {winners.map((winner, index) => (
-            <tr
-              key={winner.address}
-              className="border-b border-neutral-800 last:border-b-0 hover:bg-neutral-900/40"
-            >
-              <td className="px-4 py-2 text-neutral-400">#{index + 1}</td>
-              <td className="px-4 py-2">
-                <EthAddress address={winner.address} withEnsAvatar />
-              </td>
-              <td className="px-4 py-2 text-neutral-300">{winner.tokenCount}</td>
-              <td className="px-4 py-2 text-right">
-                <EthAmount amountWei={winner.totalValue} className="justify-end" iconClassName="h-4 w-4" />
-              </td>
+    <div className="border border-neutral-800 rounded-lg">
+      <div className="overflow-x-auto">
+        <table className="min-w-[520px] w-full text-sm">
+          <thead className="bg-neutral-900 border-b border-neutral-800">
+            <tr className="text-left text-neutral-300">
+              <th className="px-4 py-2 w-16">Rank</th>
+              <th className="px-4 py-2">Player</th>
+              <th className="px-4 py-2 w-20">NFTs</th>
+              <th className="px-4 py-2 text-right">Redeemable value</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {winners.map((winner, index) => (
+              <tr
+                key={winner.address}
+                className="border-b border-neutral-800 last:border-b-0 hover:bg-neutral-900/40"
+              >
+                <td className="px-4 py-2 text-neutral-400">#{index + 1}</td>
+                <td className="px-4 py-2">
+                  <EthAddress address={winner.address} withEnsAvatar />
+                </td>
+                <td className="px-4 py-2 text-neutral-300">{winner.tokenCount}</td>
+                <td className="px-4 py-2 text-right">
+                  <EthAmount amountWei={winner.totalValue} className="justify-end" iconClassName="h-4 w-4" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

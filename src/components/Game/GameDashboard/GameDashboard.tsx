@@ -3,7 +3,7 @@
 import Container from "components/layout/Container";
 import Wallet from "components/layout/Navbar/Wallet";
 import { useGameContext } from "contexts/GameContext";
-import { useAllGames } from "hooks/useAllGames";
+import { useAllGames, type Game } from "hooks/useAllGames";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,13 +14,22 @@ import { QueueNextPhaseBanner } from "./GameContainer/PlayContent/QueueNextPhase
 import { useChainData } from "hooks/useChainData";
 import { buildGamePath } from "lib/networks";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
+import { useCallback } from "react";
 
-function GameButton({ game }: { game: any }) {
+function GameButton({ game, onSelect }: { game: Game; onSelect?: () => void }) {
   const { chainData } = useChainData();
   const gameRoute = buildGamePath(chainData.chainId, game.gameId);
+  const handleClick = useCallback(() => {
+    onSelect?.();
+  }, [onSelect]);
   
   return (
-    <Link href={gameRoute} className="hover:text-neutral-300 px-6 py-1 border-r border-neutral-800 max-w-[200px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap">
+    <Link
+      href={gameRoute}
+      className="hover:text-neutral-300 px-6 py-1 border-r border-neutral-800 max-w-[200px] overflow-hidden overflow-ellipsis shrink-0 whitespace-nowrap"
+      onClick={handleClick}
+    >
       {game.name ?? game.gameId}
     </Link>
   );
@@ -30,6 +39,10 @@ export function GameDashboard() {
   const { metadata } = useGameContext();
   const { data: games } = useAllGames();
   const { isInMiniApp } = useFarcasterContext();
+  const { triggerSelection } = useMiniAppHaptics();
+  const handleNavigatorSelect = useCallback(() => {
+    void triggerSelection();
+  }, [triggerSelection]);
   const title = metadata?.name
     ? `${metadata.name} | Defifa`
     : "Money Games with Friends | Defifa";
@@ -51,10 +64,16 @@ export function GameDashboard() {
           <Container>
             <div className="flex overflow-x-auto scrollbar-hide">
               <div className="px-6 py-1 border-r border-neutral-800 shrink-0">
-                <Link href="/arcade">All games</Link>
+                <Link href="/arcade" onClick={handleNavigatorSelect}>
+                  All games
+                </Link>
               </div>
               {games?.map((g) => (
-                <GameButton key={g.gameId} game={g} />
+                <GameButton
+                  key={g.gameId}
+                  game={g}
+                  onSelect={handleNavigatorSelect}
+                />
               ))}
             </div>
           </Container>
