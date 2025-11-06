@@ -35,12 +35,13 @@ export async function GET(request: NextRequest) {
       tags: ["gaming", "defifa", "governance", "onchain"],
       noindex: true,
       webhookUrl: "https://api.neynar.com/f/app/d3dd4dea-0be9-4445-acd8-007b927533a7/event",
-      baseBuilder: {
-        ownerAddress: "0xcc8dF7aB477EA26F7D4d4f2576c673F3E7BC5eD6"
-      },
+      
       // requiredChains: ["eip155:8453"], // Uncomment if you require specific chains
       // requiredCapabilities: ["wallet.getEthereumProvider"] // Uncomment if you require specific capabilities
-    }
+    },
+    baseBuilder: {
+      ownerAddress: "0xcc8dF7aB477EA26F7D4d4f2576c673F3E7BC5eD6"
+    },
   }
 
   return NextResponse.json(manifest, {
