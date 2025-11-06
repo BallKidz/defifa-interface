@@ -45,7 +45,7 @@ export function RedeemCard({
                   className="text-base font-medium"
                   iconClassName="h-4 w-4"
                 />
-                <span className="text-xs text-neutral-400">total</span>
+                <span className="text-xs text-neutral-400">cashout value</span>
               </div>
               <div className="flex items-center gap-1 text-xs text-neutral-500">
                 <EthAmount

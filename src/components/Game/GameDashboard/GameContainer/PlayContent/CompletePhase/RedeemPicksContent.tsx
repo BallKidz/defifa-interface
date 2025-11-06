@@ -311,12 +311,8 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
         finalScorecard ? (
           topWinners.length > 0 ? (
             <div className="space-y-4">
-              <div className="flex items-center justify-between text-sm text-neutral-400">
-                <span>Redeemable pot</span>
-                <EthAmount amountWei={totalPot} className="justify-end" iconClassName="h-4 w-4" />
-              </div>
               <div className="text-sm text-neutral-400">
-                Top 10 holders by redeemable value from the final scorecard.
+                Top 10 winners by cashout value.
               </div>
               <WinnersTable winners={topWinners} />
             </div>
@@ -327,7 +323,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
           )
         ) : (
           <div className="text-neutral-300 text-sm">
-            No scorecard has been ratified yet.
+            No scorecard has been locked in yet.
           </div>
         )
       ) : activeTab === "claim" ? (
@@ -352,7 +348,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
           </div>
         ) : (
           <div className="text-neutral-300 text-sm">
-            You don’t have any NFTs to redeem.
+            You don’t have any NFTs to cashout.
           </div>
         )
       ) : finalScorecard ? (
@@ -363,7 +359,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
         />
       ) : (
         <div className="text-neutral-300 text-sm">
-          No scorecard has been ratified yet.
+          No scorecard has been locked in yet.
         </div>
       )}
     </ActionContainer>
