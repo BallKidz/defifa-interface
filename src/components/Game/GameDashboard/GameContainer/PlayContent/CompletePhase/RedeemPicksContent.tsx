@@ -10,24 +10,52 @@ import { useMintSelection } from "../MintPhase/useMintSelection";
 import { useMyMints } from "../MintPhase/useMyMints";
 import { RedeemCard } from "./RedeemCard";
 import { RedeemPicksActions } from "./RedeemPicksActions";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Scorecard, useScorecards } from "hooks/useScorecards";
 import { useGameQuorum } from "hooks/read/useGameQuorum";
 import { ScorecardRow } from "../ScoringPhase/ScorecardsContent/ScorecardsContent";
+import { useGameMints } from "../MintPhase/useGameMints";
+import { TOTAL_REDEMPTION_WEIGHT } from "constants/constants";
+import { tokenNumberToTierId } from "utils/defifa";
+import { EthAddress } from "components/UI/EthAddress";
+import { EthAmount } from "components/UI/EthAmount";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
+
+type RedeemTab = "winners" | "claim" | "scorecard";
+
+type WinnerEntry = {
+  address: string;
+  totalValue: BigNumber;
+  totalCost: BigNumber;
+  tokenCount: number;
+  roiMultiplier: number;
+  percentageGain: number;
+};
 
 function TabNav({
   activeTab,
   onSelect,
   hasClaimable,
 }: {
-  activeTab: "claim" | "scorecard";
-  onSelect: (tab: "claim" | "scorecard") => void;
+  activeTab: RedeemTab;
+  onSelect: (tab: RedeemTab) => void;
   hasClaimable: boolean;
 }) {
   const baseClass = "px-4 py-2";
   const activeClass = "bg-neutral-800 text-neutral-50 rounded-md";
   const inactiveClass = "text-neutral-400 hover:text-neutral-300";
   const disabledClass = "text-neutral-600 opacity-50 cursor-not-allowed";
+  const { triggerSelection } = useMiniAppHaptics();
+
+  const handleSelect = (tab: RedeemTab) => {
+    onSelect(tab);
+    triggerSelection();
+  };
+
+  const winnersClasses = [
+    baseClass,
+    activeTab === "winners" ? activeClass : inactiveClass,
+  ].join(" ");
 
   const claimClasses = [
     baseClass,
@@ -48,18 +76,27 @@ function TabNav({
       <li>
         <button
           type="button"
+          className={winnersClasses}
+          onClick={() => handleSelect("winners")}
+        >
+          Winners
+        </button>
+      </li>
+      <li>
+        <button
+          type="button"
           className={claimClasses}
-          onClick={() => hasClaimable && onSelect("claim")}
+          onClick={() => hasClaimable && handleSelect("claim")}
           disabled={!hasClaimable}
         >
-          Claim winnings
+          Cashout
         </button>
       </li>
       <li>
         <button
           type="button"
           className={scorecardClasses}
-          onClick={() => onSelect("scorecard")}
+          onClick={() => handleSelect("scorecard")}
         >
           Final scorecard
         </button>
@@ -68,9 +105,51 @@ function TabNav({
   );
 }
 
+function WinnersTable({ winners }: { winners: WinnerEntry[] }) {
+  return (
+    <div className="border border-neutral-800 rounded-lg">
+      <div className="overflow-x-auto">
+        <table className="min-w-[640px] w-full text-sm">
+          <thead className="bg-neutral-900 border-b border-neutral-800">
+            <tr className="text-left text-neutral-300">
+              <th className="px-4 py-2 w-16">Rank</th>
+              <th className="px-4 py-2">Player</th>
+              <th className="px-4 py-2 w-20">NFTs</th>
+              <th className="px-4 py-2 w-24">Return</th>
+              <th className="px-4 py-2 text-right">Redeemable value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {winners.map((winner, index) => (
+              <tr
+                key={winner.address}
+                className="border-b border-neutral-800 last:border-b-0 hover:bg-neutral-900/40"
+              >
+                <td className="px-4 py-2 text-neutral-400">#{index + 1}</td>
+                <td className="px-4 py-2">
+                  <EthAddress address={winner.address} withEnsAvatar />
+                </td>
+                <td className="px-4 py-2 text-neutral-300">{winner.tokenCount}</td>
+                <td className="px-4 py-2 text-neutral-300">
+                  {Number.isFinite(winner.percentageGain)
+                    ? `${winner.percentageGain >= 0 ? "+" : ""}${winner.percentageGain.toFixed(1)}%`
+                    : "∞"}
+                </td>
+                <td className="px-4 py-2 text-right">
+                  <EthAmount amountWei={winner.totalValue} className="justify-end" iconClassName="h-4 w-4" />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   const { isConnected } = useAccount();
-  const { nfts, gameId, currentFundingCycle, governor } = useGameContext();
+  const { nfts, gameId, currentFundingCycle, currentPhase, governor } = useGameContext();
 
   const { data: picks, isLoading: picksLoading } = useMyMints();
   const { data: overflow } = usePaymentTerminalBalance(gameId);
@@ -79,28 +158,145 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
   );
   const { data: scorecards } = useScorecards(gameId);
   const { data: quorum } = useGameQuorum(gameId, governor);
+  const { data: allGameMints } = useGameMints(gameId, undefined, { currentPhase });
 
   const mintedTokens = picks?.contracts?.[0]?.mintedTokens ?? [];
   const hasClaimable = mintedTokens.length > 0;
 
-  const userSelectedTab = useRef(false);
-
-  const [activeTab, setActiveTabState] = useState<"claim" | "scorecard">(
-    hasClaimable ? "claim" : "scorecard"
-  );
-
-  const setActiveTab = (tab: "claim" | "scorecard") => {
-    userSelectedTab.current = true;
-    setActiveTabState(tab);
-  };
-
-  useEffect(() => {
-    if (hasClaimable && !userSelectedTab.current) {
-      setActiveTabState("claim");
-    }
-  }, [hasClaimable]);
+  const [activeTab, setActiveTab] = useState<RedeemTab>("winners");
 
   const finalScorecard = scorecards?.[0];
+
+  const totalPot = useMemo(() => {
+    const overflowValue = BigNumber.from(overflow ?? 0);
+    const redeemedValue = BigNumber.from(amountRedeemed ?? 0);
+    return overflowValue.add(redeemedValue);
+  }, [overflow, amountRedeemed]);
+
+  const tierMintCounts = useMemo(() => {
+    const map = new Map<number, number>();
+    (allGameMints ?? []).forEach((token: any) => {
+      const tierId = tokenNumberToTierId(token.number);
+      if (Number.isNaN(tierId)) return;
+
+      const currentCount = map.get(tierId) ?? 0;
+      map.set(tierId, currentCount + 1);
+    });
+
+    return map;
+  }, [allGameMints]);
+
+  const tierPriceMap = useMemo(() => {
+    const map = new Map<number, BigNumber>();
+    nfts.tiers?.forEach((tier) => {
+      try {
+        map.set(tier.id, BigNumber.from(tier.price.toString()));
+      } catch (err) {
+        console.warn("Failed to parse tier price", tier.id, err);
+        map.set(tier.id, BigNumber.from(0));
+      }
+    });
+    return map;
+  }, [nfts.tiers]);
+
+  const tierValueMap = useMemo(() => {
+    const map = new Map<number, BigNumber>();
+    if (!finalScorecard || !finalScorecard.tierWeights?.length) {
+      return map;
+    }
+
+    finalScorecard.tierWeights.forEach((tierWeight) => {
+      const tierId = Number(tierWeight.tierId);
+      if (Number.isNaN(tierId)) return;
+      const weightValue = BigNumber.from(tierWeight.redemptionWeight ?? 0);
+      const mintedCount = tierMintCounts.get(tierId) ?? 0;
+
+      if (weightValue.isZero() || totalPot.isZero() || mintedCount === 0) {
+        map.set(tierId, BigNumber.from(0));
+        return;
+      }
+
+      const tierTotalValue = totalPot.mul(weightValue).div(TOTAL_REDEMPTION_WEIGHT);
+      const valuePerToken = tierTotalValue.div(BigNumber.from(mintedCount));
+      map.set(tierId, valuePerToken);
+    });
+
+    return map;
+  }, [finalScorecard, tierMintCounts, totalPot]);
+
+  const winners = useMemo(() => {
+    const tokens = allGameMints ?? [];
+    if (!finalScorecard || tokens.length === 0) {
+      return [] as WinnerEntry[];
+    }
+
+    const aggregates = new Map<string, WinnerEntry>();
+
+    tokens.forEach((token: any) => {
+      const ownerAddress = token?.owner?.id;
+      if (!ownerAddress) return;
+
+      const tierId = tokenNumberToTierId(token.number);
+      const valuePerToken = tierValueMap.get(tierId);
+      if (!valuePerToken) return;
+      const costPerToken = tierPriceMap.get(tierId) ?? BigNumber.from(0);
+
+      const normalizedAddress = ownerAddress.toLowerCase();
+      const existing = aggregates.get(normalizedAddress);
+
+      if (existing) {
+        aggregates.set(normalizedAddress, {
+          address: normalizedAddress,
+          totalValue: existing.totalValue.add(valuePerToken),
+          totalCost: existing.totalCost.add(costPerToken),
+          tokenCount: existing.tokenCount + 1,
+          roiMultiplier: existing.roiMultiplier,
+          percentageGain: existing.percentageGain,
+        });
+      } else {
+        aggregates.set(normalizedAddress, {
+          address: normalizedAddress,
+          totalValue: valuePerToken,
+          totalCost: costPerToken,
+          tokenCount: 1,
+          roiMultiplier: 0,
+          percentageGain: 0,
+        });
+      }
+    });
+
+    const ROI_SCALE = 1_000_000;
+    const ROI_SCALE_BN = BigNumber.from(ROI_SCALE);
+
+    const withRoi = Array.from(aggregates.values()).map((entry) => {
+      const totalCost = entry.totalCost;
+      const totalValue = entry.totalValue;
+      const roiMultiplier = totalCost.isZero()
+        ? Number.POSITIVE_INFINITY
+        : Number(totalValue.mul(ROI_SCALE_BN).div(totalCost).toString()) / ROI_SCALE;
+      const percentageGain = Number.isFinite(roiMultiplier)
+        ? (roiMultiplier - 1) * 100
+        : Number.POSITIVE_INFINITY;
+
+      return {
+        ...entry,
+        roiMultiplier,
+        percentageGain,
+      };
+    });
+
+    return withRoi.sort((a, b) => {
+      if (a.percentageGain === b.percentageGain) {
+        if (a.totalValue.eq(b.totalValue)) {
+          return b.tokenCount - a.tokenCount;
+        }
+        return b.totalValue.gt(a.totalValue) ? 1 : -1;
+      }
+      return b.percentageGain - a.percentageGain;
+    });
+  }, [allGameMints, finalScorecard, tierPriceMap, tierValueMap]);
+
+  const topWinners = useMemo(() => winners.slice(0, 10), [winners]);
 
   const {
     incrementTierSelection,
@@ -172,7 +368,26 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
         hasClaimable={hasClaimable}
       />
 
-      {activeTab === "claim" ? (
+      {activeTab === "winners" ? (
+        finalScorecard ? (
+          topWinners.length > 0 ? (
+            <div className="space-y-4">
+              <div className="text-sm text-neutral-400">
+                Top 10 winners by cashout value.
+              </div>
+              <WinnersTable winners={topWinners} />
+            </div>
+          ) : (
+            <div className="text-neutral-300 text-sm">
+              No winners to display yet.
+            </div>
+          )
+        ) : (
+          <div className="text-neutral-300 text-sm">
+            No scorecard has been locked in yet.
+          </div>
+        )
+      ) : activeTab === "claim" ? (
         hasClaimable ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
             {pickedNfts?.map((t) => (
@@ -194,7 +409,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
           </div>
         ) : (
           <div className="text-neutral-300 text-sm">
-            You don’t have any NFTs to redeem.
+            You don’t have any NFTs to cashout.
           </div>
         )
       ) : finalScorecard ? (
@@ -205,7 +420,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
         />
       ) : (
         <div className="text-neutral-300 text-sm">
-          No scorecard has been ratified yet.
+          No scorecard has been locked in yet.
         </div>
       )}
     </ActionContainer>

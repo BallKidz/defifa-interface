@@ -4,11 +4,12 @@ import { MintPicksContent } from "./MintPicksContent";
 import { RefundPicksContent } from "./RefundPicksContent";
 import { IssueToBeneficiaryContent } from "../ScoringPhase/IssueToBeneficiaryContent/IssueToBeneficiaryContent";
 import { useGameContext } from "contexts/GameContext";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 import { useOutstandingNumber } from "hooks/read/OutStandingReservedTokens";
 
 export function MintPhaseContent() {
   const [activeTab, setActiveTab] = useState<"mint" | "refund" | "issue">("mint");
-  const { currentFundingCycle, nfts } = useGameContext();
+  const { currentFundingCycle, nfts, currentPhase } = useGameContext();
   const dataSourceAddress = currentFundingCycle?.metadata.dataSource;
   const gameTiers = useMemo(() => nfts?.tiers ?? [], [nfts?.tiers]);
   const tierIds = useMemo(
@@ -21,7 +22,9 @@ export function MintPhaseContent() {
     isFetching: outstandingFetching,
   } = useOutstandingNumber(dataSourceAddress, tierIds);
   const hasAnyReserves = outstandingReserves.some((item) => item.count > 0);
-  const showIssueTab = outstandingLoading || outstandingFetching || hasAnyReserves;
+  const isScoringPhase = currentPhase === DefifaGamePhase.SCORING;
+  const showIssueTab =
+    isScoringPhase && (outstandingLoading || outstandingFetching || hasAnyReserves);
 
   useEffect(() => {
     if (!showIssueTab && activeTab === "issue") {

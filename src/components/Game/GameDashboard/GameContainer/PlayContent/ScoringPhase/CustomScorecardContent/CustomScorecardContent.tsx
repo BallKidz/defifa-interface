@@ -86,55 +86,61 @@ export function CustomScorecardContent() {
         />
       )}
     >
-      <p className="mb-5 text-sm text-neutral-300">
-        Propose winners. How much of the pot should go to each outcome?
-      </p>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 justify-items-center">
         {tiersToScore?.map((t) => (
-          <div
-            key={t.id}
-            className="relative border border-neutral-800 rounded-md max-w-[500px] mx-auto"
-          >
-            <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
-              {t.teamImage ? (
-                <Image
-                  src={t.teamImage}
-                  crossOrigin="anonymous"
-                  alt={t.teamName || `Team ${t.id}`}
-                  width={200}
-                  height={200}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full">
-                  <div className="text-[#fea282] text-3xl font-bold mb-1">
-                    {(t.teamName || `Team ${t.id}`).substring(0, 9).toUpperCase()}
+           <div
+             key={t.id}
+            className="relative border-2 bg-[#181424] border-neutral-800 shadow-lg rounded-xl overflow-hidden hover:shadow-glowPink hover:border-pink-900 transition-all w-full max-w-[260px]"
+           >
+            <div className="px-4 pt-4 pb-3">
+              <div className="text-base text-left font-medium mb-2 truncate" title={t.teamName || `Team ${t.id}`}>
+                {t.teamName || `Team ${t.id}`}
+              </div>
+              <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
+                {t.teamImage ? (
+                  <Image
+                    src={t.teamImage}
+                    crossOrigin="anonymous"
+                    alt={t.teamName || `Team ${t.id}`}
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full">
+                    <div className="text-[#fea282] text-3xl font-bold mb-1">
+                      {(t.teamName || `Team ${t.id}`).substring(0, 9).toUpperCase()}
+                    </div>
+                    <div className="text-[#c0b3f1] text-xs">Outcome</div>
                   </div>
-                  <div className="text-[#c0b3f1] text-xs"></div>
-                </div>
-              )}
-            </div>
-            <div className="p-3">
-              <label htmlFor="">{t.teamName || `Team ${t.id}`} - Pot split %</label>
-              <Input
-                type="text"
-                value={scorecardPercentages[t.id] ?? ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === '') {
-                    onInput(t.id, undefined);
-                  } else {
-                    const numValue = parseInt(value);
-                    onInput(t.id, !isNaN(numValue) ? numValue : undefined);
+                )}
+              </div>
+              <div className="mt-3 space-y-2">
+                <label className="block text-sm" htmlFor={`score-input-${t.id}`}>
+                  Pot split %
+                </label>
+                <Input
+                  id={`score-input-${t.id}`}
+                  type="text"
+                  value={scorecardPercentages[t.id] ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === '') {
+                      onInput(t.id, undefined);
+                    } else {
+                      const numValue = parseInt(value);
+                      onInput(t.id, !isNaN(numValue) ? numValue : undefined);
+                    }
+                  }}
+                  step={1}
+                />
+                <div className="text-xs text-neutral-400 mt-1">
+                  {pickCounts[t.id.toString()] ? 
+                    `You own ${pickCounts[t.id.toString()]} NFT(s)` :
+                    `You don't own this outcome`
                   }
-                }}
-                step={1}
-              />
-              <div className="text-xs text-neutral-400 mt-1">
-                {pickCounts[t.id.toString()] ? 
-                  `You own ${pickCounts[t.id.toString()]} NFT(s) for this team` :
-                  `You don't own this outcome`
-                }
+                </div>
               </div>
             </div>
           </div>
