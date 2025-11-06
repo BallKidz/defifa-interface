@@ -17,13 +17,6 @@ import {
   JBVersion 
 } from "juice-sdk-core";
 
-// Log to debug v5 addresses
-console.log("jbContractAddress[5]:", jbContractAddress[5]);
-console.log("JBMultiTerminal for optimism_sepolia:", (jbContractAddress[5]?.JBMultiTerminal as any)?.[optimismSepolia.id]);
-console.log("JB721TiersHookStore for optimism_sepolia:", (jbContractAddress[5]?.JB721TiersHookStore as any)?.[optimismSepolia.id]);
-console.log("Optimism Sepolia chain ID:", optimismSepolia.id);
-console.log("JBMultiTerminal object:", jbContractAddress[5]?.JBMultiTerminal);
-
 export const DEFIFA_CONFIG_OPTIMISM_SEPOLIA: DefifaConfig = {
   chainId: optimismSepolia.id,
 
@@ -82,5 +75,3 @@ export const DEFIFA_CONFIG_OPTIMISM_SEPOLIA: DefifaConfig = {
   },
   subgraph: "",
 };
-
-console.info("optimism_sepolia chain data::", DEFIFA_CONFIG_OPTIMISM_SEPOLIA);

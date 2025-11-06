@@ -11,7 +11,7 @@ const Info = () => {
 
   return (
     <div className="flex flex-col md:flex-row justify-between w-full items-center">
-      <div className="flex gap-8 items-center">
+      <div className="flex gap-8 items-center justify-center md:justify-start">
         <Link href="/">
           <Logo />
         </Link>
@@ -26,7 +26,11 @@ const Info = () => {
       </div>
 
       {/* Only show wallet when not in Mini App context */}
-      {!isInMiniApp && <Wallet />}
+      {!isInMiniApp && (
+        <div className="flex justify-center md:justify-end mt-4 md:mt-0">
+          <Wallet />
+        </div>
+      )}
     </div>
   );
 };

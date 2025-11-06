@@ -9,6 +9,7 @@ export function ActionContainer({
 }) {
   const { isInMiniApp } = useFarcasterContext();
 
+  // Use compact layout for miniapp or mobile, desktop layout for larger screens
   if (isInMiniApp) {
     return (
       <div className="flex flex-col gap-6">
@@ -25,11 +26,11 @@ export function ActionContainer({
   }
 
   return (
-    <div className="grid grid-cols-3 gap-8 items-start relative">
-      <div className="mb-12 col-span-2">{children}</div>
+    <div className="flex flex-col md:grid md:grid-cols-3 gap-6 md:gap-8 items-start relative">
+      <div className="mb-12 md:mb-0 md:col-span-2 w-full">{children}</div>
       {renderActions ? (
-        <div className="sticky top-4 right-0">
-          <div className="p-6 rounded-xl shadow-glowPink border bg-[#181424] border-neutral-800 mr-5 min-h-[100px]">
+        <div className="w-full md:sticky md:top-4 md:right-0">
+          <div className="p-4 md:p-6 rounded-xl shadow-glowPink border bg-[#181424] border-neutral-800 w-full md:mr-5 md:min-h-[100px]">
             {renderActions()}
           </div>
         </div>

@@ -27,6 +27,9 @@ import {
 } from "./defaultState";
 import { datetimeLocalToUnix } from "./utils";
 import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
+import { Tabs } from "./Tabs";
+import { Tooltip } from "components/UI/Tooltip";
+import { BALLKIDZ_MULTISIG_ADDRESS } from "constants/constants";
 
 // Helper function to get network name from chain ID
 const getNetworkName = (chainId: number): string => {
@@ -120,6 +123,22 @@ const DeployerCreate = () => {
     createDefaultLaunchProjectData()
   );
 
+  // Initialize hours/minutes from formValues (only on mount)
+  useEffect(() => {
+    const mintTotalMinutes = Math.floor(formValues.mintPeriodDuration / 60);
+    setMintingHours(Math.floor(mintTotalMinutes / 60));
+    setMintingMinutes(mintTotalMinutes % 60);
+    
+    const refundTotalMinutes = Math.floor(formValues.refundPeriodDuration / 60);
+    setRefundHours(Math.floor(refundTotalMinutes / 60));
+    setRefundMinutes(refundTotalMinutes % 60);
+    
+    const graceTotalMinutes = Math.floor(formValues.attestationGracePeriod / 60);
+    setAttestationGraceHours(Math.floor(graceTotalMinutes / 60));
+    setAttestationGraceMinutes(graceTotalMinutes % 60);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [tier, setTier] = useState<DefifaTierParams>(() => ({
     ...createDefaultTierData(),
     reservedTokenBeneficiary: "",
@@ -130,12 +149,20 @@ const DeployerCreate = () => {
     useState<Partial<DefifaTierParams>>({});
 
   const [isUploading, setIsUploading] = useState(false);
-  const [step, setStep] = useState(1);
+  const [activeTab, setActiveTab] = useState("metadata");
   const [addNftOpen, setAddNftOpen] = useState(true);
   const [iPFSNeedsHashing, setIPFSNeedsHashing] = useState(false);
   const [imageUri, setImageUri] = useState<any>();
   const [inputKey, setInputKey] = useState(0);
   const [readyToDeploy, setReadyToDeploy] = useState(false);
+  const [persistentReservedRate, setPersistentReservedRate] = useState<number | undefined>(undefined);
+  const [persistentReservedBeneficiary, setPersistentReservedBeneficiary] = useState<string>("");
+  const [mintingHours, setMintingHours] = useState<number>(0);
+  const [mintingMinutes, setMintingMinutes] = useState<number>(0);
+  const [refundHours, setRefundHours] = useState<number>(0);
+  const [refundMinutes, setRefundMinutes] = useState<number>(0);
+  const [attestationGraceHours, setAttestationGraceHours] = useState<number>(0);
+  const [attestationGraceMinutes, setAttestationGraceMinutes] = useState<number>(0);
   const [selectedNetwork, setSelectedNetwork] = useState<number>(11155111); // Default to Sepolia
 
   const {
@@ -172,165 +199,61 @@ const DeployerCreate = () => {
   }, [chainData.chainId]);
 
   // Helper function to load Score Square test data
-  const loadScoreSquareTestData = (testAddress?: string) => {
+  const loadScoreSquareTestData = (testAddress?: string): DefifaLaunchProjectData => {
     const now = Math.floor(Date.now() / 1000);
     const mintDuration = 60 * 2; // 2 minutes minting
     const refundDuration = 0; // No refund
     const gameStartBuffer = 60 * 1; // 1 minute buffer = 3 min total from now
     const gameStartTime = now + mintDuration + refundDuration + gameStartBuffer;
-    const testData: DefifaLaunchProjectData = {
+    
+    // Generate 25 tiers for Score Square (H0-0A to H+4-+4A)
+    const scoreSquareTiers: DefifaTierParams[] = [];
+    for (let home = 0; home <= 4; home++) {
+      for (let away = 0; away <= 4; away++) {
+        const scorePart = home === 4 && away === 4 
+          ? "+4-+4" 
+          : home === 4 
+          ? `+4-${away}` 
+          : away === 4 
+          ? `${home}-+4` 
+          : `${home}-${away}`;
+        const tierName = `H${scorePart}A`;
+        
+        scoreSquareTiers.push({
+          ...createDefaultTierData(),
+          name: tierName,
+          price: "0.00001",
+        });
+      }
+    }
+
+    return {
       ...createDefaultLaunchProjectData(),
-      // Only override defaultAttestationDelegate if testAddress is explicitly provided
-      // Otherwise keep the default from createDefaultLaunchProjectData (BALLKIDZ_MULTISIG_ADDRESS)
-      ...(testAddress ? { defaultAttestationDelegate: testAddress as `0x${string}` } : {}),
-      name: "ss testing",
-      rules: "Half-time score shares 40%. Full-time score shares 60%.",
+      defaultAttestationDelegate: (testAddress as `0x${string}`) || BALLKIDZ_MULTISIG_ADDRESS,
+      name: "Score Square Game",
+      rules: "Predict the final score. Each outcome (0-0 to 4-4) is a separate tier. Winners split the pot based on their NFT holdings.",
+      gameType: "scoresquare",
       mintPeriodDuration: mintDuration,
       refundPeriodDuration: refundDuration,
-      start: gameStartTime, // Game starts in 3 min from now
-      attestationStartTime: gameStartTime, // Start attestation when scoring phase begins
-      attestationGracePeriod: 0, // No grace period - fast attestation is part of the game
-      gameType: "scoresquare", // Mark as Score Square game
-      tiers: [
-        {
-          ...createDefaultTierData(),
-          name: "0-0",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "0-1",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "0-2",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "0-3",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "0-4+",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "1-0",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "1-1",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "1-2",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "1-3",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "1-4+",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "2-0",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "2-1",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "2-2",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "2-3",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "2-4+",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "3-0",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "3-1",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "3-2",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "3-3",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "3-4+",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "+4-0",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "+4-1",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "+4-2",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "+4-3",
-          price: "0.00001",
-        },
-        {
-          ...createDefaultTierData(),
-          name: "+4-4+",
-          price: "0.00001",
-        },
-      ],
+      start: gameStartTime,
+      attestationStartTime: gameStartTime,
+      attestationGracePeriod: 0,
+      tiers: scoreSquareTiers,
     };
-    setFormValues(testData);
-    setTierGeneralValues({ price: "0.00001" });
-    setStep(2);
   };
 
   // Expose test data function to window for dev console testing
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      (window as any).fillTestData = loadScoreSquareTestData;
-      console.log("💡 Tip: Call fillTestData('0xYourAddress') to use your own attestation delegate");
+      (window as any).fillTestData = (testAddress?: string) => {
+        const testData = loadScoreSquareTestData(testAddress);
+        setFormValues(testData);
+        setTierGeneralValues({ price: "0.00001" });
+        setActiveTab("nfts");
+        console.log("✅ Test data loaded!", testData);
+        console.log("💡 Tip: Call fillTestData('0xYourAddress') to use your own attestation delegate");
+      };
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // TODO this is totally bugged, needs to be uploaded at deploy time
@@ -348,7 +271,8 @@ const DeployerCreate = () => {
     const contractUriCid = await uploadJsonToIpfs(contractUri);
     projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
     projectMetadataUri.description = formValuesIn.rules;
-    // Add gameType if specified (e.g., "scoresquare")
+    
+    // Add gameType if provided
     if (formValuesIn.gameType) {
       projectMetadataUri.gameType = formValuesIn.gameType;
     }
@@ -359,8 +283,6 @@ const DeployerCreate = () => {
       console.error("Failed to upload metadata to IPFS");
       return;
     }
-
-    console.log("IPFS upload complete!", { contractUriCid, projectMetadataCid });
 
     // Update formValues with IPFS URIs
     setFormValues((prevValues) => ({
@@ -402,10 +324,7 @@ const DeployerCreate = () => {
 
     let newValue: string | number;
 
-    if (name === "mintPeriodDuration" || name === "refundPeriodDuration") {
-      // Convert the input value (in hours) to seconds, rounding to avoid floating-point precision issues.
-      newValue = Math.round(parseFloat(value) * 60 * 60);
-    } else if (
+    if (
       datetimeLocalFields.includes(name as keyof DefifaLaunchProjectData)
     ) {
       newValue = datetimeLocalToUnix(value);
@@ -521,12 +440,30 @@ const DeployerCreate = () => {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (step === 1) {
-      setStep(2);
-    } else {
-      console.log("handleSubmit");
-      setIPFSNeedsHashing(true); 
+    console.log("handleSubmit");
+    
+    // Validate game configuration before submission
+    const now = Math.floor(Date.now() / 1000);
+    const minRequiredStart = now + formValues.refundPeriodDuration + formValues.mintPeriodDuration;
+    
+    if (formValues.mintPeriodDuration === 0) {
+      alert("Error: Minting duration cannot be zero. Please set a minting duration.");
+      return;
     }
+    
+    if (formValues.start < minRequiredStart) {
+      const requiredTime = new Date(minRequiredStart * 1000).toLocaleString();
+      const currentTime = new Date(formValues.start * 1000).toLocaleString();
+      alert(`Error: Game start time is too early. It must be at least ${minRequiredStart - now} seconds in the future (after minting and refund periods).\n\nRequired: ${requiredTime}\nCurrent: ${currentTime}`);
+      return;
+    }
+    
+    if (formValues.tiers.length === 0) {
+      alert("Error: Please add at least one tier before creating the game.");
+      return;
+    }
+    
+    setIPFSNeedsHashing(true); 
   };
 
   const handleTierGeneralValues = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -596,14 +533,9 @@ const DeployerCreate = () => {
             ? tier.price
             : (tierGeneralValues.price as string) || tier.price,
         reservedRate:
-          tier.reservedRate ??
-          (typeof tierGeneralValues.reservedRate === "number"
-            ? tierGeneralValues.reservedRate
-            : undefined),
+          tier.reservedRate ?? persistentReservedRate ?? 0,
         reservedTokenBeneficiary:
-          tier.reservedTokenBeneficiary ||
-          (tierGeneralValues.reservedTokenBeneficiary as string) ||
-          "",
+          tier.reservedTokenBeneficiary || persistentReservedBeneficiary || "",
       },
       tierGeneralValues
     );
@@ -614,21 +546,16 @@ const DeployerCreate = () => {
     }));
 
     const baseTier = createDefaultTierData();
-    const generalReservedRate =
-      typeof tierGeneralValues.reservedRate === "number"
-        ? tierGeneralValues.reservedRate
-        : 0;
-    const generalBeneficiary =
-      (tierGeneralValues.reservedTokenBeneficiary as string) || "";
+    // Preserve persistent values for next tier (don't clear them)
 
     setTier({
       ...baseTier,
       price:
         (tierGeneralValues.price as string) ??
         baseTier.price,
-      reservedRate: generalReservedRate,
-      reservedTokenBeneficiary: generalBeneficiary,
-      shouldUseReservedTokenBeneficiaryAsDefault: generalBeneficiary === "",
+      reservedRate: persistentReservedRate ?? 0,
+      reservedTokenBeneficiary: persistentReservedBeneficiary,
+      shouldUseReservedTokenBeneficiaryAsDefault: persistentReservedBeneficiary === "",
     });
 
     setImageUri("");
@@ -864,7 +791,7 @@ const DeployerCreate = () => {
             id="network"
             value={selectedNetwork}
             onChange={(e) => handleNetworkChange(Number(e.target.value))}
-            className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm rounded-md bg-neutral-800 text-white border-neutral-700"
+            className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm rounded-md bg-neutral-900 text-white border-neutral-700"
           >
             <option value={11155111}>Sepolia Testnet</option>
             <option value={421614}>Arbitrum Sepolia</option>
@@ -898,396 +825,738 @@ const DeployerCreate = () => {
         )}
       </div>
 
-      <h2 className="text-lg mb-3">
-        {step === 1 ? "Game details" : "Team NFTs"}
-      </h2>
       <form onSubmit={handleSubmit}>
-        {step === 1 && (
-          <>
-            <div className="mb-12">
-              <div className={styles.formGroup}>
-                <label className="text-sm leading-6 mb-1" htmlFor="name">
-                  Name
-                </label>
-                <Input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formValues.name}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className="text-sm leading-6 mb-1" htmlFor="rules">
-                  Rules
-                </label>
-                <Input
-                  type="text"
-                  id="rules"
-                  name="rules"
-                  value={formValues.rules}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Describe the rules of the game in plain English."
-                />
-              </div>
-              <div className={styles.formGroup}>
-                <label className="flex items-center gap-2 text-sm leading-6 mb-1 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formValues.gameType === "scoresquare"}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        // Load Score Square test data when checked
-                        loadScoreSquareTestData();
-                      } else {
-                        // Clear gameType and reset to default when unchecked
-                        setFormValues((prev) => ({
-                          ...prev,
-                          gameType: undefined,
-                        }));
-                      }
-                    }}
-                    className="rounded border-neutral-600 text-indigo-600 focus:ring-indigo-600"
-                  />
-                  <span>Score Square Game</span>
-                </label>
-                <p className="text-xs text-neutral-400 mt-1">
-                  Enable this for games that use the Score Square 5×5 grid interface. Checking this will auto-fill the 25 score tiers.
-                </p>
-              </div>
-            </div>
-
-            <h3 className="text-lg mb-3">Game schedule</h3>
-            <div className={styles.formGroup}>
-              <label className="text-sm leading-6 mb-1" htmlFor="start">
-                Game start time
-              </label>
-              <DatePicker
-                id="start"
-                name="start"
-                className="block w-full rounded-sm border-0 py-1.5 text-neutral-50 bg-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-800 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                selected={new Date(formValues.start * 1000)}
-                showTimeInput
-                dateFormat="MM/dd/yyyy h:mm aa"
-                onChange={(date) => {
-                  if (!date) return;
-                  setFormValues((prevFormValues) => ({
-                    ...prevFormValues,
-                    start: date.getTime() / 1000,
-                  }));
-                }}
-                required
-              />
-
-              <span className="text-xs text-neutral-400 mt-1">
-                Must be later than: now + minting duration + refund duration.
-              </span>
-            </div>
-            <div className={styles.formGroup}>
-              <label
-                className="text-sm leading-6 mb-1"
-                htmlFor="mintPeriodDuration"
-              >
-                Minting duration
-              </label>
-              <Input
-                type="number"
-                id="mintPeriodDuration"
-                name="mintPeriodDuration"
-                value={Math.round(formValues.mintPeriodDuration / 60 / 60 * 100) / 100} // convert seconds to hours for display, rounded to 2 decimal places
-                onChange={handleInputChange}
-                min={0} // set the minimum value allowed
-                step="0.01" // set the step size, e.g., 1 hour increments
-                required
-              />
-              <span className="text-xs text-neutral-400 mt-1">
-                Hours prior to the start of the game.
-              </span>
-            </div>
-            <div className={styles.formGroup}>
-              <label
-                className="text-sm leading-6 mb-1"
-                htmlFor="refundPeriodDuration"
-              >
-                Refund duration (optional)
-              </label>
-              <Input
-                type="number"
-                id="refundPeriodDuration"
-                name="refundPeriodDuration"
-                value={Math.round(formValues.refundPeriodDuration / 60 / 60 * 100) / 100} // convert seconds to hours for display, rounded to 2 decimal places
-                onChange={handleInputChange}
-                min={0} // set the minimum value allowed
-                step="0.01" // set the step size, e.g., 1 hour increments
-                required
-              />
-              <span className="text-xs text-neutral-400 mt-1">
-                Hours allowed for refunds. Takes place between minting and scoring.
-              </span>
-            </div>
-
-            {/* <div className={styles.formGroup}>
-              <label className="text-sm leading-6 mb-1" htmlFor="defaultTokenUriResolver">
-                Token URI
-              </label>
-              <input
-                type="text"
-                id="defaultTokenUriResolver"
-                name="defaultTokenUriResolver"
-                value={formValues.defaultTokenUriResolver}
-                onChange={handleInputChange}
-              />
-            </div> */}
-          </>
-        )}
-        {step === 2 && (
-          <>
-            <div className={styles.formGroup}>
-              <label className="text-sm leading-6 mb-1" htmlFor="price">
-                NFT price (ETH)
-              </label>
-              <Input
-                type="number"
-                id="price"
-                name="price"
-                value={tierGeneralValues?.price || ""}
-                onChange={handleTierGeneralValues}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label className="text-sm leading-6 mb-1" htmlFor="reservedRate">
-                Default reserved cadence (optional)
-              </label>
-              <Input
-                type="number"
-                id="reservedRate"
-                name="reservedRate"
-                value={tierGeneralValues?.reservedRate || ""}
-                onChange={handleTierGeneralValues}
-              />
-              <span className="text-xs mt-1 text-neutral-400">
-                Enter <code>X</code> to reserve 1 NFT for every <code>X</code> mints. Leave blank to skip defaults.
-              </span>
-            </div>
-            <div className={styles.formGroup}>
-              <label className="text-sm leading-6 mb-1" htmlFor="reservedRate">
-                Default reserved beneficiary (optional)
-              </label>
-              <Input
-                type="text"
-                id="reservedTokenBeneficiary"
-                name="reservedTokenBeneficiary"
-                value={tierGeneralValues?.reservedTokenBeneficiary || ""}
-                onChange={handleTierGeneralValues}
-              />
-              <span className="text-xs mt-1 text-neutral-400">
-                Any tier that opts into the default cadence will send reserved NFTs to this address.
-              </span>
-            </div>
-            <div className="rounded-md border border-neutral-700 bg-neutral-900/40 p-4 text-sm text-neutral-300">
-              <p className="font-medium text-pink-400">How defaults work</p>
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-neutral-400">
-                <li>Defaults are just templates. Each new tier starts with these values.</li>
-                <li>You can change the cadence or address for any tier when adding/editing it.</li>
-                <li>Leave defaults blank if you plan to configure only specific tiers manually.</li>
-              </ul>
-            </div>
-            <div className="border border-neutral-800">
-              <Content title="Add team tier" createIcon open={addNftOpen}>
-                <div className="p-5">
+        <Tabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          tabs={[
+            {
+              id: "metadata",
+              label: "Metadata",
+              content: (
+                <div className="space-y-6">
                   <div className={styles.formGroup}>
                     <label className="text-sm leading-6 mb-1" htmlFor="name">
                       Name
                     </label>
                     <Input
                       type="text"
-                      id="tierName"
-                      value={tier?.name}
+                      id="name"
                       name="name"
-                      onChange={handleTierChange}
+                      value={formValues.name}
+                      onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className={styles.formGroup}>
-                    <label className="text-sm leading-6 mb-1" htmlFor="encodedIPFSUri">
-                      Upload NFT Image
-                    </label>
-                    <input
-                      key={inputKey}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleTierChange}
-                      name="encodedIPFSUri"
-                      id="encodedIPFSUri"
-                      className="block w-full text-sm text-neutral-400
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-lg file:border-0
-                        file:text-sm file:font-medium
-                        file:bg-pink-700 file:text-white
-                        hover:file:bg-pink-600
-                        file:cursor-pointer"
-                    />
-                    {isUploading && (
-            <div className="text-sm text-neutral-400 mt-2">
-              Uploading to IPFS...
-            </div>
-                    )}
-                    {!isUploading && imageUri && (
-                      <div
-                        style={{ marginTop: "20px", display: "flex", gap: "30px", alignItems: "center" }}
-                      >
-                        <Image 
-                          src={imageUri} 
-                          width={200} 
-                          height={200}
-                          alt="Tier preview" 
-                          className="rounded-lg object-cover"
-                          unoptimized
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            void triggerImpact("light");
-                            setTier((prevState) => ({
-                              ...prevState,
-                              encodedIPFSUri:
-                                "0x0000000000000000000000000000000000000000000000000000000000000000",
-                            }));
-                            setImageUri("");
-                            setInputKey((prevKey: number) => prevKey + 1);
-                          }}
-                          className="text-pink-400 hover:text-pink-300"
-                        >
-                          ✕ Remove
-                        </button>
-                      </div>
-                    )}
-                    <span className="text-xs mt-1 text-neutral-400">
-                      Upload an image for this tier. If provided, this image will be used instead of the on-chain SVG generator.
-                    </span>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label className="text-sm leading-6 mb-1" htmlFor="tierReservedRate">
-                      Reserved cadence for this tier
-                    </label>
-                    <Input
-                      type="number"
-                      id="tierReservedRate"
-                      name="reservedRate"
-                      value={tier?.reservedRate ?? 0}
-                      min={0}
-                      onChange={handleTierChange}
-                    />
-                    <span className="text-xs mt-1 text-neutral-400">
-                      Set to <code>0</code> to disable reserved mints for this tier.
-                    </span>
-                  </div>
-                  <div className={styles.formGroup}>
-                    <label className="text-sm leading-6 mb-1" htmlFor="tierReservedBeneficiary">
-                      Reserved beneficiary for this tier
+                    <label className="text-sm leading-6 mb-1" htmlFor="rules">
+                      Rules
                     </label>
                     <Input
                       type="text"
-                      id="tierReservedBeneficiary"
-                      name="reservedTokenBeneficiary"
-                      value={
-                        tier?.shouldUseReservedTokenBeneficiaryAsDefault
-                          ? ""
-                          : tier?.reservedTokenBeneficiary || ""
-                      }
-                      onChange={handleTierChange}
-                      disabled={tier?.shouldUseReservedTokenBeneficiaryAsDefault}
-                      placeholder="0x..."
+                      id="rules"
+                      name="rules"
+                      value={formValues.rules}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Describe the rules of the game in plain English."
                     />
-                    <span className="text-xs mt-1 text-neutral-400">
-                      Leave blank (or check the box below) to inherit the default beneficiary.
+                  </div>
+                  <div className={styles.formGroup}>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="scoreSquareGame"
+                        checked={formValues.gameType === "scoresquare"}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            // Load Score Square test data
+                            const testData = loadScoreSquareTestData();
+                            setFormValues(testData);
+                            setTierGeneralValues({ price: "0.00001" });
+                            setActiveTab("nfts");
+                          } else {
+                            // Clear gameType and reset tiers to empty
+                            setFormValues((prev) => ({
+                              ...prev,
+                              gameType: undefined,
+                              tiers: [],
+                            }));
+                          }
+                        }}
+                        className="h-4 w-4"
+                      />
+                      <label
+                        htmlFor="scoreSquareGame"
+                        className="text-sm text-neutral-300 select-none"
+                      >
+                        Score Square Game
+                      </label>
+                    </div>
+                    <span className="text-xs text-neutral-400 mt-1">
+                      Check this to create a Score Square game with 25 outcome tiers (0-0 to 4-4).
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 mb-4">
-                    <input
-                      type="checkbox"
-                      id="tierUseDefaultBeneficiary"
-                      name="shouldUseReservedTokenBeneficiaryAsDefault"
-                      checked={tier?.shouldUseReservedTokenBeneficiaryAsDefault ?? false}
-                      onChange={handleTierChange}
-                      className="h-4 w-4"
-                    />
-                    <label
-                      htmlFor="tierUseDefaultBeneficiary"
-                      className="text-sm text-neutral-300 select-none"
-                    >
-                      Use default reserved beneficiary
+                </div>
+              ),
+            },
+            {
+              id: "nfts",
+              label: "NFTs",
+              content: (
+                <div className="space-y-6">
+                  <div className={styles.formGroup}>
+                    <label className="text-sm leading-6 mb-1" htmlFor="price">
+                      NFT price (ETH)
                     </label>
+                    <Input
+                      type="number"
+                      id="price"
+                      name="price"
+                      value={tierGeneralValues?.price || ""}
+                      onChange={handleTierGeneralValues}
+                    />
+                  </div>
+                  <div className="border border-neutral-800">
+                    <Content title="Add team tier" createIcon open={addNftOpen}>
+                      <div className="p-5">
+                        <div className={styles.formGroup}>
+                          <label className="text-sm leading-6 mb-1" htmlFor="name">
+                            Name
+                          </label>
+                          <Input
+                            type="text"
+                            id="tierName"
+                            value={tier?.name}
+                            name="name"
+                            onChange={handleTierChange}
+                          />
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label className="text-sm leading-6 mb-1" htmlFor="encodedIPFSUri">
+                            Upload NFT Image
+                          </label>
+                          <input
+                            key={inputKey}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleTierChange}
+                            name="encodedIPFSUri"
+                            id="encodedIPFSUri"
+                            className="block w-full text-sm text-neutral-400
+                              file:mr-4 file:py-2 file:px-4
+                              file:rounded-lg file:border-0
+                              file:text-sm file:font-medium
+                              file:bg-pink-700 file:text-white
+                              hover:file:bg-pink-600
+                              file:cursor-pointer"
+                          />
+                          {isUploading && (
+                            <div className="text-sm text-neutral-400 mt-2">
+                              Uploading to IPFS...
+                            </div>
+                          )}
+                          {!isUploading && imageUri && (
+                            <div
+                              style={{ marginTop: "20px", display: "flex", gap: "30px", alignItems: "center" }}
+                            >
+                              <Image 
+                                src={imageUri} 
+                                width={200} 
+                                height={200}
+                                alt="Tier preview" 
+                                className="rounded-lg object-cover"
+                                unoptimized
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  void triggerImpact("light");
+                                  setTier((prevState) => ({
+                                    ...prevState,
+                                    encodedIPFSUri:
+                                      "0x0000000000000000000000000000000000000000000000000000000000000000",
+                                  }));
+                                  setImageUri("");
+                                  setInputKey((prevKey: number) => prevKey + 1);
+                                }}
+                                className="text-pink-400 hover:text-pink-300"
+                              >
+                                ✕ Remove
+                              </button>
+                            </div>
+                          )}
+                          <span className="text-xs mt-1 text-neutral-400">
+                            Upload an image for this tier. If provided, this image will be used instead of the on-chain SVG generator.
+                          </span>
+                        </div>
+
+                        <div className={styles.formGroup}>
+                          <label className="text-sm leading-6 mb-1" htmlFor="tierReservedRate">
+                            Reserved cadence for this tier
+                          </label>
+                          <Input
+                            type="number"
+                            id="tierReservedRate"
+                            name="reservedRate"
+                            value={persistentReservedRate ?? 0}
+                            min={0}
+                            onChange={(e) => {
+                              const value = e.target.value === "" ? 0 : Number(e.target.value);
+                              setPersistentReservedRate(value);
+                              // Update current tier only
+                              setTier((prev) => ({
+                                ...prev,
+                                reservedRate: value,
+                              }));
+                            }}
+                          />
+                          <span className="text-xs mt-1 text-neutral-400">
+                            Set to <code>0</code> to disable reserved mints for this tier. This value will be used for future tiers.
+                          </span>
+                        </div>
+                        <div className={styles.formGroup}>
+                          <label className="text-sm leading-6 mb-1" htmlFor="tierReservedBeneficiary">
+                            Reserved beneficiary for this tier
+                          </label>
+                          <Input
+                            type="text"
+                            id="tierReservedBeneficiary"
+                            name="reservedTokenBeneficiary"
+                            value={persistentReservedBeneficiary}
+                            onChange={(e) => {
+                              const trimmed = e.target.value.trim();
+                              setPersistentReservedBeneficiary(trimmed);
+                              // Update current tier only
+                              setTier((prev) => ({
+                                ...prev,
+                                reservedTokenBeneficiary: trimmed,
+                                shouldUseReservedTokenBeneficiaryAsDefault: trimmed === "",
+                              }));
+                            }}
+                            placeholder="0x..."
+                          />
+                          <span className="text-xs mt-1 text-neutral-400">
+                            This address will be used for future tiers. Leave blank to use the default beneficiary.
+                          </span>
+                        </div>
+
+                        <div style={{ marginTop: "20px" }}>
+                          <Button type="button" onClick={onAddNFT} disabled={isUploading}>
+                            Save tier
+                          </Button>
+                        </div>
+                      </div>
+                    </Content>
                   </div>
 
-                  <div style={{ marginTop: "20px" }}>
-                    <Button type="button" onClick={onAddNFT} disabled={isUploading}>
-                      Save tier
+                  {formValues.tiers.length > 0 && (
+                    <div className={styles.tiersListContainer}>
+                      <p>Your team tiers</p>
+                      {formValues.tiers.map((tier, index) => (
+                        <div key={index} className={styles.tier}>
+                          <div className={styles.tierDetails}>
+                            <p>Name: {tier.name}</p>
+                            <p>
+                              Price: <EthSymbol />
+                              {tier.price}
+                            </p>
+                            {tier.reservedRate > 0 ? (
+                              <p>
+                                For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
+                                {tier.shouldUseReservedTokenBeneficiaryAsDefault
+                                  ? "the default reserved beneficiary"
+                                  : truncateAddress(
+                                      tier.reservedTokenBeneficiary ?? constants.AddressZero,
+                                      3,
+                                      3
+                                    )}
+                                .
+                              </p>
+                            ) : (
+                              <p>No reserved NFTs configured for this tier.</p>
+                            )}
+                          </div>
+
+                          <div className={styles.tierIcons}>
+                            <span role="button" onClick={() => editTier(tier, index)}>
+                              <PencilSquareIcon className="h-5 w-5" />
+                            </span>
+                            <span role="button" onClick={() => onRemoveTier(index)}>
+                              <TrashIcon className="h-5 w-5" />
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ),
+            },
+            {
+              id: "timing",
+              label: "Timing",
+              content: (
+                <div className="space-y-6">
+                  <div className="mb-6">
+                    <Button 
+                      type="submit" 
+                      disabled={formValues.tiers.length === 0}
+                      className="w-full"
+                    >
+                      Create game
                     </Button>
+                    {formValues.tiers.length === 0 && (
+                      <p className="text-xs text-neutral-400 mt-2 text-center">
+                        Add at least one tier in the NFTs tab to create a game
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label className="text-sm leading-6 mb-1" htmlFor="start">
+                      Game start time
+                    </label>
+                    <DatePicker
+                      id="start"
+                      name="start"
+                      className="block w-full rounded-sm border-0 py-1.5 text-neutral-50 bg-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-800 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      selected={new Date(formValues.start * 1000)}
+                      showTimeInput
+                      dateFormat="MM/dd/yyyy h:mm aa"
+                      minDate={new Date()}
+                      onChange={(date) => {
+                        if (!date) return;
+                        const newStart = date.getTime() / 1000;
+                        const now = Math.floor(Date.now() / 1000);
+                        const timeUntilStart = newStart - now;
+                        
+                        setFormValues((prevFormValues) => {
+                          // Set minting duration to maximum available (time until start minus refund duration)
+                          const availableForMinting = Math.max(0, timeUntilStart - prevFormValues.refundPeriodDuration);
+                          const newMintingDuration = availableForMinting;
+                          
+                          // Update minting hours/minutes to match new duration
+                          const mintTotalMinutes = Math.floor(newMintingDuration / 60);
+                          const mintHrs = Math.floor(mintTotalMinutes / 60);
+                          const mintMins = mintTotalMinutes % 60;
+                          
+                          setMintingHours(mintHrs);
+                          setMintingMinutes(mintMins);
+                          
+                          // If attestation start time equals old start time, update it too
+                          const shouldUpdateAttestation = prevFormValues.attestationStartTime === prevFormValues.start;
+                          
+                          return {
+                            ...prevFormValues,
+                            start: newStart,
+                            mintPeriodDuration: newMintingDuration,
+                            attestationStartTime: shouldUpdateAttestation ? newStart : prevFormValues.attestationStartTime,
+                          };
+                        });
+                      }}
+                      required
+                    />
+                    <span className="text-xs text-neutral-400 mt-1">
+                      When the game (scoring phase) begins.
+                    </span>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label
+                      className="text-sm leading-6 mb-2"
+                      htmlFor="refundPeriodDuration"
+                    >
+                      Refund duration (optional)
+                    </label>
+                    <p className="text-xs text-neutral-400 mb-3">
+                      How long players can get refunds after minting ends (before game starts).
+                    </p>
+                    <div className="flex gap-4 items-center">
+                      <div className="flex-1">
+                        <label className="text-xs text-neutral-400 mb-1 block">Hours</label>
+                        <Input
+                          type="number"
+                          id="refundHours"
+                          value={refundHours === 0 ? "" : refundHours}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const hours = value === "" ? 0 : parseInt(value) || 0;
+                            setRefundHours(hours);
+                            const totalSeconds = (hours * 60 + refundMinutes) * 60;
+                            
+                            // Validate against game start time
+                            const now = Math.floor(Date.now() / 1000);
+                            const timeUntilStart = formValues.start - now;
+                            const maxRefundSeconds = timeUntilStart;
+                            const validRefundSeconds = Math.max(0, Math.min(totalSeconds, maxRefundSeconds));
+                            
+                            setFormValues((prev) => ({
+                              ...prev,
+                              refundPeriodDuration: validRefundSeconds,
+                            }));
+                            
+                            // Adjust minting duration if needed
+                            const availableForMinting = timeUntilStart - validRefundSeconds;
+                            const currentMintingSeconds = mintingHours * 3600 + mintingMinutes * 60;
+                            const validMintingSeconds = Math.max(0, Math.min(currentMintingSeconds, availableForMinting));
+                            
+                            const mintTotalMinutes = Math.floor(validMintingSeconds / 60);
+                            setMintingHours(Math.floor(mintTotalMinutes / 60));
+                            setMintingMinutes(mintTotalMinutes % 60);
+                            
+                            setFormValues((prev) => ({
+                              ...prev,
+                              mintPeriodDuration: validMintingSeconds,
+                            }));
+                          }}
+                          onBlur={(e) => {
+                            if (e.target.value === "") {
+                              setRefundHours(0);
+                            }
+                          }}
+                          min={0}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="text-xs text-neutral-400 mb-1 block">Minutes</label>
+                        <Input
+                          type="number"
+                          id="refundMinutes"
+                          value={refundMinutes === 0 ? "" : refundMinutes}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const minutes = value === "" ? 0 : parseInt(value) || 0;
+                            setRefundMinutes(minutes);
+                            const totalSeconds = (refundHours * 60 + minutes) * 60;
+                            
+                            // Validate against game start time
+                            const now = Math.floor(Date.now() / 1000);
+                            const timeUntilStart = formValues.start - now;
+                            const maxRefundSeconds = timeUntilStart;
+                            const validRefundSeconds = Math.max(0, Math.min(totalSeconds, maxRefundSeconds));
+                            
+                            setFormValues((prev) => ({
+                              ...prev,
+                              refundPeriodDuration: validRefundSeconds,
+                            }));
+                            
+                            // Adjust minting duration if needed
+                            const availableForMinting = timeUntilStart - validRefundSeconds;
+                            const currentMintingSeconds = mintingHours * 3600 + mintingMinutes * 60;
+                            const validMintingSeconds = Math.max(0, Math.min(currentMintingSeconds, availableForMinting));
+                            
+                            const mintTotalMinutes = Math.floor(validMintingSeconds / 60);
+                            setMintingHours(Math.floor(mintTotalMinutes / 60));
+                            setMintingMinutes(mintTotalMinutes % 60);
+                            
+                            setFormValues((prev) => ({
+                              ...prev,
+                              mintPeriodDuration: validMintingSeconds,
+                            }));
+                          }}
+                          onBlur={(e) => {
+                            if (e.target.value === "") {
+                              setRefundMinutes(0);
+                            }
+                          }}
+                          min={0}
+                          max={59}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-xs text-neutral-400 mt-2 block">
+                      Refunds allowed for {refundHours}h {refundMinutes}m after minting ends
+                    </span>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <label
+                        className="text-sm leading-6"
+                        htmlFor="mintPeriodDuration"
+                      >
+                        Minting duration
+                      </label>
+                      <Tooltip
+                        title={
+                          <div className="text-xs text-neutral-300 space-y-2 py-1">
+                            <div>
+                              <p className="text-neutral-300 font-medium mb-1">1. Minting Phase</p>
+                              <p className="ml-2 text-neutral-400">Players can buy NFTs</p>
+                              {formValues.start > 0 && (
+                                <p className="ml-2 text-pink-400 mt-1">
+                                  Starts: {new Date((formValues.start - formValues.mintPeriodDuration - formValues.refundPeriodDuration) * 1000).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-neutral-300 font-medium mb-1">2. Refund Phase {formValues.refundPeriodDuration === 0 && "(skipped)"}</p>
+                              <p className="ml-2 text-neutral-400">Players can get refunds</p>
+                              {formValues.start > 0 && formValues.refundPeriodDuration > 0 && (
+                                <p className="ml-2 text-pink-400 mt-1">
+                                  Starts: {new Date((formValues.start - formValues.refundPeriodDuration) * 1000).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-neutral-300 font-medium mb-1">3. Game Start</p>
+                              <p className="ml-2 text-neutral-400">Scoring begins</p>
+                              {formValues.start > 0 && (
+                                <p className="ml-2 text-pink-400 mt-1">
+                                  {new Date(formValues.start * 1000).toLocaleString()}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        }
+                      >
+                        <svg
+                          className="h-4 w-4 text-neutral-400 hover:text-neutral-300 cursor-help"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </Tooltip>
+                    </div>
+                    <p className="text-xs text-neutral-400 mb-3">
+                      How long players can buy NFTs before the game starts.
+                    </p>
+                    <div className="flex gap-4 items-center">
+                      <div className="flex-1">
+                        <label className="text-xs text-neutral-400 mb-1 block">Hours</label>
+                        <Input
+                          type="number"
+                          id="mintingHours"
+                          value={mintingHours === 0 ? "" : mintingHours}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Allow user to type freely - don't validate yet
+                            if (value === "") {
+                              setMintingHours(0);
+                            } else {
+                              const hours = parseInt(value);
+                              if (!isNaN(hours) && hours >= 0) {
+                                setMintingHours(hours);
+                              }
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const value = e.target.value;
+                            const hours = value === "" ? 0 : (isNaN(parseInt(value)) ? 0 : parseInt(value));
+                            const finalHours = Math.max(0, hours);
+                            setMintingHours(finalHours);
+                            
+                            // Validate and update formValues on blur
+                            const totalSeconds = (finalHours * 60 + mintingMinutes) * 60;
+                            const now = Math.floor(Date.now() / 1000);
+                            const timeUntilStart = formValues.start - now;
+                            const availableForMinting = Math.max(0, timeUntilStart - formValues.refundPeriodDuration);
+                            const validSeconds = Math.max(0, Math.min(totalSeconds, availableForMinting));
+                            
+                            // Update minutes if needed to stay within bounds
+                            const validTotalMinutes = Math.floor(validSeconds / 60);
+                            const validHours = Math.floor(validTotalMinutes / 60);
+                            const validMinutes = validTotalMinutes % 60;
+                            
+                            setMintingHours(validHours);
+                            setMintingMinutes(validMinutes);
+                            
+                            // Always set mintPeriodDuration, even if 0
+                            setFormValues((prev) => ({
+                              ...prev,
+                              mintPeriodDuration: validSeconds,
+                            }));
+                          }}
+                          min={0}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="text-xs text-neutral-400 mb-1 block">Minutes</label>
+                        <Input
+                          type="number"
+                          id="mintingMinutes"
+                          value={mintingMinutes === 0 ? "" : mintingMinutes}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Allow user to type freely - don't validate yet
+                            if (value === "") {
+                              setMintingMinutes(0);
+                            } else {
+                              const minutes = parseInt(value);
+                              if (!isNaN(minutes) && minutes >= 0 && minutes <= 59) {
+                                setMintingMinutes(minutes);
+                              }
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const value = e.target.value;
+                            const minutes = value === "" ? 0 : (isNaN(parseInt(value)) ? 0 : parseInt(value));
+                            const finalMinutes = Math.min(59, Math.max(0, minutes));
+                            setMintingMinutes(finalMinutes);
+                            
+                            // Validate and update formValues on blur
+                            const totalSeconds = (mintingHours * 60 + finalMinutes) * 60;
+                            const now = Math.floor(Date.now() / 1000);
+                            const timeUntilStart = formValues.start - now;
+                            const availableForMinting = Math.max(0, timeUntilStart - formValues.refundPeriodDuration);
+                            const validSeconds = Math.max(0, Math.min(totalSeconds, availableForMinting));
+                            
+                            // Update hours/minutes to match valid seconds
+                            const validTotalMinutes = Math.floor(validSeconds / 60);
+                            const validHours = Math.floor(validTotalMinutes / 60);
+                            const validMinutes = validTotalMinutes % 60;
+                            
+                            setMintingHours(validHours);
+                            setMintingMinutes(validMinutes);
+                            
+                            // Always set mintPeriodDuration, even if 0
+                            setFormValues((prev) => ({
+                              ...prev,
+                              mintPeriodDuration: validSeconds,
+                            }));
+                          }}
+                          min={0}
+                          max={59}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-xs text-neutral-400 mt-2 block">
+                      Minting ends {mintingHours}h {mintingMinutes}m before game start
+                      {(() => {
+                        const now = Math.floor(Date.now() / 1000);
+                        const timeUntilStart = formValues.start - now;
+                        const availableForMinting = timeUntilStart - formValues.refundPeriodDuration;
+                        const maxMintingMinutes = Math.floor(availableForMinting / 60);
+                        const maxHours = Math.floor(maxMintingMinutes / 60);
+                        const maxMinutes = maxMintingMinutes % 60;
+                        if (formValues.start > now && (mintingHours * 60 + mintingMinutes) < maxMintingMinutes) {
+                          return ` (max: ${maxHours}h ${maxMinutes}m)`;
+                        }
+                        return "";
+                      })()}
+                    </span>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label className="text-sm leading-6 mb-1" htmlFor="attestationStartTime">
+                      Attestation Start Time
+                    </label>
+                    <DatePicker
+                      id="attestationStartTime"
+                      name="attestationStartTime"
+                      className="block w-full rounded-sm border-0 py-1.5 text-neutral-50 bg-neutral-900 shadow-sm ring-1 ring-inset ring-neutral-800 placeholder:text-neutral-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      selected={new Date(formValues.attestationStartTime * 1000)}
+                      showTimeInput
+                      dateFormat="MM/dd/yyyy h:mm aa"
+                      minDate={new Date()}
+                      onChange={(date) => {
+                        if (!date) return;
+                        setFormValues((prevFormValues) => ({
+                          ...prevFormValues,
+                          attestationStartTime: date.getTime() / 1000,
+                        }));
+                      }}
+                      required
+                    />
+                    <span className="text-xs text-neutral-400 mt-1">
+                      When voting can begin for submitted scorecards. Defaults to game start time.
+                    </span>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label
+                      className="text-sm leading-6 mb-2"
+                      htmlFor="attestationGracePeriod"
+                    >
+                      Attestation Grace Period
+                    </label>
+                    <p className="text-xs text-neutral-400 mb-3">
+                      How long player voiting must remain active before a scorecard can be locked in, even if quorum is reached.
+                    </p>
+                    <div className="flex gap-4 items-center">
+                      <div className="flex-1">
+                        <label className="text-xs text-neutral-400 mb-1 block">Hours</label>
+                        <Input
+                          type="number"
+                          id="attestationGraceHours"
+                          value={attestationGraceHours === 0 ? "" : attestationGraceHours}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === "") {
+                              setAttestationGraceHours(0);
+                            } else {
+                              const hours = parseInt(value);
+                              if (!isNaN(hours) && hours >= 0) {
+                                setAttestationGraceHours(hours);
+                              }
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const value = e.target.value;
+                            const hours = value === "" ? 0 : (isNaN(parseInt(value)) ? 0 : parseInt(value));
+                            const finalHours = Math.max(0, hours);
+                            setAttestationGraceHours(finalHours);
+                            
+                            const totalSeconds = (finalHours * 60 + attestationGraceMinutes) * 60;
+                            setFormValues((prev) => ({
+                              ...prev,
+                              attestationGracePeriod: totalSeconds,
+                            }));
+                          }}
+                          min={0}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <label className="text-xs text-neutral-400 mb-1 block">Minutes</label>
+                        <Input
+                          type="number"
+                          id="attestationGraceMinutes"
+                          value={attestationGraceMinutes === 0 ? "" : attestationGraceMinutes}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === "") {
+                              setAttestationGraceMinutes(0);
+                            } else {
+                              const minutes = parseInt(value);
+                              if (!isNaN(minutes) && minutes >= 0 && minutes <= 59) {
+                                setAttestationGraceMinutes(minutes);
+                              }
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const value = e.target.value;
+                            const minutes = value === "" ? 0 : (isNaN(parseInt(value)) ? 0 : parseInt(value));
+                            const finalMinutes = Math.min(59, Math.max(0, minutes));
+                            setAttestationGraceMinutes(finalMinutes);
+                            
+                            const totalSeconds = (attestationGraceHours * 60 + finalMinutes) * 60;
+                            setFormValues((prev) => ({
+                              ...prev,
+                              attestationGracePeriod: totalSeconds,
+                            }));
+                          }}
+                          min={0}
+                          max={59}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-xs text-neutral-400 mt-2 block">
+                      Grace period: {attestationGraceHours}h {attestationGraceMinutes}m
+                    </span>
                   </div>
                 </div>
-              </Content>
-            </div>
-
-            {formValues.tiers.length > 0 && (
-              <div className={styles.tiersListContainer}>
-                <p>Your team tiers</p>
-                {formValues.tiers.map((tier, index) => (
-                  <div key={index} className={styles.tier}>
-                    <div className={styles.tierDetails}>
-                      <p>Name: {tier.name}</p>
-                      <p>
-                        Price: <EthSymbol />
-                        {tier.price}
-                      </p>
-                      {tier.reservedRate > 0 ? (
-                        <p>
-                          For every {tier.reservedRate} NFTs minted, 1 goes to{" "}
-                          {tier.shouldUseReservedTokenBeneficiaryAsDefault
-                            ? "the default reserved beneficiary"
-                            : truncateAddress(
-                                tier.reservedTokenBeneficiary ?? constants.AddressZero,
-                                3,
-                                3
-                              )}
-                          .
-                        </p>
-                      ) : (
-                        <p>No reserved NFTs configured for this tier.</p>
-                      )}
-                    </div>
-
-                    <div className={styles.tierIcons}>
-                      <span role="button" onClick={() => editTier(tier, index)}>
-                        <PencilSquareIcon className="h-5 w-5" />
-                      </span>
-                      <span role="button" onClick={() => onRemoveTier(index)}>
-                        <TrashIcon className="h-5 w-5" />
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-
-        <div className={styles.buttonContainer}>
-          <Button type="submit">
-            {step === 1 ? "Next: NFTs" : "Create game"}
-          </Button>
-          {step === 2 && (
-            <span
-              role="button"
-              onClick={() => setStep(1)}
-              style={{ cursor: "pointer" }}
-            >
-              Back
-            </span>
-          )}
-        </div>
+              ),
+            },
+          ]}
+        />
       </form>
     </div>
   );

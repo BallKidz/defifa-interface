@@ -43,6 +43,7 @@ export function usePay({
     chainData,
   } = useChainData();
   const queryClient = useQueryClient();
+  const successHandledRef = useRef<string | null>(null);
   
   // Validate chain for game transactions
   const chainValidation = useGameChainValidation(chainData.chainId);
@@ -71,26 +72,24 @@ export function usePay({
 
   const { isLoading, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  // Track if success has been handled to prevent duplicate calls
-  const successHandledRef = useRef<string | null>(null);
-
   // Handle success with useEffect
   useEffect(() => {
     if (isSuccess && hash && successHandledRef.current !== hash) {
-      // Mark this hash as handled
+      // Mark this transaction as handled
       successHandledRef.current = hash;
       
       // Invalidate user's NFT holdings cache to show minted NFTs immediately
+      // Note: useMyMints now derives from useGameMints, so invalidating game-mints is sufficient
       queryClient.invalidateQueries({ queryKey: ["picks", address, gameId] });
-      // Also invalidate game mint counts for immediate UI update
-      queryClient.invalidateQueries({ queryKey: ["game-mints", gameId] });
+      // Invalidate game mint counts for immediate UI update (includes chainId in key)
+      queryClient.invalidateQueries({ queryKey: ["game-mints", chainData.chainId, gameId] });
       // Invalidate tier data cache to update mintedCount after mint
       queryClient.invalidateQueries({ queryKey: ["nft-rewards"] });
       
       toastSuccess("Mint complete");
       onSuccess?.();
     }
-  }, [isSuccess, hash, onSuccess, queryClient, address, gameId]);
+  }, [isSuccess, hash, queryClient, address, gameId, onSuccess]);
 
   const write = async () => {
     

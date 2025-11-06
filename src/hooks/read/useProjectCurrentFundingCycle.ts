@@ -76,14 +76,6 @@ export function useProjectCurrentFundingCycle(projectId: number, chainIdOverride
     },
   });
 
-  console.log(`useProjectCurrentFundingCycle(${projectId}):`, {
-    subgraph: chainData.subgraph,
-    nftAddress,
-    chainId: targetChainId,
-    rulesetData,
-    error,
-  });
-
   // Parse the ruleset data from the contract
   // v5 currentOf returns: (JBRuleset ruleset, JBRulesetMetadata metadata)
   const ruleset = rulesetData as any;

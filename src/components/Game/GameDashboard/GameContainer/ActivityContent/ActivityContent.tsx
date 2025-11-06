@@ -178,9 +178,7 @@ function ActivityRow({ transferEvent }: { transferEvent: GroupedTransferEvent })
 
   return (
     <div
-      className={`border-b border-solid border-neutral-900 overflow-hidden text-s py-3 ${
-        isInMiniApp ? "min-w-[640px] flex-shrink-0" : ""
-      }`}
+      className="border-b border-solid border-neutral-900 overflow-hidden text-s py-3 min-w-[640px] flex-shrink-0"
       onClickCapture={handleRowClick}
     >
       <div className="flex items-center gap-4">
@@ -248,19 +246,8 @@ export function ActivityContent() {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-      {isInMiniApp ? (
-        <div className="overflow-x-auto pb-2">
-          <div className="space-y-1 min-w-[640px]">
-            {transfers.map((transferEvent) => (
-              <ActivityRow
-                key={transferEvent.transactionHash}
-                transferEvent={transferEvent}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-1">
+      <div className="overflow-x-auto pb-2">
+        <div className="space-y-1 min-w-[640px]">
           {transfers.map((transferEvent) => (
             <ActivityRow
               key={transferEvent.transactionHash}
@@ -268,7 +255,7 @@ export function ActivityContent() {
             />
           ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }

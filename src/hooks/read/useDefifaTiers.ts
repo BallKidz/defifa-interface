@@ -10,6 +10,7 @@ import axios from "axios";
 import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 import { parseTierMetadata } from "utils/tierMetadata";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
+import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
@@ -27,7 +28,8 @@ export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
 export function useDefifaTiers(
   delegateAddress: string | undefined,
   chainIdOverride?: number,
-  gameId?: number
+  gameId?: number,
+  currentPhase?: DefifaGamePhase
 ) {
   const { chainData: connectedChainData } = useChainData();
   
@@ -103,7 +105,9 @@ export function useDefifaTiers(
   const tierNames = jbTiers?.map(t => (t as any).name || '').join(',') || '';
 
   // Fetch outstanding mints from subgraph to calculate accurate minted counts
-  const { data: gameMints, isLoading: gameMintsLoading } = useGameMints(gameId || 0);
+  const { data: gameMints, isLoading: gameMintsLoading } = useGameMints(gameId || 0, chainIdOverride, {
+    currentPhase,
+  });
 
   // Calculate outstanding mints per tier
   const outstandingMintsPerTier = gameMints?.reduce((acc: { [tierId: number]: number }, token) => {
@@ -133,6 +137,10 @@ export function useDefifaTiers(
   });
 
   // Transform to DefifaTier[] using useQuery for async metadata parsing
+  const shouldPoll = currentPhase !== undefined
+    ? currentPhase === DefifaGamePhase.MINT
+    : true;
+
   const { data: defifaTiers, isLoading: metadataLoading } = useQuery({
     queryKey: ["defifa-tiers", delegateAddress, tierIds, tierNames, gameMints?.length || 0, targetChainId],
     queryFn: async () => {
@@ -278,9 +286,10 @@ export function useDefifaTiers(
       ) as DefifaTier[];
     },
     enabled: Boolean(jbTiers?.length && tokenUris && !tokenUrisLoading && !gameMintsLoading),
-    refetchInterval: 10 * 1000,
-    refetchIntervalInBackground: true,
-    staleTime: 0,
+    refetchInterval: shouldPoll ? 10 * 1000 : false,
+    refetchIntervalInBackground: shouldPoll ? true : undefined,
+    refetchOnWindowFocus: shouldPoll,
+    staleTime: shouldPoll ? 0 : 5 * 60 * 1000,
   });
 
   const isLoading = tiersLoading || tierNameLoading || tokenUrisLoading || gameMintsLoading || metadataLoading;

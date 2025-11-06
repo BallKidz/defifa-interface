@@ -14,7 +14,7 @@ import { useRatifyScorecard } from "hooks/write/useRatifyScorecard";
 import { useTierAttestationUnits } from "hooks/read/useTierAttestationUnits";
 import { useGameNFTAddress } from "hooks/read/useGameNFTAddress";
 import { BigNumber } from "ethers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DefifaScorecardState } from "types/defifa";
 import { redemptionWeightToPercentage } from "utils/defifa";
 import { formatNumber } from "utils/format/formatNumber";
@@ -37,14 +37,16 @@ const stateText = (state: DefifaScorecardState) => {
   }
 };
 
-function ScorecardRow({
+export function ScorecardRow({
   scorecard,
   gameQuroum,
   onClick,
+  showActions = true,
 }: {
   scorecard: Scorecard;
   gameQuroum: bigint;
   onClick?: () => void;
+  showActions?: boolean;
 }) {
   const { governor, nfts, gameId } = useGameContext();
   const { data: proposalVotes } = useProposalVotes(
@@ -56,16 +58,40 @@ function ScorecardRow({
     proposalVotes
   );
 
-  const mappedTierWeights = scorecard.tierWeights.map((weight) => ({
-    id: weight.tierId, // Use tierId, not the composite id
-    redemptionWeight: weight.redemptionWeight,
-  }));
+  const teamNames = useMemo(() => {
+    const map = new Map<number, string>();
+    (nfts?.tiers ?? []).forEach((tier) => {
+      map.set(Number(tier.id), tier.teamName ?? `Tier ${tier.id}`);
+    });
+    return map;
+  }, [nfts?.tiers]);
 
+  const tierWeightRows = useMemo(
+    () =>
+      scorecard.tierWeights.map((weight) => {
+        const tierId = Number(weight.tierId);
+        return {
+          id: (weight.id ?? tierId).toString(),
+          tierId,
+          redemptionWeight: weight.redemptionWeight.toString(),
+        };
+      }),
+    [scorecard.tierWeights]
+  );
+
+  const ratifyTierWeights = useMemo(
+    () =>
+      scorecard.tierWeights.map((weight) => ({
+        id: Number(weight.tierId),
+        redemptionWeight: weight.redemptionWeight,
+      })),
+    [scorecard.tierWeights]
+  );
 
   const { write, isLoading } = useRatifyScorecard(
     gameId,
     scorecard.scorecardId || BigInt(0),
-    mappedTierWeights,
+    ratifyTierWeights,
     governor
   );
   const { data: proposalState } = useScorecardState(
@@ -101,27 +127,7 @@ function ScorecardRow({
           </span>
         </span>
 
-        <div className="text-sm mb-5">
-          <div className="flex justify-between font-medium border-b border-neutral-700 py-1">
-            <span>Tier</span>
-            <span>Score</span>
-          </div>
-          {scorecard.tierWeights.map((weight) => (
-            <div
-              key={weight.id.toString()}
-              className="flex justify-between w-full border-b border-neutral-800 p-1"
-            >
-              <span>{nfts?.tiers?.[weight.tierId - 1]?.teamName}</span>{" "}
-              {/* tiers 0 indexed */}
-              <span>
-                {redemptionWeightToPercentage(
-                  weight.redemptionWeight
-                ).toString()}
-                %
-              </span>
-            </div>
-          ))}
-        </div>
+        <TierScorecardTable tierWeights={tierWeightRows} teamNames={teamNames} />
 
         <div className="flex justify-between mb-1 text-sm">
           <span className="text-neutral-300">Total Votes</span>
@@ -133,27 +139,29 @@ function ScorecardRow({
         </div>
       </div>
 
-      <div className="flex border-t border-neutral-700">
-        <Button
-          disabled={proposalState !== DefifaScorecardState.SUCCEEDED}
-          onClick={() => {
-            if (write) {
-              write();
-            }
-          }}
-          className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-neutral-800 rounded-none"
-          category="secondary"
-        >
-          Lock in
-        </Button>
-        <Button
-          className="flex-1 p-2 rounded-none border-none"
-          onClick={onClick}
-          category="secondary"
-        >
-          Select
-        </Button>
-      </div>
+      {showActions !== false && (
+        <div className="flex border-t border-neutral-700">
+          <Button
+            disabled={proposalState !== DefifaScorecardState.SUCCEEDED}
+            onClick={() => {
+              if (write) {
+                write();
+              }
+            }}
+            className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-neutral-800 rounded-none"
+            category="secondary"
+          >
+            Lock in
+          </Button>
+          <Button
+            className="flex-1 p-2 rounded-none border-none"
+            onClick={onClick}
+            category="secondary"
+          >
+            Select
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -304,11 +312,44 @@ export function ScorecardsContent() {
                 scorecard={scorecard}
                 onClick={() => setSelectedScorecard(scorecard)}
                 gameQuroum={quorum ? BigInt(quorum.toString()) : BigInt(0)}
+                showActions
               />
             ))}
           </div>
         </>
       )}
     </ActionContainer>
+  );
+}
+
+export function TierScorecardTable({
+  tierWeights,
+  teamNames,
+}: {
+  tierWeights: {
+    id: string;
+    tierId: number;
+    redemptionWeight: string;
+  }[];
+  teamNames: Map<number, string>;
+}) {
+  return (
+    <div className="text-sm mb-5">
+      <div className="flex justify-between font-medium border-b border-neutral-700 py-1">
+        <span>Outcome</span>
+        <span>Score</span>
+      </div>
+      {tierWeights.map((weight) => (
+        <div
+          key={weight.id}
+          className="flex justify-between w-full border-b border-neutral-800 p-1"
+        >
+          <span>{teamNames.get(weight.tierId) ?? `Tier ${weight.tierId}`}</span>
+          <span>
+            {redemptionWeightToPercentage(weight.redemptionWeight).toString()}%
+          </span>
+        </div>
+      ))}
+    </div>
   );
 }

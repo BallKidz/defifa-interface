@@ -203,7 +203,7 @@ const HomePage = () => {
             Money Games With Friends
           </h1>
           <p className="text-2xl text-center mt-4 mb-12">
-              Players decide the outcome. Winners earn the pot.
+              Players decide outcomes. Winners split pots.
           </p>
 
           <Link href="/arcade">
@@ -212,7 +212,6 @@ const HomePage = () => {
             </Button>
           </Link>
         </div>
-        <TopPlayersContent />
         <Footer />
       </Container>
     </main>

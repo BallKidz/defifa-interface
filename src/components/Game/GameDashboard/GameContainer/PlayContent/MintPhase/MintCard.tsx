@@ -8,6 +8,9 @@ export function MintCard({
   tierId,
   price,
   title,
+  userMintCount = 0,
+  tierMaxSupply,
+  tierInitialQuantity,
   ...props
 }: {
   title: string;
@@ -15,6 +18,9 @@ export function MintCard({
   playerCount?: number;
   tierId: number;
   price: bigint;
+  userMintCount?: number;
+  tierMaxSupply?: number;
+  tierInitialQuantity?: number;
 } & Omit<PickCardProps, "extra">) {
   const {
     nfts: { totalSupply, tiers: nfts },
@@ -27,6 +33,17 @@ export function MintCard({
 
   const mintText = mintedCount === 1 ? "mint" : "mints";
 
+  // Calculate user's percentage of tier
+  // Use initialQuantity if available, otherwise maxSupply
+  // But if maxSupply is DEFAULT_NFT_MAX_SUPPLY (999999999), use initialQuantity
+  const DEFAULT_NFT_MAX_SUPPLY = 999_999_999;
+  const tierSupply = tierInitialQuantity || (tierMaxSupply && tierMaxSupply < DEFAULT_NFT_MAX_SUPPLY ? tierMaxSupply : undefined);
+  
+  const userTierPercentage = tierSupply && userMintCount > 0
+    ? ((userMintCount / tierSupply) * 100).toFixed(0)
+    : 0;
+  
+
   return (
     <PickCard
       title={title}
@@ -35,12 +52,17 @@ export function MintCard({
           <div className="mb-1 mt-1 text-left font-medium text-pink-500">
             <EthAmount amountWei={price} />
           </div>
-          <div className="text-xs">
+          <div className="text-xs space-y-1">
             <div className="flex justify-between">
               <span className="text-neutral-300">
-                {mintedCount} {mintText} ({supplyPortion}%)
+                {supplyPortion}% chance implied
               </span>
             </div>
+            {userMintCount > 0 && (
+              <div className="text-lime-400 font-medium">
+                You hold {userMintCount}
+              </div>
+            )}
           </div>
         </>
       }

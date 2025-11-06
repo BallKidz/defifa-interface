@@ -26,7 +26,7 @@ export function useAttestToScorecard(
   useEffect(() => {
     if (isSuccess && hash) {
       // Invalidate all relevant queries to refresh data
-      queryClient.invalidateQueries({ queryKey: ["scorecards", gameId] });
+      queryClient.invalidateQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
       queryClient.invalidateQueries({
         predicate: (query) => {
           const key = query.queryKey;
@@ -41,7 +41,7 @@ export function useAttestToScorecard(
       
       onSuccess?.();
     }
-  }, [isSuccess, hash, onSuccess, queryClient, gameId]);
+  }, [isSuccess, hash, onSuccess, queryClient, gameId, chainData.chainId]);
 
   const write = () => {
     

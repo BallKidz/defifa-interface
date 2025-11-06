@@ -42,6 +42,7 @@ export interface DefifaLaunchProjectData {
   gameType?: string; // Optional: "scoresquare" for Score Square games
 
   rules: string; // not used onchain
+  gameType?: string; // optional game type identifier (e.g., "scoresquare")
 }
 
 export interface DefifaProjectMetadata {

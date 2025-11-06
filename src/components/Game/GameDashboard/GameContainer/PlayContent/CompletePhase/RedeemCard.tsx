@@ -59,8 +59,7 @@ export function RedeemCard({
             </div>
           ) : (
             <div className="text-sm text-neutral-500 flex items-center gap-2">
-              <span className="w-3 h-3 bg-neutral-600 rounded-full"></span>
-              <span>No redemption value (0% in scorecard)</span>
+              <span>No redemption value</span>
             </div>
           )}
         </div>

@@ -38,11 +38,11 @@ export function useSubmitScorecard(
   useEffect(() => {
     if (isSuccess && hash) {
       // Invalidate scorecards cache to show new scorecard immediately
-      queryClient.invalidateQueries({ queryKey: ["scorecards", gameId] });
+      queryClient.invalidateQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
       
       onSuccessRef.current?.();
     }
-  }, [isSuccess, hash, queryClient, gameId]);
+  }, [isSuccess, hash, queryClient, gameId, chainData.chainId]);
 
   const write = async () => {
 
