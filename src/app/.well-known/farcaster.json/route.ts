@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     miniapp: {
       version: "1",
       name: "Defifa",
+      tagline: "Onchain money games",
       iconUrl: `${baseUrl}/assets/defifa-1024.png`, // 1024x1024 - perfect for app icon
       homeUrl: baseUrl,
       imageUrl: `${baseUrl}/assets/defifa-og.png`, // 1200x800 - perfect 3:2 ratio for social sharing
@@ -23,6 +24,13 @@ export async function GET(request: NextRequest) {
       splashBackgroundColor: "#000000",
       description: "Defifa is an onchain gaming and governance experiment. Join a team, load the pot, and win.",
       subtitle: "Money Games with Friends",
+      ogTitle: "Play Defifa",
+      ogDescription: "Join friends, load the pot, and compete in onchain money games.",
+      ogImageUrl: `${baseUrl}/assets/defifa-og.png`,
+      screenshotUrls: [
+        `${baseUrl}/assets/defifa-promo.png`,
+        `${baseUrl}/assets/defifa-og.png`
+      ],
       primaryCategory: "entertainment",
       tags: ["gaming", "defifa", "governance", "onchain"],
       noindex: true,
