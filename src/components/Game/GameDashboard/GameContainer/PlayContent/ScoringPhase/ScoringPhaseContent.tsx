@@ -8,6 +8,8 @@ import { IssueToBeneficiaryContent } from "./IssueToBeneficiaryContent/IssueToBe
 import { useGameContext } from "contexts/GameContext";
 import { useOutstandingNumber } from "hooks/read/OutStandingReservedTokens";
 import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
+import { useFarcasterContext } from "hooks/useFarcasterContext";
+import { useMediaQuery } from "../../../../../../hooks/useMediaQuery";
 
 export function ScoringPhaseContent() {
   const [selectedTab, setSelectedTab] = useState<
@@ -28,6 +30,9 @@ export function ScoringPhaseContent() {
   const hasAnyReserves = outstandingReserves.some((item) => item.count > 0);
   const showIssueTab = outstandingLoading || outstandingFetching || hasAnyReserves;
   const { triggerSelection } = useMiniAppHaptics();
+  const { isInMiniApp } = useFarcasterContext();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const canShowIssueTab = showIssueTab && !isInMiniApp && isDesktop;
 
   const handleSelect = useCallback(
     (tab: "scorecards" | "customscorecard" | "mypicks" | "issuetobeneficiary") => {
@@ -46,58 +51,58 @@ export function ScoringPhaseContent() {
   return (
     <div>
       <ul className="flex gap-2 mb-6 text-sm">
-        <li>
-          <a
+        <li className="flex-1 min-w-[0]">
+          <button
             className={twJoin(
               selectedTab === "mypicks"
-                ? "bg-neutral-800 text-neutral-50 rounded-md"
+                ? "bg-neutral-800 text-neutral-50"
                 : "text-neutral-400",
-              "cursor-pointer hover:text-neutral-300 px-4 py-2"
+              "cursor-pointer hover:text-neutral-300 px-4 py-2 rounded-md w-full text-left"
             )}
             onClick={() => handleSelect("mypicks")}
           >
-            My Positions
-          </a>
+            My positions
+          </button>
         </li>
-        <li>
-          <a
+        <li className="flex-1 min-w-[0]">
+          <button
             className={twJoin(
               selectedTab === "customscorecard"
-                ? "bg-neutral-800 text-neutral-50 rounded-md"
+                ? "bg-neutral-800 text-neutral-50"
                 : "text-neutral-400",
-              "cursor-pointer hover:text-neutral-300 px-4 py-2"
+              "cursor-pointer hover:text-neutral-300 px-4 py-2 rounded-md w-full text-left"
             )}
             onClick={() => handleSelect("customscorecard")}
           >
-            Propose a Scorecard
-          </a>
+            Propose scorecard
+          </button>
         </li>
-        <li>
-          <a
+        <li className="flex-1 min-w-[0]">
+          <button
             className={twJoin(
               selectedTab === "scorecards"
-                ? "bg-neutral-800 text-neutral-50 rounded-md"
+                ? "bg-neutral-800 text-neutral-50"
                 : "text-neutral-400",
-              "cursor-pointer hover:text-neutral-300 px-4 py-2"
+              "cursor-pointer hover:text-neutral-300 px-4 py-2 rounded-md w-full text-left"
             )}
             onClick={() => handleSelect("scorecards")}
           >
-            Vote on Scorecard
-          </a>
+            Vote on scorecard
+          </button>
         </li>
-        {showIssueTab && (
-          <li>
-            <a
+        {canShowIssueTab && (
+          <li className="flex-1 min-w-[0]">
+            <button
               className={twJoin(
                 selectedTab === "issuetobeneficiary"
-                  ? "bg-neutral-800 text-neutral-50 rounded-md"
+                  ? "bg-neutral-800 text-neutral-50"
                   : "text-neutral-400",
-                "cursor-pointer hover:text-neutral-300 px-4 py-2"
+                "cursor-pointer hover:text-neutral-300 px-4 py-2 rounded-md w-full text-left"
               )}
               onClick={() => handleSelect("issuetobeneficiary")}
             >
               Issue to Beneficiary
-            </a>
+            </button>
           </li>
         )}
       </ul>
@@ -105,11 +110,10 @@ export function ScoringPhaseContent() {
         <ScorecardsContent />
       ) : selectedTab === "customscorecard" ? (
         <CustomScorecardContent />
-      ) : selectedTab === "issuetobeneficiary" && showIssueTab ? (
+      ) : selectedTab === "issuetobeneficiary" && canShowIssueTab ? (
         <div className="p-4">
-          <h3 className="text-lg font-medium mb-4">Issue to Beneficiary</h3>
           <p className="text-neutral-400 mb-4">
-            Mint reserved NFTs to the addresses configured for each tier.
+            This game has been configured to reserve NFTs.
           </p>
           <IssueToBeneficiaryContent />
         </div>

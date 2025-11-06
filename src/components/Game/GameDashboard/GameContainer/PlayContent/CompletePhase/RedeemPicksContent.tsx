@@ -26,7 +26,10 @@ type RedeemTab = "winners" | "claim" | "scorecard";
 type WinnerEntry = {
   address: string;
   totalValue: BigNumber;
+  totalCost: BigNumber;
   tokenCount: number;
+  roiMultiplier: number;
+  percentageGain: number;
 };
 
 function TabNav({
@@ -106,12 +109,13 @@ function WinnersTable({ winners }: { winners: WinnerEntry[] }) {
   return (
     <div className="border border-neutral-800 rounded-lg">
       <div className="overflow-x-auto">
-        <table className="min-w-[520px] w-full text-sm">
+        <table className="min-w-[640px] w-full text-sm">
           <thead className="bg-neutral-900 border-b border-neutral-800">
             <tr className="text-left text-neutral-300">
               <th className="px-4 py-2 w-16">Rank</th>
               <th className="px-4 py-2">Player</th>
               <th className="px-4 py-2 w-20">NFTs</th>
+              <th className="px-4 py-2 w-24">Return</th>
               <th className="px-4 py-2 text-right">Redeemable value</th>
             </tr>
           </thead>
@@ -126,6 +130,11 @@ function WinnersTable({ winners }: { winners: WinnerEntry[] }) {
                   <EthAddress address={winner.address} withEnsAvatar />
                 </td>
                 <td className="px-4 py-2 text-neutral-300">{winner.tokenCount}</td>
+                <td className="px-4 py-2 text-neutral-300">
+                  {Number.isFinite(winner.percentageGain)
+                    ? `${winner.percentageGain >= 0 ? "+" : ""}${winner.percentageGain.toFixed(1)}%`
+                    : "∞"}
+                </td>
                 <td className="px-4 py-2 text-right">
                   <EthAmount amountWei={winner.totalValue} className="justify-end" iconClassName="h-4 w-4" />
                 </td>
@@ -177,6 +186,19 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
     return map;
   }, [allGameMints]);
 
+  const tierPriceMap = useMemo(() => {
+    const map = new Map<number, BigNumber>();
+    nfts.tiers?.forEach((tier) => {
+      try {
+        map.set(tier.id, BigNumber.from(tier.price.toString()));
+      } catch (err) {
+        console.warn("Failed to parse tier price", tier.id, err);
+        map.set(tier.id, BigNumber.from(0));
+      }
+    });
+    return map;
+  }, [nfts.tiers]);
+
   const tierValueMap = useMemo(() => {
     const map = new Map<number, BigNumber>();
     if (!finalScorecard || !finalScorecard.tierWeights?.length) {
@@ -217,6 +239,7 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
       const tierId = tokenNumberToTierId(token.number);
       const valuePerToken = tierValueMap.get(tierId);
       if (!valuePerToken) return;
+      const costPerToken = tierPriceMap.get(tierId) ?? BigNumber.from(0);
 
       const normalizedAddress = ownerAddress.toLowerCase();
       const existing = aggregates.get(normalizedAddress);
@@ -225,24 +248,53 @@ export function RedeemPicksContent({ disabled }: { disabled?: boolean }) {
         aggregates.set(normalizedAddress, {
           address: normalizedAddress,
           totalValue: existing.totalValue.add(valuePerToken),
+          totalCost: existing.totalCost.add(costPerToken),
           tokenCount: existing.tokenCount + 1,
+          roiMultiplier: existing.roiMultiplier,
+          percentageGain: existing.percentageGain,
         });
       } else {
         aggregates.set(normalizedAddress, {
           address: normalizedAddress,
           totalValue: valuePerToken,
+          totalCost: costPerToken,
           tokenCount: 1,
+          roiMultiplier: 0,
+          percentageGain: 0,
         });
       }
     });
 
-    return Array.from(aggregates.values()).sort((a, b) => {
-      if (a.totalValue.eq(b.totalValue)) {
-        return b.tokenCount - a.tokenCount;
-      }
-      return b.totalValue.gt(a.totalValue) ? 1 : -1;
+    const ROI_SCALE = 1_000_000;
+    const ROI_SCALE_BN = BigNumber.from(ROI_SCALE);
+
+    const withRoi = Array.from(aggregates.values()).map((entry) => {
+      const totalCost = entry.totalCost;
+      const totalValue = entry.totalValue;
+      const roiMultiplier = totalCost.isZero()
+        ? Number.POSITIVE_INFINITY
+        : Number(totalValue.mul(ROI_SCALE_BN).div(totalCost).toString()) / ROI_SCALE;
+      const percentageGain = Number.isFinite(roiMultiplier)
+        ? (roiMultiplier - 1) * 100
+        : Number.POSITIVE_INFINITY;
+
+      return {
+        ...entry,
+        roiMultiplier,
+        percentageGain,
+      };
     });
-  }, [allGameMints, finalScorecard, tierValueMap]);
+
+    return withRoi.sort((a, b) => {
+      if (a.percentageGain === b.percentageGain) {
+        if (a.totalValue.eq(b.totalValue)) {
+          return b.tokenCount - a.tokenCount;
+        }
+        return b.totalValue.gt(a.totalValue) ? 1 : -1;
+      }
+      return b.percentageGain - a.percentageGain;
+    });
+  }, [allGameMints, finalScorecard, tierPriceMap, tierValueMap]);
 
   const topWinners = useMemo(() => winners.slice(0, 10), [winners]);
 

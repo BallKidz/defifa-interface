@@ -245,7 +245,7 @@ export function ActivityContent() {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+      <h2 className="text-xl font-semibold mb-4">Activity feed</h2>
       <div className="overflow-x-auto pb-2">
         <div className="space-y-1 min-w-[640px]">
           {transfers.map((transferEvent) => (
