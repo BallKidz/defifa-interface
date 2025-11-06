@@ -11,6 +11,8 @@ export function MintCard({
   userMintCount = 0,
   tierMaxSupply,
   tierInitialQuantity,
+  totalTierMinted,
+  showChance = true,
   ...props
 }: {
   title: string;
@@ -21,6 +23,8 @@ export function MintCard({
   userMintCount?: number;
   tierMaxSupply?: number;
   tierInitialQuantity?: number;
+  totalTierMinted?: number;
+  showChance?: boolean;
 } & Omit<PickCardProps, "extra">) {
   const {
     nfts: { totalSupply, tiers: nfts },
@@ -38,9 +42,13 @@ export function MintCard({
   // But if maxSupply is DEFAULT_NFT_MAX_SUPPLY (999999999), use initialQuantity
   const DEFAULT_NFT_MAX_SUPPLY = 999_999_999;
   const tierSupply = tierInitialQuantity || (tierMaxSupply && tierMaxSupply < DEFAULT_NFT_MAX_SUPPLY ? tierMaxSupply : undefined);
-  
-  const userTierPercentage = tierSupply && userMintCount > 0
-    ? ((userMintCount / tierSupply) * 100).toFixed(0)
+
+  const percentageDenominator = showChance
+    ? tierSupply
+    : totalTierMinted ?? tierSupply;
+
+  const userTierPercentage = percentageDenominator && userMintCount > 0
+    ? ((userMintCount / percentageDenominator) * 100).toFixed(0)
     : 0;
   
 
@@ -53,14 +61,18 @@ export function MintCard({
             <EthAmount amountWei={price} />
           </div>
           <div className="text-xs space-y-1">
-            <div className="flex justify-between">
-              <span className="text-neutral-300">
-                {supplyPortion}% chance implied
-              </span>
-            </div>
+            {showChance && (
+              <div className="flex justify-between">
+                <span className="text-neutral-300">
+                  {supplyPortion}% chance implied
+                </span>
+              </div>
+            )}
             {userMintCount > 0 && (
               <div className="text-lime-400 font-medium">
-                You hold {userMintCount}
+                {showChance
+                  ? `You hold ${userMintCount}`
+                  : `You hold ${userMintCount} (${userTierPercentage}% of this outcome)`}
               </div>
             )}
           </div>
