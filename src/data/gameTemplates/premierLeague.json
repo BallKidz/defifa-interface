@@ -1,0 +1,36 @@
+{
+  "name": "Premier League Fans Showdown",
+  "rules": "60% 🥇Underdog upset (lower-ranked wins), 30% 🥈Negative Chaos (red cards / VAR / drama), 10% 🥉Second Most Minted",
+  "price": "0.0001",
+  "gameType": "premier-league",
+  "defaultAttestationDelegate": "0xDf087B724174A3E4eD2338C0798193932E851F1b",
+  "mintPeriodDuration": 600,
+  "refundPeriodDuration": 0,
+  "gameStartBuffer": 300,
+  "attestationGracePeriod": 0,
+  "reserveMintCadence": 0,
+  "defaultReservedBeneficiary": "0x0000000000000000000000000000000000000000",
+  "tiers": [
+    { "abbr": "ARS", "ipfsCid": "ipfs://bafkreifdvvhqirugwyusxd43r4xk4ziqty7rx5fxm56oa67gnsmsokl4l4" },
+    { "abbr": "AVL", "ipfsCid": "ipfs://bafkreiaa4gosgq7ybkz5dpeib2xw33bkdywlumubclg2fm3potqnkf6zpe" },
+    { "abbr": "BUR", "ipfsCid": "ipfs://bafkreieiipvgrnooltxt7cefswnudapmc2dsc3h62f6aahfkzg4cfg3rbe" },
+    { "abbr": "BOU", "ipfsCid": "ipfs://bafkreif3gkswvggflvjlgqjoes63r46am65zh7t5khy6af4pkmhsncefvq" },
+    { "abbr": "BRE", "ipfsCid": "ipfs://bafkreiaexzqrmciqqkxbgvfgiuqc3ejzjiha5hzwz3ppjfq3mq6ebnexje" },
+    { "abbr": "BHA", "ipfsCid": "ipfs://bafkreif3gkswvggflvjlgqjoes63r46am65zh7t5khy6af4pkmhsncefvq" },
+    { "abbr": "CHE", "ipfsCid": "ipfs://bafkreifao4wvdvnnknuvfjtkdc3klfmn5w5yooagg3ink5nuaqeh7xxbvq" },
+    { "abbr": "CRY", "ipfsCid": "ipfs://bafkreibm7revfmu3ab7ovtfcgjhjivdmjrrfo53kkzlthul2m3252q3ome" },
+    { "abbr": "EVE", "ipfsCid": "ipfs://bafkreiao2hsvoly75krkfwqonrw7cjsrfgrnbhpej6ohgz7bdqhorm2htm" },
+    { "abbr": "FUL", "ipfsCid": "ipfs://bafkreiczy7cu2v4onw6e7xsovluiwyys6g4jtwsfil4gobnsxhyvsf3fru" },
+    { "abbr": "IPS", "ipfsCid": "ipfs://bafkreidd25rrdfziffwd52qbtvqdq34uihtg6fn2ohvtegbqg6rzjsrfmm" },
+    { "abbr": "LIV", "ipfsCid": "ipfs://bafkreie2q2kz4vl75siz65j7jcv74ccuabsarzirglvw2gutamk4bcjvmm" },
+    { "abbr": "MCI", "ipfsCid": "ipfs://bafkreigmi2n3v7n3saeupu3na6ihcozryzjh7hbjq5ynhgcivk27u37t6i" },
+    { "abbr": "MUN", "ipfsCid": "ipfs://bafkreie373rg3mj2jd23747g3bh5l7eehcwx3oetwlk7bqz6a54rmdlgtq" },
+    { "abbr": "NEW", "ipfsCid": "ipfs://bafkreiecqxzw5jgj3yqm2cgvnarc4ldusqnr6wqb2cj4jbj4isv7ywr524" },
+    { "abbr": "NFO", "ipfsCid": "ipfs://bafkreie6hxlxiizx3lmzek5m6gepf6j62gwbrdribked3qjqnim5t6kv44" },
+    { "abbr": "SUN", "ipfsCid": "ipfs://bafybeicdcjmr2ak6ubs4b3frmwz6sgbam5oyo624in4xsleof47uwxfxzq" },
+    { "abbr": "TOT", "ipfsCid": "ipfs://bafkreigfhqcpnmgw4bx2oomx43kltknigigqg5bxjyiaplhi4apas3tmj4" },
+    { "abbr": "WHU", "ipfsCid": "ipfs://bafkreid7lotz2g5kq3ihhkobqussn37noybpld325j4q77mywegz2kpowe" },
+    { "abbr": "WOL", "ipfsCid": "ipfs://bafkreiet47v3hvxbqevir7mmphfdkum4eky2whzvwq34erq4q3wolef36i" }
+  ]
+}
+

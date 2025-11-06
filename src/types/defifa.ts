@@ -12,6 +12,7 @@ export interface DefifaTierParams {
   reservedTokenBeneficiary: string;
   encodedIPFSUri: string;
   shouldUseReservedTokenBeneficiaryAsDefault: boolean;
+  imageIpfsUri?: string;
 }
 
 export type EthereumAddress = `0x${string}`;
@@ -40,9 +41,7 @@ export interface DefifaLaunchProjectData {
   terminal: EthereumAddress;
   store: EthereumAddress;
   gameType?: string; // Optional: "scoresquare" for Score Square games
-
   rules: string; // not used onchain
-  gameType?: string; // optional game type identifier (e.g., "scoresquare")
 }
 
 export interface DefifaProjectMetadata {

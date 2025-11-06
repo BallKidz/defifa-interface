@@ -1,5 +1,6 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import bs58 from "bs58";
+import { CID } from "multiformats/cid";
 import Content from "components/Deployer/Content";
 import Button from "components/UI/Button";
 import { EthSymbol } from "components/UI/EthSymbol/EthSymbol";
@@ -30,6 +31,7 @@ import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 import { Tabs } from "./Tabs";
 import { Tooltip } from "components/UI/Tooltip";
 import { BALLKIDZ_MULTISIG_ADDRESS } from "constants/constants";
+import premierLeagueTemplate from "data/gameTemplates/premierLeague.json";
 
 // Helper function to get network name from chain ID
 const getNetworkName = (chainId: number): string => {
@@ -47,6 +49,59 @@ const getNetworkName = (chainId: number): string => {
 };
 
 const defaultTierTemplate = createDefaultTierData();
+
+type TierTemplateEntry = {
+  abbr: string;
+  ipfsCid?: string;
+  price?: string;
+  reservedRate?: number;
+  reservedBeneficiary?: string;
+};
+
+type GameTemplateConfig = {
+  name: string;
+  rules: string;
+  price: string;
+  gameType?: string;
+  defaultAttestationDelegate?: string;
+  mintPeriodDuration?: number;
+  refundPeriodDuration?: number;
+  gameStartBuffer?: number;
+  attestationGracePeriod?: number;
+  reserveMintCadence?: number;
+  defaultReservedBeneficiary?: string;
+  tiers: TierTemplateEntry[];
+};
+
+const encodeIpfsCid = (
+  cid?: string,
+  fallbackName?: string
+): { encodedUri: `0x${string}`; tempUri?: string } => {
+  if (!cid || !cid.startsWith("ipfs://")) {
+    return {
+      encodedUri: defaultTierTemplate.encodedIPFSUri as `0x${string}`,
+    };
+  }
+
+  try {
+    const cidString = cid.replace("ipfs://", "");
+    const parsed = CID.parse(cidString);
+    const digest = parsed.multihash.digest;
+    const hex = Array.from(digest)
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+    return { encodedUri: `0x${hex}` as `0x${string}` };
+  } catch (error) {
+    const tempUri = createDefaultTierData().encodedIPFSUri;
+    const name = fallbackName ? ` (tier ${fallbackName})` : "";
+    console.warn(
+      `Failed to encode IPFS CID${name}, storing as temp URI blob`,
+      cid,
+      error
+    );
+    return { encodedUri: tempUri as `0x${string}`, tempUri: cid };
+  }
+};
 
 const normalizeTierInput = (
   tier: DefifaTierParams,
@@ -242,16 +297,130 @@ const DeployerCreate = () => {
     };
   };
 
+  const loadPremierLeagueTestData = (testAddress?: string): DefifaLaunchProjectData => {
+    const template = premierLeagueTemplate as GameTemplateConfig;
+    const now = Math.floor(Date.now() / 1000);
+    const mintDuration = template.mintPeriodDuration ?? 60 * 10;
+    const refundDuration = template.refundPeriodDuration ?? 0;
+    const gameStartBuffer = template.gameStartBuffer ?? 60 * 5;
+    const gameStartTime = now + mintDuration + refundDuration + gameStartBuffer;
+    const attestationGracePeriod = template.attestationGracePeriod ?? 0;
+    const templateReservedBeneficiary =
+      template.defaultReservedBeneficiary &&
+      template.defaultReservedBeneficiary !== constants.AddressZero
+        ? template.defaultReservedBeneficiary
+        : undefined;
+    const reserveCadence = template.reserveMintCadence ?? 0;
+
+    const tiers: DefifaTierParams[] = template.tiers.map((entry, index) => {
+      const baseTier = createDefaultTierData();
+      const tierPrice = entry.price ?? template.price ?? baseTier.price?.toString() ?? "0";
+      const reservedRate =
+        typeof entry.reservedRate === "number" ? entry.reservedRate : reserveCadence;
+      const entryReservedBeneficiary =
+        entry.reservedBeneficiary && entry.reservedBeneficiary !== constants.AddressZero
+          ? entry.reservedBeneficiary
+          : undefined;
+      const reservedTokenBeneficiary =
+        entryReservedBeneficiary ??
+        templateReservedBeneficiary ??
+        constants.AddressZero;
+
+      return {
+        ...baseTier,
+        name: entry.abbr,
+        price: tierPrice,
+        encodedIPFSUri: baseTier.encodedIPFSUri,
+        reservedRate,
+        reservedTokenBeneficiary,
+        shouldUseReservedTokenBeneficiaryAsDefault:
+          !(entryReservedBeneficiary ?? templateReservedBeneficiary),
+        category: index + 1,
+        imageIpfsUri: entry.ipfsCid,
+      };
+    });
+
+    return {
+      ...createDefaultLaunchProjectData(),
+      name: template.name,
+      rules: template.rules,
+      gameType: template.gameType,
+      defaultAttestationDelegate:
+        (testAddress as `0x${string}`) ||
+        (template.defaultAttestationDelegate as `0x${string}`) ||
+        BALLKIDZ_MULTISIG_ADDRESS,
+      mintPeriodDuration: mintDuration,
+      refundPeriodDuration: refundDuration,
+      start: gameStartTime,
+      attestationStartTime: gameStartTime,
+      attestationGracePeriod,
+      tiers,
+    };
+  };
+
   // Expose test data function to window for dev console testing
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (window as any).fillTestData = (testAddress?: string) => {
-        const testData = loadScoreSquareTestData(testAddress);
+    if (typeof window !== "undefined") {
+      (window as any).fillTestData = (templateOrAddress?: string, maybeAddress?: string) => {
+        let templateKey: string | undefined;
+        let address: string | undefined;
+
+        if (templateOrAddress && templateOrAddress.startsWith("0x")) {
+          address = templateOrAddress;
+        } else if (templateOrAddress) {
+          templateKey = templateOrAddress;
+        }
+
+        if (!address && maybeAddress) {
+          address = maybeAddress;
+        }
+
+        let selectedTemplate = templateKey?.toLowerCase();
+        let price = "0.00001";
+        let templateConfig: GameTemplateConfig | undefined;
+        let testData: DefifaLaunchProjectData;
+
+        switch (selectedTemplate) {
+          case "epl":
+          case "premierleague":
+          case "premier-league":
+            testData = loadPremierLeagueTestData(address);
+            price = "0.0001";
+            selectedTemplate = "Premier League";
+            templateConfig = premierLeagueTemplate as GameTemplateConfig;
+            break;
+          default:
+            testData = loadScoreSquareTestData(address ?? templateKey);
+            selectedTemplate = "Score Square";
+            break;
+        }
+
         setFormValues(testData);
-        setTierGeneralValues({ price: "0.00001" });
+        const reservedBeneficiaryGeneral =
+          templateConfig?.defaultReservedBeneficiary &&
+          templateConfig.defaultReservedBeneficiary !== constants.AddressZero
+            ? templateConfig.defaultReservedBeneficiary
+            : "";
+        const generalValues: Partial<DefifaTierParams> = {
+          price,
+          reservedTokenBeneficiary: reservedBeneficiaryGeneral,
+        };
+        if (typeof templateConfig?.reserveMintCadence === "number") {
+          generalValues.reservedRate = templateConfig.reserveMintCadence;
+        }
+        if (reservedBeneficiaryGeneral) {
+          generalValues.reservedTokenBeneficiary = reservedBeneficiaryGeneral;
+        }
+        setTierGeneralValues(generalValues);
         setActiveTab("nfts");
-        console.log("✅ Test data loaded!", testData);
-        console.log("💡 Tip: Call fillTestData('0xYourAddress') to use your own attestation delegate");
+        console.log(`✅ ${selectedTemplate} test data loaded!`, testData);
+        console.log(
+          "💡 Tip: Call fillTestData('<template>', '0xYourAddress') to choose a template and attestation delegate."
+        );
+      };
+
+      (window as any).fillTestData2 = (testAddress?: string) => {
+        (window as any).fillTestData("epl", testAddress);
       };
     }
   }, []);
@@ -259,6 +428,36 @@ const DeployerCreate = () => {
   // TODO this is totally bugged, needs to be uploaded at deploy time
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const uploadJsons = async (formValuesIn: DefifaLaunchProjectData) => {
+    let updatedTiers = formValuesIn.tiers;
+    try {
+      updatedTiers = await Promise.all(
+        formValuesIn.tiers.map(async (tier, index) => {
+          if (tier.imageIpfsUri) {
+            try {
+              const metadataUri = await createTierMetadata(
+                tier.name || `Tier ${index + 1}`,
+                tier.imageIpfsUri,
+                formValuesIn.name,
+                index + 1,
+                chainData.chainId
+              );
+              const { encodedUri } = encodeIpfsCid(metadataUri, tier.name);
+              return {
+                ...tier,
+                encodedIPFSUri: encodedUri,
+              };
+            } catch (error) {
+              console.error(`Failed to create metadata for tier ${tier.name}`, error);
+              return tier;
+            }
+          }
+          return tier;
+        })
+      );
+    } catch (tierError) {
+      console.error("Error processing tier metadata", tierError);
+    }
+
     // This is the 'collection' name in OS.
     contractUri.name = formValuesIn.name;
     // This is the 'collection' description in OS can be long. Use as rules.
@@ -289,6 +488,7 @@ const DeployerCreate = () => {
       ...prevValues,
       contractUri: `ipfs://${contractUriCid}`,
       projectUri: `ipfs://${projectMetadataCid}`,
+      tiers: updatedTiers,
     }));
     
     // Set flag to trigger deployment after state updates
