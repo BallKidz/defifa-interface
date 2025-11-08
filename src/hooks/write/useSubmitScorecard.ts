@@ -37,9 +37,26 @@ export function useSubmitScorecard(
   // Handle success with useEffect - use ref to avoid dependency on onSuccess
   useEffect(() => {
     if (isSuccess && hash) {
-      // Invalidate scorecards cache to show new scorecard immediately
+      // Invalidate and refetch scorecards immediately
       queryClient.invalidateQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
       
+      // Do aggressive refetching with delay to account for subgraph indexing
+      const refetchWithDelay = async () => {
+        // Immediate refetch
+        await queryClient.refetchQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
+        
+        // Retry after 2 seconds (subgraph indexing delay)
+        setTimeout(() => {
+          queryClient.refetchQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
+        }, 2000);
+        
+        // Final retry after 5 seconds
+        setTimeout(() => {
+          queryClient.refetchQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
+        }, 5000);
+      };
+      
+      void refetchWithDelay();
       onSuccessRef.current?.();
     }
   }, [isSuccess, hash, queryClient, gameId, chainData.chainId]);

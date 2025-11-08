@@ -71,9 +71,9 @@ export function useScorecards(gameId: number) {
       return convertedScorecards;
     },
     enabled: !!gameId,
-    refetchInterval: shouldPoll ? 30 * 1000 : false,
-    refetchIntervalInBackground: shouldPoll ? false : undefined,
-    refetchOnWindowFocus: shouldPoll,
-    staleTime: 10 * 1000, // Consider data fresh for 10 seconds
+    refetchInterval: shouldPoll ? 5 * 1000 : false, // Poll every 5 seconds during scoring
+    refetchIntervalInBackground: shouldPoll ? true : undefined, // Continue polling in background
+    refetchOnWindowFocus: true, // Always refetch when window regains focus
+    staleTime: 0, // Always consider data stale to ensure fresh fetches after invalidation
   });
 }

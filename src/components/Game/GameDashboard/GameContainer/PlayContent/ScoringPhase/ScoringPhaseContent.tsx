@@ -1,5 +1,5 @@
 import Container from "components/layout/Container";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { twJoin } from "tailwind-merge";
 import { CustomScorecardContent } from "./CustomScorecardContent/CustomScorecardContent";
 import { ScorecardsContent } from "./ScorecardsContent/ScorecardsContent";
@@ -16,6 +16,7 @@ export function ScoringPhaseContent() {
   const [selectedTab, setSelectedTab] = useState<
     "scorecards" | "customscorecard" | "mypicks" | "issuetobeneficiary"
   >("mypicks");
+  const prevScorecardCountRef = useRef<number>(0);
   const { currentFundingCycle, nfts, gameId } = useGameContext();
   const dataSourceAddress = currentFundingCycle?.metadata.dataSource;
   const gameTiers = useMemo(() => nfts?.tiers ?? [], [nfts?.tiers]);
@@ -56,6 +57,22 @@ export function ScoringPhaseContent() {
       setSelectedTab("mypicks");
     }
   }, [showIssueTab, selectedTab, hasScorecard]);
+
+  // Auto-switch to "Vote on scorecard" tab when a new scorecard is detected
+  useEffect(() => {
+    const currentCount = scorecards?.length ?? 0;
+    const prevCount = prevScorecardCountRef.current;
+
+    // If scorecard count increased (new scorecard added) and user is on "Propose scorecard" tab
+    if (currentCount > prevCount && currentCount > 0 && selectedTab === "customscorecard") {
+      console.log(`[ScoringPhaseContent] New scorecard detected! Switching to vote tab. Previous: ${prevCount}, Current: ${currentCount}`);
+      setSelectedTab("scorecards");
+      void triggerSelection();
+    }
+
+    // Update the ref with current count
+    prevScorecardCountRef.current = currentCount;
+  }, [scorecards, selectedTab, triggerSelection]);
 
   return (
     <div>
