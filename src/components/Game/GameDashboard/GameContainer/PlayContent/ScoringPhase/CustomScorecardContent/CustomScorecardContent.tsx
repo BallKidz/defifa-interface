@@ -95,7 +95,9 @@ export function CustomScorecardContent() {
         {tiersToScore?.map((t) => (
            <div
              key={t.id}
-            className="relative border-2 bg-[#181424] border-neutral-800 shadow-lg rounded-xl overflow-hidden transition-all w-full max-w-[260px]"
+            className={`relative border-2 bg-[#181424] shadow-lg rounded-xl overflow-hidden transition-all w-full max-w-[260px] ${
+              t.minted === 0 ? 'border-red-800 opacity-60' : 'border-neutral-800'
+            }`}
            >
             <div className="px-4 pt-4 pb-3">
               <div className="text-base text-left font-medium mb-2 truncate" title={t.teamName || `Team ${t.id}`}>
@@ -144,12 +146,16 @@ export function CustomScorecardContent() {
                     }
                   }}
                   step={1}
+                  disabled={t.minted === 0}
                 />
-                <div className="text-xs text-neutral-400 mt-1">
-                  {pickCounts[t.id.toString()] ? 
-                    `You own ${pickCounts[t.id.toString()]} NFT(s)` :
-                    `You don't own this outcome`
-                  }
+                <div className="text-xs mt-1">
+                  {t.minted === 0 ? (
+                    <span className="text-red-400">⚠️ No mints - cannot score</span>
+                  ) : pickCounts[t.id.toString()] ? (
+                    <span className="text-neutral-400">You own {pickCounts[t.id.toString()]} NFT(s)</span>
+                  ) : (
+                    <span className="text-neutral-400">You don't own this outcome</span>
+                  )}
                 </div>
               </div>
             </div>

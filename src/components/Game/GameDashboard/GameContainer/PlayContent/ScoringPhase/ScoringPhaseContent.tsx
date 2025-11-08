@@ -10,12 +10,13 @@ import { useOutstandingNumber } from "hooks/read/OutStandingReservedTokens";
 import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 import { useFarcasterContext } from "hooks/useFarcasterContext";
 import { useMediaQuery } from "../../../../../../hooks/useMediaQuery";
+import { useScorecards } from "hooks/useScorecards";
 
 export function ScoringPhaseContent() {
   const [selectedTab, setSelectedTab] = useState<
     "scorecards" | "customscorecard" | "mypicks" | "issuetobeneficiary"
-  >("scorecards");
-  const { currentFundingCycle, nfts } = useGameContext();
+  >("mypicks");
+  const { currentFundingCycle, nfts, gameId } = useGameContext();
   const dataSourceAddress = currentFundingCycle?.metadata.dataSource;
   const gameTiers = useMemo(() => nfts?.tiers ?? [], [nfts?.tiers]);
   const tierIds = useMemo(
@@ -33,6 +34,10 @@ export function ScoringPhaseContent() {
   const { isInMiniApp } = useFarcasterContext();
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const canShowIssueTab = showIssueTab && !isInMiniApp && isDesktop;
+  
+  // Fetch scorecards to determine if tab should be shown
+  const { data: scorecards, isLoading: scorecardsLoading } = useScorecards(gameId);
+  const hasScorecard = !scorecardsLoading && scorecards && scorecards.length > 0;
 
   const handleSelect = useCallback(
     (tab: "scorecards" | "customscorecard" | "mypicks" | "issuetobeneficiary") => {
@@ -44,9 +49,13 @@ export function ScoringPhaseContent() {
 
   useEffect(() => {
     if (!showIssueTab && selectedTab === "issuetobeneficiary") {
-      setSelectedTab("scorecards");
+      setSelectedTab("mypicks");
     }
-  }, [showIssueTab, selectedTab]);
+    // If scorecards tab is selected but no scorecards exist, switch to mypicks
+    if (!hasScorecard && selectedTab === "scorecards") {
+      setSelectedTab("mypicks");
+    }
+  }, [showIssueTab, selectedTab, hasScorecard]);
 
   return (
     <div>
@@ -77,19 +86,21 @@ export function ScoringPhaseContent() {
             Propose scorecard
           </button>
         </li>
-        <li className="flex-1 min-w-[0]">
-          <button
-            className={twJoin(
-              selectedTab === "scorecards"
-                ? "bg-neutral-800 text-neutral-50"
-                : "text-neutral-400",
-              "cursor-pointer hover:text-neutral-300 px-4 py-2 rounded-md w-full text-left"
-            )}
-            onClick={() => handleSelect("scorecards")}
-          >
-            Vote on scorecard
-          </button>
-        </li>
+        {hasScorecard && (
+          <li className="flex-1 min-w-[0]">
+            <button
+              className={twJoin(
+                selectedTab === "scorecards"
+                  ? "bg-neutral-800 text-neutral-50"
+                  : "text-neutral-400",
+                "cursor-pointer hover:text-neutral-300 px-4 py-2 rounded-md w-full text-left"
+              )}
+              onClick={() => handleSelect("scorecards")}
+            >
+              Vote on scorecard
+            </button>
+          </li>
+        )}
         {canShowIssueTab && (
           <li className="flex-1 min-w-[0]">
             <button
