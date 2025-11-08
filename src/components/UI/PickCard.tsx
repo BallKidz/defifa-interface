@@ -1,7 +1,12 @@
+'use client'
+
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import Button from "./Button";
+import { useState } from "react";
+import { NFTModal } from "components/Game/GameHome/NFTModal";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 export interface PickCardProps {
   title: string;
@@ -25,44 +30,56 @@ export function PickCard({
   extra,
 }: PickCardProps) {
   const isSelected = selectedCount > 0;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { triggerSelection } = useMiniAppHaptics();
 
   const limitReached =
     typeof selectionLimit !== "undefined" && selectedCount >= selectionLimit;
 
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    void triggerSelection();
+    setIsModalOpen(true);
+  };
+
   return (
-    <div
-      className={twMerge(
-        "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl overflow-hidden hover:shadow-glowPink hover:border-pink-900",
-        isSelected
-          ? "border-pink-700 hover:border-pink-800 shadow-glowPink"
-          : ""
-      )}
-    >
-      <div className="px-4 pt-4 mb-2">
-        <div className="text-base text-left font-medium mb-2 truncate" title={title}>{title}</div>
+    <>
+      <div
+        className={twMerge(
+          "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl overflow-hidden hover:shadow-glowPink hover:border-pink-900",
+          isSelected
+            ? "border-pink-700 hover:border-pink-800 shadow-glowPink"
+            : ""
+        )}
+      >
+        <div className="px-4 pt-4 mb-2">
+          <div className="text-base text-left font-medium mb-2 truncate" title={title}>{title}</div>
 
-        <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
-          {imageSrc ? (
-            <Image
-              src={imageSrc}
-              crossOrigin="anonymous"
-              alt={title}
-              width={200}
-              height={200}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="text-[#fea282] text-3xl font-bold mb-1">
-                {title.substring(0, 9).toUpperCase()}
+          <div 
+            className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16] cursor-pointer hover:border-pink-900 transition-colors active:scale-95"
+            onClick={handleImageClick}
+          >
+            {imageSrc ? (
+              <Image
+                src={imageSrc}
+                crossOrigin="anonymous"
+                alt={title}
+                width={200}
+                height={200}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="text-[#fea282] text-3xl font-bold mb-1">
+                  {title.substring(0, 9).toUpperCase()}
+                </div>
+                <div className="text-[#c0b3f1] text-xs">Outcome</div>
               </div>
-              <div className="text-[#c0b3f1] text-xs">Outcome</div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        <div className="mt-3">{extra}</div>
-      </div>
+          <div className="mt-3">{extra}</div>
+        </div>
 
       {isSelected ? (
         <div className="flex justify-between">
@@ -98,5 +115,13 @@ export function PickCard({
         </Button>
       )}
     </div>
+
+    <NFTModal
+      isOpen={isModalOpen}
+      onClose={() => setIsModalOpen(false)}
+      title={title}
+      imageSrc={imageSrc}
+    />
+    </>
   );
 }

@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { useAccount } from "wagmi";
 import { CustomScorecardActions } from "./CustomScorecardActions";
+import { NFTModal } from "components/Game/GameHome/NFTModal";
+import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 
 export interface ScorecardPercentages {
   [key: string]: number | undefined; // tier_id: score_percentage
@@ -15,6 +17,8 @@ export interface ScorecardPercentages {
 export function CustomScorecardContent() {
   const [scorecardPercentages, setScorecardPercentages] =
     useState<ScorecardPercentages>({});
+  const [modalOpen, setModalOpen] = useState<number | null>(null);
+  const { triggerSelection } = useMiniAppHaptics();
 
   const { isConnected } = useAccount();
   const { data: picks, isLoading: picksLoading } = useMyMints();
@@ -91,13 +95,19 @@ export function CustomScorecardContent() {
         {tiersToScore?.map((t) => (
            <div
              key={t.id}
-            className="relative border-2 bg-[#181424] border-neutral-800 shadow-lg rounded-xl overflow-hidden hover:shadow-glowPink hover:border-pink-900 transition-all w-full max-w-[260px]"
+            className="relative border-2 bg-[#181424] border-neutral-800 shadow-lg rounded-xl overflow-hidden transition-all w-full max-w-[260px]"
            >
             <div className="px-4 pt-4 pb-3">
               <div className="text-base text-left font-medium mb-2 truncate" title={t.teamName || `Team ${t.id}`}>
                 {t.teamName || `Team ${t.id}`}
               </div>
-              <div className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16]">
+              <div 
+                className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16] cursor-pointer hover:border-pink-500 transition-colors active:scale-95"
+                onClick={() => {
+                  void triggerSelection();
+                  setModalOpen(t.id);
+                }}
+              >
                 {t.teamImage ? (
                   <Image
                     src={t.teamImage}
@@ -146,6 +156,16 @@ export function CustomScorecardContent() {
           </div>
         ))}
       </div>
+
+      {/* NFT Modal */}
+      {modalOpen !== null && tiersToScore && (
+        <NFTModal
+          isOpen={true}
+          onClose={() => setModalOpen(null)}
+          title={tiersToScore.find(t => t.id === modalOpen)?.teamName || `Team ${modalOpen}`}
+          imageSrc={tiersToScore.find(t => t.id === modalOpen)?.teamImage || ''}
+        />
+      )}
     </ActionContainer>
   );
 }
