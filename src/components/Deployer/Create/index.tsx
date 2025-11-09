@@ -198,7 +198,7 @@ const DeployerCreate = () => {
     }
   }, [chainData.chainId]);
 
-  // Helper function to load Score Square test data
+  // Helper function to load Score Square test data (dev console only)
   const loadScoreSquareTestData = (testAddress?: string): DefifaLaunchProjectData => {
     const now = Math.floor(Date.now() / 1000);
     const mintDuration = 60 * 2; // 2 minutes minting
@@ -250,7 +250,7 @@ const DeployerCreate = () => {
         setFormValues(testData);
         setTierGeneralValues({ price: "0.00001" });
         setActiveTab("nfts");
-        console.log("✅ Test data loaded!", testData);
+        console.log("✅ Score Square test data loaded!", testData);
         console.log("💡 Tip: Call fillTestData('0xYourAddress') to use your own attestation delegate");
       };
     }
@@ -861,41 +861,6 @@ const DeployerCreate = () => {
                       required
                       placeholder="Describe the rules of the game in plain English."
                     />
-                  </div>
-                  <div className={styles.formGroup}>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="scoreSquareGame"
-                        checked={formValues.gameType === "scoresquare"}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            // Load Score Square test data
-                            const testData = loadScoreSquareTestData();
-                            setFormValues(testData);
-                            setTierGeneralValues({ price: "0.00001" });
-                            setActiveTab("nfts");
-                          } else {
-                            // Clear gameType and reset tiers to empty
-                            setFormValues((prev) => ({
-                              ...prev,
-                              gameType: undefined,
-                              tiers: [],
-                            }));
-                          }
-                        }}
-                        className="h-4 w-4"
-                      />
-                      <label
-                        htmlFor="scoreSquareGame"
-                        className="text-sm text-neutral-300 select-none"
-                      >
-                        Score Square Game
-                      </label>
-                    </div>
-                    <span className="text-xs text-neutral-400 mt-1">
-                      Check this to create a Score Square game with 25 outcome tiers (0-0 to 4-4).
-                    </span>
                   </div>
                 </div>
               ),
