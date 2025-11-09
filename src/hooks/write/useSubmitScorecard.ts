@@ -37,9 +37,72 @@ export function useSubmitScorecard(
   // Handle success with useEffect - use ref to avoid dependency on onSuccess
   useEffect(() => {
     if (isSuccess && hash) {
-      // Invalidate scorecards cache to show new scorecard immediately
+      // Invalidate and refetch scorecards immediately
       queryClient.invalidateQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
       
+      // Invalidate all stateOf queries to ensure fresh scorecard state (Pending → Active)
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const key = query.queryKey;
+          if (!Array.isArray(key)) return false;
+          if (key[0] !== "readContract") return false;
+          const descriptor = key[1];
+          if (!descriptor || typeof descriptor !== "object") return false;
+          const fn = (descriptor as { functionName?: string }).functionName;
+          return fn === "stateOf"; // Invalidate scorecard state queries
+        },
+      });
+      
+      // Do aggressive refetching with delay to account for subgraph indexing and state transition
+      const refetchWithDelay = async () => {
+        // Immediate refetch - scorecards and state
+        await queryClient.refetchQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
+        await queryClient.refetchQueries({
+          predicate: (query) => {
+            const key = query.queryKey;
+            if (!Array.isArray(key)) return false;
+            if (key[0] !== "readContract") return false;
+            const descriptor = key[1];
+            if (!descriptor || typeof descriptor !== "object") return false;
+            const fn = (descriptor as { functionName?: string }).functionName;
+            return fn === "stateOf";
+          }
+        });
+        
+        // Retry after 2 seconds (subgraph indexing delay + state transition)
+        setTimeout(() => {
+          queryClient.refetchQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
+          queryClient.refetchQueries({
+            predicate: (query) => {
+              const key = query.queryKey;
+              if (!Array.isArray(key)) return false;
+              if (key[0] !== "readContract") return false;
+              const descriptor = key[1];
+              if (!descriptor || typeof descriptor !== "object") return false;
+              const fn = (descriptor as { functionName?: string }).functionName;
+              return fn === "stateOf";
+            }
+          });
+        }, 2000);
+        
+        // Final retry after 5 seconds
+        setTimeout(() => {
+          queryClient.refetchQueries({ queryKey: ["scorecards", chainData.chainId, gameId] });
+          queryClient.refetchQueries({
+            predicate: (query) => {
+              const key = query.queryKey;
+              if (!Array.isArray(key)) return false;
+              if (key[0] !== "readContract") return false;
+              const descriptor = key[1];
+              if (!descriptor || typeof descriptor !== "object") return false;
+              const fn = (descriptor as { functionName?: string }).functionName;
+              return fn === "stateOf";
+            }
+          });
+        }, 5000);
+      };
+      
+      void refetchWithDelay();
       onSuccessRef.current?.();
     }
   }, [isSuccess, hash, queryClient, gameId, chainData.chainId]);

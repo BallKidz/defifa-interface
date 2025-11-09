@@ -16,14 +16,17 @@ function useTierRedemptionWeights(
     nfts: { tiers },
   } = useGameContext();
 
-  // Only include tiers that have valid percentage values
+  // Only include tiers that have valid percentage values AND have been minted
   const weights = tiers?.filter((tier) => {
     const percentage = scorecardPercentages[tier.id.toString()];
+    const hasMints = tier.minted > 0;
+    
     return percentage !== undefined && 
            percentage !== null && 
            typeof percentage === 'number' && 
            !isNaN(percentage) && 
-           percentage > 0;
+           percentage > 0 &&
+           hasMints; // Only include tiers with mints to prevent revert
   }).map((tier) => {
     const percentage = scorecardPercentages[tier.id.toString()] ?? 0;
     
@@ -46,7 +49,7 @@ export function CustomScorecardActions({
   scorecardPercentages: ScorecardPercentages;
   onSuccess?: () => void;
 }) {
-  const { governor, gameId } = useGameContext();
+  const { governor, gameId, nfts } = useGameContext();
 
   const tierRedemptionWeights = useTierRedemptionWeights(scorecardPercentages);
 
@@ -57,13 +60,16 @@ export function CustomScorecardActions({
     onSuccess
   );
 
-
-
+  // Calculate total percentage, excluding unminted tiers
   const totalScorePercentage =
-    Object.values(scorecardPercentages).reduce(
-      (acc, curr) => (acc ?? 0) + (curr ?? 0),
-      0
-    ) ?? 0;
+    Object.entries(scorecardPercentages).reduce((acc, [tierId, percentage]) => {
+      const tier = nfts.tiers?.find(t => t.id.toString() === tierId);
+      // Only count percentage if tier has mints
+      if (tier && tier.minted > 0) {
+        return (acc ?? 0) + (percentage ?? 0);
+      }
+      return acc ?? 0;
+    }, 0) ?? 0;
 
 
   return (

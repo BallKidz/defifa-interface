@@ -1,4 +1,4 @@
-// Import ABIs from shared ABI files (same across all chains)
+ // Import ABIs from shared ABI files (same across all chains)
 import DefifaDelegate from "../abis/DefifaDelegate.json";
 import DefifaDeployer from "../abis/DefifaDeployer.json";
 import DefifaGovernor from "../abis/DefifaGovernor.json";
@@ -77,7 +77,9 @@ export const DEFIFA_CONFIG_SEPOLIA: DefifaConfig = {
     interface: DefifaDeployer.abi,
   },
   DefifaTokenUriResolver: {
-    address: "0x57c110647675bb935f8e0b417fe7f64475718e94" as EthereumAddress,
+    // address: "0x30db989EECf38cc83a63D28311E9571A31c1430C" as EthereumAddress,
+    // address: "0x65874e9f220D0F77C0C57eecf5073c94A0Ba300E" as EthereumAddress,
+     address: "0xeaD0320B4BCA1835811ab8FAe8b4ea5205a7c502" as EthereumAddress, // DefifaTokenUriResolver 300 400
     interface: DefifaTokenUriResolver.abi,
   },
   subgraph:

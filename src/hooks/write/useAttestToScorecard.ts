@@ -35,10 +35,63 @@ export function useAttestToScorecard(
           const descriptor = key[1];
           if (!descriptor || typeof descriptor !== "object") return false;
           const fn = (descriptor as { functionName?: string }).functionName;
-          return fn === "attestationCountOf" || fn === "getAttestationWeight" || fn === "quorum";
+          // Invalidate all vote-related and proposal state queries
+          return fn === "attestationCountOf" || 
+                 fn === "getAttestationWeight" || 
+                 fn === "quorum" ||
+                 fn === "stateOf" || // Scorecard state (for Lock in button)
+                 fn === "votesOf" ||  // Proposal votes
+                 fn === "getVotes";   // User votes
         },
       });
       
+      // Aggressive refetch with delays to ensure UI updates
+      const refetchWithDelay = async () => {
+        // Immediate refetch
+        await queryClient.refetchQueries({ 
+          predicate: (query) => {
+            const key = query.queryKey;
+            if (!Array.isArray(key)) return false;
+            if (key[0] !== "readContract") return false;
+            const descriptor = key[1];
+            if (!descriptor || typeof descriptor !== "object") return false;
+            const fn = (descriptor as { functionName?: string }).functionName;
+            return fn === "stateOf" || fn === "votesOf";
+          }
+        });
+        
+        // Retry after 1 second
+        setTimeout(() => {
+          queryClient.refetchQueries({ 
+            predicate: (query) => {
+              const key = query.queryKey;
+              if (!Array.isArray(key)) return false;
+              if (key[0] !== "readContract") return false;
+              const descriptor = key[1];
+              if (!descriptor || typeof descriptor !== "object") return false;
+              const fn = (descriptor as { functionName?: string }).functionName;
+              return fn === "stateOf" || fn === "votesOf";
+            }
+          });
+        }, 1000);
+        
+        // Final retry after 3 seconds
+        setTimeout(() => {
+          queryClient.refetchQueries({ 
+            predicate: (query) => {
+              const key = query.queryKey;
+              if (!Array.isArray(key)) return false;
+              if (key[0] !== "readContract") return false;
+              const descriptor = key[1];
+              if (!descriptor || typeof descriptor !== "object") return false;
+              const fn = (descriptor as { functionName?: string }).functionName;
+              return fn === "stateOf" || fn === "votesOf";
+            }
+          });
+        }, 3000);
+      };
+      
+      void refetchWithDelay();
       onSuccess?.();
     }
   }, [isSuccess, hash, onSuccess, queryClient, gameId, chainData.chainId]);

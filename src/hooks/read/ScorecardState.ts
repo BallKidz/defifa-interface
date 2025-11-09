@@ -18,6 +18,8 @@ export function useScorecardState(
     chainId: chainData.chainId,
     query: {
       enabled: !!governorAddress && !!gameId && !!scorecardId,
+      refetchInterval: 5 * 1000, // Poll every 5 seconds for state changes (Pending → Active)
+      staleTime: 0, // Always consider stale to ensure fresh data
     },
   });
   

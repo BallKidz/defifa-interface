@@ -142,7 +142,8 @@ export function ScorecardRow({
       {showActions !== false && (
         <div className="flex border-t border-neutral-700">
           <Button
-            disabled={proposalState !== DefifaScorecardState.SUCCEEDED}
+            disabled={proposalState !== DefifaScorecardState.SUCCEEDED || isLoading}
+            loading={isLoading}
             onClick={() => {
               if (write) {
                 write();
@@ -151,7 +152,7 @@ export function ScorecardRow({
             className="flex-1 p-2 border-t-0 border-b-0 border-l-0 border-r border-neutral-800 rounded-none"
             category="secondary"
           >
-            Lock in
+            {isLoading ? "Locking in..." : "Lock in"}
           </Button>
           <Button
             className="flex-1 p-2 rounded-none border-none"

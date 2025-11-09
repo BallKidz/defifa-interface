@@ -11,6 +11,7 @@ import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 import { parseTierMetadata } from "utils/tierMetadata";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
 import { DefifaGamePhase } from "hooks/read/useCurrentGamePhase";
+import { Buffer } from "buffer";
 
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
@@ -137,8 +138,11 @@ export function useDefifaTiers(
   });
 
   // Transform to DefifaTier[] using useQuery for async metadata parsing
+  // Poll during MINT (for minting updates), SCORING (for pot updates), and COMPLETE (for final pot values)
   const shouldPoll = currentPhase !== undefined
-    ? currentPhase === DefifaGamePhase.MINT
+    ? currentPhase === DefifaGamePhase.MINT || 
+      currentPhase === DefifaGamePhase.SCORING || 
+      currentPhase === DefifaGamePhase.COMPLETE
     : true;
 
   const { data: defifaTiers, isLoading: metadataLoading } = useQuery({
@@ -180,7 +184,7 @@ export function useDefifaTiers(
             reserveFrequency,
             reserveBeneficiary,
           };
-          
+          console.log("tokenUriResult", tokenUriResult);
           // If tokenURI call succeeded, fetch and parse the metadata
           // Note: tokenURI may revert for tokens that have resolver errors eg non font not found onchain
           if (tokenUriResult?.status === "success" && tokenUriResult.result) {
@@ -189,12 +193,42 @@ export function useDefifaTiers(
               
               // Check if this is a data URI (embedded SVG or image)
               if (tokenUri.startsWith("data:")) {
-                return {
-                  ...baseTier,
-                  description: (tier as any).name || `Tier ${Number(tier.id)}`,
-                  teamName: (tier as any).name || `Tier ${Number(tier.id)}`,
-                  teamImage: tokenUri, // Use data URI directly
-                };
+                try {
+                  const [, dataPart] = tokenUri.split(",");
+                  const isBase64 = tokenUri.includes(";base64,");
+                  const jsonString = isBase64
+                    ? (typeof globalThis !== "undefined" && typeof globalThis.atob === "function"
+                        ? globalThis.atob(dataPart || "")
+                        : Buffer.from(dataPart || "", "base64").toString("utf-8"))
+                    : decodeURIComponent(dataPart || "");
+
+                  const metadata = JSON.parse(jsonString || "{}") as {
+                    name?: string;
+                    description?: string;
+                    image?: string;
+                    [key: string]: unknown;
+                  };
+
+                  const teamImageRaw = metadata.image || "";
+                  const resolvedImage = teamImageRaw.startsWith("ipfs://")
+                    ? getIpfsUrl(cidFromIpfsUri(teamImageRaw))
+                    : teamImageRaw;
+
+                  return {
+                    ...baseTier,
+                    description: metadata.description || (tier as any).name || `Tier ${Number(tier.id)}`,
+                    teamName: metadata.name || (tier as any).name || `Tier ${Number(tier.id)}`,
+                    teamImage: resolvedImage,
+                  };
+                } catch (error) {
+                  console.error(`❌ Failed to parse data URI metadata for tier ${tier.id}:`, error);
+                  return {
+                    ...baseTier,
+                    description: (tier as any).name || `Tier ${Number(tier.id)}`,
+                    teamName: (tier as any).name || `Tier ${Number(tier.id)}`,
+                    teamImage: "",
+                  };
+                }
               }
               
               // Convert IPFS URI to gateway URL
