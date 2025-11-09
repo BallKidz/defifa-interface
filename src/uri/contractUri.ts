@@ -22,10 +22,10 @@ export const projectMetadataUri: {
   fee_recipient: string;
   gameType?: string;
 } = {
-  name: "Defifa: Money game 1",
+  name: "Defifa: Money game",
   description:
     "Defifa is an NFT money game launch pad. The game's treasury will be programmed by the community to attest to the outcome set in the game rules. Redeem tokens any time after the 'final whistle' for their share of the treasury. Defifa is built on Juicebox, secured by Ethereum.",
-  image: "ipfs://QmRDbH19SJMPNarJjprLFNQfuSmmwYVQrCqp9r6bVZGGsq",
+  image: "ipfs://QmPcC27opXahcwAphfATVyHUX579ZbgfHuEgTdaubwWqzU",
   external_link: "https://defifa.net/",
   seller_fee_basis_points: 0,
   fee_recipient: "",
