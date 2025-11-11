@@ -17,12 +17,15 @@ export function NFTModal({ isOpen, onClose, title, imageSrc }: NFTModalProps) {
   const { isInMiniApp } = useFarcasterContext();
   const { triggerSelection } = useMiniAppHaptics();
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const safeTitle = typeof title === "string" ? title : "";
 
   useEffect(() => {
     if (isOpen) {
       // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
       setImageLoaded(false);
+      setLoadError(false);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -46,6 +49,7 @@ export function NFTModal({ isOpen, onClose, title, imageSrc }: NFTModalProps) {
     return () => {
       window.removeEventListener('keydown', handleEscape);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   const handleClose = () => {
@@ -95,27 +99,31 @@ export function NFTModal({ isOpen, onClose, title, imageSrc }: NFTModalProps) {
           {/* Image container */}
           <div className="flex-1 p-4 md:p-6 flex items-center justify-center">
             <div className="relative w-full aspect-square max-w-lg rounded-xl overflow-hidden shadow-inner bg-[#0f0b16]">
-              {!imageLoaded && (
+              {!imageLoaded && !!imageSrc && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
                 </div>
               )}
-              {imageSrc ? (
+              {imageSrc && !loadError ? (
                 <Image
                   src={imageSrc}
-                  alt={title}
+                  alt={safeTitle || "NFT"}
                   fill
                   sizes="(max-width: 768px) 100vw, 640px"
                   className={`object-contain transition-opacity duration-300 ${
                     imageLoaded ? 'opacity-100' : 'opacity-0'
                   }`}
                   onLoad={() => setImageLoaded(true)}
+                  onError={() => {
+                    setLoadError(true);
+                    setImageLoaded(true);
+                  }}
                   priority
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center h-full">
                   <div className="text-[#fea282] text-4xl md:text-6xl font-bold mb-2">
-                    {title.substring(0, 9).toUpperCase()}
+                    {safeTitle ? safeTitle.substring(0, 9).toUpperCase() : "NFT"}
                   </div>
                   <div className="text-[#c0b3f1] text-sm">No image available</div>
                 </div>
