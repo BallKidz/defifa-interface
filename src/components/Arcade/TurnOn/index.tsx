@@ -218,13 +218,13 @@ const AllGames = ({ chainId }: { chainId?: number }) => {
                   )}
                 </div>
               </th>
-              <th className="font-normal text-sm py-3">
+              <th className="font-normal text-sm py-3 text-left">
                 Phase
               </th>
-              <th className="font-normal text-sm py-3">
+              <th className="font-normal text-sm py-3 text-left">
                 Pot Size
               </th>
-              <th className="font-normal text-sm py-3">
+              <th className="font-normal text-sm py-3 text-left">
                 Actions
               </th>
               <th 

@@ -20,7 +20,7 @@ export interface PickCardProps {
 }
 
 export function PickCard({
-  title,
+  title = "",
   imageSrc,
   onIncrement,
   onDecrement,
@@ -30,6 +30,7 @@ export function PickCard({
   extra,
 }: PickCardProps) {
   const isSelected = selectedCount > 0;
+  const safeTitle = typeof title === "string" ? title : "";
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { triggerSelection } = useMiniAppHaptics();
 
@@ -46,14 +47,14 @@ export function PickCard({
     <>
       <div
         className={twMerge(
-          "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl overflow-hidden hover:shadow-glowPink hover:border-pink-900",
+          "relative border-2 group bg-[#181424] border-neutral-800 shadow-lg hover:-translate-y-1 transition-all rounded-xl overflow-hidden hover:shadow-glowPink hover:border-pink-900 flex flex-col",
           isSelected
             ? "border-pink-700 hover:border-pink-800 shadow-glowPink"
             : ""
         )}
       >
-        <div className="px-4 pt-4 mb-2">
-          <div className="text-base text-left font-medium mb-2 truncate" title={title}>{title}</div>
+        <div className="px-4 pt-4 pb-2 flex-1">
+          <div className="text-base text-left font-medium mb-2 truncate" title={safeTitle}>{safeTitle}</div>
 
           <div 
             className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16] cursor-pointer hover:border-pink-900 transition-colors active:scale-95"
@@ -63,7 +64,7 @@ export function PickCard({
               <Image
                 src={imageSrc}
                 crossOrigin="anonymous"
-                alt={title}
+                alt={safeTitle || "Defifa NFT"}
                 width={200}
                 height={200}
                 className="w-full h-full object-cover"
@@ -71,7 +72,7 @@ export function PickCard({
             ) : (
               <div className="flex flex-col items-center justify-center h-full">
                 <div className="text-[#fea282] text-3xl font-bold mb-1">
-                  {title.substring(0, 9).toUpperCase()}
+                  {safeTitle ? safeTitle.substring(0, 9).toUpperCase() : "NFT"}
                 </div>
                 <div className="text-[#c0b3f1] text-xs">Outcome</div>
               </div>
@@ -119,7 +120,7 @@ export function PickCard({
     <NFTModal
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
-      title={title}
+      title={safeTitle}
       imageSrc={imageSrc}
     />
     </>

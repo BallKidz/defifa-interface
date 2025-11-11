@@ -265,9 +265,7 @@ const DeployerCreate = () => {
     contractUri.description =
       formValuesIn.rules +
       " " +
-      "(NFTs may have redemption value" +
-      " " +
-      contractUri.infoUri + ")";
+      "(All NFTs have redemption value)";
     const contractUriCid = await uploadJsonToIpfs(contractUri);
     projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
     projectMetadataUri.description = formValuesIn.rules;

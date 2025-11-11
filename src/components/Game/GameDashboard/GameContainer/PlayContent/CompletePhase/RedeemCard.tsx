@@ -58,8 +58,9 @@ export function RedeemCard({
               </div>
             </div>
           ) : (
-            <div className="text-sm text-neutral-500 flex items-center gap-2">
-              <span>No redemption value</span>
+            <div className="text-sm text-neutral-500">
+              <div>Not a winner</div>
+              <div>Redeem for network tokens</div>
             </div>
           )}
         </div>

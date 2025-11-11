@@ -78,8 +78,8 @@ export const DEFIFA_CONFIG_SEPOLIA: DefifaConfig = {
   },
   DefifaTokenUriResolver: {
     // address: "0x30db989EECf38cc83a63D28311E9571A31c1430C" as EthereumAddress,
-    // address: "0x65874e9f220D0F77C0C57eecf5073c94A0Ba300E" as EthereumAddress,
-     address: "0xeaD0320B4BCA1835811ab8FAe8b4ea5205a7c502" as EthereumAddress, // DefifaTokenUriResolver 300 400
+    //address: "0xc962Bd9B1EE6F40073201fE217428AEaa8Aa65f2" as EthereumAddress, // svg
+    address: "0xa65aE068437E212137c08CF95b0d2837D63E9Bff" as EthereumAddress, // DefifaTokenUriResolver 300 400
     interface: DefifaTokenUriResolver.abi,
   },
   subgraph:
