@@ -45,9 +45,13 @@ function useTierRedemptionWeights(
 export function CustomScorecardActions({
   scorecardPercentages,
   onSuccess,
+  onBegin,
+  processingOverride,
 }: {
   scorecardPercentages: ScorecardPercentages;
   onSuccess?: () => void;
+  onBegin?: () => void;
+  processingOverride?: boolean;
 }) {
   const { governor, gameId, nfts } = useGameContext();
 
@@ -71,6 +75,7 @@ export function CustomScorecardActions({
       return acc ?? 0;
     }, 0) ?? 0;
 
+  const isProcessing = Boolean(isLoading || processingOverride);
 
   return (
     <div>
@@ -88,18 +93,22 @@ export function CustomScorecardActions({
       ) : null}
       <Button
         onClick={() => {
+          if (onBegin) {
+            onBegin();
+          }
           if (write) {
             write();
           }
         }}
-        loading={isLoading}
-        disabled={totalScorePercentage !== 100 || !write}
+        loading={isProcessing}
+        disabled={totalScorePercentage !== 100 || !write || isProcessing}
         className="w-full mt-5"
       >
-        {totalScorePercentage !== 100 
-          ? `Submit scores (${totalScorePercentage}% allocated)` 
-          : "Submit scores"
-        }
+        {isProcessing
+          ? "Processing..."
+          : totalScorePercentage !== 100 
+            ? `Submit scores (${totalScorePercentage}% allocated)` 
+            : "Submit scores"}
       </Button>
     </div>
   );

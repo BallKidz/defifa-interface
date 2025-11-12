@@ -18,6 +18,7 @@ export function CustomScorecardContent() {
   const [scorecardPercentages, setScorecardPercentages] =
     useState<ScorecardPercentages>({});
   const [modalOpen, setModalOpen] = useState<number | null>(null);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const { triggerSelection } = useMiniAppHaptics();
 
   const { isConnected } = useAccount();
@@ -86,7 +87,12 @@ export function CustomScorecardContent() {
       renderActions={() => (
         <CustomScorecardActions 
           scorecardPercentages={scorecardPercentages} 
-          onSuccess={resetScorecard}
+          onSuccess={() => {
+            resetScorecard();
+            setIsProcessing(false);
+          }}
+          onBegin={() => setIsProcessing(true)}
+          processingOverride={isProcessing}
         />
       )}
     >

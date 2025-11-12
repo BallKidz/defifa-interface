@@ -73,5 +73,5 @@ export const DEFIFA_CONFIG_OPTIMISM_SEPOLIA: DefifaConfig = {
     address: "0x57c110647675bb935f8e0b417fe7f64475718e94" as EthereumAddress,
     interface: DefifaTokenUriResolver.abi,
   },
-  subgraph: "",
+  subgraph: "https://gateway.thegraph.com/api/subgraphs/id/UJ2bB9YFcR8JgpjSBRAhPFXCr5b4XvixwS9PnX9cWF9",
 };
