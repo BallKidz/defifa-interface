@@ -7,6 +7,7 @@ import { DefifaTier } from "types/defifa";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import bs58 from "bs58";
 import { cidFromIpfsUri, getIpfsUrl } from "utils/ipfs";
 import { parseTierMetadata } from "utils/tierMetadata";
 import { useGameMints } from "components/Game/GameDashboard/GameContainer/PlayContent/MintPhase/useGameMints";
@@ -16,16 +17,6 @@ import { Buffer } from "buffer";
 export const ONE_BILLION = 1_000_000_000;
 export const DEFAULT_NFT_MAX_SUPPLY = ONE_BILLION - 1;
 
-/**
- * Hook to fetch Defifa v5 tiers and transform them into UI-friendly DefifaTier[] format.
- * 
- * This hook:
- * 1. Fetches raw tiers from the store using tiersOf
- * 2. Fetches tier names from DefifaDelegate
- * 3. Fetches tokenURI metadata for images/SVGs
- * 4. Fetches game mints from subgraph for accurate mint counts
- * 5. Transforms everything into DefifaTier[] format
- */
 export function useDefifaTiers(
   delegateAddress: string | undefined,
   chainIdOverride?: number,
@@ -48,17 +39,16 @@ export function useDefifaTiers(
     },
   });
 
-  // Batch fetch all tiers (without TokenUriResolver since it's missing fonts)
   const { data: rawTiers, error: tiersError, isLoading: tiersLoading } = useReadContract({
     address: storeAddress as `0x${string}`,
     abi: chainData.JBTiered721DelegateStore.interface as Abi,
     functionName: "tiersOf",
     args: delegateAddress && storeAddress ? [
-      delegateAddress as `0x${string}`, 
-      [], // categoryIds - empty array to get all tiers
-      false, // includeResolvedUri - false because TokenUriResolver is missing fonts
-      0,   // sortDirection - 0 for ascending
-      48   // maxReturnedTiers - support up to 48 tiers
+      delegateAddress as `0x${string}`,
+      [],
+      false,
+      0,
+      48
     ] : undefined,
     chainId: targetChainId,
     query: {
@@ -68,7 +58,6 @@ export function useDefifaTiers(
 
   const tierCount = rawTiers ? (rawTiers as any[]).length : 0;
 
-  // Batch fetch all tier names using useReadContracts for efficiency
   const tierNameCalls = useMemo(() => {
     if (!delegateAddress || tierCount === 0) return [];
     
@@ -88,7 +77,6 @@ export function useDefifaTiers(
     },
   });
 
-  // Combine tier data with names to get JB721Tier[]
   const jbTiers = rawTiers ? (rawTiers as any[]).map((tier, index) => {
     const tierNameResult = tierNameResults?.[index];
     const tierName = tierNameResult?.status === "success" && tierNameResult.result 
@@ -101,23 +89,19 @@ export function useDefifaTiers(
     };
   }) : undefined;
 
-  // Create serializable keys for query dependencies
   const tierIds = jbTiers?.map(t => t.id?.toString()).join(',') || '';
   const tierNames = jbTiers?.map(t => (t as any).name || '').join(',') || '';
 
-  // Fetch outstanding mints from subgraph to calculate accurate minted counts
   const { data: gameMints, isLoading: gameMintsLoading } = useGameMints(gameId || 0, chainIdOverride, {
     currentPhase,
   });
 
-  // Calculate outstanding mints per tier
   const outstandingMintsPerTier = gameMints?.reduce((acc: { [tierId: number]: number }, token) => {
     const tierId = Math.floor(parseInt(token.number) / DEFAULT_NFT_MAX_SUPPLY);
     acc[tierId] = (acc[tierId] || 0) + 1;
     return acc;
   }, {}) || {};
 
-  // Batch fetch all tokenURIs for metadata/images
   const tokenUriCalls = useMemo(() => {
     if (!jbTiers?.length || !delegateAddress) return [];
     
@@ -137,8 +121,6 @@ export function useDefifaTiers(
     },
   });
 
-  // Transform to DefifaTier[] using useQuery for async metadata parsing
-  // Poll during MINT (for minting updates), SCORING (for pot updates), and COMPLETE (for final pot values)
   const shouldPoll = currentPhase !== undefined
     ? currentPhase === DefifaGamePhase.MINT || 
       currentPhase === DefifaGamePhase.SCORING || 
@@ -303,6 +285,84 @@ export function useDefifaTiers(
               console.error(`❌ Failed to fetch metadata for tier ${tier.id}:`, error);
               // Fall through to use tier name only
             }
+          }
+
+          // If tokenURI failed or was unavailable, but the tier has encoded IPFS URI, reconstruct CID and fetch
+          try {
+            const encodedIpfs: string | undefined = (tier as any).encodedIPFSUri;
+            const hasEncoded =
+              typeof encodedIpfs === "string" &&
+              encodedIpfs.length > 2 &&
+              !/^0x0+$/i.test(encodedIpfs);
+            if (hasEncoded) {
+              const hex = encodedIpfs.startsWith("0x")
+                ? encodedIpfs.slice(2)
+                : encodedIpfs;
+              // Re-add multihash prefix 0x12 0x20 for sha2-256
+              const multihashHex = `1220${hex}`;
+              const cidV0 = bs58.encode(Buffer.from(multihashHex, "hex"));
+              const metadataUrl = getIpfsUrl(cidV0);
+              // Try structured parse first
+              const metadata = await parseTierMetadata(`ipfs://${cidV0}`);
+              if (metadata) {
+                const teamImage = metadata.image
+                  ? metadata.image.startsWith("ipfs://")
+                    ? getIpfsUrl(cidFromIpfsUri(metadata.image))
+                    : metadata.image
+                  : "";
+                return {
+                  ...baseTier,
+                  description: metadata.description || (tier as any).name,
+                  teamName: (tier as any).name || metadata.tierName,
+                  teamImage,
+                };
+              }
+              // Fallback: GET JSON directly
+              const response = await axios.get(metadataUrl, {
+                headers: { Accept: "application/json" },
+              });
+              const fallbackMetadata = response.data;
+              if (
+                fallbackMetadata &&
+                typeof fallbackMetadata === "object" &&
+                (fallbackMetadata.name ||
+                  fallbackMetadata.image ||
+                  fallbackMetadata.description)
+              ) {
+                let tierName =
+                  fallbackMetadata.name ||
+                  (tier as any).name ||
+                  `Tier ${Number(tier.id)}`;
+                if (tierName.includes(" — ")) {
+                  const parts = tierName.split(" — ");
+                  tierName = parts[1]?.trim() || tierName;
+                }
+                const teamImage = fallbackMetadata.image
+                  ? fallbackMetadata.image.startsWith("ipfs://")
+                    ? getIpfsUrl(cidFromIpfsUri(fallbackMetadata.image))
+                    : fallbackMetadata.image
+                  : "";
+                return {
+                  ...baseTier,
+                  description:
+                    fallbackMetadata.description || (tier as any).name,
+                  teamName: (tier as any).name || tierName,
+                  teamImage,
+                };
+              }
+              // Last resort: treat as direct image
+              return {
+                ...baseTier,
+                description: (tier as any).name,
+                teamName: (tier as any).name,
+                teamImage: metadataUrl,
+              };
+            }
+          } catch (e) {
+            console.error(
+              `❌ Failed to reconstruct IPFS metadata for tier ${tier.id}:`,
+              e
+            );
           }
 
           // Fallback: use tier name only

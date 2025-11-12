@@ -7,7 +7,7 @@ import { Input } from "components/UI/Input";
 import { constants } from "ethers";
 import { useCreateGame } from "hooks/write/useCreateGame";
 import { useChainData } from "hooks/useChainData";
-import { useSwitchChain } from "wagmi";
+import { useAccount, useSwitchChain } from "wagmi";
 import { buildGamePath, formatNetworkGameId } from "lib/networks";
 import { uploadJsonToIpfs, uploadToIPFS } from "lib/uploadToIPFS";
 import { createTierMetadata } from "utils/tierMetadata";
@@ -174,6 +174,7 @@ const DeployerCreate = () => {
   
   const { chainData } = useChainData();
   const { switchChain } = useSwitchChain();
+  const { address: deployerAddress } = useAccount();
   const { triggerImpact } = useMiniAppHaptics();
 
   // Handle network switching
@@ -197,6 +198,21 @@ const DeployerCreate = () => {
       setSelectedNetwork(chainData.chainId);
     }
   }, [chainData.chainId]);
+
+  // Ensure defaultAttestationDelegate defaults to the deployer's address
+  useEffect(() => {
+    if (deployerAddress) {
+      setFormValues(prev => {
+        if (prev.defaultAttestationDelegate?.toLowerCase() === deployerAddress.toLowerCase()) {
+          return prev;
+        }
+        return {
+          ...prev,
+          defaultAttestationDelegate: deployerAddress as `0x${string}`,
+        };
+      });
+    }
+  }, [deployerAddress]);
 
   // Helper function to load Score Square test data (dev console only)
   const loadScoreSquareTestData = (testAddress?: string): DefifaLaunchProjectData => {
@@ -265,7 +281,7 @@ const DeployerCreate = () => {
     contractUri.description =
       formValuesIn.rules +
       " " +
-      "(All NFTs have redemption value)";
+      "(all NFTs have redemption value)";
     const contractUriCid = await uploadJsonToIpfs(contractUri);
     projectMetadataUri.name = formValuesIn.name; // This should be a tier name on OS (??)
     projectMetadataUri.description = formValuesIn.rules;
