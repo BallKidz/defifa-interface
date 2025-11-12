@@ -1,5 +1,6 @@
 import Button from "components/UI/Button";
 import { EthAmount } from "components/UI/EthAmount";
+import { EthAddress } from "components/UI/EthAddress";
 import { ETH_TOKEN_ADDRESS } from "constants/addresses";
 import { useGameContext } from "contexts/GameContext";
 import { constants } from "ethers";
@@ -10,6 +11,7 @@ import { useState } from "react";
 import { useAccount } from "wagmi";
 import { TierSelection } from "./useMintSelection";
 import { PhaseTimer } from "../PhaseTimer";
+import { useDefaultAttestationDelegate } from "hooks/read/useDefaultAttestationDelegate";
 
 export function MintActions({
   selectedTiers,
@@ -20,9 +22,12 @@ export function MintActions({
 
   const { address } = useAccount();
   const {
+    currentFundingCycle,
     nfts: { tiers },
   } = useGameContext();
   const router = useRouter();
+  const dataSourceAddress = currentFundingCycle?.metadata.dataSource;
+  const { data: defaultDelegateAddress } = useDefaultAttestationDelegate(dataSourceAddress);
 
   const totalSelected = Object.values(selectedTiers ?? {}).reduce(
     (acc, curr) => acc + curr.count,
@@ -138,6 +143,18 @@ export function MintActions({
           />
           <label htmlFor="claimVotes">Claim votes</label>
         </div>
+        {!claimVotes && defaultDelegateAddress && (
+          <div className="mt-3 text-xs text-neutral-300 flex items-center gap-2">
+            <span>Delegate to</span>
+            <EthAddress
+              withEnsAvatar
+              address={defaultDelegateAddress}
+              avatarClassName="h-5 w-5"
+              truncateTo={6}
+              linkDisabled
+            />
+          </div>
+        )}
       </div>
       <Button
         loading={isLoading}
