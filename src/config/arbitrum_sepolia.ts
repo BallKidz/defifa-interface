@@ -73,11 +73,11 @@ export const DEFIFA_CONFIG_ARBITRUM_SEPOLIA: DefifaConfig = {
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: "0x90aa7ca5cbc4cf918e3a338b964b8868c3693adc" as EthereumAddress,
+    address: "0xecf78cb7aa22f1bfc292c0964acc18d8307bc548" as EthereumAddress,
     interface: DefifaDeployer.abi,
   },
   DefifaTokenUriResolver: {
-    address: "0xa624531f27b6d29f90653aecc530b257e01699e3" as EthereumAddress,
+    address: "0xae7e8924b2f284e1b8fec1932575d1b3e7a7b921" as EthereumAddress,
     interface: DefifaTokenUriResolver.abi,
   },
   subgraph:

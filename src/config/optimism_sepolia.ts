@@ -66,11 +66,11 @@ export const DEFIFA_CONFIG_OPTIMISM_SEPOLIA: DefifaConfig = {
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: "0x90aa7ca5cbc4cf918e3a338b964b8868c3693adc" as EthereumAddress,
+    address: "0xb2105b457e2fb020679b0f02e328de4b9aea7414" as EthereumAddress,
     interface: DefifaDeployer.abi,
   },
   DefifaTokenUriResolver: {
-    address: "0xa624531f27b6d29f90653aecc530b257e01699e3" as EthereumAddress,
+    address: "0xd0997d962519082a342742e3191a1b9745d5f37a" as EthereumAddress,
     interface: DefifaTokenUriResolver.abi,
   },
   subgraph: "https://gateway.thegraph.com/api/subgraphs/id/UJ2bB9YFcR8JgpjSBRAhPFXCr5b4XvixwS9PnX9cWF9",
