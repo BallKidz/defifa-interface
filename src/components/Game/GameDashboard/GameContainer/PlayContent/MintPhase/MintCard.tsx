@@ -69,10 +69,10 @@ export function MintCard({
               </div>
             )}
             {userMintCount > 0 && (
-              <div className="text-white-400 font-medium">
+              <div className="text-neutral-400 font-medium">
                 {showChance
-                  ? `You hold ${userMintCount}`
-                  : `You hold ${userMintCount} (${userTierPercentage}% of this outcome)`}
+                  ? `You hold ${userMintCount} NFT${userMintCount === 1 ? "" : "s"}`
+                  : `You hold ${userMintCount} NFT${userMintCount === 1 ? "" : "s"} (${userTierPercentage}% of this outcome)`}
               </div>
             )}
           </div>
