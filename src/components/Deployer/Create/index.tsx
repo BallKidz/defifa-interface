@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { confirmAlert } from "react-confirm-alert";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { DefifaLaunchProjectData, DefifaTierParams } from "types/defifa";
+import { DefifaLaunchProjectData, DefifaTierParams, EthereumAddress } from "types/defifa";
 import { contractUri, projectMetadataUri } from "uri/contractUri";
 import { truncateAddress } from "utils/truncate";
 import styles from "./DeployerCreate.module.css";
@@ -30,6 +30,7 @@ import { useMiniAppHaptics } from "hooks/useMiniAppHaptics";
 import { Tabs } from "./Tabs";
 import { Tooltip } from "components/UI/Tooltip";
 import { BALLKIDZ_MULTISIG_ADDRESS } from "constants/constants";
+import { getChainData } from "config";
 
 // Helper function to get network name from chain ID
 const getNetworkName = (chainId: number): string => {
@@ -198,6 +199,20 @@ const DeployerCreate = () => {
       setSelectedNetwork(chainData.chainId);
     }
   }, [chainData.chainId]);
+
+  // Update chain-dependent form values when the deployment network changes
+  useEffect(() => {
+    const selectedChainData = getChainData(selectedNetwork);
+    setFormValues((prev) => ({
+      ...prev,
+      defaultTokenUriResolver:
+        selectedChainData.DefifaTokenUriResolver.address as EthereumAddress,
+      terminal:
+        selectedChainData.JBETHPaymentTerminal.address as EthereumAddress,
+      store:
+        selectedChainData.JBTiered721DelegateStore.address as EthereumAddress,
+    }));
+  }, [selectedNetwork]);
 
   // Ensure defaultAttestationDelegate defaults to the deployer's address
   useEffect(() => {
