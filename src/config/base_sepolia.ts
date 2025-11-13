@@ -65,24 +65,24 @@ export const DEFIFA_CONFIG_BASE_SEPOLIA: DefifaConfig = {
   // ABIs from @ballkidz/defifa-collection-deployer npm package
   // Addresses from Base Sepolia deployments
   DefifaDelegate: {
-    address: "0x9f8e41fdb2447fcebfffdc97387ac72b523e9fc3" as EthereumAddress,
+    address: "0xb57d30ed3cba3ce0934336db86f22797a9fa8359" as EthereumAddress,
     interface: DefifaDelegate.abi,
   },
   DefifaGovernor: {
-    address: "0xf6ae3f8bb41b55ae23412c64fdb135c0f6cb86ae" as EthereumAddress,
+    address: "0xe2f954b35c29b7e3bad27aaa31a3ac443626877d" as EthereumAddress,
     interface: DefifaGovernor.abi,
   },
   DefifaDeployer: {
-    address: "0xaa1c5d7bee4cc88523286774dffeab26687ec0ff" as EthereumAddress,
+    address: "0x90aa7ca5cbc4cf918e3a338b964b8868c3693adc" as EthereumAddress,
     interface: DefifaDeployer.abi,
   },
   DefifaTokenUriResolver: {
-    address: "0x57c110647675bb935f8e0b417fe7f64475718e94" as EthereumAddress,
+    address: "0xa624531f27b6d29f90653aecc530b257e01699e3" as EthereumAddress,
     interface: DefifaTokenUriResolver.abi,
   },
   subgraph:
     "https://gateway.thegraph.com/api/subgraphs/id/HXWg6FBWY5EovDNBJNzQfbTGkmupjB2UisX3kXFbwq3n",
-    // "https://api.studio.thegraph.com/query/107226/defifa-base-sepolia/v1.0.4",
+    //"https://api.studio.thegraph.com/query/107226/defifa-base-sepolia/version/latest",
 };
 
 console.info("base_sepolia chain data::", DEFIFA_CONFIG_BASE_SEPOLIA);
