@@ -97,21 +97,26 @@ export function CustomScorecardContent() {
       )}
     >
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 justify-items-center">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4">
         {tiersToScore?.map((t) => (
-           <div
-             key={t.id}
-            className={`relative border-2 bg-[#181424] shadow-lg rounded-xl overflow-hidden transition-all w-full max-w-[260px] ${
-              t.minted === 0 ? 'border-red-800 opacity-60' : 'border-neutral-800'
+          <div
+            key={t.id}
+            className={`relative border-2 group bg-[#181424] shadow-lg rounded-xl overflow-hidden transition-all flex flex-col ${
+              t.minted === 0
+                ? "border-red-800 opacity-60 cursor-not-allowed"
+                : "border-neutral-800 hover:-translate-y-1 hover:shadow-glowPink hover:border-pink-900"
             }`}
-           >
-            <div className="px-4 pt-4 pb-3">
+          >
+            <div className="px-4 pt-4 pb-2 flex-1">
               <div className="text-base text-left font-medium mb-2 truncate" title={t.teamName || `Team ${t.id}`}>
                 {t.teamName || `Team ${t.id}`}
               </div>
               <div 
-                className="rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16] cursor-pointer hover:border-pink-500 transition-colors active:scale-95"
+                className={`rounded-md overflow-hidden border-2 border-[#fea282] p-1 shadow-inner aspect-square flex items-center justify-center bg-[#0f0b16] transition-colors active:scale-95 ${
+                  t.minted === 0 ? "cursor-not-allowed" : "cursor-pointer hover:border-pink-900"
+                }`}
                 onClick={() => {
+                  if (t.minted === 0) return;
                   void triggerSelection();
                   setModalOpen(t.id);
                 }}
