@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { Card } from "./Card";
 import { useCurrentPhaseTitle } from "../GameDashboard/GameContainer/PlayContent/useCurrentPhaseTitle";
 import FourItemsDisplay from "./FourItemsDisplay";
+import { CountdownPhaseContent } from "../GameDashboard/GameContainer/PlayContent/CountdownPhaseContent";
 
 function GameStats() {
   const {
@@ -22,11 +23,9 @@ function GameStats() {
     usePaymentTerminalBalance(gameId);
 
   const mintText = totalSupply?.toNumber() === 1 ? "mint" : "mints";
-
+  if (currentPhase === DefifaGamePhase.COUNTDOWN) return <CountdownPhaseContent />;
   if (isTerminalLoading || !totalSupply)
     return <div className="text-center">...</div>;
-
-  if (currentPhase === DefifaGamePhase.COUNTDOWN) return null;
 
   return (
     <div className="flex gap-6 items-center">

@@ -104,12 +104,14 @@ const SocialMediaFeed = () => {
       }
     } else {
       // Handle the error case here
-      throw new Error(result.error.toString());
+      // throw new Error(result.error.toString());
+      console.error("chat error", result.error.toString());
+      return "";
     }
   };
 
   const sendCast = async (newPost: string, encryptedSigner: NobleEd25519Signer) => {
-    console.log('sendingCast', newPost);
+    // console.log('sendingCast', newPost);
     const castBody = newPost;
     const hub = getHubRpcClient(hubAddress); // works with open hub
     const request = JSON.parse(localStorage.getItem("farsign-signer-" + CLIENT_NAME)!).signerRequest;
@@ -121,7 +123,7 @@ const SocialMediaFeed = () => {
       mentions: [],
       mentionsPositions: [],
     }, { fid: request.fid, network: FarcasterNetwork.MAINNET }, (encryptedSigner as NobleEd25519Signer)))._unsafeUnwrap();
-    console.log('here we go', cast);
+    // console.log('here we go', cast);
     hub.submitMessage(cast); // w open hub this works
     setShouldScrollToBottom(true);
     setHasUserScrolled(false);
@@ -129,7 +131,7 @@ const SocialMediaFeed = () => {
   }
 
   const fetchCastersDetails = async () => {
-    console.log('you are fetching caster details');
+    // console.log('you are fetching caster details');
     const client = getHubRpcClient(hubAddress);
     const updatedData = casts
       .filter((cast) => cast.data !== undefined) // Remove rows where data is undefined
@@ -189,7 +191,8 @@ const SocialMediaFeed = () => {
       <div className="bg-black border border-pink-700 rounded-lg w-125">
         <div className="flex items-center justify-between px-4 py-2 bg-pink-700">
           <div className="text-md text-white font-medium">
-            Experimental Chat Feature - Connected as {casterFname.userResult[0]}
+            Chat (experimental)
+            {/* Chat (experimental) - Connected as {casterFname.userResult[0]} */}
           </div>
           <div className="px-4 py-2 text-black">
             {/* <input
@@ -277,7 +280,7 @@ const SocialMediaFeed = () => {
               onBlur={handleTextareaBlur}
             ></textarea>
 
-            <p className="text-pink-500 text-sm">{remainingChars} characters remaining because I ran out of time to put all the validations in place.</p>
+            <p className="text-pink-500 text-sm">{remainingChars} characters remaining.</p>
 
             <button
               className="bg-pink-700 text-white font-medium py-2 px-4 rounded-md mt-2"

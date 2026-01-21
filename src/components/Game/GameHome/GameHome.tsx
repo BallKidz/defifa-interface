@@ -82,6 +82,22 @@ export function GameHome() {
           <Container>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="col-span-2 rounded-lg">
+                <div className="border-2 border-pink-700 rounded-lg">
+                  <div className="bg-pink-700 text-white text-md font-medium px-4 py-2 flex flex-col">
+                    <span className="order-1">Game rules</span>
+                  </div>
+                  <div className="min-height overflow-y-auto p-4">
+                    <p className="text-sm mb-4">{metadata?.description}</p>
+                    <p className="text-lime-300 text-sm">
+                      <Link href="/about">
+                        <a className="flex items-start">
+                          This game operates on a self-reporting basis, meaning that you are dependent on
+                          the honesty and integrity of the other players to adhere to the rules. It is based
+                          on a social contract rather than strict code enforcement.</a>
+                      </Link>
+                    </p>
+                  </div>
+                </div >
                 <GamePlayerPowerLevel />
               </div>
               {/* <Chat /> */}
